@@ -5,6 +5,11 @@
 using std::endl;
 
 class CorsairFan {
+	private:
+		struct CorsairFanInfo {
+			int RPM;
+			int Mode;
+		};
 	public:
 		CorsairFan();
 		~CorsairFan();
@@ -14,9 +19,4 @@ class CorsairFan {
 		char* Name;
 		void PrintInfo();
 		static char* GetFanModeString(int mode);
-	private:
-		struct CorsairFanInfo {
-			int RPM;
-			int Mode;
-		};
 };
