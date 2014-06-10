@@ -21,7 +21,7 @@ void CorsairFan::PrintInfo(CorsairFanInfo fan){
 	//std::cout.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
 	fprintf(stdout, "\tMode: %s\n", GetFanModeString(fan.Mode) );
 	//std::cout.flags(oldFlags);
-	fprintf(stdout, "\tRPM: %i", fan.RPM );
+	fprintf(stdout, "\tRPM: %i\n", fan.RPM );
 }
 
 char* CorsairFan::GetFanModeString(int mode){
