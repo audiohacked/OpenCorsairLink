@@ -92,7 +92,7 @@ int CorsairFan::ConnectedFans() {
 	return fans;
 }
 
-void CorsairFan::ReadFansInfo(){
+void CorsairFan::ReadFansInfo(CorsairFanInfo fan){
 	int i = 0, fanMode = 0, res = 0;
 	unsigned char buf[256];
 	for (i = 0; i < 5; i++) {
@@ -123,7 +123,7 @@ void CorsairFan::ReadFansInfo(){
 		if (res < 0) {
 			fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		}
-		fanMode = buf[4] & 0x0E;
+		fan.Mode = buf[4] & 0x0E;
 
 		memset(buf,0x00,sizeof(buf));
 		// Read fan RPM
@@ -145,6 +145,8 @@ void CorsairFan::ReadFansInfo(){
 		//All data is little-endian.
 		int rpm = buf[5] << 8;
 		rpm += buf[4];
+
+		fan.RPM = rpm;
 	}
 }
 
