@@ -1,7 +1,3 @@
-#include <stdio.h>
-
-using std::endl;
-
 class CorsairFan {
 	public:
 		CorsairFan();

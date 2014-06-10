@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
+#include "CorsairLinkProto.h"
 #include "CorsairFan.h"
 
 CorsairFan::CorsairFan(){
@@ -6,41 +11,41 @@ CorsairFan::CorsairFan(){
 }
 
 void CorsairFan::PrintInfo(CorsairFanInfo fan){
-	fprintf(stdout, "%s:\n", fan->Name );
+	fprintf(stdout, "%s:\n", fan.Name );
 	//std::ios_base::fmtflags oldFlags = std::cout.flags();
 	//std::cout.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
-	fprintf(stdout, "\tMode: %s\n", CorsairFanInfo::GetFanModeString(fan->Mode) );
+	fprintf(stdout, "\tMode: %s\n", GetFanModeString(fan.Mode) );
 	//std::cout.flags(oldFlags);
-	fprintf(stdout, "\tRPM: %i", fan->RPM );
+	fprintf(stdout, "\tRPM: %i", fan.RPM );
 }
 
 char* CorsairFan::GetFanModeString(int mode){
-	char* modeString = "";
+	char* modeString;
 
 	switch(mode){
 		case FixedPWM:
-			modeString = "Fixed PWM";
+			sprintf(modeString,"Fixed PWM");
 			break;
 		case FixedRPM:
-			modeString = "Fixed RPM";
+			sprintf(modeString, "Fixed RPM");
 			break;
 		case Default:
-			modeString = "Default";
+			sprintf(modeString, "Default");
 			break;
 		case Quiet:
-			modeString = "Quiet";
+			sprintf(modeString, "Quiet");
 			break;
 		case Balanced:
-			modeString = "Balanced";
+			sprintf(modeString, "Balanced");
 			break;
 		case Performance:
-			modeString = "Performance";
+			sprintf(modeString, "Performance");
 			break;
 		case Custom:
-			modeString = "Custom";
+			sprintf(modeString, "Custom");
 			break;
 		default:
-			vsprintf(modeString, "N/A (%X)", mode );
+			sprintf(modeString, "N/A (%X)", mode );
 			break;
 	}
 
