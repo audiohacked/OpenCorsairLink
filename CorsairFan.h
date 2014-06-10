@@ -13,7 +13,7 @@ class CorsairFan {
 		} fanInfo[32];
 		int num_fans;
 		int ConnectedFans();
-		void ReadFansInfo(int fanIndex, CorsairFanInfo fan);
+		void ReadFanInfo(int fanIndex, CorsairFanInfo fan);
 		int SetFansInfo(int fanIndex, CorsairFanInfo fan);
 		void PrintInfo(CorsairFanInfo fan);
 		static char* GetFanModeString(int mode);
