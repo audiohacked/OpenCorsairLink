@@ -59,21 +59,21 @@ char* CorsairFan::GetFanModeString(int mode){
 
 int CorsairFan::ConnectedFans() {
 	int fans = 0, i = 0, fanMode = 0;
-	unsigned char buf[256];
+	//unsigned char buf[256];
 
 	for (i = 0; i < 5; i++) {
-		memset(buf,0x00,sizeof(buf));
+		memset(cl->buf,0x00,sizeof(buf));
 		// Read fan Mode
-		buf[0] = 0x07; // Length
-		buf[1] = CommandId++; // Command ID
-		buf[2] = WriteOneByte; // Command Opcode
-		buf[3] = FAN_Select; // Command data...
-		buf[4] = i; // select fan
-		buf[5] = CommandId++; // Command ID
-		buf[6] = ReadOneByte; // Command Opcode
-		buf[7] = FAN_Mode; // Command data...
+		cl->buf[0] = 0x07; // Length
+		cl->buf[1] = CommandId++; // Command ID
+		cl->buf[2] = WriteOneByte; // Command Opcode
+		cl->buf[3] = FAN_Select; // Command data...
+		cl->buf[4] = i; // select fan
+		cl->buf[5] = CommandId++; // Command ID
+		cl->buf[6] = ReadOneByte; // Command Opcode
+		cl->buf[7] = FAN_Mode; // Command data...
 
-		int res = hid_write(cl->handle, buf, 11);
+		int res = hid_write(cl->handle, cl->buf, 11);
 		if (res < 0) {
 			fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(cl->handle) );
 		}
@@ -82,7 +82,7 @@ int CorsairFan::ConnectedFans() {
 		if (res < 0) {
 			fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		}
-		fanMode = buf[4];
+		fanMode = cl->buf[4];
 
 		if(fanMode != 0x03){
 			fans++;
@@ -92,40 +92,39 @@ int CorsairFan::ConnectedFans() {
 	return fans;
 }
 
-void CorsairFan::ReadFanInfo(int fanIndex, CorsairFanInfo fan){
-	int i = 0, res = 0;
-	unsigned char buf[256];
+void CorsairFan::ReadFanInfo(int fanIndex, CorsairFanInfo *fan){
+	int res = 0;
 
 	if(i < 4){
-		asprintf(&fan.Name, "Fan %i\n", i + 1);
+		asprintf(&fan->Name, "Fan %i\n", fanIndex + 1);
 	}
 	else {
-		strcpy(fan.Name, "Pump\n");
+		strcpy(fan->Name, "Pump\n");
 	}
 
-	memset(buf,0x00,sizeof(buf));
+	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	buf[0] = 0x07; // Length
-	buf[1] = CommandId++; // Command ID
-	buf[2] = WriteOneByte; // Command Opcode
-	buf[3] = FAN_Select; // Command data...
-	buf[4] = fanIndex; // select fan
-	buf[5] = CommandId++; // Command ID
-	buf[6] = ReadOneByte; // Command Opcode
-	buf[7] = FAN_Mode; // Command data...
+	cl->buf[0] = 0x07; // Length
+	cl->buf[1] = CommandId++; // Command ID
+	cl->buf[2] = WriteOneByte; // Command Opcode
+	cl->buf[3] = FAN_Select; // Command data...
+	cl->buf[4] = fanIndex; // select fan
+	cl->buf[5] = CommandId++; // Command ID
+	cl->buf[6] = ReadOneByte; // Command Opcode
+	cl->buf[7] = FAN_Mode; // Command data...
 	
-	res = hid_write(cl->handle, buf, 11);
+	res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
 		fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(cl->handle) );
 	}
 
-	res = cl->hid_read_wrapper(cl->handle, buf);
+	res = cl->hid_read_wrapper(cl->handle, cl->buf);
 	if (res < 0) {
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 	}
-	fan.Mode = buf[4] & 0x0E;
+	fan->Mode = buf[4] & 0x0E;
 
-	memset(buf,0x00,sizeof(buf));
+	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan RPM
 	buf[0] = 0x07; // Length
 	buf[1] = CommandId++; // Command ID
@@ -136,17 +135,17 @@ void CorsairFan::ReadFanInfo(int fanIndex, CorsairFanInfo fan){
 	buf[6] = ReadTwoBytes; // Command Opcode
 	buf[7] = FAN_ReadRPM; // Command data...
 
-	res = hid_write(cl->handle, buf, 11);
+	res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
 		fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(cl->handle) );
 	}
 
-	res = cl->hid_read_wrapper(cl->handle, buf);
+	res = cl->hid_read_wrapper(cl->handle, cl->buf);
 	//All data is little-endian.
-	int rpm = buf[5] << 8;
-	rpm += buf[4];
+	int rpm = cl->buf[5] << 8;
+	rpm += cl->buf[4];
 
-	fan.RPM = rpm;
+	fan->RPM = rpm;
 }
 
 int CorsairFan::SetFansInfo(int fanIndex, CorsairFanInfo fanInfo){

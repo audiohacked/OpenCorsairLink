@@ -7,7 +7,6 @@
 
 class CorsairLink {
 	public:
-		//CorsairFan *fans;
 		CorsairLink();
 		~CorsairLink();
 		int Initialize();
@@ -22,13 +21,15 @@ class CorsairLink {
 
 		// HID Wrappers
 		int hid_read_wrapper(hid_device *handle, unsigned char *buf);
+
+		//public variables
 		hid_device *handle;
+		unsigned char buf[256];
+		unsigned int CommandId;
 
 	private:
 		int deviceId;
-		unsigned char buf[256];
 		struct hid_device_info;
-		unsigned int CommandId;
 		int max_ms_read_wait;
 		
 		void sleep(int ms);
