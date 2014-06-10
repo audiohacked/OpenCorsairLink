@@ -92,7 +92,7 @@ char* CorsairLink::_GetManufacturer()
 	char wstr[MAX_STR];
 	wstr[0] = 0x0000;
 
-	int res = hid_get_manufacturer_string(handle, wstr, MAX_STR);
+	int res = hid_get_manufacturer_string(handle, (wchar_t*)wstr, MAX_STR);
 	if (res < 0)
 		fprintf(stderr, "Unable to read manufacturer string\n");
 
@@ -106,7 +106,7 @@ char* CorsairLink::_GetProduct()
 	char wstr[MAX_STR];
 	wstr[0] = 0x0000;
 	
-	int res = hid_get_product_string(handle, wstr, MAX_STR);
+	int res = hid_get_product_string(handle, (wchar_t*)wstr, MAX_STR);
 	if (res < 0)
 		fprintf(stderr, "Unable to read product string\n");
 
