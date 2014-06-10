@@ -41,7 +41,7 @@ int CorsairLink::Initialize()
 		deviceId = this->GetDeviceId();
 		if ((deviceId != 0x3b) && (deviceId != 0x3c))
 		{
-			fprintf(stderr, "Device ID: %02hhx mismatch. Not Corsair H80i or H100i CPU Cooler\n", deviceId );
+			fprintf(stderr, "Device ID: %2x mismatch. Not Corsair H80i or H100i CPU Cooler\n", deviceId );
 			this->Close();
 			return 0;
 		}

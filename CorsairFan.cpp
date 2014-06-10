@@ -25,7 +25,7 @@ void CorsairFan::PrintInfo(CorsairFanInfo fan){
 }
 
 char* CorsairFan::GetFanModeString(int mode){
-	char* modeString = "";
+	char *modeString = NULL;
 
 	switch(mode){
 		case FixedPWM:
@@ -50,7 +50,7 @@ char* CorsairFan::GetFanModeString(int mode){
 			strcpy(modeString, "Custom");
 			break;
 		default:
-			snprintf(modeString, 8, "N/A (%2X)", mode );
+			snprintf(modeString, 8, "N/A (%02X)", mode );
 			break;
 	}
 
