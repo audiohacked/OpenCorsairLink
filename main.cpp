@@ -9,14 +9,13 @@
 
 using namespace std;
 
-static struct option long_options[] =
-	             {
-			{"help",  no_argument, 0, 'h'},
-			{"fan", required_argument, 0, 'f'},
-			{"mode", required_argument, 0, 'm'},
-			{"rpm",  required_argument, 0, 'r'},
-			{0, 0, 0, 0}
-	             };
+static struct option long_options[] = {
+	{"help",  no_argument, 0, 'h'},
+	{"fan", required_argument, 0, 'f'},
+	{"mode", required_argument, 0, 'm'},
+	{"rpm",  required_argument, 0, 'r'},
+	{0, 0, 0, 0}
+};
 
 int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fanRPM);
 
@@ -41,24 +40,24 @@ int main(int argc, char **argv) {
 				return 1;
 			}
 			else {
-				CorsairFanInfo fanInfo;
+				CorsairFan fanInfo;
 				if(fanMode != 0) {
-					std::cout << "Setting fan to mode " << CorsairFanInfo::GetFanModeString(fanMode) << endl;
+					fprintf(stdout, "Setting fan to mode %s\n", CorsairFanInfo::GetFanModeString(fanMode));
 					fanInfo.Mode = fanMode;
 				}
 				if(fanRPM != 0) {
-					std::cout << "Setting fan RPM to " << fanRPM << endl;
+					fprintf(stdout, "Setting fan RPM to %i\n", fanRPM);
 					fanInfo.RPM = fanRPM;
 				}
 				cl->SetFansInfo(fanNumber - 1, fanInfo);
 			}
 		} else {
-			std::cout << "No mode or fan RPM specified for the fan." << endl;
+			fprintf(stdout, "No mode or fan RPM specified for the fan.\n");
 			return 1;
 		}
 	}
 	else if(fanMode != 0 || fanRPM != 0) {
-			std::cerr<< "Cannot set fan to a specific mode or fixed RPM without specifying the fan number" << endl;
+			fprintf(stderr, "Cannot set fan to a specific mode or fixed RPM without specifying the fan number\n");
 			return 1;
 	}
 	else {
@@ -78,19 +77,21 @@ int main(int argc, char **argv) {
 } 
 
 void printHelp() {
-	std::cout << "OpenCorsairLink [options]" << endl;
-	std::cout << "Options:" << endl;
-	std::cout << "\t-f, --fan <fan number> Selects a fan to setup. Accepted values are 1, 2, 3 or 4. 5 is H100i Pump." << endl;
-	std::cout << "\t-m, --mode <mode> Sets the mode for the selected fan" << endl;
-	std::cout << "\t                  Modes:" << endl;
-	std::cout << "\t                     4 - Fixed RPM (requires to specify the RPM)" << endl;
-	std::cout << "\t                     6 - Default" << endl;
-	std::cout << "\t                     8 - Quiet" << endl;
-	std::cout << "\t                    10 - Balanced" << endl;
-	std::cout << "\t                    12 - Performance" << endl;
-	std::cout << "\t-r, --rpm <fan RPM> The desired RPM for the selected fan. NOTE: it works only when fan mode is set to Fixed RPM" << endl;
-	std::cout << "\t-h, --help Prints this message" << endl;
-	std::cout << endl << "Not specifying any option will display information about the fans and pump" << endl << endl;
+	fprintf(stdout, "OpenCorsairLink [options]\n");
+	fprintf(stdout, "Options:\n");
+	fprintf(stdout, "\t-f, --fan <fan number> Selects a fan to setup.\n");
+	fprintf(stdout, "\t\tAccepted values are 1, 2, 3 or 4.\n");
+	fprintf(stdout, "\t\t5 is H100i Pump.\n");
+	fprintf(stdout, "\t-m, --mode <mode> Sets the mode for the selected fan");
+	fprintf(stdout, "\t\tModes:");
+	fprintf(stdout, "\t\t\t 4 - Fixed RPM (requires to specify the RPM)\n");
+	fprintf(stdout, "\t\t\t 6 - Default\n");
+	fprintf(stdout, "\t\t\t 8 - Quiet\n");
+	fprintf(stdout, "\t\t\t10 - Balanced\n");
+	fprintf(stdout, "\t\t\t12 - Performance\n");
+	fprintf(stdout, "\t-r, --rpm <fan RPM> The desired RPM for the selected fan. NOTE: it works only when fan mode is set to Fixed RPM\n");
+	fprintf(stdout, "\t-h, --help Prints this message\n");
+	fprintf(stdout, "\nNot specifying any option will display information about the fans and pump\n\n");
 }
 
 int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fanRPM) {
@@ -99,7 +100,6 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 		int option_index = 0;
 
 		c = getopt_long (argc, argv, "f:m:r:h", long_options, &option_index);
-		//std::cout << c;
 		if (c == -1 || returnCode != 0)
 			break;
 		switch (c) {
@@ -107,7 +107,7 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 			errno = 0;
 			fanNumber = strtol(optarg, NULL, 10);
 			if(fanNumber < 1 || fanNumber > 5){
-				std::cerr << "Fan number is invalid. Accepted values are 1, 2, 3, 4 or 5." << endl;
+				fprintf(stderr, "Fan number is invalid. Accepted values are 1, 2, 3 or 4.");
 				returnCode = 1;
 			}
 			break;
@@ -118,12 +118,12 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 			if(fanMode != Performance && fanMode != FixedRPM &&
 				fanMode != Default && fanMode != Balanced && fanMode != Quiet){
 
-				std::cerr << "Fan mode is not allowed. Accepted values are:" << endl
-					<< "\t 4 - Fixed RPM"<< endl
-					<< "\t 6 - Default" << endl
-					<< "\t 8 - Quiet" << endl
-					<< "\t10 - Balanced" << endl
-					<< "\t12 - Performance" << endl;
+				fprintf(stderr, "Fan mode is not allowed. Accepted values are:\n");
+				fprintf(stderr, "\t 4 - Fixed RPM\n");
+				fprintf(stderr, "\t 6 - Default\n");
+				fprintf(stderr, "\t 8 - Quiet\n");
+				fprintf(stderr, "\t10 - Balanced\n");
+				fprintf(stderr, "\t12 - Performance\n");
 				returnCode = 1;
 			}
 			break;
@@ -132,7 +132,7 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 			errno = 0;
 			fanRPM = strtol(optarg, NULL, 10);
 			if(fanRPM < 0){
-				std::cerr << "Fan RPM cannot be a negative value." << endl;
+				fprintf(stderr, "Fan RPM cannot be a negative value.\n");
 				returnCode = 1;
 			}
 			break;

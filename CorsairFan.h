@@ -4,20 +4,13 @@
 
 using std::endl;
 
-enum CorsairFanModes {
-	FixedPWM = 0x02,
-	FixedRPM = 0x04,
-	Default = 0x06,
-	Quiet = 0x08,
-	Balanced = 0x0A,
-	Performance = 0x0C,
-	Custom = 0x0E
-};
-
-class CorsairFanInfo {
+class CorsairFan {
 	public:
 		CorsairFanInfo();
 		~CorsairFanInfo();
+		int ConnectedFans();
+		void ReadFansInfo();
+		int SetFansInfo(int fanIndex, CorsairFanInfo fanInfo);
 		std::string Name;
 		int RPM;
 		int Mode;

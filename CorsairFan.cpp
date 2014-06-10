@@ -1,11 +1,11 @@
 #include "CorsairFanInfo.h"
 
-CorsairFanInfo::CorsairFanInfo(){
+CorsairFan::CorsairFan(){
 	this->RPM = 0;
 	this->Mode = 0x03;
 }
 
-void CorsairFanInfo::PrintInfo(){
+void CorsairFan::PrintInfo(){
 	std::cout << this->Name << ":" << endl;
 	std::ios_base::fmtflags oldFlags = std::cout.flags();
 	std::cout.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
@@ -14,7 +14,7 @@ void CorsairFanInfo::PrintInfo(){
 	std::cout << "\tRPM: " << this->RPM <<endl;
 }
 
-std::string CorsairFanInfo::GetFanModeString(int mode){
+std::string CorsairFan::GetFanModeString(int mode){
 	std::string modeString = "";
 	
 	switch(mode){
@@ -49,7 +49,7 @@ std::string CorsairFanInfo::GetFanModeString(int mode){
 	return modeString;
 }
 
-int CorsairLink::ConnectedFans() {
+int CorsairFan::ConnectedFans() {
 	int fans = 0, i = 0, fanMode = 0;
 	unsigned char buf[256];
 	
@@ -84,7 +84,7 @@ int CorsairLink::ConnectedFans() {
 	return fans;
 }
 
-void CorsairLink::ReadFansInfo(){
+void CorsairFan::ReadFansInfo(){
 	int i = 0, fanMode = 0, res = 0;
 	unsigned char buf[256];
 	std::ostringstream sstream;
@@ -149,7 +149,7 @@ void CorsairLink::ReadFansInfo(){
 	}
 }
 
-int CorsairLink::SetFansInfo(int fanIndex, CorsairFanInfo fanInfo){
+int CorsairFan::SetFansInfo(int fanIndex, CorsairFanInfo fanInfo){
 	unsigned char buf[256];
 	memset(buf,0x00,sizeof(buf));
 
@@ -230,6 +230,6 @@ int CorsairLink::SetFansInfo(int fanIndex, CorsairFanInfo fanInfo){
 	return 0;
 }
 
-CorsairFanInfo::~CorsairFanInfo(){
+CorsairFan::~CorsairFan(){
 	
 }
