@@ -1,4 +1,4 @@
-CC = gcc
+CC = g++
 CFLAGS = -Wall -g
 LDFLAGS = -lhidapi-hidraw
 

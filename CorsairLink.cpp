@@ -65,12 +65,12 @@ int CorsairLink::GetDeviceId(void)
 
 	int res = hid_write(handle, buf, 17);
 	if (res < 0) {
-		fprintf(stderr, "Error: Unable to write() %s\n", hid_error(handle) );
+		fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(handle) );
 	}
 
 	hid_read_wrapper(handle, buf);
 	if (res < 0) {
-		fprintf(stderr, "Error: Unable to read() %s\n", hid_error(handle) );
+		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(handle) );
 	}
 
 	return buf[2];

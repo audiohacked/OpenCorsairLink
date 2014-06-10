@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
 		int i = 0;
 
 		for(i = 0 ; i< 5; i++) {
-			fans->ReadFansInfo(fans->fanInfo);
+			fans->ReadFansInfo(fans->fanInfo[i]);
 			fans->PrintInfo(fans->fanInfo[i]);
 		}
 	}

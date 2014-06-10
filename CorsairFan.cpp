@@ -25,7 +25,7 @@ void CorsairFan::PrintInfo(CorsairFanInfo fan){
 }
 
 char* CorsairFan::GetFanModeString(int mode){
-	char* modeString;
+	char* modeString = "";
 
 	switch(mode){
 		case FixedPWM:
@@ -93,7 +93,7 @@ int CorsairFan::ConnectedFans() {
 }
 
 void CorsairFan::ReadFansInfo(CorsairFanInfo fan){
-	int i = 0, fanMode = 0, res = 0;
+	int i = 0, res = 0;
 	unsigned char buf[256];
 	for (i = 0; i < 5; i++) {
 		if(i < 4){
