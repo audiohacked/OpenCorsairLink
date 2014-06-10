@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
 			else {
 				CorsairFan fanInfo;
 				if(fanMode != 0) {
-					fprintf(stdout, "Setting fan to mode %s\n", CorsairFanInfo::GetFanModeString(fanMode));
+					fprintf(stdout, "Setting fan to mode %s\n", CorsairFan::GetFanModeString(fanMode));
 					fanInfo.Mode = fanMode;
 				}
 				if(fanRPM != 0) {

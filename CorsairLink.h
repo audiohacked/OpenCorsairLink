@@ -13,7 +13,7 @@ using std::endl;
 
 class CorsairLink {
 	public:
-		CorsairFanInfo *fans;
+		CorsairFan *fans;
 		CorsairLink();
 		~CorsairLink();
 		int Initialize();

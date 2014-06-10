@@ -6,8 +6,8 @@ using std::endl;
 
 class CorsairFan {
 	public:
-		CorsairFanInfo();
-		~CorsairFanInfo();
+		CorsairFan();
+		~CorsairFan();
 		int ConnectedFans();
 		void ReadFansInfo();
 		int SetFansInfo(int fanIndex, CorsairFanInfo fanInfo);
