@@ -149,39 +149,38 @@ void CorsairFan::ReadFanInfo(int fanIndex, CorsairFanInfo *fan){
 }
 
 int CorsairFan::SetFansInfo(int fanIndex, CorsairFanInfo fanInfo){
-	unsigned char buf[256];
-	memset(buf,0x00,sizeof(buf));
+	memset(cl->buf,0x00,sizeof(cl->buf));
 
 	if(fanInfo.Mode == FixedPWM || fanInfo.Mode == FixedRPM
 		|| fanInfo.Mode == Default || fanInfo.Mode == Quiet
 		|| fanInfo.Mode == Balanced	|| fanInfo.Mode == Performance
 		|| fanInfo.Mode == Custom) {
 
-		buf[0] = 0x0b; // Length
-		buf[1] = CommandId++; // Command ID
-		buf[2] = WriteOneByte; // Command Opcode
-		buf[3] = FAN_Select; // Command data...
-		buf[4] = fanIndex; // select fan
-		buf[5] = CommandId++; // Command ID
-		buf[6] = WriteOneByte; // Command Opcode
-		buf[7] = FAN_Mode; // Command data...
-		buf[8] = fanInfo.Mode;
-		buf[9] = CommandId++; // Command ID
-		buf[10] = ReadOneByte; // Command Opcode
-		buf[11] = FAN_Mode; // Command data...
+		cl->buf[0] = 0x0b; // Length
+		cl->buf[1] = CommandId++; // Command ID
+		cl->buf[2] = WriteOneByte; // Command Opcode
+		cl->buf[3] = FAN_Select; // Command data...
+		cl->buf[4] = fanIndex; // select fan
+		cl->buf[5] = CommandId++; // Command ID
+		cl->buf[6] = WriteOneByte; // Command Opcode
+		cl->buf[7] = FAN_Mode; // Command data...
+		cl->buf[8] = fanInfo.Mode;
+		cl->buf[9] = CommandId++; // Command ID
+		cl->buf[10] = ReadOneByte; // Command Opcode
+		cl->buf[11] = FAN_Mode; // Command data...
 
-		int res = hid_write(cl->handle, buf, 17);
+		int res = hid_write(cl->handle, cl->buf, 17);
 		if (res < 0) {
 			fprintf(stderr, "%s", (char*)hid_error(cl->handle) );
 			return 1;
 		}
 
-		res = cl->hid_read_wrapper(cl->handle, buf);
+		res = cl->hid_read_wrapper(cl->handle, cl->buf);
 		if (res < 0) {
 			fprintf(stderr, "%s", (char*)hid_error(cl->handle) );
 			return 1;
 		}
-		if(fanInfo.Mode != buf[6]){
+		if(fanInfo.Mode != cl->buf[6]){
 			fprintf(stderr, "Cannot set fan mode.");
 			return 1;
 		}
@@ -190,36 +189,36 @@ int CorsairFan::SetFansInfo(int fanIndex, CorsairFanInfo fanInfo){
 		return 1;
 	}
 	if(fanInfo.RPM != 0) {
-		memset(buf,0x00,sizeof(buf));
+		memset(cl->buf,0x00,sizeof(cl->buf));
 
-		buf[0] = 0x0b; // Length
-		buf[1] = CommandId++; // Command ID
-		buf[2] = WriteOneByte; // Command Opcode
-		buf[3] = FAN_Select; // Command data...
-		buf[4] = fanIndex; // select fan
-		buf[5] = CommandId++; // Command ID
-		buf[6] = WriteTwoBytes; // Command Opcode
-		buf[7] = FAN_FixedRPM; // Command data...
-		buf[8] = fanInfo.RPM & 0x00FF;
-		buf[9] = fanInfo.RPM >> 8;
-		buf[10] = CommandId++; // Command ID
-		buf[11] = ReadTwoBytes; // Command Opcode
-		buf[12] = FAN_ReadRPM; // Command data...
+		cl->buf[0] = 0x0b; // Length
+		cl->buf[1] = CommandId++; // Command ID
+		cl->buf[2] = WriteOneByte; // Command Opcode
+		cl->buf[3] = FAN_Select; // Command data...
+		cl->buf[4] = fanIndex; // select fan
+		cl->buf[5] = CommandId++; // Command ID
+		cl->buf[6] = WriteTwoBytes; // Command Opcode
+		cl->buf[7] = FAN_FixedRPM; // Command data...
+		cl->buf[8] = fanInfo.RPM & 0x00FF;
+		cl->buf[9] = fanInfo.RPM >> 8;
+		cl->buf[10] = CommandId++; // Command ID
+		cl->buf[11] = ReadTwoBytes; // Command Opcode
+		cl->buf[12] = FAN_ReadRPM; // Command data...
 
-		int res = hid_write(cl->handle, buf, 18);
+		int res = hid_write(cl->handle, cl->buf, 18);
 		if (res < 0) {
 			fprintf(stderr, "%s", (char*)hid_error(cl->handle) );
 			return 1;
 		}
 
-		res = cl->hid_read_wrapper(cl->handle, buf);
+		res = cl->hid_read_wrapper(cl->handle, cl->buf);
 		if (res < 0) {
 			fprintf(stderr, "%s", (char*)hid_error(cl->handle) );
 			return 1;
 		}
 		//All data is little-endian.
-		int rpm = buf[5] << 8;
-		rpm += buf[4];
+		int rpm = cl->buf[5] << 8;
+		rpm += cl->buf[4];
 		if(fanInfo.RPM != rpm){
 			fprintf(stderr, "Cannot set fan RPM.");
 			return 1;
