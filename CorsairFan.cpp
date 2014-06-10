@@ -1,8 +1,8 @@
-#include "CorsairFanInfo.h"
+#include "CorsairFan.h"
 
 CorsairFan::CorsairFan(){
-	this->RPM = 0;
-	this->Mode = 0x03;
+	//this->RPM = 0;
+	//this->Mode = 0x03;
 }
 
 void CorsairFan::PrintInfo(CorsairFanInfo fan){
@@ -14,7 +14,7 @@ void CorsairFan::PrintInfo(CorsairFanInfo fan){
 	fprintf(stdout, "\tRPM: %i", fan->RPM );
 }
 
-std::string CorsairFan::GetFanModeString(int mode){
+char* CorsairFan::GetFanModeString(int mode){
 	char* modeString = "";
 
 	switch(mode){
@@ -40,9 +40,7 @@ std::string CorsairFan::GetFanModeString(int mode){
 			modeString = "Custom";
 			break;
 		default:
-			std::ostringstream sstream;
-			sstream << "N/A (" << std::hex << mode << ")";
-			modeString = sstream.str();
+			vsprintf(modeString, "N/A (%X)", mode );
 			break;
 	}
 
