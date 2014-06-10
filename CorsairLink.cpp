@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "CorsairLink.h"
 
@@ -69,7 +70,8 @@ int CorsairLink::GetDeviceId(void)
 	return buf[2];
 }
 
-int CorsairLink::GetFirmwareVersion()
+/*
+* int CorsairLink::GetFirmwareVersion()
 {
 
 }
@@ -83,7 +85,7 @@ char* CorsairLink::DeviceStatus()
 {
 
 }
-
+*/
 char* CorsairLink::_GetManufacturer()
 {
 	char *str;

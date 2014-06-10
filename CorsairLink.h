@@ -18,10 +18,14 @@ class CorsairLink {
 		~CorsairLink();
 		int Initialize();
 		void Close();
+
+		int GetDeviceId();
+
 		char* _GetManufacturer();
 		char* _GetProduct();
 		
 	private:
+		int deviceId;
 		hid_device *handle;
 		unsigned char buf[256];
 		struct hid_device_info;
