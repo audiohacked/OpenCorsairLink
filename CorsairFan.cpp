@@ -96,10 +96,10 @@ void CorsairFan::ReadFanInfo(int fanIndex, CorsairFanInfo *fan){
 	int res = 0;
 
 	if(fanIndex < 4){
-		asprintf(&fan->Name, "Fan %i\n", fanIndex + 1);
+		asprintf(&fan->Name, "Fan %i", fanIndex + 1);
 	}
 	else {
-		asprintf(&fan->Name, "Pump\n");
+		asprintf(&fan->Name, "Pump");
 	}
 
 	memset(cl->buf,0x00,sizeof(cl->buf));
