@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
 
 		cl->fans->ReadFansInfo();
 		for(i = 0 ; i< 5; i++) {
-			cl->fans->fanInfo[i].PrintInfo();
+			cl->fans->PrintInfo(cl->fans->fanInfo[i]);
 		}
 	}
 

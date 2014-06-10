@@ -5,13 +5,13 @@ CorsairFan::CorsairFan(){
 	this->Mode = 0x03;
 }
 
-void CorsairFan::PrintInfo(){
-	std::cout << this->Name << ":" << endl;
-	std::ios_base::fmtflags oldFlags = std::cout.flags();
-	std::cout.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
-	std::cout << "\tMode: " << CorsairFanInfo::GetFanModeString(this->Mode) << endl;
-	std::cout.flags(oldFlags);
-	std::cout << "\tRPM: " << this->RPM <<endl;
+void CorsairFan::PrintInfo(CorsairFanInfo fan){
+	fprintf(stdout, "%s:\n", fan->Name );
+	//std::ios_base::fmtflags oldFlags = std::cout.flags();
+	//std::cout.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
+	fprintf(stdout, "\tMode: %s\n", CorsairFanInfo::GetFanModeString(fan->Mode) );
+	//std::cout.flags(oldFlags);
+	fprintf(stdout, "\tRPM: %i", fan->RPM );
 }
 
 std::string CorsairFan::GetFanModeString(int mode){
