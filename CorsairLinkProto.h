@@ -1,3 +1,5 @@
+#ifndef _CORSAIRLINKPROTO_H
+#define _CORSAIRLINKPROTO_H
 /*
  * http://forum.corsair.com/v3/showthread.php?t=120092&page=3
  * */
@@ -189,3 +191,5 @@ enum CorsairFanModes {
 	Custom = 0x0E
 };
 
+//extern CorsairLink *cl;
+#endif

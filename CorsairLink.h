@@ -1,37 +1,38 @@
-#include <iostream>
-#include <string.h>
-#include <unistd.h>
-#include <vector>
-#include <sstream>
-#include <hidapi/hidapi.h>
-#include "CorsairLinkProto.h"
-#include "CorsairFan.h"
+#ifndef _CORSAIRLINK_H
+#define _CORSAIRLINK_H
 
-using std::endl;
+#include <hidapi/hidapi.h>
 
 #define MAX_STR 255
 
 class CorsairLink {
 	public:
-		CorsairFan *fans;
+		//CorsairFan *fans;
 		CorsairLink();
 		~CorsairLink();
 		int Initialize();
 		void Close();
 
+		// Protocol Functions
 		int GetDeviceId();
 
+		// USB HID Functions
 		char* _GetManufacturer();
 		char* _GetProduct();
-		
+
+		// HID Wrappers
+		int hid_read_wrapper(hid_device *handle, unsigned char *buf);
+
 	private:
 		int deviceId;
-		hid_device *handle;
 		unsigned char buf[256];
 		struct hid_device_info;
 		unsigned int CommandId;
 		int max_ms_read_wait;
 		
-		int hid_read_wrapper(hid_device *handle, unsigned char *buf);
 		void sleep(int ms);
 };
+
+hid_device *handle;
+
+#endif

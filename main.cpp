@@ -5,7 +5,13 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <getopt.h>
+
+#include "CorsairLinkProto.h"
 #include "CorsairLink.h"
+#include "CorsairFan.h"
+
+CorsairLink *cl = new CorsairLink();
+CorsairFan *fans = new CorsairFan();
 
 static struct option long_options[] = {
 	{"help",  no_argument, 0, 'h'},
@@ -24,7 +30,6 @@ int main(int argc, char **argv) {
 	{
 		return 1;
 	}
-	CorsairLink *cl = new CorsairLink();
 
 	if(!cl->Initialize()) {
 		fprintf(stdout, "Cannot initialize link.\n");
@@ -41,13 +46,13 @@ int main(int argc, char **argv) {
 			else {
 				if(fanMode != 0) {
 					fprintf(stdout, "Setting fan to mode %s\n", CorsairFan::GetFanModeString(fanMode));
-					cl->fans->fanInfo[fanNumber].Mode = fanMode;
+					fans->fanInfo[fanNumber].Mode = fanMode;
 				}
 				if(fanRPM != 0) {
 					fprintf(stdout, "Setting fan RPM to %i\n", fanRPM);
-					cl->fans->fanInfo[fanNumber].RPM = fanRPM;
+					fans->fanInfo[fanNumber].RPM = fanRPM;
 				}
-				cl->fans->SetFansInfo(fanNumber - 1, cl->fans->fanInfo[fanNumber-1]);
+				fans->SetFansInfo(fanNumber - 1, fans->fanInfo[fanNumber-1]);
 			}
 		} else {
 			fprintf(stdout, "No mode or fan RPM specified for the fan.\n");
@@ -62,9 +67,9 @@ int main(int argc, char **argv) {
 	else {
 		int i = 0;
 
-		cl->fans->ReadFansInfo();
+		fans->ReadFansInfo();
 		for(i = 0 ; i< 5; i++) {
-			cl->fans->PrintInfo(cl->fans->fanInfo[i]);
+			fans->PrintInfo(fans->fanInfo[i]);
 		}
 	}
 

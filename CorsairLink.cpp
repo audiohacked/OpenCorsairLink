@@ -1,12 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <string.h>
+#include <unistd.h>
+
+#include "CorsairLinkProto.h"
 #include "CorsairLink.h"
+#include "CorsairFan.h"
+
 
 CorsairLink::CorsairLink() {
 	handle = NULL;
 	CommandId = 0x81;
 	max_ms_read_wait = 5000;
-	fans = new CorsairFan;
 }
 
 int CorsairLink::Initialize()

@@ -1,5 +1,9 @@
+#ifndef _CORSAIRFAN_H
+#define _CORSAIRFAN_H
+
 class CorsairFan {
 	public:
+		unsigned int CommandId;
 		CorsairFan();
 		~CorsairFan();
 		struct CorsairFanInfo {
@@ -14,3 +18,5 @@ class CorsairFan {
 		void PrintInfo(CorsairFanInfo fan);
 		static char* GetFanModeString(int mode);
 };
+
+#endif
