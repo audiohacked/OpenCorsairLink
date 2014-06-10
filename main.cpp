@@ -85,8 +85,8 @@ void printHelp() {
 	fprintf(stdout, "\t-f, --fan <fan number> Selects a fan to setup.\n");
 	fprintf(stdout, "\t\tAccepted values are 1, 2, 3 or 4.\n");
 	fprintf(stdout, "\t\t5 is H100i Pump.\n");
-	fprintf(stdout, "\t-m, --mode <mode> Sets the mode for the selected fan");
-	fprintf(stdout, "\t\tModes:");
+	fprintf(stdout, "\t-m, --mode <mode> Sets the mode for the selected fan\n");
+	fprintf(stdout, "\t\tModes:\n");
 	fprintf(stdout, "\t\t\t 4 - Fixed RPM (requires to specify the RPM)\n");
 	fprintf(stdout, "\t\t\t 6 - Default\n");
 	fprintf(stdout, "\t\t\t 8 - Quiet\n");
