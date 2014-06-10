@@ -22,6 +22,7 @@ class CorsairLink {
 
 		// HID Wrappers
 		int hid_read_wrapper(hid_device *handle, unsigned char *buf);
+		hid_device *handle;
 
 	private:
 		int deviceId;
@@ -33,6 +34,5 @@ class CorsairLink {
 		void sleep(int ms);
 };
 
-hid_device *handle;
 
 #endif
