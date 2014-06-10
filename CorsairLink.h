@@ -4,7 +4,8 @@
 #include <vector>
 #include <sstream>
 #include <hidapi/hidapi.h>
-#include "CorsairFanInfo.h"
+#include "CorsairLinkProto.h"
+#include "CorsairFan.h"
 
 using std::endl;
 
