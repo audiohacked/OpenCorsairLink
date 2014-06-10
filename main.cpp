@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
 					fprintf(stdout, "Setting fan RPM to %i\n", fanRPM);
 					cl->fans->fanInfo[fanNumber].RPM = fanRPM;
 				}
-				cl->fans->SetFansInfo(fanNumber - 1, cl->fans->fanInfo[i]);
+				cl->fans->SetFansInfo(fanNumber - 1, cl->fans->fanInfo[fanNumber-1]);
 			}
 		} else {
 			fprintf(stdout, "No mode or fan RPM specified for the fan.\n");
