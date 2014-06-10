@@ -50,7 +50,7 @@ char* CorsairFan::GetFanModeString(int mode){
 			strcpy(modeString, "Custom");
 			break;
 		default:
-			snprintf(modeString, 8, "N/A (%02X)", mode );
+			asprintf(&modeString, "N/A (%02X)", mode );
 			break;
 	}
 
@@ -97,10 +97,10 @@ void CorsairFan::ReadFansInfo(CorsairFanInfo fan){
 	unsigned char buf[256];
 	for (i = 0; i < 5; i++) {
 		if(i < 4){
-			fprintf(stdout, "Fan %i\n", i + 1);
+			asprintf(&fan.Name, "Fan %i\n", i + 1);
 		}
 		else {
-			fprintf(stdout, "Pump\n");
+			strcpy(fan.Name, "Pump\n");
 		}
 
 		memset(buf,0x00,sizeof(buf));
