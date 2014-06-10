@@ -73,14 +73,14 @@ int CorsairFan::ConnectedFans() {
 		buf[6] = ReadOneByte; // Command Opcode
 		buf[7] = FAN_Mode; // Command data...
 
-		int res = hid_write(handle, buf, 11);
+		int res = hid_write(cl->handle, buf, 11);
 		if (res < 0) {
-			fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(handle) );
+			fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(cl->handle) );
 		}
 
-		res = cl->hid_read_wrapper(handle, buf);
+		res = cl->hid_read_wrapper(cl->handle, buf);
 		if (res < 0) {
-			fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(handle) );
+			fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		}
 		fanMode = buf[4];
 
@@ -114,14 +114,14 @@ void CorsairFan::ReadFansInfo(){
 		buf[6] = ReadOneByte; // Command Opcode
 		buf[7] = FAN_Mode; // Command data...
 		
-		res = hid_write(handle, buf, 11);
+		res = hid_write(cl->handle, buf, 11);
 		if (res < 0) {
-			fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(handle) );
+			fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(cl->handle) );
 		}
 
-		res = cl->hid_read_wrapper(handle, buf);
+		res = cl->hid_read_wrapper(cl->handle, buf);
 		if (res < 0) {
-			fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(handle) );
+			fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		}
 		fanMode = buf[4] & 0x0E;
 
@@ -136,12 +136,12 @@ void CorsairFan::ReadFansInfo(){
 		buf[6] = ReadTwoBytes; // Command Opcode
 		buf[7] = FAN_ReadRPM; // Command data...
 
-		res = hid_write(handle, buf, 11);
+		res = hid_write(cl->handle, buf, 11);
 		if (res < 0) {
-			fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(handle) );
+			fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(cl->handle) );
 		}
 
-		res = cl->hid_read_wrapper(handle, buf);
+		res = cl->hid_read_wrapper(cl->handle, buf);
 		//All data is little-endian.
 		int rpm = buf[5] << 8;
 		rpm += buf[4];
@@ -170,15 +170,15 @@ int CorsairFan::SetFansInfo(int fanIndex, CorsairFanInfo fanInfo){
 		buf[10] = ReadOneByte; // Command Opcode
 		buf[11] = FAN_Mode; // Command data...
 
-		int res = hid_write(handle, buf, 17);
+		int res = hid_write(cl->handle, buf, 17);
 		if (res < 0) {
-			fprintf(stderr, "%s", (char*)hid_error(handle) );
+			fprintf(stderr, "%s", (char*)hid_error(cl->handle) );
 			return 1;
 		}
 
-		res = cl->hid_read_wrapper(handle, buf);
+		res = cl->hid_read_wrapper(cl->handle, buf);
 		if (res < 0) {
-			fprintf(stderr, "%s", (char*)hid_error(handle) );
+			fprintf(stderr, "%s", (char*)hid_error(cl->handle) );
 			return 1;
 		}
 		if(fanInfo.Mode != buf[6]){
@@ -206,15 +206,15 @@ int CorsairFan::SetFansInfo(int fanIndex, CorsairFanInfo fanInfo){
 		buf[11] = ReadTwoBytes; // Command Opcode
 		buf[12] = FAN_ReadRPM; // Command data...
 
-		int res = hid_write(handle, buf, 18);
+		int res = hid_write(cl->handle, buf, 18);
 		if (res < 0) {
-			fprintf(stderr, "%s", (char*)hid_error(handle) );
+			fprintf(stderr, "%s", (char*)hid_error(cl->handle) );
 			return 1;
 		}
 
-		res = cl->hid_read_wrapper(handle, buf);
+		res = cl->hid_read_wrapper(cl->handle, buf);
 		if (res < 0) {
-			fprintf(stderr, "%s", (char*)hid_error(handle) );
+			fprintf(stderr, "%s", (char*)hid_error(cl->handle) );
 			return 1;
 		}
 		//All data is little-endian.
