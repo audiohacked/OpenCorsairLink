@@ -8,89 +8,106 @@ CorsairLink::CorsairLink() {
 	fans = new CorsairFanInfo[5];
 }
 
-int CorsairLink::Initialize() {
-	if(handle == NULL){
+int CorsairLink::Initialize()
+{
+	if(handle == NULL)
+	{
 		if (hid_init())
 			return 0;
-			
+
 		// Set up the command buffer.
-		unsigned char buf[256];
-		memset(buf,0x00,sizeof(buf));
-		buf[0] = 0x01;
-		buf[1] = 0x81;
-		
+		//memset(buf,0x00,sizeof(buf));
+		//buf[0] = 0x01;
+		//buf[1] = 0x81;
+
 		// Open the device using the VID, PID,
 		// and optionally the Serial number.
 		// open Corsair H80i or H100i cooler 
 		handle = hid_open(0x1b1c, 0x0c04, NULL);
 		if (!handle) {
-			std::cerr << "Error: Unable to open Corsair H80i or H100i CPU Cooler\n";
+			fprintf(stderr, "Error: Unable to open Corsair H80i or H100i CPU Cooler\n");
 			return 0;
 		}
 		hid_set_nonblocking(handle, 1);
-		
-		memset(buf,0,sizeof(buf));
 
-		// Read Device ID: 0x3b = H80i. 0x3c = H100i
-		buf[0] = 0x03; // Length
-		buf[1] = this->CommandId++; // Command ID
-		buf[2] = ReadOneByte; // Command Opcode
-		buf[3] = DeviceID; // Command data...
-		buf[4] = 0x00;
-		
-		int res = hid_write(handle, buf, 17);
-		if (res < 0) {
-			std::cerr << "Error: Unable to write() " << hid_error(handle) << endl;
-		}
-
-		hid_read_wrapper(handle, buf);
-		if (res < 0) {
-			std::cerr << "Error: Unable to read() " << hid_error(handle) << endl;
-		}
-
-		int deviceId = buf[2];
-		
+		deviceId = this->GetDeviceId();
 		if ((deviceId != 0x3b) && (deviceId != 0x3c)) {
-			std::cerr <<  "Device ID: %02hhx mismatch. Not Corsair H80i or H100i CPU Cooler" << buf[2] << endl;
+			fprintf(stderr, "Device ID: %02hhx mismatch. Not Corsair H80i or H100i CPU Cooler\n", deviceId );
 			this->Close();
 			return 0;
 		}
 	}
-	else {
-		std::cerr << "Cannot initialize twice" << endl;
+	else
+	{
+		fprintf(stderr, "Cannot initialize twice\n" );
 		return 0;
 	}
 	return 1;
 }
 
-void CorsairLink::Close() {
-	if(handle != NULL){	
-		hid_close(handle);
-		hid_exit();
-		handle = NULL;
+int CorsairLink::GetDeviceId(void)
+{
+	memset(buf,0,sizeof(buf));
+
+	// Read Device ID: 0x3b = H80i. 0x3c = H100i
+	buf[0] = 0x03; // Length
+	buf[1] = this->CommandId++; // Command ID
+	buf[2] = ReadOneByte; // Command Opcode
+	buf[3] = DeviceID; // Command data...
+	buf[4] = 0x00;
+
+	int res = hid_write(handle, buf, 17);
+	if (res < 0) {
+		fprintf(stderr, "Error: Unable to write() %s\n", hid_error(handle) );
 	}
+
+	hid_read_wrapper(handle, buf);
+	if (res < 0) {
+		fprintf(stderr, "Error: Unable to read() %s\n", hid_error(handle) );
+	}
+
+	return buf[2];
 }
 
-std::wstring CorsairLink::GetManufacturer(){
-	std::wstring str;
-	wchar_t wstr[MAX_STR];
+int CorsairLink::GetFirmwareVersion()
+{
+
+}
+
+char* CorsairLink::GetProductName()
+{
+
+}
+
+char* CorsairLink::DeviceStatus()
+{
+
+}
+
+char* CorsairLink::_GetManufacturer()
+{
+	char *str;
+	char wstr[MAX_STR];
 	wstr[0] = 0x0000;
+
 	int res = hid_get_manufacturer_string(handle, wstr, MAX_STR);
-	
 	if (res < 0)
-		std::cerr << "Unable to read manufacturer string\n";
+		fprintf(stderr, "Unable to read manufacturer string\n");
+
 	str = wstr;
 	return str;
 }
 
-std::wstring CorsairLink::GetProduct(){
-	std::wstring str;
-	wchar_t wstr[MAX_STR];
+char* CorsairLink::_GetProduct()
+{
+	char* str;
+	char wstr[MAX_STR];
 	wstr[0] = 0x0000;
 	
 	int res = hid_get_product_string(handle, wstr, MAX_STR);
 	if (res < 0)
-		std::cerr << "Unable to read product string\n";
+		fprintf(stderr, "Unable to read product string\n");
+
 	str = wstr;
 	return str;
 }
@@ -102,21 +119,24 @@ int CorsairLink::hid_read_wrapper (hid_device *handle, unsigned char *buf)
 	// This loop demonstrates the non-blocking nature of hid_read().
 	int res = 0;
 	int sleepTotal = 0;
-	while (res == 0 && sleepTotal < this->max_ms_read_wait) {
+	while (res == 0 && sleepTotal < this->max_ms_read_wait)
+	{
 		res = hid_read(handle, buf, sizeof(buf));
 		if (res < 0)
-			std::cerr << "Unable to read()\n";
+			fprintf(stderr, "Unable to read()\n");
 		
 		this->sleep(100);
 		sleepTotal += 100;
 	}
-	if(sleepTotal == this->max_ms_read_wait) {
+	if(sleepTotal == this->max_ms_read_wait)
+	{
 		res = 0;
 	}
 	return 1;
 }
 
-void CorsairLink::sleep(int ms){
+void CorsairLink::sleep(int ms)
+{
 	#ifdef WIN32
 	Sleep(ms);
 	#else
@@ -124,7 +144,18 @@ void CorsairLink::sleep(int ms){
 	#endif
 }
 
-CorsairLink::~CorsairLink() {
+void CorsairLink::Close()
+{
+	if(handle != NULL)
+	{
+		hid_close(handle);
+		hid_exit();
+		handle = NULL;
+	}
+}
+
+CorsairLink::~CorsairLink()
+{
 	this->Close();
 //	if(fans != NULL) {
 //		free(fans);

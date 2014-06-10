@@ -113,15 +113,15 @@ void CorsairFan::ReadFansInfo(){
 		
 		res = hid_write(handle, buf, 11);
 		if (res < 0) {
-			std::cerr << "Error: Unable to write() " << hid_error(handle) << endl;
+			fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(handle) );
 		}
 
 		res = hid_read_wrapper(handle, buf);
 		if (res < 0) {
-			std::cerr << "Error: Unable to read() " << hid_error(handle) << endl;
+			fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(handle) );
 		}
 		fanMode = buf[4] & 0x0E;
-		
+
 		memset(buf,0x00,sizeof(buf));
 		// Read fan RPM
 		buf[0] = 0x07; // Length
@@ -135,7 +135,7 @@ void CorsairFan::ReadFansInfo(){
 
 		res = hid_write(handle, buf, 11);
 		if (res < 0) {
-			std::cerr << "Error: Unable to write() " << hid_error(handle) << endl;
+			fprintf(stderr, "Error: Unable to write() %s\n", hid_error(handle) );
 		}
 
 		res = hid_read_wrapper(handle, buf);
@@ -143,8 +143,8 @@ void CorsairFan::ReadFansInfo(){
 		int rpm = buf[5] << 8;
 		rpm += buf[4];
 
-		this->fans[i].Mode = fanMode;
-		this->fans[i].RPM = rpm;
+		//this->fans[i].Mode = fanMode;
+		//this->fans[i].RPM = rpm;
 
 	}
 }

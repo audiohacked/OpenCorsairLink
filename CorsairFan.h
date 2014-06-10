@@ -11,9 +11,12 @@ class CorsairFan {
 		int ConnectedFans();
 		void ReadFansInfo();
 		int SetFansInfo(int fanIndex, CorsairFanInfo fanInfo);
-		std::string Name;
-		int RPM;
-		int Mode;
+		char* Name;
 		void PrintInfo();
-		static std::string GetFanModeString(int mode);
+		static char* GetFanModeString(int mode);
+	private:
+		struct CorsairFanInfo {
+			int RPM;
+			int Mode;
+		};
 };

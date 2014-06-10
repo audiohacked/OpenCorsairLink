@@ -19,11 +19,12 @@ class CorsairLink {
 		int Initialize();
 		void Close();
 		
-		std::wstring GetManufacturer();
-		std::wstring GetProduct();
+		char* _GetManufacturer();
+		char* _GetProduct();
 		
 	private:
 		hid_device *handle;
+		unsigned char buf[256];
 		struct hid_device_info;
 		unsigned int CommandId;
 		int max_ms_read_wait;
