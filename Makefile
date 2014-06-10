@@ -1,11 +1,11 @@
 CC =  g++
-CFLAGS := -Wall -g
-LDFLAGS := -lhidapi-hidraw
+CFLAGS = -Wall -g
+LDFLAGS = -lhidapi-hidraw
 
 all: OpenCorsairLink
 
 %.o: %.c
-	$(CC) -o $@ $(CFLAGS) -c $<
+	$(CC) -o $@ -c $<
 
 OpenCorsairLink: main.o CorsairLink.o CorsairFan.o
 	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $^

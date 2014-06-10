@@ -29,28 +29,28 @@ char* CorsairFan::GetFanModeString(int mode){
 
 	switch(mode){
 		case FixedPWM:
-			sprintf(modeString,"Fixed PWM");
+			strcpy(modeString,"Fixed PWM");
 			break;
 		case FixedRPM:
-			sprintf(modeString, "Fixed RPM");
+			strcpy(modeString, "Fixed RPM");
 			break;
 		case Default:
-			sprintf(modeString, "Default");
+			strcpy(modeString, "Default");
 			break;
 		case Quiet:
-			sprintf(modeString, "Quiet");
+			strcpy(modeString, "Quiet");
 			break;
 		case Balanced:
-			sprintf(modeString, "Balanced");
+			strcpy(modeString, "Balanced");
 			break;
 		case Performance:
-			sprintf(modeString, "Performance");
+			strcpy(modeString, "Performance");
 			break;
 		case Custom:
-			sprintf(modeString, "Custom");
+			strcpy(modeString, "Custom");
 			break;
 		default:
-			sprintf(modeString, "N/A (%X)", mode );
+			snprintf(modeString, 8, "N/A (%2X)", mode );
 			break;
 	}
 
