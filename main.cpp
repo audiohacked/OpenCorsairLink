@@ -7,8 +7,6 @@
 #include <getopt.h>
 #include "CorsairLink.h"
 
-using namespace std;
-
 static struct option long_options[] = {
 	{"help",  no_argument, 0, 'h'},
 	{"fan", required_argument, 0, 'f'},
@@ -22,13 +20,14 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 int main(int argc, char **argv) {
 	fprintf(stdout, "Open Corsair Link\n");
 	int fanNumber = 0, fanMode = 0, fanRPM = 0;
-	if(parseArguments(argc, argv, fanNumber, fanMode, fanRPM)) {
+	if(parseArguments(argc, argv, fanNumber, fanMode, fanRPM))
+	{
 		return 1;
 	}
 	CorsairLink *cl = new CorsairLink();
 
 	if(!cl->Initialize()) {
-		fprintf(stdout, "Cannot initialize link.");
+		fprintf(stdout, "Cannot initialize link.\n");
 		delete cl;
 		return 1;
 	}
@@ -36,18 +35,17 @@ int main(int argc, char **argv) {
 	if(fanNumber != 0) {
 		if(fanMode != 0 || fanRPM != 0) {
 			if(fanMode == FixedRPM && fanRPM <= 0) {
-				fprintf(stderr, "Fan RMP missing for Fixed RPM fan mode.");
+				fprintf(stderr, "Fan RMP missing for Fixed RPM fan mode.\n");
 				return 1;
 			}
 			else {
-				CorsairFan fanInfo;
 				if(fanMode != 0) {
 					fprintf(stdout, "Setting fan to mode %s\n", CorsairFan::GetFanModeString(fanMode));
-					fanInfo.Mode = fanMode;
+					cl->fans->fanInfo.Mode = fanMode;
 				}
 				if(fanRPM != 0) {
 					fprintf(stdout, "Setting fan RPM to %i\n", fanRPM);
-					fanInfo.RPM = fanRPM;
+					cl->fans->fanInfo.RPM = fanRPM;
 				}
 				cl->SetFansInfo(fanNumber - 1, fanInfo);
 			}
@@ -56,7 +54,8 @@ int main(int argc, char **argv) {
 			return 1;
 		}
 	}
-	else if(fanMode != 0 || fanRPM != 0) {
+	else if(fanMode != 0 || fanRPM != 0)
+	{
 			fprintf(stderr, "Cannot set fan to a specific mode or fixed RPM without specifying the fan number\n");
 			return 1;
 	}

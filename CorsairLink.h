@@ -18,7 +18,6 @@ class CorsairLink {
 		~CorsairLink();
 		int Initialize();
 		void Close();
-		
 		char* _GetManufacturer();
 		char* _GetProduct();
 		

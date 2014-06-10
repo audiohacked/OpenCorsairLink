@@ -15,8 +15,8 @@ void CorsairFan::PrintInfo(){
 }
 
 std::string CorsairFan::GetFanModeString(int mode){
-	std::string modeString = "";
-	
+	char* modeString = "";
+
 	switch(mode){
 		case FixedPWM:
 			modeString = "Fixed PWM";
@@ -45,14 +45,14 @@ std::string CorsairFan::GetFanModeString(int mode){
 			modeString = sstream.str();
 			break;
 	}
-	
+
 	return modeString;
 }
 
 int CorsairFan::ConnectedFans() {
 	int fans = 0, i = 0, fanMode = 0;
 	unsigned char buf[256];
-	
+
 	for (i = 0; i < 5; i++) {
 		memset(buf,0x00,sizeof(buf));
 		// Read fan Mode
@@ -64,7 +64,7 @@ int CorsairFan::ConnectedFans() {
 		buf[5] = this->CommandId++; // Command ID
 		buf[6] = ReadOneByte; // Command Opcode
 		buf[7] = FAN_Mode; // Command data...
-		
+
 		int res = hid_write(handle, buf, 11);
 		if (res < 0) {
 			std::cerr << "Error: Unable to write() " << hid_error(handle) << endl;
@@ -75,31 +75,25 @@ int CorsairFan::ConnectedFans() {
 			std::cerr << "Error: Unable to read() " << hid_error(handle) << endl;
 		}
 		fanMode = buf[4];
-		
+
 		if(fanMode != 0x03){
 			fans++;
 		}
 	}
-	
+
 	return fans;
 }
 
 void CorsairFan::ReadFansInfo(){
 	int i = 0, fanMode = 0, res = 0;
-	unsigned char buf[256];
-	std::ostringstream sstream;
 	for (i = 0; i < 5; i++) {
-		sstream.str("");
-		sstream.clear();
-		
 		if(i < 4){
-			sstream << "Fan " << i + 1;
+			fprintf(stdout, "Fan %i\n", i + 1);
 		}
 		else {
-			sstream << "Pump";
+			fprintf(stdout, "Pump\n");
 		}
-		this->fans[i].Name = sstream.str();
-			
+
 		memset(buf,0x00,sizeof(buf));
 		// Read fan Mode
 		buf[0] = 0x07; // Length
@@ -142,10 +136,6 @@ void CorsairFan::ReadFansInfo(){
 		//All data is little-endian.
 		int rpm = buf[5] << 8;
 		rpm += buf[4];
-
-		//this->fans[i].Mode = fanMode;
-		//this->fans[i].RPM = rpm;
-
 	}
 }
 

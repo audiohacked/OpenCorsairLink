@@ -5,7 +5,7 @@ CorsairLink::CorsairLink() {
 	handle = NULL;
 	CommandId = 0x81;
 	max_ms_read_wait = 5000;
-	fans = new CorsairFanInfo[5];
+	fans = new CorsairFan;
 }
 
 int CorsairLink::Initialize()
@@ -24,21 +24,21 @@ int CorsairLink::Initialize()
 		// and optionally the Serial number.
 		// open Corsair H80i or H100i cooler 
 		handle = hid_open(0x1b1c, 0x0c04, NULL);
-		if (!handle) {
+		if (!handle)
+		{
 			fprintf(stderr, "Error: Unable to open Corsair H80i or H100i CPU Cooler\n");
 			return 0;
 		}
 		hid_set_nonblocking(handle, 1);
 
 		deviceId = this->GetDeviceId();
-		if ((deviceId != 0x3b) && (deviceId != 0x3c)) {
+		if ((deviceId != 0x3b) && (deviceId != 0x3c))
+		{
 			fprintf(stderr, "Device ID: %02hhx mismatch. Not Corsair H80i or H100i CPU Cooler\n", deviceId );
 			this->Close();
 			return 0;
 		}
-	}
-	else
-	{
+	} else {
 		fprintf(stderr, "Cannot initialize twice\n" );
 		return 0;
 	}
