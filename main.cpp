@@ -41,13 +41,13 @@ int main(int argc, char **argv) {
 			else {
 				if(fanMode != 0) {
 					fprintf(stdout, "Setting fan to mode %s\n", CorsairFan::GetFanModeString(fanMode));
-					cl->fans->fanInfo.Mode = fanMode;
+					cl->fans->fanInfo[fanNumber].Mode = fanMode;
 				}
 				if(fanRPM != 0) {
 					fprintf(stdout, "Setting fan RPM to %i\n", fanRPM);
-					cl->fans->fanInfo.RPM = fanRPM;
+					cl->fans->fanInfo[fanNumber].RPM = fanRPM;
 				}
-				cl->SetFansInfo(fanNumber - 1, fanInfo);
+				cl->fans->SetFansInfo(fanNumber - 1, fanInfo);
 			}
 		} else {
 			fprintf(stdout, "No mode or fan RPM specified for the fan.\n");
@@ -62,10 +62,9 @@ int main(int argc, char **argv) {
 	else {
 		int i = 0;
 
-		cl->ReadFansInfo();
-		//std::cout << "Number of fans: " << (sizeof(cl->fans)/sizeof(*cl->fans)) << endl;
+		cl->fans->ReadFansInfo();
 		for(i = 0 ; i< 5; i++) {
-			cl->fans[i].PrintInfo();
+			cl->fans->fanInfo[i].PrintInfo();
 		}
 	}
 
