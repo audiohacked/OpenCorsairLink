@@ -70,12 +70,12 @@ int CorsairFan::ConnectedFans() {
 
 		int res = hid_write(handle, buf, 11);
 		if (res < 0) {
-			std::cerr << "Error: Unable to write() " << hid_error(handle) << endl;
+			fprintf(stderr, "Error: Unable to write() %s\n", hid_error(handle) );
 		}
 
 		res = hid_read_wrapper(handle, buf);
 		if (res < 0) {
-			std::cerr << "Error: Unable to read() " << hid_error(handle) << endl;
+			fprintf(stderr, "Error: Unable to read() %s\n", hid_error(handle) );
 		}
 		fanMode = buf[4];
 
@@ -166,21 +166,21 @@ int CorsairFan::SetFansInfo(int fanIndex, CorsairFanInfo fanInfo){
 
 		int res = hid_write(this->handle, buf, 17);
 		if (res < 0) {
-			std::cerr << hid_error(handle);
+			fprintf(stderr, "%s", hid_error(handle) );
 			return 1;
 		}
 
 		res = hid_read_wrapper(handle, buf);
 		if (res < 0) {
-			std::cerr << hid_error(handle);
+			fprintf(stderr, "%s", hid_error(handle) );
 			return 1;
 		}
 		if(fanInfo.Mode != buf[6]){
-			std::cerr << "Cannot set fan mode." << endl;
+			fprintf(stderr, "Cannot set fan mode.");
 			return 1;
 		}
 	} else {
-		std::cerr << "Invalid fan mode." << endl;
+		fprintf(stderr, "Invalid fan mode." );
 		return 1;
 	}
 	if(fanInfo.RPM != 0) {
