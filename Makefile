@@ -7,7 +7,7 @@ all: OpenCorsairLink
 %.o: %.cpp
 	$(CC) -o $@ -c $< $(CFLAGS)
 
-OpenCorsairLink: main.o CorsairLink.o CorsairFan.o CorsairLed.o
+OpenCorsairLink: main.o CorsairLink.o CorsairFan.o CorsairLed.o CorsairTemp.o
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 clean:

@@ -10,10 +10,12 @@
 #include "CorsairLink.h"
 #include "CorsairFan.h"
 #include "CorsairLed.h"
+#include "CorsairTemp.h"
 
 CorsairLink *cl = new CorsairLink();
 CorsairFan *fans = new CorsairFan();
 CorsairLed *leds = new CorsairLed();
+CorsairTemp *temp = new CorsairTemp();
 
 static struct option long_options[] = {
 	{"help",  no_argument, 0, 'h'},
@@ -69,6 +71,9 @@ int main(int argc, char **argv) {
 	}
 	else {
 		int i = 0;
+
+		fprintf(stdout, "Number of Temperature Sensors: %i", temp->GetTempSensors());
+		fprintf(stdout, "Temperature: %i", temp->GetTemp(0));
 
 		for(i = 0 ; i< 5; i++) {
 			fans->ReadFanInfo(i, &fans->fanInfo[i]);

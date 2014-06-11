@@ -5,11 +5,13 @@ class CorsairFan {
 	public:
 		CorsairFan();
 		~CorsairFan();
+
 		struct CorsairFanInfo {
 			char* Name;
 			int RPM;
 			int Mode;
 		} fanInfo[32];
+
 		int num_fans;
 		int ConnectedFans();
 		void ReadFanInfo(int fanIndex, CorsairFanInfo *fan);
