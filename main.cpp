@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
 		int i = 0;
 
 		fprintf(stdout, "Number of Temperature Sensors: %i\n", temp->GetTempSensors());
-		fprintf(stdout, "Temperature: %i\n", temp->GetTemp(0));
+		fprintf(stdout, "Temperature: %.2f\n", temp->GetTemp(0));
 
 		for(i = 0 ; i< 5; i++) {
 			fans->ReadFanInfo(i, &fans->fanInfo[i]);

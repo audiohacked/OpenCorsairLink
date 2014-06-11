@@ -66,10 +66,10 @@ float CorsairTemp::GetTemp(int index)
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		//return -1;
 	}
-	float temp = cl->buf[5]<<8;
+	int temp = cl->buf[5]<<8;
 	temp += cl->buf[4];
-	temp /= 265;
-	return temp;
+	float out = temp / 265;
+	return out;
 }
 
 int CorsairTemp::GetTempLimit(int index)
