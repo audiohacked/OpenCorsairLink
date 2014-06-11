@@ -40,7 +40,7 @@ int CorsairTemp::GetTempSensors()
 	return 0;
 }
 
-int CorsairTemp::GetTemp(int index)
+float CorsairTemp::GetTemp(int index)
 {//2
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
@@ -68,7 +68,8 @@ int CorsairTemp::GetTemp(int index)
 	}
 	int temp = cl->buf[5]<<8;
 	temp += cl->buf[4];
-	return temp;
+	float output = temp/265;
+	return output;
 }
 
 int CorsairTemp::GetTempLimit(int index)
