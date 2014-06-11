@@ -3,7 +3,6 @@
 
 class CorsairFan {
 	public:
-		unsigned int CommandId;
 		CorsairFan();
 		~CorsairFan();
 		struct CorsairFanInfo {

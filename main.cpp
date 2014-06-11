@@ -9,9 +9,11 @@
 #include "CorsairLinkProto.h"
 #include "CorsairLink.h"
 #include "CorsairFan.h"
+#include "CorsairLed.h"
 
 CorsairLink *cl = new CorsairLink();
 CorsairFan *fans = new CorsairFan();
+CorsairLed *leds = new CorsairLed();
 
 static struct option long_options[] = {
 	{"help",  no_argument, 0, 'h'},
