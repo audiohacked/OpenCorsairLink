@@ -16,7 +16,7 @@ class CorsairTemp {
 
 	public:
 		int GetTempSensors();
-		int GetTemp(int);
+		float GetTemp(int);
 		int GetTempLimit(int);
 		int SetTempLimit(int);
 
