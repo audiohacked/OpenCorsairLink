@@ -42,7 +42,7 @@ int CorsairLed::SelectLed(int ledIndex)
 
 #if 0
 	int i = 0;
-	for (i = 0; i < 10; i++)
+	for (i = 0; i < 4; i++)
 	{
 		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
 	}
@@ -73,7 +73,7 @@ int CorsairLed::GetLedCount()
 	}
 #if 0
 	int i = 0;
-	for (i = 0; i < 10; i++)
+	for (i = 0; i < 4; i++)
 	{
 		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
 	}
@@ -104,7 +104,7 @@ int CorsairLed::GetMode(int ledIndex)
 
 #if DEBUG
 	int i = 0;
-	for (i = 0; i < 10; i++)
+	for (i = 0; i < 4; i++)
 	{
 		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
 	}
@@ -135,7 +135,7 @@ int CorsairLed::GetColor(int ledIndex, CorsairLedColor *led)
 	}
 #if DEBUG
 	int i = 0;
-	for (i = 0; i < 10; i++)
+	for (i = 0; i < 6; i++)
 	{
 		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
 	}
