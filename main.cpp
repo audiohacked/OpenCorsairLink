@@ -20,7 +20,7 @@ CorsairTemp *temp = new CorsairTemp();
 int main(int argc, char **argv) {
 	fprintf(stdout, "Open Corsair Link\n");
 	int fanNumber = 0, fanMode = 0, fanRPM = 0;
-	int ledNumber = 0, ledMode = 0;
+	int ledNumber = 0, ledMode = -1;
 	if(parseArguments(argc, argv, fanNumber, fanMode, fanRPM, ledNumber, ledMode, leds->color))
 	{
 		return 1;
@@ -56,13 +56,18 @@ int main(int argc, char **argv) {
 			return 1;
 		}
 	}
-	else if(ledNumber > 0) {
+	else if(ledNumber != 0) {
 		leds->SelectLed(ledNumber - 1);
 		fprintf(stdout, "Setting LED\n");
-		if (ledMode >= 0) {
+		if (ledMode > -1) {
 			leds->SetMode(ledMode);
 		}
-		leds->SetLedCycleColors(leds->color);
+		if ((leds->GetMode() == 0x0C) && (leds->color_set_by_opts == 3)) {
+			leds->Set_TempMode_Color(leds->color);
+		}
+		else if (leds->color_set_by_opts > 0) {
+			leds->SetLedCycleColors(leds->color);
+		}
 	}
 	else if(fanMode != 0 || fanRPM != 0) {
 			fprintf(stderr, "Cannot set fan to a specific mode or fixed RPM without specifying the fan number\n");

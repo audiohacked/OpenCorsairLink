@@ -10,14 +10,6 @@ extern CorsairLink *cl;
 
 #define DEBUG 0
 
-CorsairLed::CorsairLed()
-{
-}
-	
-CorsairLed::~CorsairLed()
-{
-}
-
 int CorsairLed::SelectLed(int ledIndex)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
@@ -130,18 +122,20 @@ int CorsairLed::GetColor(CorsairLedColor *led)
 #if DEBUG
 	fprintf(stdout, "Debug: Blue: %i\n", led->blue);
 #endif
+	this->color_set_by_func = 1;
 
 	return 0;
 }
 
-int CorsairLed::GetTempControlledMode()
+int CorsairLed::GetTempColor(CorsairLedColor *led)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x03; // Length
+	cl->buf[0] = 0x04; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
-	cl->buf[2] = ReadTwoBytes; // Command Opcode
+	cl->buf[2] = ReadThreeBytes; // Command Opcode
 	cl->buf[3] = LED_TemperatureColor; // Command data...
+	cl->buf[4] = 3;
 
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
@@ -155,11 +149,33 @@ int CorsairLed::GetTempControlledMode()
 		//return -1;
 	}
 
+#if DEBUG
+	int i = 0;
+	for (i = 0; i < 6; i++)
+	{
+		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
+	}
+#endif
+	led->red = cl->buf[3];
+#if DEBUG
+	fprintf(stdout, "Debug: Red: %i\n", led->red);
+#endif
+	led->green = cl->buf[4];
+#if DEBUG
+	fprintf(stdout, "Debug: Green: %i\n", led->green);
+#endif
+	led->blue = cl->buf[5];
+#if DEBUG
+	fprintf(stdout, "Debug: Blue: %i\n", led->blue);
+#endif
+
+	this->color_set_by_func = 1;
+
 	return 0;
 
 }
 
-int CorsairLed::Get_TempMode_Temp()
+int CorsairLed::Get_TempMode_Temp(int &temp1, int &temp2, int &temp3)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
@@ -181,12 +197,19 @@ int CorsairLed::Get_TempMode_Temp()
 		//return -1;
 	}
 
-	//cl->buf[5];
+	temp1 = cl->buf[5] << 8;
+	temp1 += cl->buf[4];
+	
+	temp2 = cl->buf[7] << 8;
+	temp2 += cl->buf[6];
+
+	temp3 = cl->buf[9] << 8;
+	temp3 += cl->buf[8];
 
 	return 0;
 }
 
-int CorsairLed::Get_TempMode_Color()
+int CorsairLed::Get_TempMode_Color(CorsairLedColor *led)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
@@ -207,6 +230,20 @@ int CorsairLed::Get_TempMode_Color()
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		//return -1;
 	}
+	
+	led[0]->red = cl->buf[4];
+	led[0]->green = cl->buf[5];
+	led[0]->blue = cl->buf[6];
+
+	led[1]->red = cl->buf[7];
+	led[1]->green = cl->buf[8];
+	led[1]->blue = cl->buf[9];
+
+	led[2]->red = cl->buf[10];
+	led[2]->green = cl->buf[11];
+	led[2]->blue = cl->buf[12];
+
+	this->color_set_by_func = 3;
 
 	return 0;
 }
@@ -232,6 +269,24 @@ int CorsairLed::GetLedCycleColors(CorsairLedColor *leds)
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		//return -1;
 	}
+
+	led[0]->red = cl->buf[4];
+	led[0]->green = cl->buf[5];
+	led[0]->blue = cl->buf[6];
+
+	led[1]->red = cl->buf[7];
+	led[1]->green = cl->buf[8];
+	led[1]->blue = cl->buf[9];
+
+	led[2]->red = cl->buf[10];
+	led[2]->green = cl->buf[11];
+	led[2]->blue = cl->buf[12];
+
+	led[3]->red = cl->buf[13];
+	led[3]->green = cl->buf[14];
+	led[3]->blue = cl->buf[15];
+
+	this->color_set_by_func = 4;
 
 	return 0;
 }
@@ -259,7 +314,7 @@ int CorsairLed::SetMode(int mode)
 		//return -1;
 	}
 
-	return 0;
+	return cl->buf[2];
 }
 
 #if 0
@@ -296,15 +351,23 @@ int CorsairLed::SetColor(int ledIndex, int red, int green, int blue)
 }
 #endif
 
-int CorsairLed::SetTempControlledMode()
+int CorsairLed::SetTempColor(CorsairLedColor *led)
 {
+	if (this->color_set_by_opts < 1) {
+		fprintf(stderr, "Error: You did not define the Color\n");
+		return -1;
+	}
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x0A; // Length
-	cl->buf[5] = cl->CommandId++; // Command ID
-	cl->buf[6] = WriteTwoBytes; // Command Opcode
-	cl->buf[7] = LED_TemperatureMode; // Command data...
-
+	cl->buf[0] = 0x07; // Length
+	cl->buf[1] = cl->CommandId++; // Command ID
+	cl->buf[2] = WriteThreeBytes; // Command Opcode
+	cl->buf[3] = LED_TemperatureMode; // Command data...
+	cl->buf[4] = 3;
+	
+	cl->buf[5] = led[0].red;
+	cl->buf[6] = led[0].green;
+	cl->buf[7] = led[0].blue;
 	//cl->buf[8] = byte1;
 	//cl->buf[9] = byte2;
 
@@ -359,8 +422,12 @@ int CorsairLed::Set_TempMode_Temp(int temp1, int temp2, int temp3)
 	return 0;
 }
 
-int CorsairLed::Set_TempMode_Color(CorsairLedColor colorLeds[])
+int CorsairLed::Set_TempMode_Color(CorsairLedColor *leds)
 {
+	if (this->color_set_by_opts < 3) {
+		fprintf(stderr, "Error: You did not define the Colors, or the correct number of Colors\n");
+		return -1;
+	}
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
 	cl->buf[0] = 0x11; // Length
@@ -399,6 +466,10 @@ int CorsairLed::Set_TempMode_Color(CorsairLedColor colorLeds[])
 
 int CorsairLed::SetLedCycleColors(CorsairLedColor *leds)
 {
+	//if (this->color_set_by_opts < 3) {
+	//	fprintf(stderr, "Error: You did not define the Colors\n");
+	//	return -1;
+	//}
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
 	cl->buf[0] = 0x10; // Length
