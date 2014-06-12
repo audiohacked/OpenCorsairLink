@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
 		if ((leds->GetMode() == 0x0C) && (leds->color_set_by_opts == 3)) {
 			leds->Set_TempMode_Color(leds->color);
 		}
-		else if (leds->color_set_by_opts > 0) {
+		if ((leds->GetMode() != 0x0C) && (leds->color_set_by_opts > 0)){
 			leds->SetLedCycleColors(leds->color);
 		}
 	}
