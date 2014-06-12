@@ -24,10 +24,13 @@ static struct option long_options[] = {
 	{"mode", required_argument, 0, 'm'},
 	{"rpm",  required_argument, 0, 'r'},
 	{"led", required_argument, 0, 'l'},
-	{"led_mode", required_argument, 0, -1},
-	{"led_red", required_argument, 0, -1},
-	{"led_green", required_argument, 0, -1},
-	{"led_blue", required_argument, 0, -1},
+
+	{"led_mode", required_argument, NULL, 0},
+	{"rgb1", required_argument, NULL, 1},
+	{"rgb2", required_argument, NULL, 2},
+	{"rgb3", required_argument, NULL, 3},
+	{"rgb4", required_argument, NULL, 4},
+
 	{0, 0, 0, 0}
 };
 
@@ -49,7 +52,7 @@ void printHelp() {
 	fprintf(stdout, "\nNot specifying any option will display information about the fans and pump\n\n");
 }
 
-int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fanRPM, uint8_t &ledNumber, uint8_t &ledMode, uint8_t &ledRed, uint8_t &ledGreen, uint8_t &ledBlue) {
+int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fanRPM, int &ledNumber, int &ledMode, CorsairLed::CorsairLedColor *leds) {
 	int c, returnCode = 0;;
 	while (1) {
 		int option_index = 0;
@@ -58,14 +61,30 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 		if (c == -1 || returnCode != 0)
 			break;
 		switch (c) {
+		case 'l':
+			ledNumber = strtol(optarg, NULL, 10);
+			if(ledNumber < 1) {
+				fprintf(stderr, "Led number is invalid.");
+				returnCode = 1;
+			}
+			break;
 		case 0:
-		case -1:
-			/* If this option set a flag, do nothing else now. */
-			if (long_options[option_index].flag != 0) break;
-			printf ("option %s", long_options[option_index].name);
-			if (optarg)
-				printf (" with arg %s", optarg);
-			printf ("\n");
+			ledMode = strtol(optarg, NULL, 10);
+			break;
+		case 1:
+			sscanf(optarg, "%2x%2x%2x", &leds[0].red, &leds[0].green, &leds[0].blue);
+			fprintf(stdout, "Debug: %i\n", leds[0].red);
+			fprintf(stdout, "Debug: %i\n", leds[0].green);
+			fprintf(stdout, "Debug: %i\n", leds[0].blue);
+			break;
+		case 2:
+			sscanf(optarg, "%2x%2x%2x", &leds[1].red, &leds[1].green, &leds[1].blue);
+			break;
+		case 3:
+			sscanf(optarg, "%2x%2x%2x", &leds[2].red, &leds[2].green, &leds[2].blue);
+			break;
+		case 4:
+			sscanf(optarg, "%2x%2x%2x", &leds[3].red, &leds[3].green, &leds[3].blue);
 			break;
 		case 'f':
 			errno = 0;
@@ -105,9 +124,6 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 			printHelp();
 			exit(0);
 			break;
-		case 'l':
-			ledNumber = strtol(optarg, NULL, 10);
-			break;
 		default:
 			exit(1);
 			returnCode = 0;
@@ -119,8 +135,8 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 int main(int argc, char **argv) {
 	fprintf(stdout, "Open Corsair Link\n");
 	int fanNumber = 0, fanMode = 0, fanRPM = 0;
-	uint8_t ledNumber = 0, ledMode = 0, ledRed = 0, ledGreen = 0, ledBlue = 0;
-	if(parseArguments(argc, argv, fanNumber, fanMode, fanRPM, ledNumber, ledMode, ledRed, ledGreen, ledBlue))
+	int ledNumber = 0, ledMode = 0;
+	if(parseArguments(argc, argv, fanNumber, fanMode, fanRPM, ledNumber, ledMode, leds->color))
 	{
 		return 1;
 	}
@@ -157,9 +173,6 @@ int main(int argc, char **argv) {
 	else if(ledNumber > 0) {
 		fprintf(stdout, "Set LED Color\n");
 		//leds->SetMode(ledNumber - 1, 0);
-		leds->color[0].red = 0;
-		leds->color[0].green = 0;
-		leds->color[0].blue = 255;
 		leds->SetLedCycleColors(ledNumber - 1, leds->color);
 	}
 	else if(fanMode != 0 || fanRPM != 0) {
