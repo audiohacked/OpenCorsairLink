@@ -17,6 +17,7 @@ class CorsairLed {
 		} color[4];
 		
 		int GetLedCount();
+		int SelectLed(int);
 		
 		int GetMode(int);
 		int GetColor(int, CorsairLedColor*);

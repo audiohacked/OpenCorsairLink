@@ -8,7 +8,7 @@
 
 extern CorsairLink *cl;
 
-#define DEBUG 0
+#define DEBUG 1
 
 CorsairLed::CorsairLed()
 {
@@ -17,6 +17,39 @@ CorsairLed::CorsairLed()
 CorsairLed::~CorsairLed()
 {
 }
+
+int CorsairLed::SelectLed(int ledIndex)
+{
+	memset(cl->buf,0x00,sizeof(cl->buf));
+	// Read fan Mode
+	cl->buf[0] = 0x04; // Length
+	cl->buf[1] = cl->CommandId++; // Command ID
+	cl->buf[2] = WriteOneByte; // Command Opcode
+	cl->buf[3] = LED_SelectCurrent; // Command data...
+	cl->buf[4] = ledIndex;
+
+	int res = hid_write(cl->handle, cl->buf, 11);
+	if (res < 0) {
+		fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(cl->handle) );
+		//return -1;
+	}
+
+	res = cl->hid_read_wrapper(cl->handle, cl->buf);
+	if (res < 0) {
+		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
+		//return -1;
+	}
+
+#if 0
+	int i = 0;
+	for (i = 0; i < 10; i++)
+	{
+		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
+	}
+#endif
+	return cl->buf[2];
+}
+
 
 int CorsairLed::GetLedCount()
 {
@@ -54,12 +87,8 @@ int CorsairLed::GetMode(int ledIndex)
 	// Read fan Mode
 	cl->buf[0] = 0x07; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
-	cl->buf[2] = WriteOneByte; // Command Opcode
-	cl->buf[3] = LED_SelectCurrent; // Command data...
-	cl->buf[4] = ledIndex;
-	cl->buf[5] = cl->CommandId++; // Command ID
-	cl->buf[6] = ReadOneByte; // Command Opcode
-	cl->buf[7] = LED_Mode; // Command data...
+	cl->buf[2] = ReadOneByte; // Command Opcode
+	cl->buf[3] = LED_Mode; // Command data...
 
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
@@ -80,7 +109,7 @@ int CorsairLed::GetMode(int ledIndex)
 		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
 	}
 #endif
-	return cl->buf[4];
+	return cl->buf[2];
 }
 
 int CorsairLed::GetColor(int ledIndex, CorsairLedColor *led)
@@ -89,13 +118,9 @@ int CorsairLed::GetColor(int ledIndex, CorsairLedColor *led)
 	// Read fan Mode
 	cl->buf[0] = 0x08; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
-	cl->buf[2] = WriteOneByte; // Command Opcode
-	cl->buf[3] = LED_SelectCurrent; // Command data...
-	cl->buf[4] = ledIndex;
-	cl->buf[5] = cl->CommandId++; // Command ID
-	cl->buf[6] = ReadThreeBytes; // Command Opcode
-	cl->buf[7] = LED_CurrentColor; // Command data...
-	cl->buf[8] = 3; // Register Length
+	cl->buf[2] = ReadThreeBytes; // Command Opcode
+	cl->buf[3] = LED_CurrentColor; // Command data...
+	cl->buf[4] = 3; // Register Length
 
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
@@ -115,15 +140,15 @@ int CorsairLed::GetColor(int ledIndex, CorsairLedColor *led)
 		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
 	}
 #endif
-	led->red = cl->buf[5];
+	led->red = cl->buf[3];
 #if DEBUG
 	fprintf(stdout, "Debug: Red: %i\n", led->red);
 #endif
-	led->green = cl->buf[6];
+	led->green = cl->buf[4];
 #if DEBUG
 	fprintf(stdout, "Debug: Green: %i\n", led->green);
 #endif
-	led->blue = cl->buf[7];
+	led->blue = cl->buf[5];
 #if DEBUG
 	fprintf(stdout, "Debug: Blue: %i\n", led->blue);
 #endif
