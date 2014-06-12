@@ -231,17 +231,17 @@ int CorsairLed::Get_TempMode_Color(CorsairLedColor *led)
 		//return -1;
 	}
 	
-	led[0]->red = cl->buf[4];
-	led[0]->green = cl->buf[5];
-	led[0]->blue = cl->buf[6];
+	led[0].red = cl->buf[4];
+	led[0].green = cl->buf[5];
+	led[0].blue = cl->buf[6];
 
-	led[1]->red = cl->buf[7];
-	led[1]->green = cl->buf[8];
-	led[1]->blue = cl->buf[9];
+	led[1].red = cl->buf[7];
+	led[1].green = cl->buf[8];
+	led[1].blue = cl->buf[9];
 
-	led[2]->red = cl->buf[10];
-	led[2]->green = cl->buf[11];
-	led[2]->blue = cl->buf[12];
+	led[2].red = cl->buf[10];
+	led[2].green = cl->buf[11];
+	led[2].blue = cl->buf[12];
 
 	this->color_set_by_func = 3;
 
@@ -270,21 +270,21 @@ int CorsairLed::GetLedCycleColors(CorsairLedColor *leds)
 		//return -1;
 	}
 
-	led[0]->red = cl->buf[4];
-	led[0]->green = cl->buf[5];
-	led[0]->blue = cl->buf[6];
+	leds[0].red = cl->buf[4];
+	leds[0].green = cl->buf[5];
+	leds[0].blue = cl->buf[6];
 
-	led[1]->red = cl->buf[7];
-	led[1]->green = cl->buf[8];
-	led[1]->blue = cl->buf[9];
+	leds[1].red = cl->buf[7];
+	leds[1].green = cl->buf[8];
+	leds[1].blue = cl->buf[9];
 
-	led[2]->red = cl->buf[10];
-	led[2]->green = cl->buf[11];
-	led[2]->blue = cl->buf[12];
+	leds[2].red = cl->buf[10];
+	leds[2].green = cl->buf[11];
+	leds[2].blue = cl->buf[12];
 
-	led[3]->red = cl->buf[13];
-	led[3]->green = cl->buf[14];
-	led[3]->blue = cl->buf[15];
+	leds[3].red = cl->buf[13];
+	leds[3].green = cl->buf[14];
+	leds[3].blue = cl->buf[15];
 
 	this->color_set_by_func = 4;
 
@@ -437,17 +437,17 @@ int CorsairLed::Set_TempMode_Color(CorsairLedColor *leds)
 	cl->buf[7] = LED_TemperatureModeColors; // Command data...
 	cl->buf[8] = 9;
 
-	cl->buf[ 9] = colorLeds[0].red;
-	cl->buf[10] = colorLeds[0].green;
-	cl->buf[11] = colorLeds[0].blue;
+	cl->buf[ 9] = leds[0].red;
+	cl->buf[10] = leds[0].green;
+	cl->buf[11] = leds[0].blue;
 
-	cl->buf[12] = colorLeds[1].red;
-	cl->buf[13] = colorLeds[1].green;
-	cl->buf[14] = colorLeds[1].blue;
+	cl->buf[12] = leds[1].red;
+	cl->buf[13] = leds[1].green;
+	cl->buf[14] = leds[1].blue;
 
-	cl->buf[15] = colorLeds[2].red;
-	cl->buf[16] = colorLeds[2].green;
-	cl->buf[17] = colorLeds[2].blue;
+	cl->buf[15] = leds[2].red;
+	cl->buf[16] = leds[2].green;
+	cl->buf[17] = leds[2].blue;
 
 	int res = hid_write(cl->handle, cl->buf, 20);
 	if (res < 0) {
