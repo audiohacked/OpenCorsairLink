@@ -8,7 +8,7 @@
 
 extern CorsairLink *cl;
 
-#define DEBUG 0
+#define DEBUG 1
 
 CorsairLed::CorsairLed()
 {
@@ -39,14 +39,6 @@ int CorsairLed::SelectLed(int ledIndex)
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		//return -1;
 	}
-
-#if 0
-	int i = 0;
-	for (i = 0; i < 4; i++)
-	{
-		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
-	}
-#endif
 	return cl->buf[2];
 }
 
@@ -71,13 +63,6 @@ int CorsairLed::GetLedCount()
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		//return -1;
 	}
-#if 0
-	int i = 0;
-	for (i = 0; i < 4; i++)
-	{
-		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
-	}
-#endif
 	return cl->buf[2];
 }
 
@@ -102,13 +87,6 @@ int CorsairLed::GetMode(int ledIndex)
 		//return -1;
 	}
 
-#if DEBUG
-	int i = 0;
-	for (i = 0; i < 4; i++)
-	{
-		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
-	}
-#endif
 	return cl->buf[2];
 }
 
@@ -461,6 +439,14 @@ int CorsairLed::SetLedCycleColors(int ledIndex, CorsairLedColor *leds)
 	cl->buf[18] = leds[3].red;
 	cl->buf[19] = leds[3].green;
 	cl->buf[20] = leds[3].blue;
+
+#if DEBUG
+	int i = 0;
+	for (i = 0; i < 24; i++)
+	{
+		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
+	}
+#endif
 
 	int res = hid_write(cl->handle, cl->buf, 24);
 	if (res < 0) {
