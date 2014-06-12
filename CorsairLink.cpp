@@ -140,6 +140,14 @@ int CorsairLink::hid_read_wrapper (hid_device *handle, unsigned char *buf)
 	{
 		res = 0;
 	}
+
+#if DEBUG
+	int i = 0;
+	for (i = 0; i < sizeof(buf); i++)
+	{
+		fprintf(stdout, "Debug-hid_read_wrapper: %02X\n", buf[i]);
+	}
+#endif
 	return 1;
 }
 

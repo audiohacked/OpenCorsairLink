@@ -8,8 +8,6 @@
 
 extern CorsairLink *cl;
 
-#define DEBUG 1
-
 int CorsairLed::SelectLed(int ledIndex)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
@@ -78,13 +76,6 @@ int CorsairLed::GetMode()
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		//return -1;
 	}
-#if DEBUG
-	int i = 0;
-	for (i = 0; i < 6; i++)
-	{
-		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
-	}
-#endif
 	return cl->buf[2];
 }
 
@@ -109,25 +100,9 @@ int CorsairLed::GetColor(CorsairLedColor *led)
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		//return -1;
 	}
-#if DEBUG
-	int i = 0;
-	for (i = 0; i < 6; i++)
-	{
-		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
-	}
-#endif
 	led->red = cl->buf[3];
-#if DEBUG
-	fprintf(stdout, "Debug: Red: %i\n", led->red);
-#endif
 	led->green = cl->buf[4];
-#if DEBUG
-	fprintf(stdout, "Debug: Green: %i\n", led->green);
-#endif
 	led->blue = cl->buf[5];
-#if DEBUG
-	fprintf(stdout, "Debug: Blue: %i\n", led->blue);
-#endif
 	this->color_set_by_func = 1;
 
 	return 0;
@@ -155,13 +130,6 @@ int CorsairLed::GetTempColor(CorsairLedColor *led)
 		//return -1;
 	}
 
-#if DEBUG
-	int i = 0;
-	for (i = 0; i < 6; i++)
-	{
-		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
-	}
-#endif
 	led->red = cl->buf[3];
 #if DEBUG
 	fprintf(stdout, "Debug: Red: %i\n", led->red);
@@ -499,14 +467,6 @@ int CorsairLed::SetLedCycleColors(CorsairLedColor *leds)
 	cl->buf[14] = leds[3].red;
 	cl->buf[15] = leds[3].green;
 	cl->buf[16] = leds[3].blue;
-
-#if DEBUG
-	int i = 0;
-	for (i = 0; i < 18; i++)
-	{
-		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
-	}
-#endif
 
 	int res = hid_write(cl->handle, cl->buf, 18);
 	if (res < 0) {
