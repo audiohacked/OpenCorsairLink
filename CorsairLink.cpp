@@ -95,8 +95,9 @@ int CorsairLink::GetFirmwareVersion()
 	if (res < 0) {
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(handle) );
 	}
-	
-	return buf[2];
+	int firmware = buf[3]<<8;
+	firmware += buf[2];
+	return firmware;
 }
 
 char* CorsairLink::GetProductName()
@@ -119,8 +120,8 @@ char* CorsairLink::GetProductName()
 	if (res < 0) {
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(handle) );
 	}
-	char ostring[] = "";
-	memcpy(ostring, buf + 3, 8);
+	char ostring[9] = "";
+	memcpy(&ostring, buf + 3, 8);
 	ostring[8] = '\0';
 	return ostring;
 }
