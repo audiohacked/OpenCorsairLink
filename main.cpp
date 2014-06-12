@@ -159,7 +159,7 @@ int main(int argc, char **argv) {
 		//leds->SetMode(ledNumber - 1, 0);
 		leds->color[0].red = 0;
 		leds->color[0].green = 0;
-		leds->color[0].blue = 254;
+		leds->color[0].blue = 255;
 		leds->SetLedCycleColors(ledNumber - 1, leds->color);
 	}
 	else if(fanMode != 0 || fanRPM != 0) {
