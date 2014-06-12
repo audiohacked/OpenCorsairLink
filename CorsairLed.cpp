@@ -279,6 +279,7 @@ int CorsairLed::SetMode(int ledIndex, int mode)
 	return 0;
 }
 
+#if 0
 int CorsairLed::SetColor(int ledIndex, int red, int green, int blue)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
@@ -310,6 +311,7 @@ int CorsairLed::SetColor(int ledIndex, int red, int green, int blue)
 
 	return 0;
 }
+#endif
 
 int CorsairLed::SetTempControlledMode(int ledIndex)
 {
@@ -425,7 +427,7 @@ int CorsairLed::Set_TempMode_Color(int ledIndex, CorsairLedColor colorLeds[])
 	return 0;
 }
 
-int CorsairLed::SetLedCycleColors(int ledIndex)
+int CorsairLed::SetLedCycleColors(int ledIndex, CorsairLedColor *leds)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
@@ -439,7 +441,23 @@ int CorsairLed::SetLedCycleColors(int ledIndex)
 	cl->buf[7] = LED_CycleColors; // Command data...
 	cl->buf[8] = 12;
 
-	int res = hid_write(cl->handle, cl->buf, 11);
+	cl->buf[9] = leds[0].red;
+	cl->buf[10] = leds[0].green;
+	cl->buf[11] = leds[0].blue;
+
+	cl->buf[12] = leds[1].red;
+	cl->buf[13] = leds[1].green;
+	cl->buf[14] = leds[1].blue;
+
+	cl->buf[15] = leds[2].red;
+	cl->buf[16] = leds[2].green;
+	cl->buf[17] = leds[2].blue;
+
+	cl->buf[18] = leds[3].red;
+	cl->buf[19] = leds[3].green;
+	cl->buf[20] = leds[3].blue;
+
+	int res = hid_write(cl->handle, cl->buf, 24);
 	if (res < 0) {
 		fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(cl->handle) );
 		//return -1;

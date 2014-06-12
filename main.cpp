@@ -155,8 +155,8 @@ int main(int argc, char **argv) {
 	}
 	else if(ledNumber > 0) {
 		fprintf(stdout, "Set LED Color\n");
-		leds->SetMode(ledNumber - 1, 0);
-		leds->SetColor(ledNumber - 1, 0, 0, 255);
+		//leds->SetMode(ledNumber - 1, 0);
+		leds->SetLedCycleColors(ledNumber - 1, leds->color);
 	}
 	else if(fanMode != 0 || fanRPM != 0) {
 			fprintf(stderr, "Cannot set fan to a specific mode or fixed RPM without specifying the fan number\n");
@@ -167,8 +167,8 @@ int main(int argc, char **argv) {
 
 		fprintf(stdout, "Number of Controllable LEDs: %i\n", leds->GetLedCount());
 		fprintf(stdout, "LED Mode: %02X\n", leds->GetMode(0));
-		leds->GetColor(0, &leds->color);
-		fprintf(stdout, "LED Color:\n\tRed: %i\n\tGreen: %i\n\tBlue: %i\n", leds->color.red, leds->color.green, leds->color.blue );
+		leds->GetColor(0, &leds->color[0]);
+		fprintf(stdout, "LED Color:\n\tRed: %i\n\tGreen: %i\n\tBlue: %i\n", leds->color[0].red, leds->color[0].green, leds->color[0].blue );
 		fprintf(stdout, "Number of Temperature Sensors: %i\n", temp->GetTempSensors());
 		fprintf(stdout, "Temperature: %.2f C\n", temp->GetTemp(0)/256);
 
