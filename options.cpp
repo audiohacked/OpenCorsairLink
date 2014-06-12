@@ -9,6 +9,8 @@
 #include "CorsairLed.h"
 #include "CorsairTemp.h"
 
+extern CorsairLed *l;
+
 static struct option long_options[] = {
 	{"help",  no_argument, 0, 'h'},
 	{"fan", required_argument, 0, 'f'},
@@ -67,15 +69,19 @@ int parseArguments(int argc, char **argv,
 			break;
 		case 1:
 			sscanf(optarg, "%2x%2x%2x", &leds[0].red, &leds[0].green, &leds[0].blue);
+			l->color_set_by_opts++;
 			break;
 		case 2:
 			sscanf(optarg, "%2x%2x%2x", &leds[1].red, &leds[1].green, &leds[1].blue);
+			l->color_set_by_opts++;
 			break;
 		case 3:
 			sscanf(optarg, "%2x%2x%2x", &leds[2].red, &leds[2].green, &leds[2].blue);
+			l->color_set_by_opts++;
 			break;
 		case 4:
 			sscanf(optarg, "%2x%2x%2x", &leds[3].red, &leds[3].green, &leds[3].blue);
+			l->color_set_by_opts++;
 			break;
 		case 'f':
 			errno = 0;

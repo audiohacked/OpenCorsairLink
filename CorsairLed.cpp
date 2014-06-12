@@ -8,7 +8,7 @@
 
 extern CorsairLink *cl;
 
-#define DEBUG 0
+#define DEBUG 1
 
 int CorsairLed::SelectLed(int ledIndex)
 {
@@ -78,7 +78,13 @@ int CorsairLed::GetMode()
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		//return -1;
 	}
-
+#if DEBUG
+	int i = 0;
+	for (i = 0; i < 6; i++)
+	{
+		fprintf(stdout, "Debug: %i\n", cl->buf[i]);
+	}
+#endif
 	return cl->buf[2];
 }
 

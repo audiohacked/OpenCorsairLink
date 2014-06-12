@@ -13,15 +13,15 @@
 #include "options.h"
 
 CorsairLink *cl = new CorsairLink();
-CorsairFan *fans = new CorsairFan();
-CorsairLed *leds = new CorsairLed();
-CorsairTemp *temp = new CorsairTemp();
+CorsairFan *f = new CorsairFan();
+CorsairLed *l = new CorsairLed();
+CorsairTemp *t = new CorsairTemp();
 
 int main(int argc, char **argv) {
 	fprintf(stdout, "Open Corsair Link\n");
 	int fanNumber = 0, fanMode = 0, fanRPM = 0;
 	int ledNumber = 0, ledMode = -1;
-	if(parseArguments(argc, argv, fanNumber, fanMode, fanRPM, ledNumber, ledMode, leds->color))
+	if(parseArguments(argc, argv, fanNumber, fanMode, fanRPM, ledNumber, ledMode, l->color))
 	{
 		return 1;
 	}
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 					fprintf(stdout, "Setting fan RPM to %i\n", fanRPM);
 					newFanInfo.RPM = fanRPM;
 				}
-				fans->SetFansInfo(fanNumber - 1, newFanInfo);
+				f->SetFansInfo(fanNumber - 1, newFanInfo);
 			}
 		} else {
 			fprintf(stdout, "No mode or fan RPM specified for the fan.\n");
@@ -57,16 +57,19 @@ int main(int argc, char **argv) {
 		}
 	}
 	else if(ledNumber != 0) {
-		leds->SelectLed(ledNumber - 1);
+		l->SelectLed(ledNumber - 1);
 		fprintf(stdout, "Setting LED\n");
 		if (ledMode > -1) {
-			leds->SetMode(ledMode);
+			l->SetMode(ledMode);
 		}
-		if ((leds->GetMode() == 0x0C) && (leds->color_set_by_opts == 3)) {
-			leds->Set_TempMode_Color(leds->color);
-		}
-		if ((leds->GetMode() != 0x0C) && (leds->color_set_by_opts > 0)){
-			leds->SetLedCycleColors(leds->color);
+		int current_mode = l->GetMode();
+		//fprintf(stdout, "DEBUG Current LED Mode: %02x\n", current_mode);
+		//if ((leds->GetMode() == 0x0C) && (leds->color_set_by_opts == 3)) {
+		//	l->Set_TempMode_Color(leds->color);
+		//}
+		if ((current_mode != 0x0C)&&(l->color_set_by_opts > 0)) {
+			//fprintf(stdout, "DEBUG Setting Led Colorset; colors defined: %i\n", l->color_set_by_opts);
+			l->SetLedCycleColors(l->color);
 		}
 	}
 	else if(fanMode != 0 || fanRPM != 0) {
@@ -76,16 +79,16 @@ int main(int argc, char **argv) {
 	else {
 		int i = 0;
 
-		fprintf(stdout, "Number of Controllable LEDs: %i\n", leds->GetLedCount());
-		fprintf(stdout, "LED Mode: %02X\n", leds->GetMode());
-		leds->GetColor(&leds->color[0]);
-		fprintf(stdout, "LED Color:\n\tRed: %i\n\tGreen: %i\n\tBlue: %i\n", leds->color[0].red, leds->color[0].green, leds->color[0].blue );
-		fprintf(stdout, "Number of Temperature Sensors: %i\n", temp->GetTempSensors());
-		fprintf(stdout, "Temperature: %.2f C\n", temp->GetTemp(0)/256);
+		fprintf(stdout, "Number of Controllable LEDs: %i\n", l->GetLedCount());
+		fprintf(stdout, "LED Mode: %02X\n", l->GetMode());
+		l->GetColor(&l->color[0]);
+		fprintf(stdout, "LED Color:\n\tRed: %i\n\tGreen: %i\n\tBlue: %i\n", l->color[0].red, l->color[0].green, l->color[0].blue );
+		fprintf(stdout, "Number of Temperature Sensors: %i\n", t->GetTempSensors());
+		fprintf(stdout, "Temperature: %.2f C\n", t->GetTemp(0)/256);
 
 		for(i = 0 ; i< 5; i++) {
-			fans->ReadFanInfo(i, &fans->fanInfo[i]);
-			fans->PrintInfo(fans->fanInfo[i]);
+			f->ReadFanInfo(i, &f->fanInfo[i]);
+			f->PrintInfo(f->fanInfo[i]);
 		}
 	}
 
