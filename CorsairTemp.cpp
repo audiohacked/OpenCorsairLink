@@ -37,7 +37,7 @@ int CorsairTemp::GetTempSensors()
 		//return -1;
 	}
 
-	return 0;
+	return cl->buf[2];
 }
 
 float CorsairTemp::GetTemp(int index)
@@ -68,8 +68,7 @@ float CorsairTemp::GetTemp(int index)
 	}
 	int temp = cl->buf[5]<<8;
 	temp += cl->buf[4];
-	float out = temp / 265;
-	return out;
+	return temp;
 }
 
 int CorsairTemp::GetTempLimit(int index)
@@ -99,14 +98,17 @@ int CorsairTemp::GetTempLimit(int index)
 		//return -1;
 	}
 
-	return 0;
+	int limit = cl->buf[5]<<8;
+	limit += cl->buf[4];
+
+	return limit;
 }
 
-int CorsairTemp::SetTempLimit(int index)
+int CorsairTemp::SetTempLimit(int index, int limit)
 {//2
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x07; // Length
+	cl->buf[0] = 0x09; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
 	cl->buf[2] = WriteOneByte; // Command Opcode
 	cl->buf[3] = TEMP_SelectActiveSensor; // Command data...
@@ -116,6 +118,8 @@ int CorsairTemp::SetTempLimit(int index)
 	cl->buf[6] = WriteTwoBytes; // Command Opcode
 	cl->buf[7] = TEMP_Limit; // Command data...
 
+	cl->buf[8] = limit & 0x00FF;
+	cl->buf[9] = limit >> 8;
 
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {

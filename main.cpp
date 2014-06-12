@@ -72,8 +72,12 @@ int main(int argc, char **argv) {
 	else {
 		int i = 0;
 
+		fprintf(stdout, "Number of Controllable LEDs: %i\n", leds->GetLedCount());
+		fprintf(stdout, "LED Mode: %i\n", leds->GetMode(0));
+		leds->GetColor(0, &leds->color);
+		fprintf(stdout, "LED Color:\n\tRed: %i\n\tGreen: %i\n\tBlue: %i\n", leds->color.red, leds->color.green, leds->color.blue );
 		fprintf(stdout, "Number of Temperature Sensors: %i\n", temp->GetTempSensors());
-		fprintf(stdout, "Temperature: %.2f C\n", temp->GetTemp(0));
+		fprintf(stdout, "Temperature: %.2f C\n", temp->GetTemp(0)/256);
 
 		for(i = 0 ; i< 5; i++) {
 			fans->ReadFanInfo(i, &fans->fanInfo[i]);

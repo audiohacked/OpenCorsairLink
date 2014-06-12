@@ -224,18 +224,6 @@ enum _CorsairLinkOpCodes{
 	 * 0B AA 03 - Read from 3-byte register AA
 	 * */
 	ReadThreeBytes = 0x0B,
-
-
-	WriteSixBytes = 0x0C,
-	ReadSixBytes = 0x0D,
-
-
-	WriteNineBytes = 0x0E,
-	ReadNineBytes = 0x0F,
-
-
-	WriteTwelveBytes = 0x10,
-	ReadTwelveBytes = 0x11
 };
 
 enum CorsairLedModes {

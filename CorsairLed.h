@@ -1,6 +1,8 @@
 #ifndef _CORSAIRLED_H
 #define _CORSAIRLED_H
 
+#include <stdint.h>
+
 class CorsairLed {
 	private:
 		//static char* GetLedModeString(int mode);
@@ -9,15 +11,15 @@ class CorsairLed {
 		~CorsairLed();
 		
 		struct CorsairLedColor {
-			int red;
-			int green;
-			int blue;
-		} led, leds[4];
+			uint8_t red;
+			uint8_t green;
+			uint8_t blue;
+		} color, leds[4];
 		
 		int GetLedCount();
 		
 		int GetMode(int ledIndex);
-		int GetColor(int ledIndex, CorsairLedColor led);
+		int GetColor(int ledIndex, CorsairLedColor *led);
 		int GetTempControlledMode(int ledIndex);
 		int Get_TempMode_Temp(int ledIndex);
 		int Get_TempMode_Color(int ledIndex);
