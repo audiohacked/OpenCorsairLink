@@ -431,7 +431,7 @@ int CorsairLed::SetLedCycleColors(int ledIndex, CorsairLedColor *leds)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x0A; // Length
+	cl->buf[0] = 0x14; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
 	cl->buf[2] = WriteOneByte; // Command Opcode
 	cl->buf[3] = LED_SelectCurrent; // Command data...
@@ -439,7 +439,7 @@ int CorsairLed::SetLedCycleColors(int ledIndex, CorsairLedColor *leds)
 	cl->buf[5] = cl->CommandId++; // Command ID
 	cl->buf[6] = WriteThreeBytes; // Command Opcode
 	cl->buf[7] = LED_CycleColors; // Command data...
-	cl->buf[8] = 12;
+	cl->buf[8] = 0x0C;
 
 	cl->buf[9] = leds[0].red;
 	cl->buf[10] = leds[0].green;
