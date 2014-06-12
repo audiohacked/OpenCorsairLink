@@ -85,7 +85,7 @@ int CorsairLed::GetMode(int ledIndex)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x07; // Length
+	cl->buf[0] = 0x03; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
 	cl->buf[2] = ReadOneByte; // Command Opcode
 	cl->buf[3] = LED_Mode; // Command data...
@@ -102,7 +102,7 @@ int CorsairLed::GetMode(int ledIndex)
 		//return -1;
 	}
 
-#if 0
+#if DEBUG
 	int i = 0;
 	for (i = 0; i < 10; i++)
 	{
@@ -116,7 +116,7 @@ int CorsairLed::GetColor(int ledIndex, CorsairLedColor *led)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x08; // Length
+	cl->buf[0] = 0x04; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
 	cl->buf[2] = ReadThreeBytes; // Command Opcode
 	cl->buf[3] = LED_CurrentColor; // Command data...
@@ -160,14 +160,10 @@ int CorsairLed::GetTempControlledMode(int ledIndex)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x07; // Length
+	cl->buf[0] = 0x03; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
-	cl->buf[2] = WriteOneByte; // Command Opcode
-	cl->buf[3] = LED_SelectCurrent; // Command data...
-	cl->buf[4] = ledIndex;
-	cl->buf[5] = cl->CommandId++; // Command ID
-	cl->buf[6] = ReadTwoBytes; // Command Opcode
-	cl->buf[7] = LED_TemperatureColor; // Command data...
+	cl->buf[2] = ReadTwoBytes; // Command Opcode
+	cl->buf[3] = LED_TemperatureColor; // Command data...
 
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
@@ -189,15 +185,11 @@ int CorsairLed::Get_TempMode_Temp(int ledIndex)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x07; // Length
+	cl->buf[0] = 0x04; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
-	cl->buf[2] = WriteOneByte; // Command Opcode
-	cl->buf[3] = LED_SelectCurrent; // Command data...
-	cl->buf[4] = ledIndex;
-	cl->buf[5] = cl->CommandId++; // Command ID
-	cl->buf[6] = ReadThreeBytes; // Command Opcode
-	cl->buf[7] = LED_TemperatureMode; // Command data...
-	cl->buf[8] = 6;
+	cl->buf[2] = ReadThreeBytes; // Command Opcode
+	cl->buf[3] = LED_TemperatureMode; // Command data...
+	cl->buf[4] = 6;
 
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
@@ -220,15 +212,11 @@ int CorsairLed::Get_TempMode_Color(int ledIndex)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x07; // Length
+	cl->buf[0] = 0x04; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
-	cl->buf[2] = WriteOneByte; // Command Opcode
-	cl->buf[3] = LED_SelectCurrent; // Command data...
-	cl->buf[4] = ledIndex;
-	cl->buf[5] = cl->CommandId++; // Command ID
-	cl->buf[6] = ReadThreeBytes; // Command Opcode
-	cl->buf[7] = LED_TemperatureModeColors; // Command data...
-	cl->buf[8] = 9;
+	cl->buf[2] = ReadThreeBytes; // Command Opcode
+	cl->buf[3] = LED_TemperatureModeColors; // Command data...
+	cl->buf[4] = 9;
 
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
@@ -249,15 +237,11 @@ int CorsairLed::GetLedCycleColors(int ledIndex)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x08; // Length
+	cl->buf[0] = 0x04; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
-	cl->buf[2] = WriteOneByte; // Command Opcode
-	cl->buf[3] = LED_SelectCurrent; // Command data...
-	cl->buf[4] = ledIndex;
-	cl->buf[5] = cl->CommandId++; // Command ID
-	cl->buf[6] = ReadThreeBytes; // Command Opcode
-	cl->buf[7] = LED_CycleColors; // Command data...
-	cl->buf[8] = 12; // Number of Bytes that follow
+	cl->buf[2] = ReadThreeBytes; // Command Opcode
+	cl->buf[3] = LED_CycleColors; // Command data...
+	cl->buf[4] = 12; // Number of Bytes that follow
 
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
@@ -278,16 +262,12 @@ int CorsairLed::SetMode(int ledIndex, int mode)
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x07; // Length
+	cl->buf[0] = 0x04; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
 	cl->buf[2] = WriteOneByte; // Command Opcode
-	cl->buf[3] = LED_SelectCurrent; // Command data...
-	cl->buf[4] = ledIndex;
-	cl->buf[5] = cl->CommandId++; // Command ID
-	cl->buf[6] = WriteOneByte; // Command Opcode
-	cl->buf[7] = LED_Mode; // Command data...
+	cl->buf[3] = LED_Mode; // Command data...
 
-	cl->buf[8] = mode;
+	cl->buf[4] = mode;
 
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
