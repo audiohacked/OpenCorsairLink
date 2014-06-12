@@ -95,7 +95,7 @@ int CorsairLink::GetFirmwareVersion()
 	if (res < 0) {
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(handle) );
 	}
-
+	
 	return buf[2];
 }
 
@@ -119,10 +119,10 @@ char* CorsairLink::GetProductName()
 	if (res < 0) {
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(handle) );
 	}
-	char *out = NULL;
-	memcpy(out, buf+2, 8);
-	out[9] = '\0';
-	return out;
+	char ostring[] = "";
+	memcpy(ostring, buf + 3, 8);
+	ostring[8] = '\0';
+	return ostring;
 }
 
 /*char* CorsairLink::DeviceStatus()
