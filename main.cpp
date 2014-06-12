@@ -30,80 +30,6 @@ static struct option long_options[] = {
 	{0, 0, 0, 0}
 };
 
-int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fanRPM, int &ledNumber, int &ledMode, int &ledRed, int &ledGreen, int &ledBlue);
-
-int main(int argc, char **argv) {
-	fprintf(stdout, "Open Corsair Link\n");
-	int fanNumber = 0, fanMode = 0, fanRPM = 0;
-	int ledNumber = 0, ledMode = 0, ledRed = 0, ledGreen = 0, ledBlue = 0;
-	if(parseArguments(argc, argv, fanNumber, fanMode, fanRPM, ledNumber, ledMode, ledRed, ledGreen, ledBlue))
-	{
-		return 1;
-	}
-
-	if(!cl->Initialize()) {
-		fprintf(stdout, "Cannot initialize link.\n");
-		delete cl;
-		return 1;
-	}
-
-	if(fanNumber != 0) {
-		if(fanMode != 0 || fanRPM != 0) {
-			if(fanMode == FixedRPM && fanRPM <= 0) {
-				fprintf(stderr, "Fan RMP missing for Fixed RPM fan mode.\n");
-				return 1;
-			}
-			else {
-				CorsairFan::CorsairFanInfo newFanInfo;
-				if(fanMode != 0) {
-					fprintf(stdout, "Setting fan to mode %s\n", CorsairFan::GetFanModeString(fanMode));
-					newFanInfo.Mode = fanMode;
-				}
-				if(fanRPM != 0) {
-					fprintf(stdout, "Setting fan RPM to %i\n", fanRPM);
-					newFanInfo.RPM = fanRPM;
-				}
-				fans->SetFansInfo(fanNumber - 1, newFanInfo);
-			}
-		} else {
-			fprintf(stdout, "No mode or fan RPM specified for the fan.\n");
-			return 1;
-		}
-	}
-	else if(ledNumber != 0) {
-		if(fanMode < 0) {
-			leds->SetMode(ledNumber - 1, fanMode);
-		}
-		if (ledRed < 0 || ledGreen < 0 || ledBlue < 0) {
-			leds->SetColor(ledNumber - 1, ledRed, ledGreen, ledBlue);
-		}
-	}
-	else if(fanMode != 0 || fanRPM != 0) {
-			fprintf(stderr, "Cannot set fan to a specific mode or fixed RPM without specifying the fan number\n");
-			return 1;
-	}
-	else {
-		int i = 0;
-
-		fprintf(stdout, "Number of Controllable LEDs: %i\n", leds->GetLedCount());
-		fprintf(stdout, "LED Mode: %02X\n", leds->GetMode(0));
-		leds->GetColor(0, &leds->color);
-		fprintf(stdout, "LED Color:\n\tRed: %i\n\tGreen: %i\n\tBlue: %i\n", leds->color.red, leds->color.green, leds->color.blue );
-		fprintf(stdout, "Number of Temperature Sensors: %i\n", temp->GetTempSensors());
-		fprintf(stdout, "Temperature: %.2f C\n", temp->GetTemp(0)/256);
-
-		for(i = 0 ; i< 5; i++) {
-			fans->ReadFanInfo(i, &fans->fanInfo[i]);
-			fans->PrintInfo(fans->fanInfo[i]);
-		}
-	}
-
-	if(cl != NULL) {
-		delete cl;
-	}
-	return 0;
-} 
-
 void printHelp() {
 	fprintf(stdout, "OpenCorsairLink [options]\n");
 	fprintf(stdout, "Options:\n");
@@ -132,14 +58,14 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 			break;
 		switch (c) {
 		case 0:
+		case -1:
 			/* If this option set a flag, do nothing else now. */
-			if (long_options[option_index].flag != 0)
-                 		break;
-               printf ("option %s", long_options[option_index].name);
-               if (optarg)
-                 printf (" with arg %s", optarg);
-               printf ("\n");
-               break;
+			if (long_options[option_index].flag != 0) break;
+			printf ("option %s", long_options[option_index].name);
+			if (optarg)
+				printf (" with arg %s", optarg);
+			printf ("\n");
+			break;
 		case 'f':
 			errno = 0;
 			fanNumber = strtol(optarg, NULL, 10);
@@ -188,3 +114,76 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 	}
 	return returnCode;
 }
+
+int main(int argc, char **argv) {
+	fprintf(stdout, "Open Corsair Link\n");
+	int fanNumber = 0, fanMode = 0, fanRPM = 0;
+	int ledNumber = 0, ledMode = 0, ledRed = 0, ledGreen = 0, ledBlue = 0;
+	if(parseArguments(argc, argv, fanNumber, fanMode, fanRPM, ledNumber, ledMode, ledRed, ledGreen, ledBlue))
+	{
+		return 1;
+	}
+
+	if(!cl->Initialize()) {
+		fprintf(stdout, "Cannot initialize link.\n");
+		delete cl;
+		return 1;
+	}
+
+	if(fanNumber != 0) {
+		if(fanMode != 0 || fanRPM != 0) {
+			if(fanMode == FixedRPM && fanRPM <= 0) {
+				fprintf(stderr, "Fan RMP missing for Fixed RPM fan mode.\n");
+				return 1;
+			}
+			else {
+				CorsairFan::CorsairFanInfo newFanInfo;
+				if(fanMode != 0) {
+					fprintf(stdout, "Setting fan to mode %s\n", CorsairFan::GetFanModeString(fanMode));
+					newFanInfo.Mode = fanMode;
+				}
+				if(fanRPM != 0) {
+					fprintf(stdout, "Setting fan RPM to %i\n", fanRPM);
+					newFanInfo.RPM = fanRPM;
+				}
+				fans->SetFansInfo(fanNumber - 1, newFanInfo);
+			}
+		} else {
+			fprintf(stdout, "No mode or fan RPM specified for the fan.\n");
+			return 1;
+		}
+	}
+	else if(ledNumber > 0) {
+		fprintf(stdout, "Set LED Color\n");
+		if(fanMode < 0) {
+			leds->SetMode(ledNumber - 1, fanMode);
+		}
+		if (ledRed < 0 || ledGreen < 0 || ledBlue < 0) {
+			leds->SetColor(ledNumber - 1, ledRed, ledGreen, ledBlue);
+		}
+	}
+	else if(fanMode != 0 || fanRPM != 0) {
+			fprintf(stderr, "Cannot set fan to a specific mode or fixed RPM without specifying the fan number\n");
+			return 1;
+	}
+	else {
+		int i = 0;
+
+		fprintf(stdout, "Number of Controllable LEDs: %i\n", leds->GetLedCount());
+		fprintf(stdout, "LED Mode: %02X\n", leds->GetMode(0));
+		leds->GetColor(0, &leds->color);
+		fprintf(stdout, "LED Color:\n\tRed: %i\n\tGreen: %i\n\tBlue: %i\n", leds->color.red, leds->color.green, leds->color.blue );
+		fprintf(stdout, "Number of Temperature Sensors: %i\n", temp->GetTempSensors());
+		fprintf(stdout, "Temperature: %.2f C\n", temp->GetTemp(0)/256);
+
+		for(i = 0 ; i< 5; i++) {
+			fans->ReadFanInfo(i, &fans->fanInfo[i]);
+			fans->PrintInfo(fans->fanInfo[i]);
+		}
+	}
+
+	if(cl != NULL) {
+		delete cl;
+	}
+	return 0;
+} 
