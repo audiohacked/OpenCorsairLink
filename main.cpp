@@ -119,7 +119,7 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 int main(int argc, char **argv) {
 	fprintf(stdout, "Open Corsair Link\n");
 	int fanNumber = 0, fanMode = 0, fanRPM = 0;
-	int ledNumber = 0, ledMode = 0, ledRed = 0, ledGreen = 0, ledBlue = 0;
+	uint8_t ledNumber = 0, ledMode = 0, ledRed = 0, ledGreen = 0, ledBlue = 0;
 	if(parseArguments(argc, argv, fanNumber, fanMode, fanRPM, ledNumber, ledMode, ledRed, ledGreen, ledBlue))
 	{
 		return 1;
