@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <getopt.h>
+#include <stdint.h>
 
 #include "CorsairLinkProto.h"
 #include "CorsairLink.h"
@@ -48,7 +49,7 @@ void printHelp() {
 	fprintf(stdout, "\nNot specifying any option will display information about the fans and pump\n\n");
 }
 
-int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fanRPM, int &ledNumber, int &ledMode, int &ledRed, int &ledGreen, int &ledBlue) {
+int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fanRPM, uint8_t &ledNumber, uint8_t &ledMode, uint8_t &ledRed, uint8_t &ledGreen, uint8_t &ledBlue) {
 	int c, returnCode = 0;;
 	while (1) {
 		int option_index = 0;
@@ -156,9 +157,9 @@ int main(int argc, char **argv) {
 	else if(ledNumber > 0) {
 		fprintf(stdout, "Set LED Color\n");
 		//leds->SetMode(ledNumber - 1, 0);
-		leds->color[0].red = 10;
-		leds->color[0].green = 10;
-		leds->color[0].blue = 253;
+		leds->color[0].red = 254;
+		leds->color[0].green = 254;
+		leds->color[0].blue = 254;
 		leds->SetLedCycleColors(ledNumber - 1, leds->color);
 	}
 	else if(fanMode != 0 || fanRPM != 0) {
