@@ -16,22 +16,22 @@ class CorsairLed {
 			int blue;
 		} color[4];
 		
-		int GetLedCount();
 		int SelectLed(int);
+		int GetLedCount();
 		
-		int GetMode(int);
-		int GetColor(int, CorsairLedColor*);
-		int GetTempControlledMode(int);
-		int Get_TempMode_Temp(int);
-		int Get_TempMode_Color(int);
-		int GetLedCycleColors(int);
+		int GetMode();
+		int GetColor(CorsairLedColor*);
+		int GetTempControlledMode();
+		int Get_TempMode_Temp();
+		int Get_TempMode_Color();
+		int GetLedCycleColors(CorsairLedColor*);
 		
-		int SetMode(int, int);
+		int SetMode(int);
 		//int SetColor(int, int, int, int);
-		int SetTempControlledMode(int);
-		int Set_TempMode_Temp(int, int, int, int);
-		int Set_TempMode_Color(int, CorsairLedColor *);
-		int SetLedCycleColors(int,CorsairLedColor *);
+		int SetTempControlledMode();
+		int Set_TempMode_Temp(int, int, int);
+		int Set_TempMode_Color(CorsairLedColor *);
+		int SetLedCycleColors(CorsairLedColor *);
 };
 
 #endif
