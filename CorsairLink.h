@@ -14,6 +14,8 @@ class CorsairLink {
 
 		// Protocol Functions
 		int GetDeviceId();
+		int GetFirmwareVersion();
+		char* GetProductName();
 
 		// USB HID Functions
 		char* _GetManufacturer();

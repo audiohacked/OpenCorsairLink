@@ -78,6 +78,7 @@ int main(int argc, char **argv) {
 	}
 	else {
 		int i = 0;
+		fprintf(stdout, "%s: Firmware v%i\n\n", cl->GetProductName(), cl->GetFirmwareVersion());
 
 		fprintf(stdout, "Number of Controllable LEDs: %i\n", l->GetLedCount());
 		fprintf(stdout, "LED Mode: %02X\n", l->GetMode());
