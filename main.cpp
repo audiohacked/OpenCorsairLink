@@ -22,15 +22,21 @@ static struct option long_options[] = {
 	{"fan", required_argument, 0, 'f'},
 	{"mode", required_argument, 0, 'm'},
 	{"rpm",  required_argument, 0, 'r'},
+	{"led", required_argument, 0, 'l'},
+	{"led_mode", required_argument, 0, -1},
+	{"led_red", required_argument, 0, -1},
+	{"led_green", required_argument, 0, -1},
+	{"led_blue", required_argument, 0, -1},
 	{0, 0, 0, 0}
 };
 
-int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fanRPM);
+int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fanRPM, int &ledNumber, int &ledMode, int &ledRed, int &ledGreen, int &ledBlue);
 
 int main(int argc, char **argv) {
 	fprintf(stdout, "Open Corsair Link\n");
 	int fanNumber = 0, fanMode = 0, fanRPM = 0;
-	if(parseArguments(argc, argv, fanNumber, fanMode, fanRPM))
+	int ledNumber = 0, ledMode = 0, ledRed = 0, ledGreen = 0, ledBlue = 0;
+	if(parseArguments(argc, argv, fanNumber, fanMode, fanRPM, ledNumber, ledMode, ledRed, ledGreen, ledBlue))
 	{
 		return 1;
 	}
@@ -64,8 +70,15 @@ int main(int argc, char **argv) {
 			return 1;
 		}
 	}
-	else if(fanMode != 0 || fanRPM != 0)
-	{
+	else if(ledNumber != 0) {
+		if(fanMode < 0) {
+			leds->SetMode(ledNumber - 1, fanMode);
+		}
+		if (ledRed < 0 || ledGreen < 0 || ledBlue < 0) {
+			leds->SetColor(ledNumber - 1, ledRed, ledGreen, ledBlue);
+		}
+	}
+	else if(fanMode != 0 || fanRPM != 0) {
 			fprintf(stderr, "Cannot set fan to a specific mode or fixed RPM without specifying the fan number\n");
 			return 1;
 	}
@@ -73,7 +86,7 @@ int main(int argc, char **argv) {
 		int i = 0;
 
 		fprintf(stdout, "Number of Controllable LEDs: %i\n", leds->GetLedCount());
-		fprintf(stdout, "LED Mode: %i\n", leds->GetMode(0));
+		fprintf(stdout, "LED Mode: %02X\n", leds->GetMode(0));
 		leds->GetColor(0, &leds->color);
 		fprintf(stdout, "LED Color:\n\tRed: %i\n\tGreen: %i\n\tBlue: %i\n", leds->color.red, leds->color.green, leds->color.blue );
 		fprintf(stdout, "Number of Temperature Sensors: %i\n", temp->GetTempSensors());
@@ -109,15 +122,24 @@ void printHelp() {
 	fprintf(stdout, "\nNot specifying any option will display information about the fans and pump\n\n");
 }
 
-int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fanRPM) {
+int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fanRPM, int &ledNumber, int &ledMode, int &ledRed, int &ledGreen, int &ledBlue) {
 	int c, returnCode = 0;;
 	while (1) {
 		int option_index = 0;
 
-		c = getopt_long (argc, argv, "f:m:r:h", long_options, &option_index);
+		c = getopt_long (argc, argv, "f:m:r:l:h", long_options, &option_index);
 		if (c == -1 || returnCode != 0)
 			break;
 		switch (c) {
+		case 0:
+			/* If this option set a flag, do nothing else now. */
+			if (long_options[option_index].flag != 0)
+                 		break;
+               printf ("option %s", long_options[option_index].name);
+               if (optarg)
+                 printf (" with arg %s", optarg);
+               printf ("\n");
+               break;
 		case 'f':
 			errno = 0;
 			fanNumber = strtol(optarg, NULL, 10);
@@ -156,7 +178,9 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 			printHelp();
 			exit(0);
 			break;
-
+		case 'l':
+			ledNumber = strtol(optarg, NULL, 10);
+			break;
 		default:
 			exit(1);
 			returnCode = 0;
