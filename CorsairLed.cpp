@@ -388,7 +388,7 @@ int CorsairLed::Set_TempMode_Color(int ledIndex, CorsairLedColor colorLeds[])
 {
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x10; // Length
+	cl->buf[0] = 0x11; // Length
 
 	cl->buf[1] = cl->CommandId++; // Command ID
 	cl->buf[2] = WriteOneByte; // Command Opcode
