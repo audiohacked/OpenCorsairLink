@@ -168,8 +168,11 @@ int main(int argc, char **argv) {
 		}
 	}
 	else if(ledNumber > 0) {
-		fprintf(stdout, "Set LED Color\n");
-		//leds->SelectLed(ledNumber - 1, 0);
+		leds->SelectLed(ledNumber - 1);
+		fprintf(stdout, "Setting LED\n");
+		if (ledMode >= 0) {
+			leds->SetMode(ledMode);
+		}
 		leds->SetLedCycleColors(leds->color);
 	}
 	else if(fanMode != 0 || fanRPM != 0) {
