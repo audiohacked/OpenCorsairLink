@@ -73,27 +73,15 @@ int parseArguments(int argc, char **argv, int &fanNumber, int &fanMode, int &fan
 			break;
 		case 1:
 			sscanf(optarg, "%2x%2x%2x", &leds[0].red, &leds[0].green, &leds[0].blue);
-			fprintf(stdout, "Debug: %i\n", leds[0].red);
-			fprintf(stdout, "Debug: %i\n", leds[0].green);
-			fprintf(stdout, "Debug: %i\n", leds[0].blue);
 			break;
 		case 2:
 			sscanf(optarg, "%2x%2x%2x", &leds[1].red, &leds[1].green, &leds[1].blue);
-			fprintf(stdout, "Debug: %i\n", leds[0].red);
-			fprintf(stdout, "Debug: %i\n", leds[0].green);
-			fprintf(stdout, "Debug: %i\n", leds[0].blue);
 			break;
 		case 3:
 			sscanf(optarg, "%2x%2x%2x", &leds[2].red, &leds[2].green, &leds[2].blue);
-			fprintf(stdout, "Debug: %i\n", leds[0].red);
-			fprintf(stdout, "Debug: %i\n", leds[0].green);
-			fprintf(stdout, "Debug: %i\n", leds[0].blue);
 			break;
 		case 4:
 			sscanf(optarg, "%2x%2x%2x", &leds[3].red, &leds[3].green, &leds[3].blue);
-			fprintf(stdout, "Debug: %i\n", leds[0].red);
-			fprintf(stdout, "Debug: %i\n", leds[0].green);
-			fprintf(stdout, "Debug: %i\n", leds[0].blue);
 			break;
 		case 'f':
 			errno = 0;
