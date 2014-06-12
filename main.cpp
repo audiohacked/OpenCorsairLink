@@ -155,9 +155,7 @@ int main(int argc, char **argv) {
 	}
 	else if(ledNumber > 0) {
 		fprintf(stdout, "Set LED Color\n");
-		//if(ledMode < 0) {
-		//	leds->SetMode(ledNumber - 1, ledMode);
-		//}
+		leds->SetMode(ledNumber - 1, 0);
 		leds->SetColor(ledNumber - 1, 0, 0, 255);
 	}
 	else if(fanMode != 0 || fanRPM != 0) {
