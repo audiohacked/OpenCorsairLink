@@ -12,17 +12,27 @@
 extern CorsairLed *l;
 
 static struct option long_options[] = {
-	{"help",  no_argument, 0, 'h'},
-	{"fan", required_argument, 0, 'f'},
-	{"mode", required_argument, 0, 'm'},
-	{"rpm",  required_argument, 0, 'r'},
-	{"led", required_argument, 0, 'l'},
+	{"help",              no_argument,          0, 'h'},
+	{"info",              no_argument,          0, 'i'},
 
-	{"led_mode", required_argument, NULL, 0},
-	{"rgb1", required_argument, NULL, 1},
-	{"rgb2", required_argument, NULL, 2},
-	{"rgb3", required_argument, NULL, 3},
-	{"rgb4", required_argument, NULL, 4},
+	{"led",               required_argument,    0, 'l'},
+	{"led-mode",          required_argument, NULL,  10},
+	{"rgb1",              required_argument, NULL,  11},
+	{"rgb2",              required_argument, NULL,  12},
+	{"rgb3",              required_argument, NULL,  13},
+	{"rgb4",              required_argument, NULL,  14},
+
+	{"temperature",       required_argument,    0, 't'},
+	{"temperature-limit", required_argument, NULL,  20},
+
+	{"fan",               required_argument,    0, 'f'},
+	{"fan-mode",          required_argument, NULL,  30},
+	{"fan-pwm",           required_argument, NULL,  31},
+	{"fan-rpm",           required_argument, NULL,  32},
+	{"fan-external",      required_argument, NULL,  33},
+	{"fan-warning",       required_argument, NULL,  34},
+	{"fan-table-rpm",     required_argument, NULL,  35},
+	{"fan-table-temp",    required_argument, NULL,  36},
 
 	{0, 0, 0, 0}
 };
@@ -30,60 +40,80 @@ static struct option long_options[] = {
 void printHelp() {
 	fprintf(stdout, "OpenCorsairLink [options]\n");
 	fprintf(stdout, "Options:\n");
-	fprintf(stdout, "\t-f, --fan <fan number> Selects a fan to setup.\n");
-	fprintf(stdout, "\t\tAccepted values are 1, 2, 3 or 4.\n");
-	fprintf(stdout, "\t\t5 is H100i Pump.\n");
-	fprintf(stdout, "\t-m, --mode <mode> Sets the mode for the selected fan\n");
-	fprintf(stdout, "\t\tModes:\n");
-	fprintf(stdout, "\t\t\t 4 - Fixed RPM (requires to specify the RPM)\n");
-	fprintf(stdout, "\t\t\t 6 - Default\n");
-	fprintf(stdout, "\t\t\t 8 - Quiet\n");
-	fprintf(stdout, "\t\t\t10 - Balanced\n");
-	fprintf(stdout, "\t\t\t12 - Performance\n");
-	fprintf(stdout, "\t-r, --rpm <fan RPM> The desired RPM for the selected fan. NOTE: it works only when fan mode is set to Fixed RPM\n");
-	fprintf(stdout, "\t-h, --help Prints this message\n");
-	fprintf(stdout, "\nNot specifying any option will display information about the fans and pump\n\n");
+	fprintf(stdout, "\t-h, --help :Prints this Message\n");
+	fprintf(stdout, "\t-i, --info :Displays information about the Fans, Pumps, and LEDs.\n");
+
+	fprintf(stdout, "\t-l, --led <led number> :Selects a LED to setup. LEDs are numbered 1 & up.\n");
+	fprintf(stdout, "\t\t--led-mode <led mode> :Sets LED Mode (in HH format).\n");
+	fprintf(stdout, "\t\t\tModes:\n");
+	fprintf(stdout, "\t\t\t\t 0x00 - Static Color\n");
+	fprintf(stdout, "\t\t\t\t 0x40 - 2-Color Cycle (requries to specify RGB1 & RGB2)\n");
+	fprintf(stdout, "\t\t\t\t 0x80 - 4-Color Cycle (requires to specify RGB1, RGB2, RGB3, & RGB4)\n");
+	fprintf(stdout, "\t\t\t\t 0xC0 - Temperature Mode (requires to specify RGB1, RGB2, & RGB3)\n");
+	fprintf(stdout, "\t\t\t\t\tLow Nibble controls Cycle Speed or Temperature Channel\n");
+	fprintf(stdout, "\t\t\t\t\t(0 = internal sensor; 7 = manual)\n");
+	fprintf(stdout, "\t\t--rgb1 <HTML Color Code> :Define Color for LEDs\n");
+	fprintf(stdout, "\t\t--rgb2 <HTML Color Code> :Define Color for LEDs\n");
+	fprintf(stdout, "\t\t--rgb3 <HTML Color Code> :Define Color for LEDs\n");
+	fprintf(stdout, "\t\t--rgb4 <HTML Color Code> :Define Color for LEDs\n");
+
+	fprintf(stdout, "\t-t, --temperature <sensor number> :Selects a Temperature Sensor.\n");
+	fprintf(stdout, "\t\t--temperature-limit <temp limit> :Sets Max Temperature (high temp warning).\n");
+
+	fprintf(stdout, "\t-f, --fan <fan number> :Selects a fan to setup. Accepted values are 1, 2, 3 or 4.\n");
+	fprintf(stdout, "\t\t--fan-mode <fan mode> :Sets the mode for the selected fan\n");
+	fprintf(stdout, "\t\t\tModes:\n");
+	fprintf(stdout, "\t\t\t\t 2 - Fixed PWM (requires to sepcify the PWM)\n");
+	fprintf(stdout, "\t\t\t\t 4 - Fixed RPM (requires to specify the RPM)\n");
+	fprintf(stdout, "\t\t\t\t 6 - Default\n");
+	fprintf(stdout, "\t\t\t\t 8 - Quiet\n");
+	fprintf(stdout, "\t\t\t\t10 - Balanced\n");
+	fprintf(stdout, "\t\t\t\t12 - Performance\n");
+	fprintf(stdout, "\t\t--fan-pwm <fan PWM> :The desired PWM speed for the selected fan. NOTE: it only works when fan mode is set to Fixed PWM\n");
+	fprintf(stdout, "\t\t--fan-rpm <fan RPM> :The desired RPM for the selected fan. NOTE: it works only when fan mode is set to Fixed RPM\n");
+	fprintf(stdout, "\t\t--fan-warning <fan threshold> :Sets the Fan Warning Limit (Sets Underspeed Threshold).\n");
 }
 
-int parseArguments(int argc, char **argv, 
-	int &fanNumber, int &fanMode, int &fanRPM,
-	int &ledNumber, int &ledMode, CorsairLed::CorsairLedColor *leds)
+int parseArguments(int argc, char **argv, int &info, 
+	int &fanNumber, int &fanMode, int &fanPWM, int &fanRPM, int &fanThreshold,
+	int &ledNumber, int &ledMode, CorsairLed::CorsairLedColor *leds,
+	int &tempNumber)
 {
 	int c, returnCode = 0;
 	while (1) {
 		int option_index = 0;
 
-		c = getopt_long (argc, argv, "f:m:r:l:h", long_options, &option_index);
+		c = getopt_long (argc, argv, "hil:t:f:", long_options, &option_index);
 		if (c == -1 || returnCode != 0)
 			break;
 		switch (c) {
-		case 'l':
+		case 'l':// led select
 			ledNumber = strtol(optarg, NULL, 10);
 			if(ledNumber < 1) {
 				fprintf(stderr, "Led number is invalid.");
 				returnCode = 1;
 			}
 			break;
-		case 0:
-			ledMode = strtol(optarg, NULL, 10);
+		case 10://led-mode
+			sscanf(optarg, "%2x", &ledMode);
 			break;
-		case 1:
+		case 11://rpg1
 			sscanf(optarg, "%2x%2x%2x", &leds[0].red, &leds[0].green, &leds[0].blue);
 			l->color_set_by_opts++;
 			break;
-		case 2:
+		case 12://rpg2
 			sscanf(optarg, "%2x%2x%2x", &leds[1].red, &leds[1].green, &leds[1].blue);
 			l->color_set_by_opts++;
 			break;
-		case 3:
+		case 13://rpg3
 			sscanf(optarg, "%2x%2x%2x", &leds[2].red, &leds[2].green, &leds[2].blue);
 			l->color_set_by_opts++;
 			break;
-		case 4:
+		case 14://rpg4
 			sscanf(optarg, "%2x%2x%2x", &leds[3].red, &leds[3].green, &leds[3].blue);
 			l->color_set_by_opts++;
 			break;
-		case 'f':
+		case 'f'://fan select
 			errno = 0;
 			fanNumber = strtol(optarg, NULL, 10);
 			if(fanNumber < 1 || fanNumber > 5){
@@ -92,7 +122,7 @@ int parseArguments(int argc, char **argv,
 			}
 			break;
 
-		case 'm':
+		case 30://fan-mode
 			errno = 0;
 			fanMode = strtol(optarg, NULL, 10);
 			if(fanMode != Performance && fanMode != FixedRPM &&
@@ -107,8 +137,15 @@ int parseArguments(int argc, char **argv,
 				returnCode = 1;
 			}
 			break;
-
-		case 'r':
+		case 31://fan-pwm
+			errno = 0;
+			fanPWM = strtol(optarg, NULL, 10);
+			if(fanPWM < 0){
+				fprintf(stderr, "Fan PWM cannot be a negative value.\n");
+				returnCode = 1;
+			}
+			break;
+		case 32://fan-rpm
 			errno = 0;
 			fanRPM = strtol(optarg, NULL, 10);
 			if(fanRPM < 0){
@@ -116,8 +153,13 @@ int parseArguments(int argc, char **argv,
 				returnCode = 1;
 			}
 			break;
-
-		case 'h':
+		case 34://fan-warning
+			errno = 0;
+			break;	
+		case 'i'://info
+			info = 1;
+			break;
+		case 'h'://help
 			printHelp();
 			exit(0);
 			break;
