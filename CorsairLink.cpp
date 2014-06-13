@@ -206,6 +206,20 @@ int CorsairLink::hid_read_wrapper (hid_device *handle, unsigned char *buf)
 	return 1;
 }
 
+int CorsairLink::hid_wrapper (hid_device *handle, unsigned char *buf, size_t buf_size) {
+	int res = hid_write(handle, buf, buf_size);
+	if (res < 0) {
+		fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(handle) );
+		//return -1;
+	}
+	res = this->hid_read_wrapper(handle, buf);
+	if (res < 0) {
+		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(handle) );
+		//return -1;
+	}
+	return res;	
+}
+
 void CorsairLink::sleep(int ms)
 {
 	#ifdef WIN32

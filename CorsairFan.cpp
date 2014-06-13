@@ -8,12 +8,202 @@
 
 extern CorsairLink *cl;
 
-CorsairFan::CorsairFan()
-{
+int CorsairFan::SelectFan(int index) {
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x04;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = WriteOneByte;
+	cl->buf[3] = FAN_Select;
+	cl->buf[4] = index;
+
+	cl->hid_wrapper(cl->handle, cl->buf, 8);
+	return cl->buf[2];
 }
 
-void CorsairFan::PrintInfo(CorsairFanInfo fan)
-{
+int CorsairFan::CurrentFan() {
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x03;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = ReadOneByte;
+	cl->buf[3] = FAN_Select;
+
+	cl->hid_wrapper(cl->handle, cl->buf, 8);
+	return cl->buf[2];
+}
+
+int CorsairFan::GetFanCount() {
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x03;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = WriteOneByte;
+	cl->buf[3] = FAN_Count;
+	cl->buf[4] = 0x00;
+
+	cl->hid_wrapper(cl->handle, cl->buf, 8);
+	return cl->buf[2];
+}
+
+int CorsairFan::GetFanMode() {
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x03;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = ReadOneByte;
+	cl->buf[3] = FAN_Mode;
+	cl->buf[4] = 0x00;
+
+	cl->hid_wrapper(cl->handle, cl->buf, 8);
+	return cl->buf[2];
+}
+
+int CorsairFan::SetFanMode(int mode) {
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x03;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = WriteOneByte;
+	cl->buf[3] = FAN_Mode;
+	cl->buf[4] = mode;
+	cl->hid_wrapper(cl->handle, cl->buf, 8);
+	return 0;
+}
+
+int CorsairFan::GetFanPWM() {
+	//ReadOneByte
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x03;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = ReadOneByte;
+	cl->buf[3] = FAN_FixedPWM;
+	cl->hid_wrapper(cl->handle, cl->buf, 8);
+	return cl->buf[2];
+}
+
+int CorsairFan::SetFanPWM(int pwm) {
+	//WriteOneByte
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x04;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = WriteOneByte;
+	cl->buf[3] = FAN_FixedPWM;
+	cl->buf[4] = pwm;
+	cl->hid_wrapper(cl->handle, cl->buf, 8);
+	return 0;
+}
+
+int CorsairFan::GetFanRPM() {
+	//ReadTwoBytes
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x04;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = ReadTwoBytes;
+	cl->buf[3] = FAN_FixedRPM;
+	cl->buf[4] = 0x00;
+	cl->hid_wrapper(cl->handle, cl->buf, 8);
+	int RPM = cl->buf[3]<<8;
+	RPM += cl->buf[2];
+	return RPM;
+}
+
+int CorsairFan::SetFanRPM(int rpm) {
+	//WriteTwoBytes
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x05;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = WriteTwoBytes;
+	cl->buf[3] = FAN_FixedRPM;
+	cl->buf[4] = rpm & 0x00ff;
+	cl->buf[5] = rpm>>8;
+	cl->hid_wrapper(cl->handle, cl->buf, 8);
+	return 0;
+}
+
+int CorsairFan::GetExternalReport() {
+	//ReadTwoBytes
+	return -1;
+}
+
+int CorsairFan::SetExternalReport() {
+	//WriteTwoBytes
+	return -1;
+}
+
+int CorsairFan::GetCurrentRPM() {
+	//ReadTwoBytes
+	memset(cl->buf, 0x00, sizeof(cl->buf));	
+	cl->buf[0] = 0x03;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = ReadTwoBytes;
+	cl->buf[3] = FAN_ReadRPM;
+	cl->hid_wrapper(cl->handle, cl->buf, 8);
+	int RPM = cl->buf[3]<<8;
+	RPM += cl->buf[2];
+	return RPM;
+}
+
+int CorsairFan::GetMaxRPM() {
+	//ReadTwoBytes
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x03;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = ReadTwoBytes;
+	cl->buf[3] = FAN_MaxRecordedRPM;
+	cl->hid_wrapper(cl->handle, cl->buf, 8);
+	int MaxRPM = cl->buf[3]<<8;
+	MaxRPM = cl->buf[2];
+	return MaxRPM;
+}
+
+int CorsairFan::GetFanUnderspeedThreshold() {
+	//ReadTwoBytes
+	return 0;
+}
+
+int CorsairFan::SetFanUnderspeedThreshold(int threshold) {
+	//WriteTwoBytes
+	return 0;
+}
+
+int CorsairFan::GetRPMTable(int &rpm1, int &rpm2, int &rpm3, int &rpm4, int &rpm5) {
+	return 0;
+}
+
+int CorsairFan::SetRPMTable(int rpm1, int rpm2, int rpm3, int rpm4, int rpm5) {
+
+	memset(cl->buf, 0x00, sizeof(cl->buf));	
+	cl->buf[0] = 0x0F;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = WriteThreeBytes;
+	cl->buf[3] = FAN_RPMTable;
+	cl->buf[4] = 0x0A;
+
+	cl->buf[5] = rpm1 & 0x00FF;
+	cl->buf[6] = rpm1>>8;
+
+	cl->buf[7] = rpm2 & 0x00FF;
+	cl->buf[8] = rpm2>>8;
+
+	cl->buf[9] = rpm3 & 0x00FF;
+	cl->buf[10] = rpm3>>8;
+
+	cl->buf[11] = rpm4 & 0x00FF;
+	cl->buf[12] = rpm4>>8;
+
+	cl->buf[13] = rpm5 & 0x00FF;
+	cl->buf[14] = rpm5>>8;
+
+	cl->hid_wrapper(cl->handle, cl->buf, 24);
+
+	return 0;
+}
+
+int CorsairFan::GetTemperatureTable(int &temp1, int &temp2, int &temp3, int &temp4, int &temp5) {
+	return 0;
+}
+
+int CorsairFan::SetTemperatureTable(int temp1, int temp2, int temp3, int temp4, int temp5) {
+	return 0;
+}
+
+void CorsairFan::PrintInfo(CorsairFanInfo fan) {
 	fprintf(stdout, "%s:\n", fan.Name );
 	fprintf(stdout, "\tMode: %s\n", GetFanModeString(fan.Mode) );
 	fprintf(stdout, "\tRPM: %i\n", fan.RPM );
@@ -221,6 +411,3 @@ int CorsairFan::SetFansInfo(int fanIndex, CorsairFanInfo fanInfo){
 	return 0;
 }
 
-CorsairFan::~CorsairFan(){
-	
-}
