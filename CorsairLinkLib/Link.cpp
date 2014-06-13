@@ -3,9 +3,9 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "CorsairLinkProto.h"
-#include "CorsairLink.h"
-#include "CorsairFan.h"
+#include "Proto.h"
+#include "Link.h"
+#include "Fan.h"
 
 
 CorsairLink::CorsairLink() {

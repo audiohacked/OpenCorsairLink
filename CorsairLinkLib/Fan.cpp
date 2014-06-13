@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "CorsairLinkProto.h"
-#include "CorsairLink.h"
-#include "CorsairFan.h"
+#include "Proto.h"
+#include "Link.h"
+#include "Fan.h"
 
 extern CorsairLink *cl;
 
@@ -148,26 +148,63 @@ int CorsairFan::GetMaxRPM() {
 	cl->buf[3] = FAN_MaxRecordedRPM;
 	cl->hid_wrapper(cl->handle, cl->buf, 8);
 	int MaxRPM = cl->buf[3]<<8;
-	MaxRPM = cl->buf[2];
+	MaxRPM += cl->buf[2];
 	return MaxRPM;
 }
 
 int CorsairFan::GetFanUnderspeedThreshold() {
 	//ReadTwoBytes
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x03;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = ReadTwoBytes;
+	cl->buf[3] = FAN_UnderSpeedThreshold;
+	cl->hid_wrapper(cl->handle, cl->buf, 8);
+	int threshold = cl->buf[3]<<8;
+	threshold += cl->buf[2];
 	return 0;
 }
 
 int CorsairFan::SetFanUnderspeedThreshold(int threshold) {
 	//WriteTwoBytes
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x05;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = WriteTwoBytes;
+	cl->buf[3] = FAN_UnderSpeedThreshold;
+	cl->buf[4] = threshold & 0x00FF;
+	cl->buf[5] = threshold >> 8;
 	return 0;
 }
 
 int CorsairFan::GetRPMTable(int &rpm1, int &rpm2, int &rpm3, int &rpm4, int &rpm5) {
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x0F;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = ReadThreeBytes;
+	cl->buf[3] = FAN_RPMTable;
+	cl->buf[4] = 0x0A;
+	cl->hid_wrapper(cl->handle, cl->buf, 24);
+
+	rpm1 = cl->buf[4]<<8;
+	rpm1 += cl->buf[3];
+
+	rpm2 = cl->buf[6]<<8;
+	rpm2 += cl->buf[5];
+
+	rpm3 = cl->buf[8]<<8;
+	rpm3 += cl->buf[7];
+
+	rpm4 = cl->buf[10]<<8;
+	rpm4 += cl->buf[9];
+
+	rpm5 = cl->buf[12]<<8;
+	rpm5 += cl->buf[11];
+
 	return 0;
 }
 
 int CorsairFan::SetRPMTable(int rpm1, int rpm2, int rpm3, int rpm4, int rpm5) {
-
 	memset(cl->buf, 0x00, sizeof(cl->buf));	
 	cl->buf[0] = 0x0F;
 	cl->buf[1] = cl->CommandId++;
@@ -196,10 +233,57 @@ int CorsairFan::SetRPMTable(int rpm1, int rpm2, int rpm3, int rpm4, int rpm5) {
 }
 
 int CorsairFan::GetTemperatureTable(int &temp1, int &temp2, int &temp3, int &temp4, int &temp5) {
+	memset(cl->buf, 0x00, sizeof(cl->buf));
+	cl->buf[0] = 0x0F;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = ReadThreeBytes;
+	cl->buf[3] = FAN_RPMTable;
+	cl->buf[4] = 0x0A;
+	cl->hid_wrapper(cl->handle, cl->buf, 24);
+
+	temp1 = cl->buf[4]<<8;
+	temp1 += cl->buf[3];
+
+	temp2 = cl->buf[6]<<8;
+	temp2 += cl->buf[5];
+
+	temp3 = cl->buf[8]<<8;
+	temp3 += cl->buf[7];
+
+	temp4 = cl->buf[10]<<8;
+	temp4 += cl->buf[9];
+
+	temp5 = cl->buf[12]<<8;
+	temp5 += cl->buf[11];
+
 	return 0;
 }
 
 int CorsairFan::SetTemperatureTable(int temp1, int temp2, int temp3, int temp4, int temp5) {
+	memset(cl->buf, 0x00, sizeof(cl->buf));	
+	cl->buf[0] = 0x0F;
+	cl->buf[1] = cl->CommandId++;
+	cl->buf[2] = WriteThreeBytes;
+	cl->buf[3] = FAN_RPMTable;
+	cl->buf[4] = 0x0A;
+
+	cl->buf[5] = temp1 & 0x00FF;
+	cl->buf[6] = temp1>>8;
+
+	cl->buf[7] = temp2 & 0x00FF;
+	cl->buf[8] = temp2>>8;
+
+	cl->buf[9] = temp3 & 0x00FF;
+	cl->buf[10] = temp3>>8;
+
+	cl->buf[11] = temp4 & 0x00FF;
+	cl->buf[12] = temp4>>8;
+
+	cl->buf[13] = temp5 & 0x00FF;
+	cl->buf[14] = temp5>>8;
+
+	cl->hid_wrapper(cl->handle, cl->buf, 24);
+
 	return 0;
 }
 

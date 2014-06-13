@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "CorsairLinkProto.h"
-#include "CorsairLink.h"
-#include "CorsairLed.h"
+#include "Proto.h"
+#include "Link.h"
+#include "Led.h"
 
 extern CorsairLink *cl;
 
