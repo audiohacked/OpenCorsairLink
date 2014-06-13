@@ -1,6 +1,7 @@
 SOURCES += cli.cpp
 INCLUDEPATH += . ../CorsairLinkLib
-LIBS += -L../CorsairLinkLib -lCorsairLink -lhidapi-hidraw
-TARGET = OpenCorsairLink
+LIBS += -L.. -lCorsairLink -lhidapi-hidraw
+
 DESTDIR = ..
+TARGET = OpenCorsairLink
 

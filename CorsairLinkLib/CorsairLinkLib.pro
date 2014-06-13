@@ -26,5 +26,6 @@ HEADERS += \
 	Proto.h \
 	Temperature.h
 
+DESTDIR = ..
 TARGET = CorsairLink
 
