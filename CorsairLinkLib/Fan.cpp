@@ -237,7 +237,7 @@ int CorsairFan::GetTemperatureTable(int &temp1, int &temp2, int &temp3, int &tem
 	cl->buf[0] = 0x0F;
 	cl->buf[1] = cl->CommandId++;
 	cl->buf[2] = ReadThreeBytes;
-	cl->buf[3] = FAN_RPMTable;
+	cl->buf[3] = FAN_TempTable;
 	cl->buf[4] = 0x0A;
 	cl->hid_wrapper(cl->handle, cl->buf, 24);
 
@@ -264,7 +264,7 @@ int CorsairFan::SetTemperatureTable(int temp1, int temp2, int temp3, int temp4, 
 	cl->buf[0] = 0x0F;
 	cl->buf[1] = cl->CommandId++;
 	cl->buf[2] = WriteThreeBytes;
-	cl->buf[3] = FAN_RPMTable;
+	cl->buf[3] = FAN_TempTable;
 	cl->buf[4] = 0x0A;
 
 	cl->buf[5] = temp1 & 0x00FF;
