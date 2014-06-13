@@ -21,12 +21,12 @@ int main(int argc, char **argv) {
 	//fprintf(stdout, "Open Corsair Link\n");
 
 	int info = 0;
-	int fanNumber = 0, fanMode = 0, fanPWM = 0, fanRPM = 0, fanThreshold = 0;
+	int fanNumber = -1, fanHighNumber = 0, fanMode = 0, fanPWM = 0, fanRPM = 0, fanThreshold = 0;
 	int ledNumber = 0, ledMode = -1;
 	int tempNumber = 0;
 
 	if(parseArguments(argc, argv, info,
-	   fanNumber, fanMode, fanPWM, fanRPM, fanThreshold,
+	   fanNumber, fanHighNumber, fanMode, fanPWM, fanRPM, fanThreshold,
 	   ledNumber, ledMode, l->color,
 	   tempNumber)) {
 		return 1;
@@ -51,14 +51,14 @@ int main(int argc, char **argv) {
 		}
 		if (tempNumber > 0) {
 			fprintf(stdout, "Number of Temperature Sensors: %i\n", t->GetTempSensors());
-			t->SelectSensor(0);
+			t->SelectSensor(tempNumber - 1);
 			fprintf(stdout, "Temperature: %.2f C\n", (float)t->GetTemp()/256);
 		}
-		if (fanNumber > 0) {
-			for(i = 0 ; i< 5; i++) {
+		if (fanNumber > -1) {
+			for(i = fanNumber-1 ; i<fanHighNumber; i++) {
 				f->ReadFanInfo(i, &f->fanInfo[i]);
 			}
-			for(i = 0 ; i< 5; i++) {
+			for(i = fanNumber-1 ; i<fanHighNumber; i++) {
 				f->PrintInfo(f->fanInfo[i]);
 			}
 		}
@@ -113,8 +113,14 @@ int main(int argc, char **argv) {
 
 	if(cl != NULL) {
 		delete cl;
+	}
+	if(f != NULL) {
 		delete f;
+	}
+	if(l != NULL) {
 		delete l;
+	}
+	if(t != NULL) {
 		delete t;
 	}
 	return 0;

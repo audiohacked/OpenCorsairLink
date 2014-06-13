@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include <string.h>
 
 #include "CorsairLinkProto.h"
 #include "CorsairLink.h"
@@ -14,6 +15,7 @@ extern CorsairLed *l;
 static struct option long_options[] = {
 	{"help",              no_argument,          0, 'h'},
 	{"info",              no_argument,          0, 'i'},
+	{"print",             no_argument,          0, 'p'},
 
 	{"led",               required_argument,    0, 'l'},
 	{"led-mode",          required_argument, NULL,  10},
@@ -41,7 +43,8 @@ void printHelp() {
 	fprintf(stdout, "OpenCorsairLink [options]\n");
 	fprintf(stdout, "Options:\n");
 	fprintf(stdout, "\t-h, --help :Prints this Message\n");
-	fprintf(stdout, "\t-i, --info :Displays information about the Fans, Pumps, and LEDs.\n");
+	fprintf(stdout, "\t-i, --info :Displays information about the Fans, Pumps, or LEDs.\n");
+	fprintf(stdout, "\t-p, --print :Displays all information about the Fans, Pumps, and LEDs.\n");
 
 	fprintf(stdout, "\t-l, --led <led number> :Selects a LED to setup. LEDs are numbered 1 & up.\n");
 	fprintf(stdout, "\t\t--led-mode <led mode> :Sets LED Mode (in HH format).\n");
@@ -60,7 +63,7 @@ void printHelp() {
 	fprintf(stdout, "\t-t, --temperature <sensor number> :Selects a Temperature Sensor.\n");
 	fprintf(stdout, "\t\t--temperature-limit <temp limit> :Sets Max Temperature (high temp warning).\n");
 
-	fprintf(stdout, "\t-f, --fan <fan number> :Selects a fan to setup. Accepted values are 1, 2, 3 or 4.\n");
+	fprintf(stdout, "\t-f, --fan <fan number>{:<fan number>} :Selects a fan to setup. Accepted values are 1, 2, 3 or 4.\n");
 	fprintf(stdout, "\t\t--fan-mode <fan mode> :Sets the mode for the selected fan\n");
 	fprintf(stdout, "\t\t\tModes:\n");
 	fprintf(stdout, "\t\t\t\t 2 - Fixed PWM (requires to sepcify the PWM)\n");
@@ -75,11 +78,12 @@ void printHelp() {
 }
 
 int parseArguments(int argc, char **argv, int &info, 
-	int &fanNumber, int &fanMode, int &fanPWM, int &fanRPM, int &fanThreshold,
+	int &fanNumber, int &fanHighNumber, int &fanMode, int &fanPWM, int &fanRPM, int &fanThreshold,
 	int &ledNumber, int &ledMode, CorsairLed::CorsairLedColor *leds,
 	int &tempNumber)
 {
 	int c, returnCode = 0;
+	char sep;
 	while (1) {
 		int option_index = 0;
 
@@ -115,7 +119,10 @@ int parseArguments(int argc, char **argv, int &info,
 			break;
 		case 'f'://fan select
 			errno = 0;
-			fanNumber = strtol(optarg, NULL, 10);
+			sscanf(optarg, "%i%c%i", &fanNumber, &sep, &fanHighNumber);
+			if (strncmp(&sep,":",1)!=0) {
+				fanHighNumber=fanNumber;
+			}
 			if(fanNumber < 1 || fanNumber > 5){
 				fprintf(stderr, "Fan number is invalid. Accepted values are 1, 2, 3 or 4.");
 				returnCode = 1;
@@ -158,6 +165,13 @@ int parseArguments(int argc, char **argv, int &info,
 			break;	
 		case 'i'://info
 			info = 1;
+			break;
+		case 'p'://print all info
+			info = 1;
+			ledNumber = 1;
+			tempNumber = 1;
+			fanNumber = 1;
+			fanHighNumber = 5;
 			break;
 		case 'h'://help
 			printHelp();
