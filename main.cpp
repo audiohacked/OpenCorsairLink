@@ -86,8 +86,10 @@ int main(int argc, char **argv) {
 		fprintf(stdout, "LED Mode: %02X\n", l->GetMode());
 		l->GetColor(&l->color[0]);
 		fprintf(stdout, "LED Color:\n\tRed: %i\n\tGreen: %i\n\tBlue: %i\n", l->color[0].red, l->color[0].green, l->color[0].blue );
+
 		fprintf(stdout, "Number of Temperature Sensors: %i\n", t->GetTempSensors());
-		fprintf(stdout, "Temperature: %.2f C\n", t->GetTemp(0)/256);
+		t->SelectSensor(0);
+		fprintf(stdout, "Temperature: %.2f C\n", (float)t->GetTemp()/256);
 
 		for(i = 0 ; i< 5; i++) {
 			f->ReadFanInfo(i, &f->fanInfo[i]);

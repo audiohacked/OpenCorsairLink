@@ -124,16 +124,14 @@ int CorsairLink::GetProductName(char *ostring)
 	return 0;
 }
 
-/*
-char* CorsairLink::DeviceStatus()
+int CorsairLink::GetDeviceStatus()
 {
 	memset(buf,0,sizeof(buf));
 
-	// Read Device ID: 0x3b = H80i. 0x3c = H100i
 	buf[0] = 0x03; // Length
 	buf[1] = this->CommandId++; // Command ID
 	buf[2] = ReadOneByte; // Command Opcode
-	buf[3] = DeviceID; // Command data...
+	buf[3] = Status; // Command data...
 	buf[4] = 0x00;
 
 	int res = hid_write(handle, buf, 17);
@@ -148,7 +146,6 @@ char* CorsairLink::DeviceStatus()
 
 	return buf[2];
 }
-*/
 
 char* CorsairLink::_GetManufacturer()
 {

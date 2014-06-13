@@ -8,12 +8,53 @@
 
 extern CorsairLink *cl;
 
-CorsairTemp::CorsairTemp()
+int CorsairTemp::SelectSensor(int index)
 {
+	memset(cl->buf,0x00,sizeof(cl->buf));
+
+	cl->buf[0] = 0x04; // Length
+	cl->buf[1] = cl->CommandId++; // Command ID
+	cl->buf[2] = WriteOneByte; // Command Opcode
+	cl->buf[3] = TEMP_SelectActiveSensor; // Command data...
+	cl->buf[4] = index;
+
+	int res = hid_write(cl->handle, cl->buf, 11);
+	if (res < 0) {
+		fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(cl->handle) );
+		//return -1;
+	}
+
+	res = cl->hid_read_wrapper(cl->handle, cl->buf);
+	if (res < 0) {
+		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
+		//return -1;
+	}
+
+	return cl->buf[2];
 }
 
-CorsairTemp::~CorsairTemp()
+int CorsairTemp::CurrentSensor()
 {
+	memset(cl->buf,0x00,sizeof(cl->buf));
+
+	cl->buf[0] = 0x03; // Length
+	cl->buf[1] = cl->CommandId++; // Command ID
+	cl->buf[2] = ReadOneByte; // Command Opcode
+	cl->buf[3] = TEMP_SelectActiveSensor; // Command data...
+
+	int res = hid_write(cl->handle, cl->buf, 11);
+	if (res < 0) {
+		fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(cl->handle) );
+		//return -1;
+	}
+
+	res = cl->hid_read_wrapper(cl->handle, cl->buf);
+	if (res < 0) {
+		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
+		//return -1;
+	}
+
+	return cl->buf[2];
 }
 
 int CorsairTemp::GetTempSensors()
@@ -40,20 +81,14 @@ int CorsairTemp::GetTempSensors()
 	return cl->buf[2];
 }
 
-float CorsairTemp::GetTemp(int index)
+int CorsairTemp::GetTemp()
 {//2
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x07; // Length
+	cl->buf[0] = 0x03; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
-	cl->buf[2] = WriteOneByte; // Command Opcode
-	cl->buf[3] = TEMP_SelectActiveSensor; // Command data...
-	cl->buf[4] = index;
-
-	cl->buf[5] = cl->CommandId++; // Command ID
-	cl->buf[6] = ReadTwoBytes; // Command Opcode
-	cl->buf[7] = TEMP_Read; // Command data...
-
+	cl->buf[2] = ReadTwoBytes; // Command Opcode
+	cl->buf[3] = TEMP_Read; // Command data...
 
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
@@ -66,25 +101,19 @@ float CorsairTemp::GetTemp(int index)
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
 		//return -1;
 	}
-	int temp = cl->buf[5]<<8;
-	temp += cl->buf[4];
+	int temp = cl->buf[3]<<8;
+	temp += cl->buf[2];
 	return temp;
 }
 
-int CorsairTemp::GetTempLimit(int index)
+int CorsairTemp::GetTempLimit()
 {//2
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x07; // Length
+	cl->buf[0] = 0x03; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
-	cl->buf[2] = WriteOneByte; // Command Opcode
-	cl->buf[3] = TEMP_SelectActiveSensor; // Command data...
-	cl->buf[4] = index;
-
-	cl->buf[5] = cl->CommandId++; // Command ID
-	cl->buf[6] = ReadTwoBytes; // Command Opcode
-	cl->buf[7] = TEMP_Limit; // Command data...
-
+	cl->buf[2] = ReadTwoBytes; // Command Opcode
+	cl->buf[3] = TEMP_Limit; // Command data...
 
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
@@ -104,22 +133,16 @@ int CorsairTemp::GetTempLimit(int index)
 	return limit;
 }
 
-int CorsairTemp::SetTempLimit(int index, int limit)
+int CorsairTemp::SetTempLimit(int limit)
 {//2
 	memset(cl->buf,0x00,sizeof(cl->buf));
 	// Read fan Mode
-	cl->buf[0] = 0x09; // Length
+	cl->buf[0] = 0x05; // Length
 	cl->buf[1] = cl->CommandId++; // Command ID
-	cl->buf[2] = WriteOneByte; // Command Opcode
-	cl->buf[3] = TEMP_SelectActiveSensor; // Command data...
-	cl->buf[4] = index;
-
-	cl->buf[5] = cl->CommandId++; // Command ID
-	cl->buf[6] = WriteTwoBytes; // Command Opcode
-	cl->buf[7] = TEMP_Limit; // Command data...
-
-	cl->buf[8] = limit & 0x00FF;
-	cl->buf[9] = limit >> 8;
+	cl->buf[2] = WriteTwoBytes; // Command Opcode
+	cl->buf[3] = TEMP_Limit; // Command data...
+	cl->buf[4] = limit & 0x00FF;
+	cl->buf[5] = limit >> 8;
 
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {

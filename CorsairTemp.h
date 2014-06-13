@@ -8,18 +8,15 @@
 */
 class CorsairTemp {
 	public:
-		CorsairTemp();
-		~CorsairTemp();
+		CorsairTemp(){}
+		~CorsairTemp(){}
 
-	private:
-		//static char* GetLedModeString(int mode);
-
-	public:
+		int SelectSensor(int);
+		int CurrentSensor();
 		int GetTempSensors();
-		float GetTemp(int);
-		int GetTempLimit(int);
-		int SetTempLimit(int, int);
-
+		int GetTemp();
+		int GetTempLimit();
+		int SetTempLimit(int);
 };
 
 #endif
