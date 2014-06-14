@@ -1,6 +1,7 @@
-CONFIG += 
-TEMPLATE +=
-QT +=
+CONFIG += debug
+CONFIG += qt
+QT += widgets
+TEMPLATE += app
 win32 {
 	QT += winextras
 	SOURCES += microsoft.cpp

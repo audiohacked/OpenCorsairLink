@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
-SUBDIRS = CorsairLinkLib
-#SUBDIRS += Gui
 CONFIG += ordered
+SUBDIRS = CorsairLinkLib
 SUBDIRS += Cli
+SUBDIRS += Gui
  
 

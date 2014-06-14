@@ -9,6 +9,7 @@ class MainWindow : public QMainWindow
 
 public:
 	MainWindow();
+
 protected:
 	void closeEvent(QCloseEvent *event);
 
@@ -17,8 +18,12 @@ private slots:
 
 private:
 	void createActions();
-	void createMenu();
-}
+	void createMenus();
+	void createToolBars();
+	void createStatusBar();
+	void readSettings();
+	void writeSettings();
+};
 
-#endif
+#endif /* _WINDOW_H */
 
