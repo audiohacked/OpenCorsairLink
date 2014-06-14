@@ -14,9 +14,17 @@ TEMPLATE += app
 #}
 
 SOURCES += main.cpp \
-	window.cpp 
+	window.cpp \
+	FanWidget.cpp \
+	LedWidget.cpp \
+	StatusWidget.cpp \
+	TemperatureWidget.cpp
 
-HEADERS += window.h
+HEADERS += window.h \
+	FanWidget.h \
+	LedWidget.h \
+	StatusWidget.h \
+	TemperatureWidget.h
 
 DESTDIR = ..
 TARGET = OpenCorsairLinkGui
