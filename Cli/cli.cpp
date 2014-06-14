@@ -209,7 +209,7 @@ int parseArguments(int argc, char **argv, int &info,
 	while (1) {
 		int option_index = 0;
 
-		c = getopt_long (argc, argv, "hil:t:f:", long_options, &option_index);
+		c = getopt_long (argc, argv, "hil:t:f:p", long_options, &option_index);
 		if (c == -1 || returnCode != 0)
 			break;
 		switch (c) {
@@ -284,6 +284,7 @@ int parseArguments(int argc, char **argv, int &info,
 			break;
 		case 34://fan-warning
 			errno = 0;
+			fanThreshold = 1;
 			break;	
 		case 'i'://info
 			info = 1;

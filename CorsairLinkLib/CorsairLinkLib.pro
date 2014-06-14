@@ -1,3 +1,4 @@
+QT -= core gui
 VERSION = 0.9
 win32 {
 	TEMPLATE = vclib

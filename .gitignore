@@ -1,7 +1,3 @@
 *.o
-OpenCorsairLink
-
-libCorsairLink.a
-Cli/Makefile
-CorsairLinkLib/Makefile
+*.a
 Makefile
