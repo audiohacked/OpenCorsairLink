@@ -1,6 +1,5 @@
-CONFIG = debug
-CONFIG = qt
-QT = core gui 
+CONFIG += debug
+CONFIG += qt
 QT += widgets
 TEMPLATE = app
 #win32 {

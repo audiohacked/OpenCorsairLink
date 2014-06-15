@@ -1,10 +1,10 @@
 QT -= core gui
 VERSION = 0.9
-win32 {
-	TEMPLATE = vclib
-}
 unix {
 	TEMPLATE = lib
+}
+win32 {
+	TEMPLATE = vclib
 }
 macx {
 	TEMPLATE = lib
