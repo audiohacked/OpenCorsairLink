@@ -3,23 +3,43 @@
 
 #include <QMainWindow>
 
-class QAction;
-class QMenu;
+#include <QAction>
+#include <QMenu>
+#include <QCloseEvent>
+#include <QMessageBox>
+#include <QMenuBar>
+#include <QString>
+#include <QSettings>
+#include <QStatusBar>
+#include <QTabWidget>
 
+#include "StatusWidget.h"
+#include "FanWidget.h"
+#include "LedWidget.h"
+#include "TemperatureWidget.h"
+
+#include "Proto.h"
+#include "Link.h"
+#include "Fan.h"
+#include "Led.h"
+#include "Temperature.h"
+
+//class QAction;
+//class QMenu;
 class MainWidget : public QTabWidget
 {
 	Q_OBJECT
 public:
-	MainWidget();
-signals:
-	void selectionChanged(const QItemSelection &selected);
+	MainWidget(QWidget *parent);
 private:
-	StatusWidget *status;
-	FanWidget *fanWidget;
-	LedWidget *ledWidget;
-	TemperatureWidget *tempWidget;
+	CorsairLink *cl;
+	CorsairFan *f;
+	CorsairLed *l;
+	//StatusWidget *status;
+	//FanWidget *fanWidget;
+	//LedWidget *ledWidget;
+	//TemperatureWidget *tempWidget;
 };
-
 
 class MainWindow : public QMainWindow
 {

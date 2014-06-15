@@ -1,7 +1,8 @@
-CONFIG += debug
-CONFIG += qt
+CONFIG = debug
+CONFIG = qt
+QT = core gui 
 QT += widgets
-TEMPLATE += app
+TEMPLATE = app
 #win32 {
 #	QT += winextras
 #	SOURCES += microsoft.cpp
@@ -13,10 +14,21 @@ TEMPLATE += app
 #	HEADERS += apple.h
 #}
 
-SOURCES += main.cpp \
-	window.cpp 
+INCLUDEPATH += . ../CorsairLinkLib
+LIBS += -L.. -lCorsairLink -lhidapi-hidraw
 
-HEADERS += window.h
+SOURCES += main.cpp \
+	window.cpp \
+	FanWidget.cpp \
+	LedWidget.cpp \
+	StatusWidget.cpp \
+	TemperatureWidget.cpp
+
+HEADERS += window.h \
+	FanWidget.h \
+	LedWidget.h \
+	StatusWidget.h \
+	TemperatureWidget.h
 
 DESTDIR = ..
 TARGET = OpenCorsairLinkGui
