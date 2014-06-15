@@ -1,7 +1,7 @@
 CONFIG += debug
 CONFIG += qt
 QT += widgets
-TEMPLATE += app
+TEMPLATE = app
 #win32 {
 #	QT += winextras
 #	SOURCES += microsoft.cpp
@@ -12,6 +12,9 @@ TEMPLATE += app
 #	SOURCES += apple.cpp
 #	HEADERS += apple.h
 #}
+
+INCLUDEPATH += . ../CorsairLinkLib
+LIBS += -L.. -lCorsairLink -lhidapi-hidraw
 
 SOURCES += main.cpp \
 	window.cpp \
