@@ -2,7 +2,7 @@ TEMPLATE = subdirs
 CONFIG += ordered
 SUBDIRS = CorsairLinkLib
 unix {
-	#SUBDIRS += Cli
+	SUBDIRS += Cli
 }
 SUBDIRS += Gui
  

@@ -285,7 +285,11 @@ int parseArguments(int argc, char **argv, int &info,
 		case 34://fan-warning
 			errno = 0;
 			fanThreshold = 1;
-			break;	
+			break;
+		case 't':
+			errno = 0;
+			sscanf(optarg, "%i", &tempNumber);
+			break;
 		case 'i'://info
 			info = 1;
 			break;
