@@ -83,14 +83,19 @@ MainWidget::MainWidget(QWidget *parent)
 	cl = new CorsairLink();
 	f = new CorsairFan();
 	l = new CorsairLed();
-	//status = new StatusWidget(this);
+	status = new StatusWidget(this);
 	//fanWidget = new FanWidget(this);
 	//ledWidget = new LedWidget(this);
 	//tempWidget = new TemperatureWidget(this);
 	
-	//addTab(status, "Status");
+	addTab(status, "Status");
 	//addTab(fanWidget, "Fan");
 	//addTab(ledWidget, "LEDs");
 	//addTab(tempWidget, "Temperature");	
 }
 
+MainFrame::MainFrame(QWidget *parent)
+	: QWidget(parent)
+{
+	
+}

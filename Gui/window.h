@@ -24,18 +24,23 @@
 #include "Led.h"
 #include "Temperature.h"
 
-//class QAction;
-//class QMenu;
+class MainFrame : public QWidget
+{
+	Q_OBJECT
+public:
+	MainFrame(QWidget *parent = 0);
+};
+
 class MainWidget : public QTabWidget
 {
 	Q_OBJECT
 public:
-	MainWidget(QWidget *parent);
+	MainWidget(QWidget *parent = 0);
 private:
 	CorsairLink *cl;
 	CorsairFan *f;
 	CorsairLed *l;
-	//StatusWidget *status;
+	StatusWidget *status;
 	//FanWidget *fanWidget;
 	//LedWidget *ledWidget;
 	//TemperatureWidget *tempWidget;
