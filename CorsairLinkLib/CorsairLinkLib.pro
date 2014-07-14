@@ -12,8 +12,9 @@ macx {
 }
 
 CONFIG += staticlib debug
-LIBS += -lhidapi-hidraw
-
+!macx:LIBS += -lhidapi-hidraw
+macx:LIBS += -lhidapi
+macx:INCLUDEPATH += /usr/local/include
 SOURCES += \
 	Fan.cpp \
 	Led.cpp \

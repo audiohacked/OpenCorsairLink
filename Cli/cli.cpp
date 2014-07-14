@@ -31,6 +31,8 @@
 #include "Led.h"
 #include "Temperature.h"
 
+#include "options.h"
+
 CorsairLink *cl = new CorsairLink();
 CorsairFan *f = new CorsairFan();
 CorsairLed *l = new CorsairLed();

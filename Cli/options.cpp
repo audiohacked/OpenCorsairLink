@@ -22,11 +22,11 @@
 #include <getopt.h>
 #include <string.h>
 
-#include "CorsairLinkProto.h"
-#include "CorsairLink.h"
-#include "CorsairFan.h"
-#include "CorsairLed.h"
-#include "CorsairTemp.h"
+#include "Proto.h"
+#include "Link.h"
+#include "Fan.h"
+#include "Led.h"
+#include "Temperature.h"
 
 extern CorsairLed *l;
 

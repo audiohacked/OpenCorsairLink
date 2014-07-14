@@ -13,8 +13,10 @@ TEMPLATE = app
 #	HEADERS += apple.h
 #}
 
-INCLUDEPATH += . ../CorsairLinkLib
-LIBS += -L.. -lCorsairLink -lhidapi-hidraw
+INCLUDEPATH += ../CorsairLinkLib
+!macx:LIBS += -L.. -lCorsairLink -lhidapi-hidraw
+macx:LIBS += -L.. -lCorsairLink -L/usr/local/lib -lhidapi
+macx:INCLUDEPATH += /usr/local/include
 
 SOURCES += main.cpp \
 	window.cpp \
