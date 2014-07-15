@@ -165,13 +165,13 @@ int CorsairTemp::SetTempLimit(int limit)
 	int res = hid_write(cl->handle, cl->buf, 11);
 	if (res < 0) {
 		fprintf(stderr, "Error: Unable to write() %s\n", (char*)hid_error(cl->handle) );
-		//return -1;
+		return -1;
 	}
 
 	res = cl->hid_read_wrapper(cl->handle, cl->buf);
 	if (res < 0) {
 		fprintf(stderr, "Error: Unable to read() %s\n", (char*)hid_error(cl->handle) );
-		//return -1;
+		return -1;
 	}
 
 	return 0;

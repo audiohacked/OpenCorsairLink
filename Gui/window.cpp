@@ -1,21 +1,32 @@
 #include <QtGui>
 #include "window.h"
 
+CorsairLink *cl;
+
 MainWindow::MainWindow() {
 	/*
 	 * widget
 	 */
-	mainWidget = new MainWidget(this);
-	setCentralWidget(mainWidget);
+	cl = new CorsairLink();
+	if(!cl->Initialize()) {
+		fprintf(stdout, "Cannot initialize link.\n");
+		QMessageBox msgBox;
+		msgBox.setText("No CorsairLink Present!");
+		msgBox.exec();
+		delete cl;
+	} else {
+		mainWidget = new MainWidget(this);
+		setCentralWidget(mainWidget);
 
-	createActions();
-	createMenus();
-	//createToolBars();
-	createStatusBar();
+		createActions();
+		createMenus();
+		//createToolBars();
+		createStatusBar();
 
-	readSettings();
+		readSettings();
 
-	setUnifiedTitleAndToolBarOnMac(true);
+		setUnifiedTitleAndToolBarOnMac(true);
+	}
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
@@ -80,18 +91,21 @@ void MainWindow::writeSettings() {
 MainWidget::MainWidget(QWidget *parent)
 	: QTabWidget(parent)
 {
-	cl = new CorsairLink();
 	f = new CorsairFan();
 	l = new CorsairLed();
-	status = new StatusWidget(this);
-	//fanWidget = new FanWidget(this);
-	//ledWidget = new LedWidget(this);
-	//tempWidget = new TemperatureWidget(this);
+	t = new CorsairTemp();
+
+	if (cl != NULL) {
+		status = new StatusWidget(this);
+		//fanWidget = new FanWidget(this);
+		//ledWidget = new LedWidget(this);
+		//tempWidget = new TemperatureWidget(this);
 	
-	addTab(status, "Status");
-	//addTab(fanWidget, "Fan");
-	//addTab(ledWidget, "LEDs");
-	//addTab(tempWidget, "Temperature");	
+		addTab(status, "Status");
+		//addTab(fanWidget, "Fan");
+		//addTab(ledWidget, "LEDs");
+		//addTab(tempWidget, "Temperature");
+	}
 }
 
 MainFrame::MainFrame(QWidget *parent)

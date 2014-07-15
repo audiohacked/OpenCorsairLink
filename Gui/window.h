@@ -36,14 +36,18 @@ class MainWidget : public QTabWidget
 	Q_OBJECT
 public:
 	MainWidget(QWidget *parent = 0);
+	CorsairTemp *temp() { return t; }
+	CorsairLed *led() { return l; }
+	CorsairFan *fan() { return f; }
 private:
-	CorsairLink *cl;
-	CorsairFan *f;
-	CorsairLed *l;
 	StatusWidget *status;
 	//FanWidget *fanWidget;
 	//LedWidget *ledWidget;
 	//TemperatureWidget *tempWidget;
+
+	CorsairFan *f;
+	CorsairLed *l;
+	CorsairTemp *t;
 };
 
 class MainWindow : public QMainWindow
