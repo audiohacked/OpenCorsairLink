@@ -8,11 +8,14 @@ MainWindow::MainWindow() {
 	 * widget
 	 */
 	cl = new CorsairLink();
+
 	if(!cl->Initialize()) {
 		fprintf(stdout, "Cannot initialize link.\n");
+
 		QMessageBox msgBox;
 		msgBox.setText("No CorsairLink Present!");
 		msgBox.exec();
+
 		delete cl;
 	} else {
 		mainWidget = new MainWidget(this);
@@ -22,9 +25,7 @@ MainWindow::MainWindow() {
 		createMenus();
 		//createToolBars();
 		createStatusBar();
-
 		readSettings();
-
 		setUnifiedTitleAndToolBarOnMac(true);
 	}
 }

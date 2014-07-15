@@ -14,35 +14,52 @@
 StatusWidget::StatusWidget(MainWidget *parent) 
 	: QWidget(parent)
 {
+	int i = 0;
 	parentWidget = parent;
 	/* setup layout before we initialize all our monitors */
 	QVBoxLayout *layout = new QVBoxLayout;
 
-	/* Set up Timer Update-Loop */
-	//StatusTimer *timer = new StatusTimer(this);
-	timerid = this->startTimer(1000);
-
 	/* Set up LEDs, dynamically */
 	QLabel *LEDLabel = new QLabel(QString("LEDs:"), this);
-	for(int i=0; i < parent->led()->GetLedCount(); i++) {
+	for( i=0; i < parent->led()->GetLedCount(); i++) {
 		QPushButton *led = new QPushButton(QString(i), this);
 		LedArray.append(led);
 	}
 
 	/* Set up Temperatures, dynamically */
 	QLabel *TemperatureLabel = new QLabel(QString("Temperatures:"), this);
-	for(int i=0; i < parent->temp()->GetTempSensors(); i++) {
+	for( i=0; i < parent->temp()->GetTempSensors(); i++) {
 		QLCDNumber *TemperatureLCD = new QLCDNumber(7, this);
-		TemperatureLCD->display(QString( parent->temp()->GetTemp() ).append(" C"));
 		TempArray.append(TemperatureLCD);
 	}
 
+	/* Set up Fan Monitoring, dynamically */
+	QLabel *FanLabel = new QLabel(QString("Fans:"), this);
+	for( i=0; i < parent->fan()->GetFanCount(); i++) {
+		QLCDNumber *FanLCD = new QLCDNumber(8, this);
+		FanArray.append(FanLCD);
+	}
+
+	/* setup layout of panel */
 	layout->addWidget(LEDLabel);
-	//layout->addWidget(LED1);
+	for( i=0; i < LedArray.count(); i++) {
+		layout->addWidget(LedArray[i]);
+	}
+
 	layout->addWidget(TemperatureLabel);
-	//layout->addWidget(TemperatureLCD1);
+	for( i=0; i < TempArray.count(); i++) {
+		layout->addWidget(TempArray[i]);
+	}
+
+	layout->addWidget(FanLabel);
+	for( i=0; i < FanArray.count(); i++) {
+		layout->addWidget(FanArray[i]);
+	}
 
 	setLayout(layout);
+	
+	/* Set up Timer Update-Loop */
+	timerid = this->startTimer(2000);
 }
 
 StatusWidget::~StatusWidget() {
@@ -61,7 +78,7 @@ void StatusWidget::updateLedColor() {
 	for(int i=0; i < LedArray.count(); i++) {
 		QPalette pal = LedArray[i]->palette();
 		parentWidget->led()->GetColor(&parentWidget->led()->color[0]);
-		pal.setColor( 
+		pal.setColor(
 				QPalette::Button,
 			 	QColor(
 						parentWidget->led()->color[0].red,
