@@ -104,16 +104,16 @@ void StatusWidget::updateTemp() {
 void StatusWidget::updateFanSpeed() {
 	for(int i=0; i < FanArray.count(); i++) {
 		parentWidget->fan()->SelectFan(i);
-		if (parentWidget->fan()->GetFanMode() == FixedRPM) {
-			int rpm = parentWidget->fan()->GetFanRPM();
-			FanArray[i]->display(
-				QString( rpm ).append(" RPM")
-			);
-		} else if (parentWidget->fan()->GetFanMode() == FixedPWM){
+		if (parentWidget->fan()->GetFanMode() == FixedPWM){
 			int pwm = parentWidget->fan()->GetFanPWM();
 			FanArray[i]->display(
 				QString( pwm ).append(" PWM")
 			);
+		} else {
+				int rpm = parentWidget->fan()->GetFanRPM();
+				FanArray[i]->display(
+					QString( rpm ).append(" RPM")
+				);
 		}
 	}
 }
