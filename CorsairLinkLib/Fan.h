@@ -19,16 +19,18 @@
 #ifndef _CORSAIRFAN_H
 #define _CORSAIRFAN_H
 
+typedef struct {
+	char* Name;
+	int RPM;
+	int Mode;
+} CorsairFanInfo;
+
 class CorsairFan {
 	public:
 		CorsairFan(){}
 		~CorsairFan(){}
 
-		struct CorsairFanInfo {
-			char* Name;
-			int RPM;
-			int Mode;
-		} fanInfo[32];
+ 		CorsairFanInfo fanInfo[32];
 
 		int num_fans;
 		int ConnectedFans();

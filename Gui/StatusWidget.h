@@ -7,23 +7,11 @@
 #include <QPushButton>
 #include <QPalette>
 #include <QVBoxLayout>
+#include <QPair>
+
+#include "Fan.h"
 
 class MainWidget;
-
-#if 0
-class StatusTimer : public QTimer
-{
-	Q_OBJECT
-public:
-	explicit StatusTimer(StatusWidget *parent);
-private:
-	void updateLedColor();
-	void updateTemp();
-	void updateFanSpeed();
-private slots:
-	void tick();
-};
-#endif
 
 class StatusWidget : public QWidget
 {
@@ -42,7 +30,7 @@ private:
 	MainWidget *parentWidget;
 	QList<QPushButton*> LedArray;
 	QList<QLCDNumber*> TempArray;
-	QList<QLCDNumber*> FanArray;
+	QList< QPair<QLCDNumber*, CorsairFanInfo*> > FanArray;
 };
 
 #endif /* _STATUS_WIDGET_H */

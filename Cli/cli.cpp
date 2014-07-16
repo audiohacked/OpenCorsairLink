@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
 					return 1;
 				}
 				else {
-					CorsairFan::CorsairFanInfo newFanInfo;
+					CorsairFanInfo newFanInfo;
 					//fan->SelectFan(fanNumber - 1);
 					if(fanMode != 0) {
 						fprintf(stdout, "Setting fan to mode %s\n", CorsairFan::GetFanModeString(fanMode));
