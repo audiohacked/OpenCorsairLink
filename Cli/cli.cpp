@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
 		if(fanNumber > -1) {
 			if(fanMode != 0 || fanRPM != 0) {
 				if(fanMode == FixedRPM && fanRPM <= 0) {
-					fprintf(stderr, "Fan RMP missing for Fixed RPM fan mode.\n");
+					fprintf(stderr, "Fan RPM missing for Fixed RPM fan mode.\n");
 					return 1;
 				}
 				else {
