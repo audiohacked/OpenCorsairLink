@@ -1,0 +1,1 @@
+SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ENV{DEVPATH}=="*:1B1C:0C04.*/hidraw/hidraw*", MODE="0660", GROUP="usb"
