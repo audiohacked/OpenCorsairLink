@@ -2,3 +2,8 @@
 *.a
 Makefile
 moc_*
+OpenCorsairLinkCli
+OpenCorsairLinkGui.app/Contents/Info.plist
+OpenCorsairLinkGui.app/Contents/PkgInfo
+OpenCorsairLinkGui.app/Contents/MacOS/OpenCorsairLinkGui
+OpenCorsairLinkGui.app/Contents/Resources/empty.lproj
