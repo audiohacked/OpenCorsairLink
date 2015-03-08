@@ -1,0 +1,3 @@
+[submodule "CorsairLinkLib"]
+	path = CorsairLinkLib
+	url = git@github.com:audiohacked/CorsairLinkLib.git
