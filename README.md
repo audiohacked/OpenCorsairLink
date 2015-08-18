@@ -1,9 +1,22 @@
 OpenCorsairLink
 ===============
+Linux and Mac OS support for the H100i Water Cooler  
+Written using Code and info from: 
+http://forum.corsair.com/forums/showthread.php?t=120092  
+## Warning This was a weekend project after buying the H100i for a Linux Server. Some or most things might not work for you!
+## Warning: OpenCorsairLinkGui is a WIP, and therefore Does Not Work!
 
-Linux and Mac OS support for the H100i Water Cooler
+### Building  
+```bash
+git submodule init  
+git submodule update  
+qmake OpenCorsairLink.pro  
+make
+```  
 
-Written using Code and info from:
-http://forum.corsair.com/forums/showthread.php?t=120092
+### Running
+As a regular user: `sudo ./OpenCorsairLinkCli -p`,
+dash i for firmware info of device,
+dash p for printing fan, temp, and LED status.  
 
-Warning!!! This was a weekend project after buying the H100i for a Linux Server.
+As root user: `./OpenCorsairLinkCli -p`  
