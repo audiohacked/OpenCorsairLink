@@ -1,4 +1,4 @@
 [submodule "CorsairLinkLib"]
 	path = CorsairLinkLib
-	url = git@github.com:audiohacked/CorsairLinkLib.git
+	url = https://github.com/audiohacked/CorsairLinkLib.git
 	branch = master

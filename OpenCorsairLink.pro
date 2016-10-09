@@ -4,6 +4,6 @@ SUBDIRS = CorsairLinkLib
 unix {
 	SUBDIRS += Cli
 }
-SUBDIRS += Gui
+#SUBDIRS += Gui
  
 
