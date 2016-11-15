@@ -1,0 +1,11 @@
+language: c
+
+script:
+  - sudo apt update -qq
+  - sudo apt install -qq libqt4-dev libhidapi-dev gdb
+  - git submodule update --init
+  - qmake OpenCorsairLink.pro
+  - make
+
+sudo: required
+dist: xenial
