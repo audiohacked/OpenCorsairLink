@@ -122,10 +122,10 @@ int main(int argc, char **argv) {
 			}
 			int current_mode = l->GetMode();
 			//fprintf(stdout, "DEBUG Current LED Mode: %02x\n", current_mode);
-			if ((current_mode == 0x0C) && (l->color_set_by_opts == 3)) {
+			if ((current_mode == 0xC0) && (l->color_set_by_opts == 3)) {
 				l->Set_TempMode_Color(l->color);
 			}
-			if ((current_mode != 0x0C)&&(l->color_set_by_opts > 0)) {
+			if ((current_mode != 0xC0)&&(l->color_set_by_opts > 0)) {
 				//fprintf(stdout, "DEBUG Setting Led Colorset; colors defined: %i\n", l->color_set_by_opts);
 				l->SetLedCycleColors(l->color);
 			}
