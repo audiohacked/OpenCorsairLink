@@ -6,10 +6,15 @@ http://forum.corsair.com/forums/showthread.php?t=120092
 ## Warning: This was a weekend project after buying the H100i for a Linux Server. Some or most things might not work for you!
 ## Warning: OpenCorsairLinkGui is a WIP, and therefore Does Not Work!
 
+### Dependencies
+#### Ubuntu
+```bash
+sudo apt install libqt4-dev libhidapi-dev gdb
+```
+
 ### Building  
 ```bash
-git submodule init  
-git submodule update  
+git submodule update --init  
 qmake OpenCorsairLink.pro  
 make
 ```  
