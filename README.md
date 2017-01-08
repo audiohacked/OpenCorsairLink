@@ -1,6 +1,7 @@
 OpenCorsairLink
 ===============
 ## Warning: This was a weekend project after buying the H100i for a Linux Server. Some or most things might not work for you!
+## Previous version of OpenCorsairLink has been moved to the legacy branch!
 
 Supported Water Coolers (but not fully tested):
  - H80i  
