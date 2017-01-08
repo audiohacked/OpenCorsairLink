@@ -114,6 +114,20 @@ struct corsair_device_info corsairlink_devices[] = {
 		.led_control_count = 1,
 		.fan_control_count = 1,
 		.pump_index = 0,
-	}
+	},
+	{
+		.vendor_id = 0x1b1c,
+		.product_id = 0x0c0a,
+		.device_id = 0x00,
+		.name = "H115i", /** H115i */
+		.read_endpoint = 0x02|LIBUSB_ENDPOINT_IN,
+		.write_endpoint = 0x02|LIBUSB_ENDPOINT_OUT,
+		.handle = NULL,
+		.context = NULL,
+		.driver = &corsairlink_driver_asetek,
+		.led_control_count = 1,
+		.fan_control_count = 1,
+		.pump_index = 0,
+	},
 };
 
