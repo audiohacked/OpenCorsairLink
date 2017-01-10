@@ -120,7 +120,7 @@ int options_parse(int argc, char **argv, struct option_flags *flags,
 				&fan->s5);
 			break;
 		case 11:
-			sscanf(optarg, "%hhd", pump_mode);
+			sscanf(optarg, "%hhu", pump_mode);
 			break;
 
 		default:
