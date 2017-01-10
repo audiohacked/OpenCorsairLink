@@ -1,11 +1,11 @@
 language: c
 
 addons:
-	apt:
-		packages:
-			- libusb-1.0-0-dev
+    apt:
+        packages:
+        - libusb-1.0-0-dev
 script:
-	- make
+    - make
 
 sudo: false
 dist: trusty
