@@ -1,5 +1,5 @@
 CC ?= gcc
-CFLAGS ?= -std=c99 -pedantic-errors -L/usr/lib/x86_64-linux-gnu $(shell pkg-config --cflags libusb-1.0)
+CFLAGS ?= -std=c99 -pedantic-errors $(shell pkg-config --cflags libusb-1.0)
 LDFLAGS ?= $(shell pkg-config --libs libusb-1.0)
 
 OBJS = main.o \
