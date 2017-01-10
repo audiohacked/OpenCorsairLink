@@ -47,9 +47,9 @@ struct fan_table {
 
 struct option_flags {
 	// flags
-	uint8_t device_firmware:1;
-	uint8_t read_temperature:1;
-	uint8_t read_fan_speed:1;
+	unsigned int device_firmware:1;
+	unsigned int read_temperature:1;
+	unsigned int read_fan_speed:1;
 };
 
 struct option_parse_return {
