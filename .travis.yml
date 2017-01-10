@@ -4,7 +4,11 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y libusb-1.0-0-dev
 
+# install:
+#   - pkg-config --cflags --libs libusb-1.0
+
 script:
+  - pkg-config --cflags --libs libusb-1.0
   - make
 
 sudo: required
