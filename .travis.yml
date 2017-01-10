@@ -8,4 +8,4 @@ script:
     - make
 
 sudo: false
-dist: trusty
+# dist: trusty
