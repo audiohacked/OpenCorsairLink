@@ -1,6 +1,6 @@
 CC ?= gcc
 LDFLAGS ?= -L/usr/lib -L/usr/local/lib -lusb-1.0
-CFLAGS ?= -I/usr/include/libusb-1.0 -I/usr/local/include/libusb-1.0
+CFLAGS ?= -std=c99 -pedantic-errors -I/usr/include/libusb-1.0 -I/usr/local/include/libusb-1.0
 OBJS = main.o \
 			options.o \
 			device.o

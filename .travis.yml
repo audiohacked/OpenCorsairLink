@@ -1,0 +1,8 @@
+language: c
+
+script:
+  - sudo apt update -qq
+  - sudo apt install -qq libusb-1.0-0-dev
+  - make
+
+sudo: required
