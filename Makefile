@@ -1,6 +1,6 @@
 CC ?= gcc
-CFLAGS ?= -std=c99 -pedantic-errors `pkg-config --cflags libusb-1.0`
-LDFLAGS ?= `pkg-config --libs libusb-1.0`
+CFLAGS ?= -std=c99 -pedantic-errors $(shell pkg-config --cflags libusb-1.0)
+LDFLAGS ?= $(shell pkg-config --libs libusb-1.0)
 
 OBJS = main.o \
 			options.o \
