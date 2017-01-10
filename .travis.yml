@@ -1,8 +1,11 @@
 language: c
 
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libusb-1.0-0-dev
+
 script:
-  - sudo apt update -qq
-  - sudo apt install -qq libusb-1.0-0-dev
   - make
 
 sudo: required
+dist: trusty
