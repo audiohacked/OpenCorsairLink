@@ -56,21 +56,21 @@ struct corsair_device_driver {
 	int (*fw_version)(struct corsair_device_info *dev);
 	int (*led)(struct corsair_device_info *dev, struct color *l, struct color *w, uint8_t t, uint8_t e);
 
-	struct {
+	struct fan_functions {
 		int (*profile)(struct corsair_device_info *dev, uint8_t profile);
 		int (*custom)(struct corsair_device_info *dev, struct fan_table *custom_profile);
 	} fan_control;
 
-	struct {
+	struct pump_functions {
 		int (*profile)(struct corsair_device_info *dev, uint8_t profile);
 		int (*custom)(struct corsair_device_info *dev, struct fan_table *custom_profile);
 	} pump_control;
 
-	struct {
+	struct power_functions {
 		int (*select)(struct corsair_device_info *dev, uint8_t output_select);
 		int (*voltage)(struct corsair_device_info *dev, float *volts);
 		int (*amperage)(struct corsair_device_info *dev, float *amps);
-		int (*wattage)(struct corsair_device_info *dev, float *watts;
+		int (*wattage)(struct corsair_device_info *dev, float *watts);
 	} power;
 
 	int (*fan_speed_read)();

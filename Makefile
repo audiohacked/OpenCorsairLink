@@ -6,11 +6,14 @@ OBJS = main.o \
 			options.o \
 			device.o
 OBJS_LL = lowlevel/asetek4.o \
-			lowlevel/hid.o
+			lowlevel/hid.o \
+			lowlevel/rmi.o
 OBJS_PROTO = protocol/asetek4/core.o \
 			protocol/asetek4/fan.o \
 			protocol/asetek4/led.o \
 			protocol/asetek4/pump.o \
+			protocol/rmi/core.o \
+			protocol/rmi/output.o \
 			protocol/hid/core.o \
 			protocol/hid/led.o
 

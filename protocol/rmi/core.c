@@ -27,7 +27,7 @@
 #include "../../device.h"
 #include "core.h"
 
-int corsairlink_hid_device_id(struct corsair_device_info *dev)
+int corsairlink_rmi_device_id(struct corsair_device_info *dev)
 {
 	int r;
 	uint8_t response[64];
@@ -39,9 +39,8 @@ int corsairlink_hid_device_id(struct corsair_device_info *dev)
 
 	i = 1;
 	// Read Device ID: 0x3b = H80i. 0x3c = H100i. 0x41 = H110i. 0x42 = H110i Extreme
-	commands[i++] = CommandId++; // Command ID
-	commands[i++] = ReadOneByte; // Command Opcode
-	commands[i++] = DeviceID; // Command data...
+	commands[i++] = 0x00; // Command Opcode
+	commands[i++] = 0x00; // Command data...
 	commands[i++] = 0x00;
 
 	commands[0] = i; // Length
@@ -52,7 +51,7 @@ int corsairlink_hid_device_id(struct corsair_device_info *dev)
 	return response[2];
 }
 
-int corsairlink_hid_firmware_id(struct corsair_device_info *dev)
+int corsairlink_rmi_firmware_id(struct corsair_device_info *dev)
 {
 	int r;
 	uint8_t response[64];
@@ -63,9 +62,8 @@ int corsairlink_hid_firmware_id(struct corsair_device_info *dev)
 	uint8_t i = 1;
 
 	i = 1;
-	commands[i++] = CommandId++; // Command ID
-	commands[i++] = ReadTwoBytes; // Command Opcode
-	commands[i++] = FirmwareID; // Command data...
+	commands[i++] = 0x00; // Command Opcode
+	commands[i++] = 0x00; // Command data...
 	commands[i++] = 0x00;
 
 	commands[0] = i; // Length

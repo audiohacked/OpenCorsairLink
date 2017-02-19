@@ -47,7 +47,7 @@ int corsairlink_rmi_write(struct libusb_device_handle *dev_handle,
 	r = libusb_interrupt_transfer(dev_handle,
  				endpoint,
 				data, length,
-				&bytes_transfered, TIMEOUT_DEFAULT);
+				&bytes_transferred, TIMEOUT_DEFAULT);
 
 	return r;
 }

@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 		&led_color, &warning_led, &warning_led_temp,
 		&fan1, &pump, &pump_mode);
 	
-	for (i=0; i<2; i++) {
+	for (i=0; i<7; i++) {
 		dev = &corsairlink_devices[i];
 		r = corsairlink_find_device(dev);
 		if (r >= 0) {
@@ -73,13 +73,13 @@ int main(int argc, char *argv[])
 	float v, a, w;
 
 	for (i=0; i<5; i++) {
-		r = dev->driver->power->select(dev, i);
+		r = dev->driver->power.select(dev, i);
 		fprintf(stdout, "Output %d\n", i);
-		r = dev->driver->power->voltage(dev, &v);
+		r = dev->driver->power.voltage(dev, &v);
 		fprintf(stdout, "\tVoltage %.2f\n", v);
-		r = dev->driver->power->amperage(dev, &a);
+		r = dev->driver->power.amperage(dev, &a);
 		fprintf(stdout, "\tAmps %.2f\n", a);
-		r = dev->driver->power->wattage(dev, &w);
+		r = dev->driver->power.wattage(dev, &w);
 		fprintf(stdout, "\tWatts %.2f\n", w);
 	}
 

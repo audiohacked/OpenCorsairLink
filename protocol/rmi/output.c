@@ -65,8 +65,8 @@ int corsairlink_rmi_output_volts(struct corsair_device_info *dev, float *volts) 
 	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, i);
 	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
 
-	volts = response[4]<<8;
-	volts += response[3];
+	*volts = (float)(response[4]<<8);
+	*volts += response[3];
 
 	return 0;
 }
@@ -89,8 +89,8 @@ int corsairlink_rmi_output_amps(struct corsair_device_info *dev, float *amps) {
 	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, i);
 	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
 
-	amps = response[4]<<8;
-	amps += response[3];
+	*amps = (float)(response[4]<<8);
+	*amps += response[3];
 
 	return 0;
 }
@@ -113,8 +113,8 @@ int corsairlink_rmi_output_watts(struct corsair_device_info *dev, float *watts) 
 	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, i);
 	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
 
-	watts = response[4]<<8;
-	watts += response[3];
+	*watts = (float)(response[4]<<8);
+	*watts += response[3];
 
 	return 0;
 }

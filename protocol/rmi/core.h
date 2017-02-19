@@ -27,9 +27,9 @@ int corsairlink_rmi_channel_id(struct corsair_device_info *dev);
 int corsairlink_rmi_product_id(struct corsair_device_info *dev);
 
 int corsairlink_rmi_output_select(struct corsair_device_info *dev, uint8_t select);
-int corsairlink_rmi_output_voltage(struct corsair_device_info *dev, float volts);
-int corsairlink_rmi_output_amps(struct corsair_device_info *dev, float amps);
-int corsairlink_rmi_output_watts(struct corsair_device_info *dev, float watts);
+int corsairlink_rmi_output_volts(struct corsair_device_info *dev, float *volts);
+int corsairlink_rmi_output_amps(struct corsair_device_info *dev, float *amps);
+int corsairlink_rmi_output_watts(struct corsair_device_info *dev, float *watts);
 
 int corsairlink_rmi_total_watts(struct corsair_device_info *dev, float watts);
 int corsairlink_rmi_supply_volts(struct corsair_device_info *dev, float volts);
