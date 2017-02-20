@@ -22,10 +22,25 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
+#include <math.h>
 
 #include "../../lowlevel/hid.h"
 #include "../../device.h"
 #include "core.h"
+
+double mkv(uint16_t v16)
+{
+	uint8_t d0 = (v16&0xFF00)>>8;
+	uint8_t d1 = v16&0xFF;
+
+	int p = (d1 >> 3) & 0x1F;
+	if (p > 0xF) p -= 32;
+
+	int v = ((int)d1& 0x7)<<8 + (int)d0;
+	if (v > 0x400) v = -(0x10000 - (v|0xF800));
+
+	return (double)v * pow(2.0, (double)p);
+}
 
 int corsairlink_rmi_device_id(struct corsair_device_info *dev)
 {
@@ -75,3 +90,61 @@ int corsairlink_rmi_firmware_id(struct corsair_device_info *dev)
 	firmware += response[2];
 	return firmware;
 }
+
+int corsairlink_rmi_name(struct corsair_device_info *dev, char *name) {
+	int r;
+	uint8_t response[64];
+	uint8_t commands[32];
+	memset(response, 0, sizeof(response));
+	memset(commands, 0, sizeof(commands));
+
+	commands[0] = 0xfe;
+	commands[1] = 0x03;
+	commands[2] = 0x00;
+
+	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 2);
+	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+
+	memcpy(name, response+2, 16);
+
+	return 0;
+}
+
+int corsairlink_rmi_vendor(struct corsair_device_info *dev, char *name) {
+	int r;
+	uint8_t response[64];
+	uint8_t commands[32];
+	memset(response, 0, sizeof(response));
+	memset(commands, 0, sizeof(commands));
+
+	commands[0] = 0x03;
+	commands[1] = 0x99;
+	commands[2] = 0x00;
+
+	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 2);
+	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+
+	memcpy(name, response+2, 16);
+
+	return 0;
+}
+
+int corsairlink_rmi_product(struct corsair_device_info *dev, char *name) {
+	int r;
+	uint8_t response[64];
+	uint8_t commands[32];
+	memset(response, 0, sizeof(response));
+	memset(commands, 0, sizeof(commands));
+
+	commands[0] = 0x03;
+	commands[1] = 0x9a;
+	commands[2] = 0x00;
+
+	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 2);
+	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+
+	memcpy(name, response+2, 16);
+
+	return 0;
+}
+

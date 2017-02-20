@@ -1,6 +1,6 @@
 CC ?= gcc
-CFLAGS ?= -std=c99 -pedantic-errors -L/usr/lib/x86_64-linux-gnu $(shell pkg-config --cflags libusb-1.0)
-LDFLAGS ?= $(shell pkg-config --libs libusb-1.0)
+CFLAGS ?= -std=c99 -pedantic-errors $(shell pkg-config --cflags libusb-1.0)
+LDFLAGS ?= $(shell pkg-config --libs libusb-1.0) -L/usr/lib -lm
 
 OBJS = main.o \
 			options.o \
@@ -13,7 +13,8 @@ OBJS_PROTO = protocol/asetek4/core.o \
 			protocol/asetek4/led.o \
 			protocol/asetek4/pump.o \
 			protocol/rmi/core.o \
-			protocol/rmi/output.o \
+			protocol/rmi/power.o \
+			protocol/rmi/time.o \
 			protocol/hid/core.o \
 			protocol/hid/led.o
 

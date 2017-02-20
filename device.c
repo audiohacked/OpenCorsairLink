@@ -49,15 +49,24 @@ struct corsair_device_driver corsairlink_driver_asetek = {
 struct corsair_device_driver corsairlink_driver_rmi = {
 	.init = corsairlink_rmi_init,
 	.deinit = corsairlink_rmi_deinit,
+	.name = corsairlink_rmi_name,
+	.vendor = corsairlink_rmi_vendor,
+	.product = corsairlink_rmi_product,
 	.device_id = corsairlink_rmi_device_id,
 	.read = corsairlink_rmi_read,
 	.write = corsairlink_rmi_write,
 	.led = NULL,
 	.power = {
+		.supply_voltage = corsairlink_rmi_power_supply_voltage,
+		.total_wattage = corsairlink_rmi_power_total_wattage,
 		.select = corsairlink_rmi_output_select,
 		.voltage = corsairlink_rmi_output_volts,
 		.amperage = corsairlink_rmi_output_amps,
 		.wattage = corsairlink_rmi_output_watts,
+	},
+	.time = {
+		.powered = corsairlink_rmi_time_powered,
+		.uptime = corsairlink_rmi_time_uptime,
 	}
 };
 

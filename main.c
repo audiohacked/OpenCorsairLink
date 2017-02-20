@@ -5,10 +5,12 @@
 #include <string.h>
 #include <libusb.h>
 #include "options.h"
+#include "device.h"
 #include "lowlevel/asetek4.h"
 #include "lowlevel/hid.h"
-#include "device.h"
+#include "lowlevel/rmi.h"
 #include "protocol/hid/core.h"
+#include "protocol/rmi/core.h"
 
 extern struct corsair_device_info corsairlink_devices[2];
 
@@ -70,21 +72,43 @@ int main(int argc, char *argv[])
 
 	r = dev->driver->init(dev->handle, dev->write_endpoint);
 
-	float v, a, w;
+	char name[20];
+	name[sizeof(name) - 1] = 0;
+	r = dev->driver->name(dev, name);
+	fprintf(stdout, "Name: %s\n", name);
+	r = dev->driver->vendor(dev, name);
+	fprintf(stdout, "Vendor: %s\n", name);
+	r = dev->driver->product(dev, name);
+	fprintf(stdout, "Product: %s\n", name);
 
-	for (i=0; i<5; i++) {
+	uint32_t v32 = 0;
+	r = dev->driver->time.powered(dev, &v32);
+	fprintf(stdout, "Powered: %u (%dd.  %dh)\n",
+		v32, v32/(24*60*60), v32/(60*60)%24);
+	r = dev->driver->time.uptime(dev, &v32);
+	fprintf(stdout, "Uptime: %u (%dd.  %dh)\n",
+		v32, v32/(24*60*60), v32/(60*60)%24);
+
+	uint16_t v, a, w;
+	r = dev->driver->power.supply_voltage(dev, &v);
+	fprintf(stdout, "Supply Voltage %5.1f\n", mkv(v));
+	r = dev->driver->power.total_wattage(dev, &w);
+	fprintf(stdout, "Total Watts %5.1f\n", mkv(w));
+
+	for (i=0; i<3; i++) {
 		fprintf(stdout, "Output %d\n", i);
 
 		r = dev->driver->power.select(dev, i);
 		r = dev->driver->power.voltage(dev, &v);
-		fprintf(stdout, "\tVoltage %.2f\n", v);
+		fprintf(stdout, "\tVoltage %5.1f\n", mkv(v));
 
 		r = dev->driver->power.amperage(dev, &a);
-		fprintf(stdout, "\tAmps %.2f\n", a);
+		fprintf(stdout, "\tAmps %5.1f\n", mkv(a));
 
 		r = dev->driver->power.wattage(dev, &w);
-		fprintf(stdout, "\tWatts %.2f\n", w);
+		fprintf(stdout, "\tWatts %5.1f\n", (double)w/551.3);
 	}
+	r = dev->driver->power.select(dev, 0);
 
 	r = dev->driver->deinit(dev->handle, dev->write_endpoint);
 
