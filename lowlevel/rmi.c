@@ -20,7 +20,7 @@
 #include <libusb.h>
 #include "../lowlevel/rmi.h"
 
-#define TIMEOUT_DEFAULT 1000
+#define TIMEOUT_DEFAULT 5000
 #define INTERRUPT_IN_ENDPOINT 0x81
 #define INTERRUPT_OUT_ENDPOINT 0x01
 

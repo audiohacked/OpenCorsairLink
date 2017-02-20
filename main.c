@@ -28,7 +28,7 @@ int corsairlink_find_device(struct corsair_device_info *dev)
 	}
 
 	r = libusb_detach_kernel_driver(dev->handle, 0);
-	r = libusb_claim_interface(dev->handle, 0);
+	r = libusb_claim_interface(dev->handle, 1);
 
 	return 0;
 }
@@ -73,12 +73,15 @@ int main(int argc, char *argv[])
 	float v, a, w;
 
 	for (i=0; i<5; i++) {
-		r = dev->driver->power.select(dev, i);
 		fprintf(stdout, "Output %d\n", i);
+
+		r = dev->driver->power.select(dev, i);
 		r = dev->driver->power.voltage(dev, &v);
 		fprintf(stdout, "\tVoltage %.2f\n", v);
+
 		r = dev->driver->power.amperage(dev, &a);
 		fprintf(stdout, "\tAmps %.2f\n", a);
+
 		r = dev->driver->power.wattage(dev, &w);
 		fprintf(stdout, "\tWatts %.2f\n", w);
 	}
