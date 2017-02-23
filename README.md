@@ -4,11 +4,21 @@ OpenCorsairLink
 ## Previous version of OpenCorsairLink has been moved to the legacy branch!
 
 Supported Water Coolers (but not fully tested):
- - H80i  
- - H100i  
- - H100i v2  
- - H110i  
- - H110i Extreme  
+ - USB HID:  
+  - H80i  
+  - H100i  
+  - H110i  
+ - Asetek:  
+  - H55  
+  - H75  
+  - H80i v2  
+  - H90  
+  - H105  
+  - H100i v2  
+  - H115i  
+
+Supported Power Supplies:
+ - RM750i  
 
 ### What should work:
 LED control  
@@ -21,4 +31,4 @@ The program currently doesn't know the difference between Water Coolers... yet!
 libusb-1.0  
 
 ### Running
-Since the program needs direct hardware access you should run this with 'sudo' or as root.
+Since the program needs direct hardware access you should run this with 'sudo' or as root.  

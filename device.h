@@ -66,6 +66,13 @@ struct corsair_device_driver {
 		int (*custom)(struct corsair_device_info *dev, struct fan_table *custom_profile);
 	} pump_control;
 
+	struct {
+		int (*select)(struct corsair_device_info *dev, uint8_t output_select);
+		int (*voltage)(struct corsair_device_info *dev, float *volts);
+		int (*amperage)(struct corsair_device_info *dev, float *amps);
+		int (*wattage)(struct corsair_device_info *dev, float *watts;
+	} power;
+
 	int (*fan_speed_read)();
 };
 

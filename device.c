@@ -44,6 +44,21 @@ struct corsair_device_driver corsairlink_driver_asetek = {
 	}
 };
 
+struct corsair_device_driver corsairlink_driver_rmi = {
+	.init = corsairlink_rmi_init,
+	.deinit = corsairlink_rmi_deinit,
+	.device_id = corsairlink_rmi_device_id,
+	.read = corsairlink_rmi_read,
+	.write = corsairlink_rmi_write,
+	.led = NULL,
+	.power = {
+		.select = corsairlink_rmi_output_select,
+		.voltage = corsairlink_rmi_output_volts,
+		.amperage = corsairlink_rmi_output_amps,
+		.wattage = corsairlink_rmi_output_watts,
+	}
+};
+
 struct corsair_device_info corsairlink_devices[] = {
 	{
 		.vendor_id = 0x1b1c,
@@ -138,7 +153,7 @@ struct corsair_device_info corsairlink_devices[] = {
 		.write_endpoint = 0x01|LIBUSB_ENDPOINT_OUT,
 		.handle = NULL,
 		.context = NULL,
-		.driver = &corsairlink_driver_hid,
+		.driver = &corsairlink_driver_rmi,
 		.led_control_count = 0,
 		.fan_control_count = 1,
 		.pump_index = 0,

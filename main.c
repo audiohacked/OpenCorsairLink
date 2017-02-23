@@ -70,7 +70,18 @@ int main(int argc, char *argv[])
 
 	r = dev->driver->init(dev->handle, dev->write_endpoint);
 
-	r = dev->driver->led(dev, &led_color, &warning_led, warning_led_temp, (warning_led_temp > -1));
+	float v, a, w;
+
+	for (i=0; i<5; i++) {
+		r = dev->driver->power->select(dev, i);
+		fprintf(stdout, "Output %d\n", i);
+		r = dev->driver->power->voltage(dev, &v);
+		fprintf(stdout, "\tVoltage %.2f\n", v);
+		r = dev->driver->power->amperage(dev, &a);
+		fprintf(stdout, "\tAmps %.2f\n", a);
+		r = dev->driver->power->wattage(dev, &w);
+		fprintf(stdout, "\tWatts %.2f\n", w);
+	}
 
 	r = dev->driver->deinit(dev->handle, dev->write_endpoint);
 
