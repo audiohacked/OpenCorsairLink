@@ -10,7 +10,8 @@ OBJ_MAIN = main.o
 OBJ_PSU = main_psu.o
 OBJS = device.o \
 	options.o \
-	print.o
+	print.o \
+	scan.o
 OBJS_LL = lowlevel/asetek4.o \
 	lowlevel/hid.o \
 	lowlevel/rmi.o

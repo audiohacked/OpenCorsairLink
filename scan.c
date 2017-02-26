@@ -16,11 +16,56 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-struct corsair_device_scan {
-	struct corsair_device_info *device;
-} scanlist; 
+#include <unistd.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <getopt.h>
+#include <string.h>
+#include <libusb.h>
+#include "common.h"
+#include "device.h"
+#include "print.h"
+
+void corsairlink_close(struct corsair_device_info *dev)
+{
+	int r;
+	r = libusb_release_interface(dev->handle, 0);
+	libusb_close(dev->handle);
+	libusb_exit(dev->context);
+}
+
+int corsairlink_find_device(struct corsair_device_info *dev)
+{
+	int r;
+	r = libusb_init(&dev->context);
+	if (r < 0) {
+		msg_info("Init Error %d\n", r);
+		return 1;
+	}
+	libusb_set_debug(dev->context, 3);
+
+	dev->handle = libusb_open_device_with_vid_pid(dev->context, dev->vendor_id, dev->product_id);
+	if(dev->handle == NULL) {
+		return -1;
+	}
+
+	r = libusb_detach_kernel_driver(dev->handle, 0);
+	r = libusb_claim_interface(dev->handle, 1);
+
+	return 0;
+}
 
 int corsairlink_device_scanner(struct corsair_device_info *dev)
 {
+	int i = 0;
+	int r = 0;
+	for (i=0; i<7; i++) {
+		dev = &corsairlink_devices[i];
+		r = corsairlink_find_device(dev);
+		if (r >= 0) {
+			msg_info("CorsairLink Device Found: %s!\n", dev->name);
+			break;
+		}
+	}
 }
-	

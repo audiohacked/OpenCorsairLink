@@ -16,3 +16,15 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+extern struct corsair_device_info corsairlink_devices[2];
+
+struct corsair_device_scan {
+	struct corsair_device_info *device;
+
+	/** libusb device structures */
+	struct libusb_device_handle *handle;
+} scanlist[10]; 
+
+void corsairlink_close(struct corsair_device_info *dev);
+int corsairlink_find_device(struct corsair_device_info *dev);
+int corsairlink_device_scanner(struct corsair_device_info *dev);
