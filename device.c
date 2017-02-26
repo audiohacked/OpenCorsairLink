@@ -41,7 +41,7 @@ struct corsair_device_driver corsairlink_driver_asetek = {
 	.read = corsairlink_asetek_read,
 	.write = corsairlink_asetek_write,
 	.led = corsairlink_asetek_change_led,
-	.fan_control = {
+	.fan = {
 		.custom = corsairlink_asetek_fan_curve,
 	}
 };
@@ -64,7 +64,7 @@ struct corsair_device_driver corsairlink_driver_rmi = {
 		.amperage = corsairlink_rmi_output_amps,
 		.wattage = corsairlink_rmi_output_watts,
 	},
-	.time = {
+	.psu_time = {
 		.powered = corsairlink_rmi_time_powered,
 		.uptime = corsairlink_rmi_time_uptime,
 	}

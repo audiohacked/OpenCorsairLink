@@ -16,29 +16,3 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "print.h"
-#include <stdarg.h>
-
-int verbose = MSG_INFO;
-
-int print(enum msglevel level, const char *fmt, ...)
-{
-	va_list ap;
-	int ret = 0;
-	FILE *output_type = stdout;
-	
-	if (level < MSG_INFO)
-		output_type = stderr;
-	
-	if (level <= verbose) {
-		va_start(ap, fmt);
-		ret = vfprintf(output_type, fmt, ap);
-		va_end(ap);
-		if (level != MSG_SPEW)
-			fflush(output_type);
-	}
-	return 0;
-}

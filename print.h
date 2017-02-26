@@ -28,6 +28,8 @@ enum msglevel {
 	MSG_SPEW	= 5,
 };
 
+extern int verbose;
+
 int print(enum msglevel level, const char *fmt, ...) __attribute__((format(printf, 2, 3)));
 
 #define msg_err(...)	print(MSG_ERROR, __VA_ARGS__)

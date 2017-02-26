@@ -27,7 +27,7 @@
 #include "core.h"
 
 int corsairlink_asetek_fan_mode(struct corsair_device_info *dev,
-								uint8_t fan_mode)
+	uint8_t fan_mode)
 {
 	int r;
 	struct fan_table curve;
@@ -37,13 +37,13 @@ int corsairlink_asetek_fan_mode(struct corsair_device_info *dev,
 	else if (fan_mode == QUIET) {
 		ASETEK_FAN_TABLE_QUIET(curve);
 	}
-	r = dev->driver->fan_control.custom(dev, &curve);
+	r = dev->driver->fan.custom(dev, &curve);
 
 	return r;
 }
 
 int corsairlink_asetek_fan_curve(struct corsair_device_info *dev,
-								struct fan_table *fan)
+	struct fan_table *fan)
 {
 	int r;
 	uint8_t response[32];

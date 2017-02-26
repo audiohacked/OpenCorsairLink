@@ -62,12 +62,12 @@ struct corsair_device_driver {
 	struct fan_functions {
 		int (*profile)(struct corsair_device_info *dev, uint8_t profile);
 		int (*custom)(struct corsair_device_info *dev, struct fan_table *custom_profile);
-	} fan_control;
+	} fan;
 
 	struct pump_functions {
 		int (*profile)(struct corsair_device_info *dev, uint8_t profile);
 		int (*custom)(struct corsair_device_info *dev, struct fan_table *custom_profile);
-	} pump_control;
+	} pump;
 
 	struct power_functions {
 		int (*supply_voltage)(struct corsair_device_info *dev, uint16_t *volts);
@@ -81,7 +81,7 @@ struct corsair_device_driver {
 	struct time_functions {
 		int (*powered)(struct corsair_device_info *dev, uint32_t *v32);
 		int (*uptime)(struct corsair_device_info *dev, uint32_t *v32);
-	} time;
+	} psu_time;
 
 	int (*fan_speed_read)();
 };

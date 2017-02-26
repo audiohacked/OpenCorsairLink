@@ -81,7 +81,7 @@ int options_parse(int argc, char **argv, struct option_flags *flags,
 			break;
 
 		case 2:
-			flags->debug_messages = 1;
+			verbose++;
 			break;
 		case 3:
 			// sscanf(optarg, "%u", device_number);
