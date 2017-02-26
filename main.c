@@ -1,3 +1,21 @@
+/*
+ * This file is part of OpenCorsairLink.
+ * Copyright (C) 2017  Sean Nelson <audiohacked@gmail.com>
+
+ * OpenCorsairLink is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * any later version.
+
+ * OpenCorsairLink is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,6 +29,7 @@
 #include "lowlevel/rmi.h"
 #include "protocol/hid/core.h"
 #include "protocol/rmi/core.h"
+#include "print.h"
 
 extern struct corsair_device_info corsairlink_devices[2];
 
@@ -19,7 +38,7 @@ int corsairlink_find_device(struct corsair_device_info *dev)
 	int r;
 	r = libusb_init(&dev->context);
 	if (r < 0) {
-		fprintf(stdout, "Init Error %d\n", r);
+		msg_info("Init Error %d\n", r);
 		return 1;
 	}
 	libusb_set_debug(dev->context, 3);
@@ -65,7 +84,7 @@ int main(int argc, char *argv[])
 		dev = &corsairlink_devices[i];
 		r = corsairlink_find_device(dev);
 		if (r >= 0) {
-			fprintf(stdout, "CorsairLink Device Found: %s!\n", dev->name);
+			msg_info("CorsairLink Device Found: %s!\n", dev->name);
 			break;
 		}
 	}
@@ -75,38 +94,38 @@ int main(int argc, char *argv[])
 	char name[20];
 	name[sizeof(name) - 1] = 0;
 	r = dev->driver->name(dev, name);
-	fprintf(stdout, "Name: %s\n", name);
+	msg_info("Name: %s\n", name);
 	r = dev->driver->vendor(dev, name);
-	fprintf(stdout, "Vendor: %s\n", name);
+	msg_info("Vendor: %s\n", name);
 	r = dev->driver->product(dev, name);
-	fprintf(stdout, "Product: %s\n", name);
+	msg_info("Product: %s\n", name);
 
 	uint32_t v32 = 0;
 	r = dev->driver->time.powered(dev, &v32);
-	fprintf(stdout, "Powered: %u (%dd.  %dh)\n",
+	msg_info("Powered: %u (%dd.  %dh)\n",
 		v32, v32/(24*60*60), v32/(60*60)%24);
 	r = dev->driver->time.uptime(dev, &v32);
-	fprintf(stdout, "Uptime: %u (%dd.  %dh)\n",
+	msg_info("Uptime: %u (%dd.  %dh)\n",
 		v32, v32/(24*60*60), v32/(60*60)%24);
 
 	uint16_t v, a, w;
 	r = dev->driver->power.supply_voltage(dev, &v);
-	fprintf(stdout, "Supply Voltage %5.1f\n", mkv(v));
+	msg_info("Supply Voltage %5.1f\n", convert_bytes_double(v));
 	r = dev->driver->power.total_wattage(dev, &w);
-	fprintf(stdout, "Total Watts %5.1f\n", mkv(w));
+	msg_info("Total Watts %5.1f\n", convert_bytes_double(w));
 
 	for (i=0; i<3; i++) {
-		fprintf(stdout, "Output %d\n", i);
+		msg_info("Output %d\n", i);
 
 		r = dev->driver->power.select(dev, i);
 		r = dev->driver->power.voltage(dev, &v);
-		fprintf(stdout, "\tVoltage %5.1f\n", mkv(v));
+		msg_info("\tVoltage %5.1f\n", convert_bytes_double(v));
 
 		r = dev->driver->power.amperage(dev, &a);
-		fprintf(stdout, "\tAmps %5.1f\n", mkv(a));
+		msg_info("\tAmps %5.1f\n", convert_bytes_double(a));
 
 		r = dev->driver->power.wattage(dev, &w);
-		fprintf(stdout, "\tWatts %5.1f\n", (double)w/551.3);
+		msg_info("\tWatts %5.1f\n", (double)w/551.3);
 	}
 	r = dev->driver->power.select(dev, 0);
 

@@ -47,6 +47,7 @@ struct fan_table {
 
 struct option_flags {
 	// flags
+	unsigned int debug_messages:1;
 	unsigned int device_firmware:1;
 	unsigned int read_temperature:1;
 	unsigned int read_fan_speed:1;

@@ -16,3 +16,25 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _PRINT_H
+#define _PRINT_H
+
+enum msglevel {
+	MSG_ERROR	= 0,
+	MSG_WARN	= 1,
+	MSG_INFO	= 2,
+	MSG_DEBUG	= 3,
+	MSG_DEBUG2	= 4,
+	MSG_SPEW	= 5,
+};
+
+int print(enum msglevel level, const char *fmt, ...) __attribute__((format(printf, 2, 3)));
+
+#define msg_err(...)	print(MSG_ERROR, __VA_ARGS__)
+#define msg_warn(...)	print(MSG_WARN, __VA_ARGS__)
+#define msg_info(...)	print(MSG_INFO, __VA_ARGS__)
+#define msg_debug(...)	print(MSG_DEBUG, __VA_ARGS__)
+#define msg_debug2(...)	print(MSG_DEBUG2, __VA_ARGS__)
+#define msg_spew(...)	print(MSG_SPEW, __VA_ARGS__)
+
+#endif

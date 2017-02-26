@@ -23,25 +23,27 @@
 #include <getopt.h>
 #include <string.h>
 #include "options.h"
+#include "print.h"
 
 static struct option long_options[] = {
 	{"help",              no_argument,          0,  0},
 	{"version",           no_argument,          0,  1},
+	{"debug",             no_argument,          0,  2},
 
-	{"device",            optional_argument,    0,  2},
-	{"firmware",          no_argument,          0,  3},
+	{"device",            optional_argument,    0,  3},
+	{"firmware",          no_argument,          0,  4},
 
-	{"print-temperature", no_argument,          0,  4},
-	{"print-fan-speed",   no_argument,          0,  5},
+	{"print-temperature", no_argument,          0,  5},
+	{"print-fan-speed",   no_argument,          0,  6},
 
-	{"led",               required_argument,    0,  6},
-	{"led-warn",          required_argument, NULL,  7},
-	{"led-temp",          required_argument, NULL,  8},
+	{"led",               required_argument,    0,  7},
+	{"led-warn",          required_argument, NULL,  8},
+	{"led-temp",          required_argument, NULL,  9},
 
-	{"fan-temps",         required_argument, NULL,  9},
-	{"fan-speeds",        required_argument, NULL,  10},
+	{"fan-temps",         required_argument, NULL,  10},
+	{"fan-speeds",        required_argument, NULL,  11},
 
-	{"pump",              required_argument, NULL,  11},
+	{"pump",              required_argument, NULL,  12},
 
 	{0, 0, 0, 0}
 };
@@ -75,35 +77,38 @@ int options_parse(int argc, char **argv, struct option_flags *flags,
 			options_print();
 			break;
 		case 1: /* program version */
-			fprintf(stdout, "OpenCorsairLink Version: %s", VERSION);
+			msg_info("OpenCorsairLink Version: %s", VERSION);
 			break;
 
 		case 2:
+			flags->debug_messages = 1;
+			break;
+		case 3:
 			// sscanf(optarg, "%u", device_number);
 			break;
 		
-		case 3:
+		case 4:
 			flags->device_firmware = 1;
 			break;
 
-		case 4:
+		case 5:
 			flags->read_temperature = 1;
 			break;
-		case 5:
+		case 6:
 			flags->read_fan_speed = 1;
 			break;
 
-		case 6: /* led color */
+		case 7: /* led color */
 			sscanf(optarg, "%02hhX%02hhX%02hhX", &led->red, &led->green, &led->blue);
 			break;
-		case 7: /* led warning color */
+		case 8: /* led warning color */
 			sscanf(optarg, "%02hhX%02hhX%02hhX", &warning->red, &warning->green, &warning->blue);
 			break;
-		case 8: /* led warning temperature */
+		case 9: /* led warning temperature */
 			sscanf(optarg, "%hhd", warning_temp);
 			break;
 
-		case 9:
+		case 10:
 			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd",
 				&fan->t1,
 				&fan->t2,
@@ -111,7 +116,7 @@ int options_parse(int argc, char **argv, struct option_flags *flags,
 				&fan->t4,
 				&fan->t5);
 			break;
-		case 10:
+		case 11:
 			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd",
 				&fan->s1,
 				&fan->s2,
@@ -119,7 +124,7 @@ int options_parse(int argc, char **argv, struct option_flags *flags,
 				&fan->s4,
 				&fan->s5);
 			break;
-		case 11:
+		case 12:
 			sscanf(optarg, "%hhu", pump_mode);
 			break;
 
@@ -133,12 +138,13 @@ int options_parse(int argc, char **argv, struct option_flags *flags,
 }
 
 void options_print() {
-	fprintf(stdout, "OpenCorsairLink [options]\n");
-	fprintf(stdout, "Options:\n");
-	fprintf(stdout, "\t--help :Prints this Message\n");
-	fprintf(stdout, "\t--version :Displays version.\n");
+	msg_info("OpenCorsairLink [options]\n");
+	msg_info("Options:\n");
+	msg_info("\t--help :Prints this Message\n");
+	msg_info("\t--version :Displays version.\n");
+	msg_info("\t--debug :Displays enhanced Debug Messages.\n");
 
-	fprintf(stdout, "\t-l, --led <HTML Color Code> :Define Color for LED.\n");
-	fprintf(stdout, "\t-l, --led-warn <HTML Color Code> :Define Color for Warning Temp.\n");
-	fprintf(stdout, "\t-l, --led-temp <temp in Celsius> :Define Warning Temperature.\n");
+	msg_info("\t-l, --led <HTML Color Code> :Define Color for LED.\n");
+	msg_info("\t-l, --led-warn <HTML Color Code> :Define Color for Warning Temp.\n");
+	msg_info("\t-l, --led-temp <temp in Celsius> :Define Warning Temperature.\n");
 }

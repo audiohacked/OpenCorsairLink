@@ -28,7 +28,7 @@
 #include "../../device.h"
 #include "core.h"
 
-double mkv(uint16_t v16)
+double convert_bytes_double(uint16_t v16)
 {
 	uint8_t d0 = (v16&0xFF00)>>8;
 	uint8_t d1 = v16&0xFF;
@@ -36,7 +36,7 @@ double mkv(uint16_t v16)
 	int p = (d1 >> 3) & 0x1F;
 	if (p > 0xF) p -= 32;
 
-	int v = ((int)d1& 0x7)<<8 + (int)d0;
+	int v = (((int)d1& 0x7)<<8) + (int)d0;
 	if (v > 0x400) v = -(0x10000 - (v|0xF800));
 
 	return (double)v * pow(2.0, (double)p);
@@ -91,7 +91,9 @@ int corsairlink_rmi_firmware_id(struct corsair_device_info *dev)
 	return firmware;
 }
 
-int corsairlink_rmi_name(struct corsair_device_info *dev, char *name) {
+int corsairlink_rmi_name(struct corsair_device_info *dev,
+			char *name)
+{
 	int r;
 	uint8_t response[64];
 	uint8_t commands[32];
@@ -110,7 +112,9 @@ int corsairlink_rmi_name(struct corsair_device_info *dev, char *name) {
 	return 0;
 }
 
-int corsairlink_rmi_vendor(struct corsair_device_info *dev, char *name) {
+int corsairlink_rmi_vendor(struct corsair_device_info *dev,
+			char *name)
+{
 	int r;
 	uint8_t response[64];
 	uint8_t commands[32];
@@ -129,7 +133,9 @@ int corsairlink_rmi_vendor(struct corsair_device_info *dev, char *name) {
 	return 0;
 }
 
-int corsairlink_rmi_product(struct corsair_device_info *dev, char *name) {
+int corsairlink_rmi_product(struct corsair_device_info *dev,
+			char *name)
+{
 	int r;
 	uint8_t response[64];
 	uint8_t commands[32];

@@ -21,31 +21,45 @@
 
 #include "../../common.h"
 
-double mkv(uint16_t v16);
+double convert_bytes_double(uint16_t v16);
 
 int corsairlink_rmi_device_id(struct corsair_device_info *dev);
 int corsairlink_rmi_firmware_id(struct corsair_device_info *dev);
 int corsairlink_rmi_channel_id(struct corsair_device_info *dev);
 int corsairlink_rmi_product_id(struct corsair_device_info *dev);
 
-int corsairlink_rmi_output_select(struct corsair_device_info *dev, uint8_t select);
-int corsairlink_rmi_output_volts(struct corsair_device_info *dev, uint16_t *volts);
-int corsairlink_rmi_output_amps(struct corsair_device_info *dev, uint16_t *amps);
-int corsairlink_rmi_output_watts(struct corsair_device_info *dev, uint16_t *watts);
+int corsairlink_rmi_output_select(struct corsair_device_info *dev,
+			uint8_t select);
+int corsairlink_rmi_output_volts(struct corsair_device_info *dev,
+			uint16_t *volts);
+int corsairlink_rmi_output_amps(struct corsair_device_info *dev,
+			uint16_t *amps);
+int corsairlink_rmi_output_watts(struct corsair_device_info *dev,
+			uint16_t *watts);
 
-int corsairlink_rmi_power_total_wattage(struct corsair_device_info *dev, uint16_t *watts);
-int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev, uint16_t *volts);
+int corsairlink_rmi_power_total_wattage(struct corsair_device_info *dev,
+			uint16_t *watts);
+int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev,
+			uint16_t *volts);
 
-int corsairlink_rmi_temp1(struct corsair_device_info *dev, uint16_t *temp);
-int corsairlink_rmi_temp2(struct corsair_device_info *dev, uint16_t *temp);
+int corsairlink_rmi_temp1(struct corsair_device_info *dev,
+	 		uint16_t *temp);
+int corsairlink_rmi_temp2(struct corsair_device_info *dev,
+			uint16_t *temp);
 
-// int corsairlink_rmi_fan_mode();
-int corsairlink_rmi_fan_pwm(struct corsair_device_info *dev, uint16_t *pwm);
-// int corsairlink_rmi_fan_pwm_percent();
-// int corsairlink_rmi_fan_status();
+int corsairlink_rmi_fan_mode(struct corsair_device_info *dev,
+			uint16_t *mode);
+int corsairlink_rmi_fan_pwm(struct corsair_device_info *dev, 
+			uint16_t *pwm);
+int corsairlink_rmi_fan_pwm_percent(struct corsair_device_info *dev,
+			uint16_t *pwm_percent);
+int corsairlink_rmi_fan_status(struct corsair_device_info *dev,
+			uint16_t *status);
 
-int corsairlink_rmi_time_powered(struct corsair_device_info *dev, uint32_t *v32);
-int corsairlink_rmi_time_uptime(struct corsair_device_info *dev, uint32_t *v32);
+int corsairlink_rmi_time_powered(struct corsair_device_info *dev,
+			uint32_t *v32);
+int corsairlink_rmi_time_uptime(struct corsair_device_info *dev,
+			uint32_t *v32);
 
 int corsairlink_rmi_name(struct corsair_device_info *dev, char *name);
 int corsairlink_rmi_vendor(struct corsair_device_info *dev, char *name);

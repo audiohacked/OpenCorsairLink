@@ -1,10 +1,15 @@
 CC ?= gcc
-CFLAGS ?= -std=c99 -pedantic-errors $(shell pkg-config --cflags libusb-1.0)
-LDFLAGS ?= $(shell pkg-config --libs libusb-1.0) -L/usr/lib -lm
+CFLAGS ?= -std=c99 -pedantic-errors
+LDFLAGS ?= -lm
+
+# pkg-config for libusb-1.0
+CFLAGS += $(shell pkg-config --cflags libusb-1.0)
+LDFLAGS += $(shell pkg-config --libs libusb-1.0)
 
 OBJS = main.o \
+			device.o \
 			options.o \
-			device.o
+			print.o
 OBJS_LL = lowlevel/asetek4.o \
 			lowlevel/hid.o \
 			lowlevel/rmi.o
