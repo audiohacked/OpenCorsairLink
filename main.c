@@ -32,14 +32,11 @@
 #include "protocol/hid/core.h"
 #include "protocol/rmi/core.h"
 
-extern struct corsair_device_info corsairlink_devices[7];
-
 int main(int argc, char *argv[])
 {
-	struct corsair_device_info *dev;
 	int r; // result from libusb functions
-	int i; // for loops
 
+	uint8_t device_number = 0;
 	struct option_flags flags;
 	struct color led_color;
 	struct color warning_led;
@@ -48,40 +45,42 @@ int main(int argc, char *argv[])
 	int8_t warning_led_temp;
 	uint8_t pump_mode;
 
+	options_parse(argc, argv, &flags, &device_number,
+		&led_color, &warning_led, &warning_led_temp,
+		&fan1, &pump, &pump_mode);
+	
+	libusb_context *context = NULL;
+
+	r = libusb_init(&context);
+	if (r < 0) {
+		msg_info("Init Error %d\n", r);
+		return 1;
+	}
+	libusb_set_debug(context, 3);
+
+	corsairlink_device_scanner(context);
+
 	char name[20];
 	name[sizeof(name) - 1] = 0;
 	uint32_t time = 0;
 	uint16_t supply_volts, supply_watts,
 		output_volts, output_amps, output_watts; 
 	
-	options_parse(argc, argv, &flags,
-		&led_color, &warning_led, &warning_led_temp,
-		&fan1, &pump, &pump_mode);
-	
-	for (i=0; i<7; i++) {
-		dev = &corsairlink_devices[i];
-		r = corsairlink_find_device(dev);
-		if (r >= 0) {
-			msg_info("CorsairLink Device Found: %s!\n", dev->name);
-			break;
-		}
-	}
-
-	r = dev->driver->init(dev->handle, dev->write_endpoint);
+	r = scanlist[device_number].device->driver->init(scanlist[device_number].handle, scanlist[device_number].device->write_endpoint);
 
 	/* fetch device name, vendor name, product name */
-	r = dev->driver->name(dev, name);
+	r = scanlist[device_number].device->driver->name(scanlist[device_number].device, name);
 	msg_info("Name: %s\n", name);
-	r = dev->driver->vendor(dev, name);
+	r = scanlist[device_number].device->driver->vendor(scanlist[device_number].device, name);
 	msg_info("Vendor: %s\n", name);
-	r = dev->driver->product(dev, name);
+	r = scanlist[device_number].device->driver->product(scanlist[device_number].device, name);
 	msg_info("Product: %s\n", name);
 
-	r = dev->driver->led(dev, &led_color, &warning_led, warning_led_temp, (warning_led_temp > -1));
+	r = scanlist[device_number].device->driver->led(scanlist[device_number].device, &led_color, &warning_led, warning_led_temp, (warning_led_temp > -1));
 
-	r = dev->driver->deinit(dev->handle, dev->write_endpoint);
+	r = scanlist[device_number].device->driver->deinit(scanlist[device_number].handle, scanlist[device_number].device->write_endpoint);
 
 exit:
-	corsairlink_close(dev);
+	corsairlink_close(context);
 	return 0;
 }

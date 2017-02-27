@@ -26,9 +26,8 @@ struct corsair_device_scan {
 	struct libusb_device_handle *handle;
 } scanlist[10]; 
 
-void corsairlink_close(struct corsair_device_info *dev);
-int corsairlink_find_device(struct corsair_device_info *dev);
-int corsairlink_device_scanner(struct corsair_device_info *dev);
+void corsairlink_close(libusb_context *context);
+int corsairlink_device_scanner(libusb_context *context);
 
 #endif
 

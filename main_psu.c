@@ -34,10 +34,10 @@
 
 int main(int argc, char *argv[])
 {
-	struct corsair_device_info *dev;
 	int r; // result from libusb functions
-	int i; // for loops
+	int i; // used in loops
 
+	uint8_t device_number = 0;
 	struct option_flags flags;
 	struct color led_color;
 	struct color warning_led;
@@ -52,34 +52,44 @@ int main(int argc, char *argv[])
 	uint16_t supply_volts, supply_watts,
 		output_volts, output_amps, output_watts; 
 	
-	options_parse(argc, argv, &flags,
+	options_parse(argc, argv, &flags, &device_number,
 		&led_color, &warning_led, &warning_led_temp,
 		&fan1, &pump, &pump_mode);
 
-	/* scan for devices */
+	libusb_context *context = NULL;
 
-	r = dev->driver->init(dev->handle, dev->write_endpoint);
+	r = libusb_init(&context);
+	if (r < 0) {
+		msg_info("Init Error %d\n", r);
+		return 1;
+	}
+	libusb_set_debug(context, 3);
+
+	/* scan for devices */
+	corsairlink_device_scanner(context);
+
+	r = scanlist[device_number].device->driver->init(scanlist[device_number].handle, scanlist[device_number].device->write_endpoint);
 
 	/* fetch device name, vendor name, product name */
-	r = dev->driver->name(dev, name);
+	r = scanlist[device_number].device->driver->name(scanlist[device_number].device, name);
 	msg_info("Name: %s\n", name);
-	r = dev->driver->vendor(dev, name);
+	r = scanlist[device_number].device->driver->vendor(scanlist[device_number].device, name);
 	msg_info("Vendor: %s\n", name);
-	r = dev->driver->product(dev, name);
+	r = scanlist[device_number].device->driver->product(scanlist[device_number].device, name);
 	msg_info("Product: %s\n", name);
 
 	/* fetch device powered time and device uptime */
-	r = dev->driver->psu_time.powered(dev, &time);
+	r = scanlist[device_number].device->driver->psu_time.powered(scanlist[device_number].device, &time);
 	msg_info("Powered: %u (%dd.  %dh)\n",
 		time, time/(24*60*60), time/(60*60)%24);
-	r = dev->driver->psu_time.uptime(dev, &time);
+	r = scanlist[device_number].device->driver->psu_time.uptime(scanlist[device_number].device, &time);
 	msg_info("Uptime: %u (%dd.  %dh)\n",
 		time, time/(24*60*60), time/(60*60)%24);
 
 	/* fetch Supply Voltage and Total Watts Consumming */
-	r = dev->driver->power.supply_voltage(dev, &supply_volts);
+	r = scanlist[device_number].device->driver->power.supply_voltage(scanlist[device_number].device, &supply_volts);
 	msg_info("Supply Voltage %5.1f\n", convert_bytes_double(supply_volts));
-	r = dev->driver->power.total_wattage(dev, &supply_watts);
+	r = scanlist[device_number].device->driver->power.total_wattage(scanlist[device_number].device, &supply_watts);
 	msg_info("Total Watts %5.1f\n", convert_bytes_double(supply_watts));
 
 	/* fetch PSU output */
@@ -91,21 +101,21 @@ int main(int argc, char *argv[])
 		if (i==2)
 			msg_info("Output 3.3v:\n");
 			
-		r = dev->driver->power.select(dev, i);
-		r = dev->driver->power.voltage(dev, &output_volts);
+		r = scanlist[device_number].device->driver->power.select(scanlist[device_number].device, i);
+		r = scanlist[device_number].device->driver->power.voltage(scanlist[device_number].device, &output_volts);
 		msg_info("\tVoltage %5.2f\n", convert_bytes_double(output_volts));
 
-		r = dev->driver->power.amperage(dev, &output_amps);
+		r = scanlist[device_number].device->driver->power.amperage(scanlist[device_number].device, &output_amps);
 		msg_info("\tAmps %5.2f\n", convert_bytes_double(output_amps));
 
-		r = dev->driver->power.wattage(dev, &output_watts);
+		r = scanlist[device_number].device->driver->power.wattage(scanlist[device_number].device, &output_watts);
 		msg_info("\tWatts %5.2f\n", convert_bytes_double(output_watts));
 	}
-	r = dev->driver->power.select(dev, 0);
+	r = scanlist[device_number].device->driver->power.select(scanlist[device_number].device, 0);
 
-	r = dev->driver->deinit(dev->handle, dev->write_endpoint);
+	r = scanlist[device_number].device->driver->deinit(scanlist[device_number].handle, scanlist[device_number].device->write_endpoint);
 
 exit:
-	corsairlink_close(dev);
+	corsairlink_close(context);
 	return 0;
 }

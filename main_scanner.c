@@ -25,20 +25,15 @@
 #include "options.h"
 #include "print.h"
 #include "device.h"
+#include "scan.h"
 
 extern struct corsair_device_info corsairlink_devices[7];
-
-struct corsair_device_scan {
-	struct corsair_device_info *device;
-	struct libusb_device_handle *handle;
-} scanlist[10];
-
-int scanlist_count = 0;
 
 int main(int argc, char *argv[])
 {
 	int r; // result from libusb functions
 
+	uint8_t device_number = 0;
 	struct option_flags flags;
 	struct color led_color;
 	struct color warning_led;
@@ -47,7 +42,7 @@ int main(int argc, char *argv[])
 	int8_t warning_led_temp;
 	uint8_t pump_mode;
 
-	options_parse(argc, argv, &flags,
+	options_parse(argc, argv, &flags, &device_number,
 		&led_color, &warning_led, &warning_led_temp,
 		&fan1, &pump, &pump_mode);
 
@@ -60,51 +55,9 @@ int main(int argc, char *argv[])
 	}
 	libusb_set_debug(context, 3);
 
-	/* Start: scan code */
-	int i; // for loops
-	int j; // for loops
-	ssize_t cnt;
-	struct corsair_device_info *device;
-	libusb_device **devices;
-	cnt = libusb_get_device_list(context, &devices);
-	for (i=0; i<cnt; i++) {
-		if (scanlist_count>=10) {
-			msg_debug("Limited to 10 CorsairLink devices\n");
-			break;
-		}
-		msg_debug("usb device %d\n", i);
-		for(j=0; j<7; j++) {
-			struct libusb_device_descriptor desc;
-			
-			msg_debug("corsair device %d\n", j);
-			device = &corsairlink_devices[j];
-
-			r = libusb_get_device_descriptor(devices[i], &desc);
-			if ((device->vendor_id == desc.idVendor)&&
-				(device->product_id == desc.idProduct))
-			{
-				r = libusb_open(devices[i], &scanlist[scanlist_count].handle);
-			}
-			if (scanlist[scanlist_count].handle != NULL) {
-				scanlist[scanlist_count].device = &corsairlink_devices[j];
-				msg_info("D:%d, CorsairLink Device Found: %s!\n",
-					scanlist_count, device->name);
-				r = libusb_detach_kernel_driver(
-					scanlist[scanlist_count].handle, 0);
-				r = libusb_claim_interface(
-					scanlist[scanlist_count].handle, 1);
-				scanlist_count++;
-				break;
-			}
-		}
-	}
-	/* End: scan code */
+	corsairlink_device_scanner(context);
 
 exit:
-	for (i=0; i<scanlist_count; i++) {
-		r = libusb_release_interface(scanlist[i].handle, 0);
-		libusb_close(scanlist[i].handle);
-	}
-	libusb_exit(context);
+	corsairlink_close(context);
 	return 0;
 }

@@ -54,13 +54,13 @@ struct option_flags {
 };
 
 struct option_parse_return {
-	struct option_flags flags;
 	struct color color_led;
 	struct color warning_led;
 	int8_t warning_temp;
 	struct fan_table fan1;
 	struct fan_table pump;
 	uint8_t pump_mode;
+	uint8_t device_number;
 };
 
 enum pump_modes {

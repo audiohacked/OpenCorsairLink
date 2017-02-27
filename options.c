@@ -55,7 +55,8 @@ void options_print(void);
 	x->green = 0x00; \
 	x->blue = 0x00;
 
-int options_parse(int argc, char **argv, struct option_flags *flags, 
+int options_parse(int argc, char **argv,
+	struct option_flags *flags, uint8_t *device_number,
 	struct color *led, struct color *warning, int8_t *warning_temp,
 	struct fan_table *fan, struct fan_table *pump, uint8_t *pump_mode)
 {
@@ -84,7 +85,7 @@ int options_parse(int argc, char **argv, struct option_flags *flags,
 			verbose++;
 			break;
 		case 3:
-			// sscanf(optarg, "%u", device_number);
+			sscanf(optarg, "%hhu", device_number);
 			break;
 		
 		case 4:
