@@ -30,7 +30,7 @@ static struct option long_options[] = {
 	{"version",           no_argument,          0,  1},
 	{"debug",             no_argument,          0,  2},
 
-	{"device",            optional_argument,    0,  3},
+	{"device",            required_argument,    0,  3},
 	{"firmware",          no_argument,          0,  4},
 
 	{"print-temperature", no_argument,          0,  5},

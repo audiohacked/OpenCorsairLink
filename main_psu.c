@@ -37,7 +37,10 @@ int main(int argc, char *argv[])
 	int r; // result from libusb functions
 	int i; // used in loops
 
-	uint8_t device_number = 0;
+	uint8_t device_number;
+	struct corsair_device_info *dev;
+	struct libusb_device_handle *handle;
+
 	struct option_flags flags;
 	struct color led_color;
 	struct color warning_led;
@@ -67,30 +70,39 @@ int main(int argc, char *argv[])
 
 	/* scan for devices */
 	corsairlink_device_scanner(context);
+	msg_debug("DEBUG: scan done, start routines\n");
+	msg_debug("DEBUG: device_number = %d\n", device_number);
+	dev = scanlist[device_number].device;
+	handle = scanlist[device_number].handle;
+	msg_debug("DEBUG: shortcuts set\n"); 
 
-	r = scanlist[device_number].device->driver->init(scanlist[device_number].handle, scanlist[device_number].device->write_endpoint);
+	r = dev->driver->init(handle, dev->write_endpoint);
+	msg_debug("DEBUG: init done\n");
 
 	/* fetch device name, vendor name, product name */
-	r = scanlist[device_number].device->driver->name(scanlist[device_number].device, name);
+	r = dev->driver->name(dev, name);
 	msg_info("Name: %s\n", name);
-	r = scanlist[device_number].device->driver->vendor(scanlist[device_number].device, name);
+	r = dev->driver->vendor(dev, name);
 	msg_info("Vendor: %s\n", name);
-	r = scanlist[device_number].device->driver->product(scanlist[device_number].device, name);
+	r = dev->driver->product(dev, name);
 	msg_info("Product: %s\n", name);
+	msg_debug("DEBUG: string done\n");
 
 	/* fetch device powered time and device uptime */
-	r = scanlist[device_number].device->driver->psu_time.powered(scanlist[device_number].device, &time);
+	r = dev->driver->psu_time.powered(dev, &time);
 	msg_info("Powered: %u (%dd.  %dh)\n",
 		time, time/(24*60*60), time/(60*60)%24);
-	r = scanlist[device_number].device->driver->psu_time.uptime(scanlist[device_number].device, &time);
+	r = dev->driver->psu_time.uptime(dev, &time);
 	msg_info("Uptime: %u (%dd.  %dh)\n",
 		time, time/(24*60*60), time/(60*60)%24);
+	msg_debug("DEBUG: time done\n");
 
 	/* fetch Supply Voltage and Total Watts Consumming */
 	r = scanlist[device_number].device->driver->power.supply_voltage(scanlist[device_number].device, &supply_volts);
 	msg_info("Supply Voltage %5.1f\n", convert_bytes_double(supply_volts));
 	r = scanlist[device_number].device->driver->power.total_wattage(scanlist[device_number].device, &supply_watts);
 	msg_info("Total Watts %5.1f\n", convert_bytes_double(supply_watts));
+	msg_debug("DEBUG: supply done\n");
 
 	/* fetch PSU output */
 	for (i=0; i<3; i++) {
