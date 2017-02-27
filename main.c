@@ -32,6 +32,8 @@
 #include "protocol/hid/core.h"
 #include "protocol/rmi/core.h"
 
+extern struct corsair_device_info corsairlink_devices[7];
+
 int main(int argc, char *argv[])
 {
 	struct corsair_device_info *dev;

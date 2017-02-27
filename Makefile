@@ -8,6 +8,7 @@ LDFLAGS += $(shell pkg-config --libs libusb-1.0)
 
 OBJ_MAIN = main.o
 OBJ_PSU = main_psu.o
+OBJ_SCAN = main_scanner.o
 OBJS = device.o \
 	options.o \
 	print.o \
@@ -27,7 +28,7 @@ OBJS_PROTO = protocol/asetek4/core.o \
 
 default: all
 
-all: OpenCorsairLink.elf OpenCorsairLinkPSU.elf
+all: OpenCorsairLink.elf OpenCorsairLinkPSU.elf Scanner.elf
 	
 OpenCorsairLink.elf: $(OBJ_MAIN) $(OBJS_PROTO) $(OBJS_LL) $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@ 
@@ -35,8 +36,11 @@ OpenCorsairLink.elf: $(OBJ_MAIN) $(OBJS_PROTO) $(OBJS_LL) $(OBJS)
 OpenCorsairLinkPSU.elf: $(OBJ_PSU) $(OBJS_PROTO) $(OBJS_LL) $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
+Scanner.elf: $(OBJ_SCAN) $(OBJS_PROTO) $(OBJS_LL) $(OBJS)
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
+
 %.o: %.c
 	$(CC) $(CFLAGS) -g -c -o $@ $<
 
 clean:
-	$(RM) OpenCorsairLink.elf OpenCorsairLinkPSU.elf $(OBJ_MAIN) $(OBJ_PSU) $(OBJS) $(OBJS_LL) $(OBJS_PROTO)
+	$(RM) OpenCorsairLink.elf OpenCorsairLinkPSU.elf Scanner.elf $(OBJ_MAIN) $(OBJ_PSU) $(OBJ_SCAN) $(OBJS) $(OBJS_LL) $(OBJS_PROTO)

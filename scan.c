@@ -26,6 +26,9 @@
 #include "common.h"
 #include "device.h"
 #include "print.h"
+#include "scan.h"
+
+extern struct corsair_device_info corsairlink_devices[7];
 
 void corsairlink_close(struct corsair_device_info *dev)
 {
@@ -59,10 +62,12 @@ int corsairlink_find_device(struct corsair_device_info *dev)
 int corsairlink_device_scanner(struct corsair_device_info *dev)
 {
 	int i = 0;
+	int j = 0;
 	int r = 0;
-	for (i=0; i<7; i++) {
-		dev = &corsairlink_devices[i];
-		r = corsairlink_find_device(dev);
+	for (i=0; i<10; i++)
+	for (j=0; j<7; j++) {
+		scanlist[i].device = &corsairlink_devices[j];
+		r = corsairlink_find_device(scanlist[i].device);
 		if (r >= 0) {
 			msg_info("CorsairLink Device Found: %s!\n", dev->name);
 			break;
