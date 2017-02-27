@@ -29,7 +29,7 @@
 extern struct corsair_device_info corsairlink_devices[7];
 
 struct corsair_device_scan {
-	struct corsair_device_info *dev;
+	struct corsair_device_info *device;
 	struct libusb_device_handle *handle;
 } scanlist[10];
 
@@ -38,8 +38,6 @@ int scanlist_count = 0;
 int main(int argc, char *argv[])
 {
 	int r; // result from libusb functions
-	int i; // for loops
-	int j; // for loops
 
 	struct option_flags flags;
 	struct color led_color;
@@ -53,8 +51,6 @@ int main(int argc, char *argv[])
 		&led_color, &warning_led, &warning_led_temp,
 		&fan1, &pump, &pump_mode);
 
-	struct corsair_device_info *device;
-	libusb_device **devices;
 	libusb_context *context = NULL;
 
 	r = libusb_init(&context);
@@ -65,9 +61,17 @@ int main(int argc, char *argv[])
 	libusb_set_debug(context, 3);
 
 	/* Start: scan code */
+	int i; // for loops
+	int j; // for loops
 	ssize_t cnt;
+	struct corsair_device_info *device;
+	libusb_device **devices;
 	cnt = libusb_get_device_list(context, &devices);
 	for (i=0; i<cnt; i++) {
+		if (scanlist_count>=10) {
+			msg_debug("Limited to 10 CorsairLink devices\n");
+			break;
+		}
 		msg_debug("usb device %d\n", i);
 		for(j=0; j<7; j++) {
 			struct libusb_device_descriptor desc;
@@ -82,8 +86,9 @@ int main(int argc, char *argv[])
 				r = libusb_open(devices[i], &scanlist[scanlist_count].handle);
 			}
 			if (scanlist[scanlist_count].handle != NULL) {
-				msg_info("CorsairLink Device Found: %s!\n",
-					device->name);
+				scanlist[scanlist_count].device = &corsairlink_devices[j];
+				msg_info("D:%d, CorsairLink Device Found: %s!\n",
+					scanlist_count, device->name);
 				r = libusb_detach_kernel_driver(
 					scanlist[scanlist_count].handle, 0);
 				r = libusb_claim_interface(

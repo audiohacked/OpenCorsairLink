@@ -73,4 +73,5 @@ int corsairlink_device_scanner(struct corsair_device_info *dev)
 			break;
 		}
 	}
+	return 0;
 }
