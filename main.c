@@ -36,7 +36,10 @@ int main(int argc, char *argv[])
 {
 	int r; // result from libusb functions
 
-	uint8_t device_number = 0;
+	uint8_t device_number;
+	struct corsair_device_info *dev;
+	struct libusb_device_handle *handle;
+
 	struct option_flags flags;
 	struct color led_color;
 	struct color warning_led;
@@ -59,26 +62,28 @@ int main(int argc, char *argv[])
 	libusb_set_debug(context, 3);
 
 	corsairlink_device_scanner(context);
+	msg_debug("DEBUG: scan done, start routines\n");
+	msg_debug("DEBUG: device_number = %d\n", device_number);
 
-	char name[20];
-	name[sizeof(name) - 1] = 0;
-	uint32_t time = 0;
-	uint16_t supply_volts, supply_watts,
-		output_volts, output_amps, output_watts; 
-	
-	r = scanlist[device_number].device->driver->init(scanlist[device_number].handle, scanlist[device_number].device->write_endpoint);
+	dev = scanlist[device_number].device;
+	handle = scanlist[device_number].handle;
+	msg_debug("DEBUG: shortcuts set\n");
+
+	r = dev->driver->init(handle, dev->write_endpoint);
+	msg_debug("DEBUG: init done\n");
 
 	/* fetch device name, vendor name, product name */
-	r = scanlist[device_number].device->driver->name(scanlist[device_number].device, name);
-	msg_info("Name: %s\n", name);
-	r = scanlist[device_number].device->driver->vendor(scanlist[device_number].device, name);
-	msg_info("Vendor: %s\n", name);
-	r = scanlist[device_number].device->driver->product(scanlist[device_number].device, name);
-	msg_info("Product: %s\n", name);
+	//r = dev->driver->name(dev, name);
+	//msg_info("Name: %s\n", name);
+	//r = dev->driver->vendor(dev, name);
+	//msg_info("Vendor: %s\n", name);
+	//r = dev->driver->product(dev, name);
+	//msg_info("Product: %s\n", name);
 
-	r = scanlist[device_number].device->driver->led(scanlist[device_number].device, &led_color, &warning_led, warning_led_temp, (warning_led_temp > -1));
+	r = dev->driver->led(dev, &led_color, &warning_led, warning_led_temp, (warning_led_temp > -1));
 
-	r = scanlist[device_number].device->driver->deinit(scanlist[device_number].handle, scanlist[device_number].device->write_endpoint);
+	r = dev->driver->deinit(handle, dev->write_endpoint);
+	msg_debug("DEBUG: deinit done\n");
 
 exit:
 	corsairlink_close(context);
