@@ -19,7 +19,7 @@
 #ifndef _DEVICE_H
 #define _DEVICE_H
 
-#include "common.h"
+#include "options.h"
 
 struct corsair_device_info {
 	/** device info */
