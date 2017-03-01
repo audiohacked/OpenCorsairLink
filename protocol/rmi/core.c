@@ -31,16 +31,18 @@
 
 double convert_bytes_double(uint16_t v16)
 {
-	uint8_t d0 = (v16&0xFF00)>>8;
-	uint8_t d1 = v16&0xFF;
+	int exponent = v16>>11;
+	int fraction = (int)(v16&2047);
+	if (exponent > 15)
+		exponent = -(32 - exponent);
 
-	int p = (d1 >> 3) & 0x1F;
-	if (p > 0xF) p -= 32;
+	if (fraction > 1023)
+		fraction = -(2048 - fraction);
 
-	int v = (((int)d1& 0x7)<<8) + (int)d0;
-	if (v > 0x400) v = -(0x10000 - (v|0xF800));
+	if ((fraction & 1) == 1)
+		fraction++;
 
-	return (double)v * pow(2.0, (double)p);
+	return (double)fraction * pow(2.0, (double)exponent);
 }
 
 int corsairlink_rmi_device_id(struct corsair_device_info *dev)
