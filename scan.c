@@ -86,7 +86,7 @@ int corsairlink_device_scanner(libusb_context *context)
 			}
 		}
 	}
-	msg_info("\n\n");
+	msg_info("\n");
 	/* End: scan code */
 	return 0;
 }

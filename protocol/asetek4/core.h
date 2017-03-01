@@ -49,7 +49,11 @@ enum Asetek_PumpModes {
 }
 
 int corsairlink_asetek_device_id(struct corsair_device_info *dev);
+int corsairlink_asetek_name(struct corsair_device_info *dev, char *n);
+int corsairlink_asetek_vendor(struct corsair_device_info *dev, char *n);
+int corsairlink_asetek_product(struct corsair_device_info *dev, char *n);
 int corsairlink_asetek_firmware_id(struct corsair_device_info *dev, char *f);
+
 int corsairlink_asetek_change_led(struct corsair_device_info *dev,
 			struct color *color_led, struct color *warning_led,
 			uint8_t Warning_Temp, uint8_t Warning_Enable);

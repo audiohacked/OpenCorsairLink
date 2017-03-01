@@ -31,6 +31,24 @@ int corsairlink_asetek_device_id(struct corsair_device_info *dev)
 	return 0x00;
 }
 
+int corsairlink_asetek_name(struct corsair_device_info *dev, char *name)
+{
+	sprintf(name, "%s", dev->name);
+	return 0;
+}
+
+int corsairlink_asetek_vendor(struct corsair_device_info *dev, char *name)
+{
+	sprintf(name,"Corsair");
+	return 0;
+}
+
+int corsairlink_asetek_product(struct corsair_device_info *dev, char *name)
+{
+	sprintf(name, "%s", dev->name);
+	return 0;
+}
+
 int corsairlink_asetek_firmware_id(struct corsair_device_info *dev, char *firmware)
 {
 	int r;

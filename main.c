@@ -52,8 +52,6 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
 	msg_debug("DEBUG: init done\n");
 
 	/* fetch device name, vendor name, product name */
-	r = dev->driver->name(dev, name);
-	msg_info("Name: %s\n", name);
 	r = dev->driver->vendor(dev, name);
 	msg_info("Vendor: %s\n", name);
 	r = dev->driver->product(dev, name);
@@ -128,12 +126,10 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 	msg_debug("DEBUG: init done\n");
 
 	/* fetch device name, vendor name, product name */
-	//r = dev->driver->name(dev, name);
-	//msg_info("Name: %s\n", name);
-	//r = dev->driver->vendor(dev, name);
-	//msg_info("Vendor: %s\n", name);
-	//r = dev->driver->product(dev, name);
-	//msg_info("Product: %s\n", name);
+	r = dev->driver->vendor(dev, name);
+	msg_info("Vendor: %s\n", name);
+	r = dev->driver->product(dev, name);
+	msg_info("Product: %s\n", name);
 	r = dev->driver->fw_version(dev, name);
 	msg_info("Firmware: %s\n", name);
 
