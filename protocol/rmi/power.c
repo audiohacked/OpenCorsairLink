@@ -41,7 +41,7 @@ int corsairlink_rmi_output_select(struct corsair_device_info *dev,
 	uint8_t i = 1;
 
 	commands[0] = 0x02; // Length
-	commands[1] = 0x00; // Command Opcode: Output Select
+	commands[1] = 0x00; // Command Opcode: Output X Select
 	commands[2] = output_select; // Command data...
 
 	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 3);
@@ -63,7 +63,7 @@ int corsairlink_rmi_output_volts(struct corsair_device_info *dev,
 	uint32_t data = 0;
 
 	commands[0] = 0x03; // Length
-	commands[1] = 0x8B; // Command Opcode: Output Select
+	commands[1] = 0x8B; // Command Opcode: Output X Volts
 	commands[2] = 0x00; // Command data...
 	commands[3] = 0x00;
 
@@ -92,7 +92,7 @@ int corsairlink_rmi_output_amps(struct corsair_device_info *dev,
 	uint8_t i = 1;
 
 	commands[0] = 0x03; // Length
-	commands[1] = 0x8C; // Command Opcode: Output Select
+	commands[1] = 0x8C; // Command Opcode: Output X Amps
 	commands[2] = 0x00; // Command data...
 	commands[3] = 0x00;
 
@@ -119,7 +119,7 @@ int corsairlink_rmi_output_watts(struct corsair_device_info *dev,
 	uint8_t i = 1;
 
 	commands[0] = 0x03; // Length
-	commands[1] = 0x96; // Command Opcode: Output Select
+	commands[1] = 0x96; // Command Opcode: Output X Watts
 	commands[2] = 0x00; // Command data...
 	commands[3] = 0x00;
 
@@ -147,7 +147,7 @@ int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev,
 	uint8_t i = 1;
 
 	commands[0] = 0x03; // Length
-	commands[1] = 0x96; // Command Opcode: Output Select
+	commands[1] = 0x88; // Command Opcode: Supply Volts
 	commands[2] = 0x00; // Command data...
 	commands[3] = 0x00;
 
@@ -175,7 +175,7 @@ int corsairlink_rmi_power_total_wattage(struct corsair_device_info *dev,
 	uint8_t i = 1;
 
 	commands[0] = 0x03; // Length
-	commands[1] = 0xEE; // Command Opcode: Output Select
+	commands[1] = 0xEE; // Command Opcode: Total Watts
 	commands[2] = 0x00; // Command data...
 	commands[3] = 0x00;
 
