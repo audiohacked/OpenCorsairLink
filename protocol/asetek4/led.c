@@ -24,6 +24,8 @@
 #include <libusb.h>
 #include "../../lowlevel/asetek4.h"
 #include "../../device.h"
+#include "../../driver.h"
+
 
 int corsairlink_asetek_change_led(struct corsair_device_info *dev,
 			struct color *color_led, struct color *warning_led,

@@ -66,18 +66,16 @@ struct option_flags {
 };
 
 struct option_parse_return {
-	struct color color_led;
+	struct color led_color;
 	struct color warning_led;
-	int8_t warning_temp;
+	int8_t warning_led_temp;
 	struct fan_table fan1;
 	struct fan_table pump;
 	uint8_t pump_mode;
-	uint8_t device_number;
 };
 
 int options_parse(int argc, char **argv,
-	struct option_flags *flags, uint8_t *device_number,
-	struct color *led, struct color *warning, int8_t *warning_temp,
-	struct fan_table *fan, struct fan_table *pump, uint8_t *pump_mode);
+	struct option_flags *flags, int8_t *device_number,
+	struct option_parse_return *settings);
 
 #endif

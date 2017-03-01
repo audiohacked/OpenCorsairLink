@@ -25,6 +25,7 @@
 
 #include "../../lowlevel/rmi.h"
 #include "../../device.h"
+#include "../../driver.h"
 #include "core.h"
 
 int corsairlink_rmi_time_powered(struct corsair_device_info *dev,

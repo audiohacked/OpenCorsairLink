@@ -25,6 +25,7 @@
 
 #include "../../lowlevel/hid.h"
 #include "../../device.h"
+#include "../../driver.h"
 #include "../../print.h"
 #include "core.h"
 

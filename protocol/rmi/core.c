@@ -26,6 +26,7 @@
 
 #include "../../lowlevel/hid.h"
 #include "../../device.h"
+#include "../../driver.h"
 #include "core.h"
 
 double convert_bytes_double(uint16_t v16)

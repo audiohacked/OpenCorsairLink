@@ -24,6 +24,7 @@
 #include <libusb.h>
 #include "../../lowlevel/asetek4.h"
 #include "../../device.h"
+#include "../../driver.h"
 #include "core.h"
 
 int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, uint8_t pump_mode)

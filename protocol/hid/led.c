@@ -25,6 +25,7 @@
 
 #include "../../lowlevel/hid.h"
 #include "../../device.h"
+#include "../../driver.h"
 #include "core.h"
 
 int corsairlink_hid_change_led(struct corsair_device_info *dev,

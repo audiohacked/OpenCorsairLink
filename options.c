@@ -51,19 +51,18 @@ static struct option long_options[] = {
 void options_print(void);
 
 #define INIT_WARNING_LED(x) \
-	x->red = 0xFF; \
-	x->green = 0x00; \
-	x->blue = 0x00;
+	x.red = 0xFF; \
+	x.green = 0x00; \
+	x.blue = 0x00;
 
 int options_parse(int argc, char **argv,
-	struct option_flags *flags, uint8_t *device_number,
-	struct color *led, struct color *warning, int8_t *warning_temp,
-	struct fan_table *fan, struct fan_table *pump, uint8_t *pump_mode)
+	struct option_flags *flags, int8_t *device_number,
+	struct option_parse_return *settings)
 {
 	int c, returnCode = 0;
 
-	INIT_WARNING_LED(warning);
-	*warning_temp = 60;
+	INIT_WARNING_LED(settings->warning_led);
+	settings->warning_led_temp = 60;
 
 	while (1) {
 		int option_index = 0;
@@ -85,7 +84,7 @@ int options_parse(int argc, char **argv,
 			verbose++;
 			break;
 		case 3:
-			sscanf(optarg, "%hhu", device_number);
+			sscanf(optarg, "%hhd", device_number);
 			break;
 		
 		case 4:
@@ -100,33 +99,33 @@ int options_parse(int argc, char **argv,
 			break;
 
 		case 7: /* led color */
-			sscanf(optarg, "%02hhX%02hhX%02hhX", &led->red, &led->green, &led->blue);
+			sscanf(optarg, "%02hhX%02hhX%02hhX", &settings->led_color.red, &settings->led_color.green, &settings->led_color.blue);
 			break;
 		case 8: /* led warning color */
-			sscanf(optarg, "%02hhX%02hhX%02hhX", &warning->red, &warning->green, &warning->blue);
+			sscanf(optarg, "%02hhX%02hhX%02hhX", &settings->warning_led.red, &settings->warning_led.green, &settings->warning_led.blue);
 			break;
 		case 9: /* led warning temperature */
-			sscanf(optarg, "%hhd", warning_temp);
+			sscanf(optarg, "%hhd", &settings->warning_led_temp);
 			break;
 
 		case 10:
 			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd",
-				&fan->t1,
-				&fan->t2,
-				&fan->t3,
-				&fan->t4,
-				&fan->t5);
+				&settings->fan1.t1,
+				&settings->fan1.t2,
+				&settings->fan1.t3,
+				&settings->fan1.t4,
+				&settings->fan1.t5);
 			break;
 		case 11:
 			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd",
-				&fan->s1,
-				&fan->s2,
-				&fan->s3,
-				&fan->s4,
-				&fan->s5);
+				&settings->fan1.s1,
+				&settings->fan1.s2,
+				&settings->fan1.s3,
+				&settings->fan1.s4,
+				&settings->fan1.s5);
 			break;
 		case 12:
-			sscanf(optarg, "%hhu", pump_mode);
+			sscanf(optarg, "%hhu", &settings->pump_mode);
 			break;
 
 		default:
