@@ -105,6 +105,7 @@ struct corsair_device_info corsairlink_devices[] = {
 		.fan_control_count = 1,
 		.pump_index = 0,
 		.psu = 0,
+		.asetek = 1,
 	},
 	{
 		.vendor_id = 0x1b1c,
@@ -120,6 +121,7 @@ struct corsair_device_info corsairlink_devices[] = {
 		.fan_control_count = 1,
 		.pump_index = 0,
 		.psu = 0,
+		.asetek = 1,
 	},
 	{
 		.vendor_id = 0x1b1c,

@@ -43,6 +43,7 @@ struct corsair_device_info {
 	uint8_t fan_control_count; // used with HID driver
 	uint8_t pump_index; // used with HID driver
 	uint8_t psu;
+	uint8_t asetek;
 };
 
 #endif

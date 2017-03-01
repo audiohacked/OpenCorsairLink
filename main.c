@@ -110,8 +110,11 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
 
 int hydro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings) {
 	int r;
+	int i;
 	struct corsair_device_info *dev;
 	struct libusb_device_handle *handle;
+	uint16_t temperature;
+	double celsius = 0;
 
 	dev = scanned_device.device;
 	handle = scanned_device.handle;
@@ -127,6 +130,20 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 	//msg_info("Vendor: %s\n", name);
 	//r = dev->driver->product(dev, name);
 	//msg_info("Product: %s\n", name);
+
+	for (i=0; i<3; i++) {
+		r = dev->driver->temperature(dev, i, &temperature);
+		if (dev->asetek == 1) {
+			uint8_t v1 = (temperature>>8);
+			uint8_t v2 = (temperature&0xFF);
+			msg_debug("DEBUG: %02X %02X\n", v1, v2);
+			celsius = (double)v1 + ((double)v2/10);
+		}
+		msg_info("Temperature %d: %5.2f\n", i, (double)celsius);
+		if (dev->asetek == 1) {
+			break;
+		} 
+	}
 
 	r = dev->driver->led(dev, &settings.led_color, &settings.warning_led, settings.warning_led_temp, (settings.warning_led_temp > -1));
 

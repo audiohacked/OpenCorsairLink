@@ -25,6 +25,7 @@
 #include "../../lowlevel/asetek4.h"
 #include "../../device.h"
 #include "../../driver.h"
+#include "../../print.h"
 
 int corsairlink_asetek_temperature(struct corsair_device_info *dev,
 			uint8_t selector, uint16_t *temperature)
@@ -58,6 +59,7 @@ int corsairlink_asetek_temperature(struct corsair_device_info *dev,
 	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 19);
 	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 32);
 
+	msg_debug("%02X %02X\n", response[10], response[14]);
 	*(temperature) = (response[10]<<8) + response[14];
 
 	return r;
