@@ -69,7 +69,7 @@ int corsairlink_rmi_device_id(struct corsair_device_info *dev)
 	return response[2];
 }
 
-int corsairlink_rmi_firmware_id(struct corsair_device_info *dev)
+int corsairlink_rmi_firmware_id(struct corsair_device_info *dev, char *firmware)
 {
 	int r;
 	uint8_t response[64];
@@ -89,9 +89,9 @@ int corsairlink_rmi_firmware_id(struct corsair_device_info *dev)
 	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, i);
 	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
 
-	int firmware = response[3]<<8;
-	firmware += response[2];
-	return firmware;
+	sfprintf(firmware, "NA");
+
+	return 0;
 }
 
 int corsairlink_rmi_name(struct corsair_device_info *dev,
