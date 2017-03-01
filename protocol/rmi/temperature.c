@@ -16,3 +16,42 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <libusb.h>
+
+#include "../../lowlevel/rmi.h"
+#include "../../device.h"
+#include "../../driver.h"
+#include "../../print.h"
+#include "core.h"
+
+int corsairlink_rmi_temperature(struct corsair_device_info *dev,
+			uint8_t select, uint16_t *temperature)
+{
+	int r;
+	uint8_t response[64];
+	uint8_t commands[32];
+	memset(response, 0, sizeof(response));
+	memset(commands, 0, sizeof(commands));
+
+	commands[0] = 0x03;
+	commands[1] = 0x8D + select;
+	commands[2] = 0x00;
+	commands[3] = 0x00;
+
+	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 4);
+	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+
+	memcpy(temperature, response+2, 2);
+
+	msg_debug("%02X %02X %02X %02X %02X %02X\n",
+		response[0], response[1], response[2],
+		response[3], response[4], response[5]);
+
+	return 0;
+}
+

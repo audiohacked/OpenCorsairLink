@@ -39,7 +39,7 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
 	char name[20];
 	name[sizeof(name) - 1] = 0;
 	uint32_t time = 0;
-	uint16_t supply_volts, supply_watts,
+	uint16_t supply_volts, supply_watts, temperature,
 		output_volts, output_amps, output_watts; 
 	struct corsair_device_info *dev;
 	struct libusb_device_handle *handle;
@@ -60,6 +60,12 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
 	msg_info("Product: %s\n", name);
 	msg_debug("DEBUG: string done\n");
 
+	/* fetch temperatures */
+	for (i=0; i<2; i++) {
+		r = dev->driver->temperature(dev, i, &temperature);
+		msg_info("Temperature %d: %5.2f C\n", i, convert_bytes_double(temperature));
+	}
+
 	/* fetch device powered time and device uptime */
 	r = dev->driver->psu_time.powered(dev, &time);
 	msg_info("Powered: %u (%dd.  %dh)\n",
@@ -71,9 +77,9 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
 
 	/* fetch Supply Voltage and Total Watts Consumming */
 	r = dev->driver->power.supply_voltage(dev, &supply_volts);
-	msg_info("Supply Voltage %5.1f\n", convert_bytes_double(supply_volts));
+	msg_info("Supply Voltage: %5.2f\n", convert_bytes_double(supply_volts));
 	r = dev->driver->power.total_wattage(dev, &supply_watts);
-	msg_info("Total Watts %5.1f\n", convert_bytes_double(supply_watts));
+	msg_info("Total Watts: %5.2f\n", convert_bytes_double(supply_watts));
 	msg_debug("DEBUG: supply done\n");
 
 	/* fetch PSU output */

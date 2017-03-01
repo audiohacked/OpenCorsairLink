@@ -21,6 +21,7 @@ OBJS_PROTO = protocol/asetek4/core.o \
 	protocol/asetek4/pump.o \
 	protocol/rmi/core.o \
 	protocol/rmi/power.o \
+	protocol/rmi/temperature.o \
 	protocol/rmi/time.o \
 	protocol/hid/core.o \
 	protocol/hid/led.o

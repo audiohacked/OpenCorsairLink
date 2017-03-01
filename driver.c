@@ -57,6 +57,7 @@ struct corsair_device_driver corsairlink_driver_rmi = {
 	.read = corsairlink_rmi_read,
 	.write = corsairlink_rmi_write,
 	.led = NULL,
+	.temperature = corsairlink_rmi_temperature,
 	.power = {
 		.supply_voltage = corsairlink_rmi_power_supply_voltage,
 		.total_wattage = corsairlink_rmi_power_total_wattage,

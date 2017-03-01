@@ -42,10 +42,8 @@ int corsairlink_rmi_power_total_wattage(struct corsair_device_info *dev,
 int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev,
 			uint16_t *volts);
 
-int corsairlink_rmi_temp1(struct corsair_device_info *dev,
-	 		uint16_t *temp);
-int corsairlink_rmi_temp2(struct corsair_device_info *dev,
-			uint16_t *temp);
+int corsairlink_rmi_temperature(struct corsair_device_info *dev,
+	 		uint8_t select, uint16_t *temp);
 
 int corsairlink_rmi_fan_mode(struct corsair_device_info *dev,
 			uint16_t *mode);

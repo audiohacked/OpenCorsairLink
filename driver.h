@@ -32,7 +32,9 @@ struct corsair_device_driver {
 	int (*product)(struct corsair_device_info *dev, char *name);
 	int (*device_id)(struct corsair_device_info *dev);
 	int (*fw_version)(struct corsair_device_info *dev);
+	
 	int (*led)(struct corsair_device_info *dev, struct color *l, struct color *w, uint8_t t, uint8_t e);
+	int (*temperature)(struct corsair_device_info *dev, uint8_t select, uint16_t *temp);
 
 	struct fan_functions {
 		int (*profile)(struct corsair_device_info *dev, uint8_t profile);
