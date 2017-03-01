@@ -58,6 +58,8 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
 	msg_info("Vendor: %s\n", name);
 	r = dev->driver->product(dev, name);
 	msg_info("Product: %s\n", name);
+	r = dev->driver->fw_version(dev, name);
+	msg_info("Firmware: %s\n", name);
 	msg_debug("DEBUG: string done\n");
 
 	/* fetch temperatures */
@@ -111,6 +113,8 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
 int hydro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings) {
 	int r;
 	int i;
+	char name[20];
+	name[sizeof(name) - 1] = 0;
 	struct corsair_device_info *dev;
 	struct libusb_device_handle *handle;
 	uint16_t temperature;
@@ -130,6 +134,8 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 	//msg_info("Vendor: %s\n", name);
 	//r = dev->driver->product(dev, name);
 	//msg_info("Product: %s\n", name);
+	r = dev->driver->fw_version(dev, name);
+	msg_info("Firmware: %s\n", name);
 
 	for (i=0; i<3; i++) {
 		r = dev->driver->temperature(dev, i, &temperature);

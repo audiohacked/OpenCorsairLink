@@ -24,6 +24,7 @@
 #include <libusb.h>
 #include "../../lowlevel/asetek4.h"
 #include "../../device.h"
+#include "../../driver.h"
 
 int corsairlink_asetek_device_id(struct corsair_device_info *dev)
 {
@@ -61,7 +62,7 @@ int corsairlink_asetek_firmware_id(struct corsair_device_info *dev, char *firmwa
 	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 19);
 	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 32);
 
-	sfprintf(firmware, "%d.%d.%d.%d", response[0x17], response[0x18], response[0x19], response[0x1A])
+	sprintf(firmware, "%d.%d.%d.%d", response[0x17], response[0x18], response[0x19], response[0x1A]);
 
 	return r;
 }
