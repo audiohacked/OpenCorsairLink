@@ -19,12 +19,14 @@ OBJS_PROTO = protocol/asetek4/core.o \
 	protocol/asetek4/fan.o \
 	protocol/asetek4/led.o \
 	protocol/asetek4/pump.o \
+	protocol/asetek4/temperature.o \
 	protocol/rmi/core.o \
 	protocol/rmi/power.o \
 	protocol/rmi/temperature.o \
 	protocol/rmi/time.o \
 	protocol/hid/core.o \
-	protocol/hid/led.o
+	protocol/hid/led.o \
+	protocol/hid/temperature.o
 
 default: all
 

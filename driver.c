@@ -33,6 +33,7 @@ struct corsair_device_driver corsairlink_driver_hid = {
 	.read = corsairlink_hid_read,
 	.write = corsairlink_hid_write,
 	.led = corsairlink_hid_change_led,
+	.temperature = corsairlink_hid_temperature,
 };
 
 struct corsair_device_driver corsairlink_driver_asetek = {
@@ -42,6 +43,7 @@ struct corsair_device_driver corsairlink_driver_asetek = {
 	.read = corsairlink_asetek_read,
 	.write = corsairlink_asetek_write,
 	.led = corsairlink_asetek_change_led,
+	.temperature = corsairlink_asetek_temperature,
 	.fan = {
 		.custom = corsairlink_asetek_fan_curve,
 	}

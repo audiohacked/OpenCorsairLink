@@ -59,4 +59,7 @@ int corsairlink_asetek_fan_mode(struct corsair_device_info *dev,
 int corsairlink_asetek_fan_curve(struct corsair_device_info *dev,
 			struct fan_table *fan);
 
+int corsairlink_asetek_temperature(struct corsair_device_info *dev,
+			uint8_t selector, uint16_t *temperature);
+
 #endif 
