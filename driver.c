@@ -29,9 +29,9 @@
 struct corsair_device_driver corsairlink_driver_hid = {
 	.init = corsairlink_hid_init,
 	.deinit = corsairlink_hid_deinit,
-	//.name = corsairlink_hid_name,
-	//.vendor = corsairlink_hid_vendor,
-	//.product = corsairlink_hid_product,
+	.name = corsairlink_hid_name,
+	.vendor = corsairlink_hid_vendor,
+	.product = corsairlink_hid_product,
 	.device_id = corsairlink_hid_device_id,
 	.fw_version = corsairlink_hid_firmware_id,
 	.read = corsairlink_hid_read,

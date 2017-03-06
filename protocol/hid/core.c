@@ -53,6 +53,24 @@ int corsairlink_hid_device_id(struct corsair_device_info *dev)
 	return response[2];
 }
 
+int corsairlink_hid_name(struct corsair_device_info *dev, char *name)
+{
+	sprintf(name, "%s", dev->name);
+	return 0;
+}
+
+int corsairlink_hid_vendor(struct corsair_device_info *dev, char *name)
+{
+	sprintf(name,"Corsair");
+	return 0;
+}
+
+int corsairlink_hid_product(struct corsair_device_info *dev, char *name)
+{
+	sprintf(name, "%s", dev->name);
+	return 0;
+}
+
 int corsairlink_hid_firmware_id(struct corsair_device_info *dev, char *firmware)
 {
 	int r;
