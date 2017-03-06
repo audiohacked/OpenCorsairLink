@@ -67,11 +67,11 @@ int corsairlink_device_scanner(libusb_context *context)
 
 			msg_debug("corsair device %d\n", j);
 			device = &corsairlink_devices[j];
-			device->driver->device_id(device, &device_id);
+			// device->driver->device_id(device, &device_id);
 			r = libusb_get_device_descriptor(devices[i], &desc);
-			if ((device->vendor_id == desc.idVendor)&&
-				(device->product_id == desc.idProduct)&&
-				(device->device_id == device_id))
+			if ((device->vendor_id == desc.idVendor)
+				&&(device->product_id == desc.idProduct)
+				/*&&(device->device_id == device_id)*/)
 			{
 				r = libusb_open(devices[i], &scanlist[scanlist_count].handle);
 			}
