@@ -45,28 +45,10 @@ double convert_bytes_double(uint16_t v16)
 	return (double)fraction * pow(2.0, (double)exponent);
 }
 
-int corsairlink_rmi_device_id(struct corsair_device_info *dev)
+int corsairlink_rmi_device_id(struct corsair_device_info *dev, uint8_t *device_id)
 {
-	int r;
-	uint8_t response[64];
-	uint8_t commands[32] ;
-	memset(response, 0, sizeof(response));
-	memset(commands, 0, sizeof(commands));
-
-	uint8_t i = 1;
-
-	i = 1;
-	// Read Device ID: 0x3b = H80i. 0x3c = H100i. 0x41 = H110i. 0x42 = H110i Extreme
-	commands[i++] = 0x03; // Command Opcode
-	commands[i++] = 0x00; // Command data...
-	commands[i++] = 0x00;
-
-	commands[0] = 0xfe; // Length
-
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, i);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
-
-	return response[2];
+	memcpy(device_id, 0x00, 1);
+	return 0;
 }
 
 int corsairlink_rmi_firmware_id(struct corsair_device_info *dev, char *firmware)

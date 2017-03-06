@@ -23,7 +23,7 @@
 
 double convert_bytes_double(uint16_t v16);
 
-int corsairlink_rmi_device_id(struct corsair_device_info *dev);
+int corsairlink_rmi_device_id(struct corsair_device_info *dev, uint8_t *device_id);
 int corsairlink_rmi_firmware_id(struct corsair_device_info *dev, char *firmware);
 int corsairlink_rmi_channel_id(struct corsair_device_info *dev);
 int corsairlink_rmi_product_id(struct corsair_device_info *dev);

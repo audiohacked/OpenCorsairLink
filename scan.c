@@ -25,6 +25,7 @@
 #include <libusb.h>
 #include "common.h"
 #include "device.h"
+#include "driver.h"
 #include "print.h"
 #include "scan.h"
 
@@ -52,6 +53,8 @@ int corsairlink_device_scanner(libusb_context *context)
 	ssize_t cnt;
 	struct corsair_device_info *device;
 	libusb_device **devices;
+	uint8_t device_id;
+
 	cnt = libusb_get_device_list(context, &devices);
 	for (i=0; i<cnt; i++) {
 		if (scanlist_count>=10) {
@@ -64,10 +67,11 @@ int corsairlink_device_scanner(libusb_context *context)
 
 			msg_debug("corsair device %d\n", j);
 			device = &corsairlink_devices[j];
-
+			device->driver->device_id(device, &device_id);
 			r = libusb_get_device_descriptor(devices[i], &desc);
 			if ((device->vendor_id == desc.idVendor)&&
-				(device->product_id == desc.idProduct))
+				(device->product_id == desc.idProduct)&&
+				(device->device_id == device_id))
 			{
 				r = libusb_open(devices[i], &scanlist[scanlist_count].handle);
 			}

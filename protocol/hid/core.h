@@ -79,7 +79,7 @@ enum HID_Fan_Modes {
 
 static uint8_t CommandId = 0x81;
 
-int corsairlink_hid_device_id(struct corsair_device_info *dev);
+int corsairlink_hid_device_id(struct corsair_device_info *dev, uint8_t *device_id);
 int corsairlink_hid_name(struct corsair_device_info *dev, char *name);
 int corsairlink_hid_vendor(struct corsair_device_info *dev, char *name);
 int corsairlink_hid_product(struct corsair_device_info *dev, char *name);

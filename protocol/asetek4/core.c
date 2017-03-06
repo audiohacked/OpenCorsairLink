@@ -26,9 +26,10 @@
 #include "../../device.h"
 #include "../../driver.h"
 
-int corsairlink_asetek_device_id(struct corsair_device_info *dev)
+int corsairlink_asetek_device_id(struct corsair_device_info *dev, uint8_t *device_id)
 {
-	return 0x00;
+	memcpy(device_id, 0x00, 1);
+	return 0;
 }
 
 int corsairlink_asetek_name(struct corsair_device_info *dev, char *name)

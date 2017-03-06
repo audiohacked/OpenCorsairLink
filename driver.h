@@ -30,7 +30,7 @@ struct corsair_device_driver {
 	int (*name)(struct corsair_device_info *dev, char *name);
 	int (*vendor)(struct corsair_device_info *dev, char *name);
 	int (*product)(struct corsair_device_info *dev, char *name);
-	int (*device_id)(struct corsair_device_info *dev);
+	int (*device_id)(struct corsair_device_info *dev, uint8_t *device_id);
 	int (*fw_version)(struct corsair_device_info *dev, char *name);
 	
 	int (*led)(struct corsair_device_info *dev, struct color *l, struct color *w, uint8_t t, uint8_t e);

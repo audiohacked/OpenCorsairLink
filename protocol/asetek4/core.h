@@ -48,7 +48,7 @@ enum Asetek_PumpModes {
 	.s1 = 0x32, .s2 = 0x32, .s3 = 0x4b, .s4 = 0x55, .s5 = 0x5d, .s6 = 0x64,\
 }
 
-int corsairlink_asetek_device_id(struct corsair_device_info *dev);
+int corsairlink_asetek_device_id(struct corsair_device_info *dev, uint8_t *device_id);
 int corsairlink_asetek_name(struct corsair_device_info *dev, char *n);
 int corsairlink_asetek_vendor(struct corsair_device_info *dev, char *n);
 int corsairlink_asetek_product(struct corsair_device_info *dev, char *n);
