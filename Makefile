@@ -31,9 +31,9 @@ OBJS_PROTO = protocol/asetek4/core.o \
 default: all
 
 all: OpenCorsairLink.elf
-	
+
 OpenCorsairLink.elf: $(OBJS) $(OBJS_PROTO) $(OBJS_LL) $(OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@ 
+	$(CC) $^ $(CFLAGS) $(LDFLAGS) -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -g -c -o $@ $<
