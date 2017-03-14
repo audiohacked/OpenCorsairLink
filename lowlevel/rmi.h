@@ -16,6 +16,9 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*! \file lowlevel/rmi.h
+ *  \brief Lowlevel Routines for RMi Series of Power Supplies
+ */
 #ifndef _LOWLEVEL_RMI_H
 #define _LOWLEVEL_RMI_H
 

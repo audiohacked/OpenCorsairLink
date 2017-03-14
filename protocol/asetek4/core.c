@@ -16,6 +16,9 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*! \file protocol/asetek4/core.c
+ *  \brief Core Routines for RMi Series of Power Supplies
+ */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,30 +29,60 @@
 #include "../../device.h"
 #include "../../driver.h"
 
+/*! RMi Power Supply Device ID
+ *  RMi Power Supply Device ID is empty
+ *  @param[in] handle for the data
+ *  @param[out] device id
+ *  @return 0
+ */
 int corsairlink_asetek_device_id(struct corsair_device_info *dev, uint8_t *device_id)
 {
 	memcpy(device_id, 0x00, 1);
 	return 0;
 }
 
+/*! RMi Power Supply Device Name
+ *  RMi Power Supply Device Name
+ *  @param[in] handle for the data
+ *  @param[out] Device Name
+ *  @return 0
+ */
 int corsairlink_asetek_name(struct corsair_device_info *dev, char *name)
 {
 	sprintf(name, "%s", dev->name);
 	return 0;
 }
 
+/*! RMi Power Supply Device Vendor Name
+ *  RMi Power Supply Device Vendor Name just returns \"Corsair\"
+ *  @param[in] handle for the data
+ *  @param[out] Vendor Name
+ *  @return 0
+ */
 int corsairlink_asetek_vendor(struct corsair_device_info *dev, char *name)
 {
-	sprintf(name,"Corsair");
+	sprintf(name, "Corsair");
 	return 0;
 }
 
+/*! RMi Power Supply Device Product Name
+ *  RMi Power Supply Device Product Name
+ *  @param[in] handle for the data
+ *  @param[out] Product Name
+ *  @return 0
+ */
 int corsairlink_asetek_product(struct corsair_device_info *dev, char *name)
 {
 	sprintf(name, "%s", dev->name);
 	return 0;
 }
 
+/*! RMi Power Supply Device ID
+ *  RMi Power Supply Device ID is empty
+ *  @param[in] handle for the data
+ *  @param[out] string for firmware number
+ *  @return 0
+ */
 int corsairlink_asetek_firmware_id(struct corsair_device_info *dev, char *firmware)
 {
 	int r;

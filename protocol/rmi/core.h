@@ -16,6 +16,9 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*! \file protocol/rmi/core.h
+ *  \brief Core Routines for RMi Series of Power Supplies
+ */
 #ifndef _PROTOCOL_RMI_H
 #define _PROTOCOL_RMI_H
 

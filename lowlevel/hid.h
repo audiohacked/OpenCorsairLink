@@ -16,6 +16,9 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*! \file lowlevel/hid.h
+ *  \brief Lowlevel Routines for USB HID based devices
+ */
 #ifndef _LOWLEVEL_HID_H
 #define _LOWLEVEL_HID_H
 
