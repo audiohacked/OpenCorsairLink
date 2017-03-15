@@ -50,7 +50,8 @@ double convert_bytes_double(uint16_t v16)
 
 int corsairlink_rmi_device_id(struct corsair_device_info *dev, uint8_t *device_id)
 {
-	memcpy(device_id, 0x00, 1);
+	//memset(device_id, 0x00, 1);
+	(*device_id) = 0xFF;
 	return 0;
 }
 

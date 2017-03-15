@@ -37,7 +37,8 @@
  */
 int corsairlink_asetek_device_id(struct corsair_device_info *dev, uint8_t *device_id)
 {
-	memcpy(device_id, 0x00, 1);
+	//memcpy(device_id, 0x00, 1);
+	(*device_id) = 0xFF;
 	return 0;
 }
 

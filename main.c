@@ -135,14 +135,14 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 
 	for (i=0; i<3; i++) {
 		r = dev->driver->temperature(dev, i, &temperature);
-		if (dev->asetek == 1) {
+		if (dev->driver == &corsairlink_driver_asetek) {
 			uint8_t v1 = (temperature>>8);
 			uint8_t v2 = (temperature&0xFF);
 			msg_debug("DEBUG: %02X %02X\n", v1, v2);
 			celsius = (double)v1 + ((double)v2/10);
 		}
 		msg_info("Temperature %d: %5.2f\n", i, (double)celsius);
-		if (dev->asetek == 1) {
+		if (dev->driver == &corsairlink_driver_asetek) {
 			break;
 		} 
 	}
@@ -179,11 +179,13 @@ int main(int argc, char *argv[])
 	corsairlink_device_scanner(context);
 	msg_debug("DEBUG: scan done, start routines\n");
 	msg_debug("DEBUG: device_number = %d\n", device_number);
-	
-	if (scanlist[device_number].device->psu == 1) {
-		psu_settings(scanlist[device_number], settings);
-	} else {
-		hydro_settings(scanlist[device_number], settings);
+
+	if (device_number >= 0) {
+		if (scanlist[device_number].device->driver == &corsairlink_driver_rmi) {
+			psu_settings(scanlist[device_number], settings);
+		} else {
+			hydro_settings(scanlist[device_number], settings);
+		}
 	}
 
 exit:

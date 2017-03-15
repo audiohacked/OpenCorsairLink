@@ -29,13 +29,11 @@
 #include "print.h"
 #include "scan.h"
 
-extern struct corsair_device_info corsairlink_devices[7];
-
 int scanlist_count = 0;
 
 int corsairlink_handle_close(struct libusb_device_handle *handle)
 {
-	int r
+	int r;
 
 	r = libusb_release_interface(handle, 0);
 	libusb_close(handle);
@@ -64,7 +62,7 @@ int corsairlink_device_scanner(libusb_context *context)
 	ssize_t cnt;
 	struct corsair_device_info *device;
 	libusb_device **devices;
-	uint8_t device_id;
+	uint8_t device_id = 0x00;
 
 	cnt = libusb_get_device_list(context, &devices);
 	for (i=0; i<cnt; i++) {
@@ -73,26 +71,24 @@ int corsairlink_device_scanner(libusb_context *context)
 			break;
 		}
 		msg_debug("usb device %d\n", i);
-		for(j=0; j<7; j++) {
+		for(j=0; j<corsairlink_device_count; j++) {
 			struct libusb_device_descriptor desc;
 
 			msg_debug("corsair device %d\n", j);
 			device = &corsairlink_devices[j];
 			r = libusb_get_device_descriptor(devices[i], &desc);
 			if ((device->vendor_id == desc.idVendor)
-				&&(device->product_id == desc.idProduct)
-				/*&&(device->device_id == device_id)*/)
-			{
+				&&(device->product_id == desc.idProduct)) {
 				r = libusb_open(devices[i], &scanlist[scanlist_count].handle);
 			}
 			if (scanlist[scanlist_count].handle != NULL) {
 				/* get device_id if we have a proper device handle */
 				device->driver->device_id(device, &device_id);
-
+				msg_debug("device_id 0x%02X\n", device_id);
 				/* check to see if the device_id is the right one */
 				if (device->device_id == device_id) {
-					/* if we have the right device id we can setup the rest of the device
-					 * connections
+					/* if we have the right device id we can setup the rest of
+					 * the device connections
 					 */
 					scanlist[scanlist_count].device = device;
 					scanlist[scanlist_count].device->handle = 
@@ -105,9 +101,9 @@ int corsairlink_device_scanner(libusb_context *context)
 						scanlist[scanlist_count].handle, 1);
 					scanlist_count++;
 					break;
-				} else {
-					corsairlink_handle_close(scanlist[scanlist_count].handle);
-					continue;
+				//} else {
+				//	corsairlink_handle_close(scanlist[scanlist_count].handle);
+				//	continue;
 				}
 			}
 		}

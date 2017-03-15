@@ -26,10 +26,6 @@
 // #include "protocol/hid/core.h"
 // #include "protocol/rmi/core.h"
 
-extern struct corsair_device_driver corsairlink_driver_hid;
-extern struct corsair_device_driver corsairlink_driver_asetek;
-extern struct corsair_device_driver corsairlink_driver_rmi;
-
 struct corsair_device_info corsairlink_devices[] = {
 	{
 		.vendor_id = 0x1b1c,
@@ -44,7 +40,6 @@ struct corsair_device_info corsairlink_devices[] = {
 		.led_control_count = 1,
 		.fan_control_count = 4,
 		.pump_index = 5,
-		.psu = 0,
 	},
 	{
 		.vendor_id = 0x1b1c,
@@ -59,7 +54,6 @@ struct corsair_device_info corsairlink_devices[] = {
 		.led_control_count = 1,
 		.fan_control_count = 4,
 		.pump_index = 5,
-		.psu = 0,
 	},
 	{
 		.vendor_id = 0x1b1c,
@@ -74,7 +68,6 @@ struct corsair_device_info corsairlink_devices[] = {
 		.led_control_count = 1,
 		.fan_control_count = 4,
 		.pump_index = 5,
-		.psu = 0,
 	},
 	{
 		.vendor_id = 0x1b1c,
@@ -89,12 +82,11 @@ struct corsair_device_info corsairlink_devices[] = {
 		.led_control_count = 1,
 		.fan_control_count = 4,
 		.pump_index = 5,
-		.psu = 0,
 	},
 	{
 		.vendor_id = 0x1b1c,
 		.product_id = 0x0c09,
-		.device_id = 0x00,
+		.device_id = 0xFF,
 		.name = "H100i V2", /** also called H100i GTX */
 		.read_endpoint = 0x02|LIBUSB_ENDPOINT_IN,
 		.write_endpoint = 0x02|LIBUSB_ENDPOINT_OUT,
@@ -104,13 +96,11 @@ struct corsair_device_info corsairlink_devices[] = {
 		.led_control_count = 1,
 		.fan_control_count = 1,
 		.pump_index = 0,
-		.psu = 0,
-		.asetek = 1,
 	},
 	{
 		.vendor_id = 0x1b1c,
 		.product_id = 0x0c0a,
-		.device_id = 0x00,
+		.device_id = 0xFF,
 		.name = "H115i", /** H115i */
 		.read_endpoint = 0x02|LIBUSB_ENDPOINT_IN,
 		.write_endpoint = 0x02|LIBUSB_ENDPOINT_OUT,
@@ -120,13 +110,11 @@ struct corsair_device_info corsairlink_devices[] = {
 		.led_control_count = 1,
 		.fan_control_count = 1,
 		.pump_index = 0,
-		.psu = 0,
-		.asetek = 1,
 	},
 	{
 		.vendor_id = 0x1b1c,
 		.product_id = 0x1c0a,
-		.device_id = 0x00,
+		.device_id = 0xFF,
 		.name = "RM650i",
 		.read_endpoint = 0x01|LIBUSB_ENDPOINT_IN,
 		.write_endpoint = 0x01|LIBUSB_ENDPOINT_OUT,
@@ -136,12 +124,11 @@ struct corsair_device_info corsairlink_devices[] = {
 		.led_control_count = 0,
 		.fan_control_count = 1,
 		.pump_index = 0,
-		.psu = 1,
 	},
 	{
 		.vendor_id = 0x1b1c,
 		.product_id = 0x1c0b,
-		.device_id = 0x00,
+		.device_id = 0xFF,
 		.name = "RM750i",
 		.read_endpoint = 0x01|LIBUSB_ENDPOINT_IN,
 		.write_endpoint = 0x01|LIBUSB_ENDPOINT_OUT,
@@ -151,6 +138,7 @@ struct corsair_device_info corsairlink_devices[] = {
 		.led_control_count = 0,
 		.fan_control_count = 1,
 		.pump_index = 0,
-		.psu = 1,
 	},
 };
+
+size_t corsairlink_device_count = sizeof(corsairlink_devices)/sizeof(corsairlink_devices[0]);
