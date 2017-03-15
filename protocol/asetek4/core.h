@@ -48,23 +48,23 @@ enum Asetek_PumpModes {
 	.s1 = 0x32, .s2 = 0x32, .s3 = 0x4b, .s4 = 0x55, .s5 = 0x5d, .s6 = 0x64,\
 }
 
-int corsairlink_asetek_device_id(struct corsair_device_info *dev, uint8_t *device_id);
-int corsairlink_asetek_name(struct corsair_device_info *dev, char *n);
-int corsairlink_asetek_vendor(struct corsair_device_info *dev, char *n);
-int corsairlink_asetek_product(struct corsair_device_info *dev, char *n);
-int corsairlink_asetek_firmware_id(struct corsair_device_info *dev, char *f);
+int corsairlink_asetek_device_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *device_id);
+int corsairlink_asetek_name(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *n);
+int corsairlink_asetek_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *n);
+int corsairlink_asetek_product(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *n);
+int corsairlink_asetek_firmware_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *f);
 
-int corsairlink_asetek_change_led(struct corsair_device_info *dev,
+int corsairlink_asetek_change_led(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 			struct color *color_led, struct color *warning_led,
 			uint8_t Warning_Temp, uint8_t Warning_Enable);
-int corsairlink_asetek_pump_mode(struct corsair_device_info *dev,
+int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 			uint8_t pump_mode);
-int corsairlink_asetek_fan_mode(struct corsair_device_info *dev,
+int corsairlink_asetek_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 			uint8_t fan_mode);
-int corsairlink_asetek_fan_curve(struct corsair_device_info *dev,
+int corsairlink_asetek_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 			struct fan_table *fan);
 
-int corsairlink_asetek_temperature(struct corsair_device_info *dev,
+int corsairlink_asetek_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 			uint8_t selector, uint16_t *temperature);
 
 #endif 

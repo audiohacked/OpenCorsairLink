@@ -79,17 +79,15 @@ enum HID_Fan_Modes {
 
 static uint8_t CommandId = 0x81;
 
-int corsairlink_hid_device_id(struct corsair_device_info *dev, uint8_t *device_id);
-int corsairlink_hid_name(struct corsair_device_info *dev, char *name);
-int corsairlink_hid_vendor(struct corsair_device_info *dev, char *name);
-int corsairlink_hid_product(struct corsair_device_info *dev, char *name);
-int corsairlink_hid_firmware_id(struct corsair_device_info *dev, char *firmware);
+int corsairlink_hid_device_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *device_id);
+int corsairlink_hid_name(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
+int corsairlink_hid_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
+int corsairlink_hid_product(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
+int corsairlink_hid_firmware_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *firmware);
 
-int corsairlink_hid_change_led(struct corsair_device_info *dev,
-			struct color *color_led, struct color *warning_led,
+int corsairlink_hid_change_led(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct color *color_led, struct color *warning_led,
 			uint8_t Warning_Temp, uint8_t Warning_Enable);
 
-int corsairlink_hid_temperature(struct corsair_device_info *dev,
-			uint8_t selector, uint16_t *temperature);
+int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *temperature);
 
 #endif

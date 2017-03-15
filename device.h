@@ -33,9 +33,9 @@ struct corsair_device_info {
 	uint8_t write_endpoint;
 
 	/** libusb device structures */
-	struct libusb_device_handle *handle;
-	libusb_context *context;
-	int interface;
+	// struct libusb_device_handle *handle;
+	// libusb_context *context;
+	// int interface;
 
 	/** device control info */
 	struct corsair_device_driver *driver;

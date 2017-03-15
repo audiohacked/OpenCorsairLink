@@ -52,33 +52,33 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
 	msg_debug("DEBUG: init done\n");
 
 	/* fetch device name, vendor name, product name */
-	r = dev->driver->vendor(dev, name);
+	r = dev->driver->vendor(dev, handle, name);
 	msg_info("Vendor: %s\n", name);
-	r = dev->driver->product(dev, name);
+	r = dev->driver->product(dev, handle, name);
 	msg_info("Product: %s\n", name);
-	r = dev->driver->fw_version(dev, name);
+	r = dev->driver->fw_version(dev, handle, name);
 	msg_info("Firmware: %s\n", name);
 	msg_debug("DEBUG: string done\n");
 
 	/* fetch temperatures */
 	for (i=0; i<2; i++) {
-		r = dev->driver->temperature(dev, i, &temperature);
+		r = dev->driver->temperature(dev, handle, i, &temperature);
 		msg_info("Temperature %d: %5.2f C\n", i, convert_bytes_double(temperature));
 	}
 
 	/* fetch device powered time and device uptime */
-	r = dev->driver->psu_time.powered(dev, &time);
+	r = dev->driver->psu_time.powered(dev, handle, &time);
 	msg_info("Powered: %u (%dd.  %dh)\n",
 		time, time/(24*60*60), time/(60*60)%24);
-	r = dev->driver->psu_time.uptime(dev, &time);
+	r = dev->driver->psu_time.uptime(dev, handle, &time);
 	msg_info("Uptime: %u (%dd.  %dh)\n",
 		time, time/(24*60*60), time/(60*60)%24);
 	msg_debug("DEBUG: time done\n");
 
 	/* fetch Supply Voltage and Total Watts Consumming */
-	r = dev->driver->power.supply_voltage(dev, &supply_volts);
+	r = dev->driver->power.supply_voltage(dev, handle, &supply_volts);
 	msg_info("Supply Voltage: %5.2f\n", convert_bytes_double(supply_volts));
-	r = dev->driver->power.total_wattage(dev, &supply_watts);
+	r = dev->driver->power.total_wattage(dev, handle, &supply_watts);
 	msg_info("Total Watts: %5.2f\n", convert_bytes_double(supply_watts));
 	msg_debug("DEBUG: supply done\n");
 
@@ -91,17 +91,17 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
 		if (i==2)
 			msg_info("Output 3.3v:\n");
 			
-		r = dev->driver->power.select(dev, i);
-		r = dev->driver->power.voltage(dev, &output_volts);
+		r = dev->driver->power.select(dev, handle, i);
+		r = dev->driver->power.voltage(dev, handle, &output_volts);
 		msg_info("\tVoltage %5.2f\n", convert_bytes_double(output_volts));
 
-		r = dev->driver->power.amperage(dev, &output_amps);
+		r = dev->driver->power.amperage(dev, handle, &output_amps);
 		msg_info("\tAmps %5.2f\n", convert_bytes_double(output_amps));
 
-		r = dev->driver->power.wattage(dev, &output_watts);
+		r = dev->driver->power.wattage(dev, handle, &output_watts);
 		msg_info("\tWatts %5.2f\n", convert_bytes_double(output_watts));
 	}
-	r = dev->driver->power.select(dev, 0);
+	r = dev->driver->power.select(dev, handle, 0);
 
 	r = dev->driver->deinit(handle, dev->write_endpoint);
 
@@ -126,15 +126,15 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 	msg_debug("DEBUG: init done\n");
 
 	/* fetch device name, vendor name, product name */
-	r = dev->driver->vendor(dev, name);
+	r = dev->driver->vendor(dev, handle, name);
 	msg_info("Vendor: %s\n", name);
-	r = dev->driver->product(dev, name);
+	r = dev->driver->product(dev, handle, name);
 	msg_info("Product: %s\n", name);
-	r = dev->driver->fw_version(dev, name);
+	r = dev->driver->fw_version(dev, handle, name);
 	msg_info("Firmware: %s\n", name);
 
 	for (i=0; i<3; i++) {
-		r = dev->driver->temperature(dev, i, &temperature);
+		r = dev->driver->temperature(dev, handle, i, &temperature);
 		if (dev->driver == &corsairlink_driver_asetek) {
 			uint8_t v1 = (temperature>>8);
 			uint8_t v2 = (temperature&0xFF);
@@ -147,7 +147,7 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 		} 
 	}
 
-	r = dev->driver->led(dev, &settings.led_color, &settings.warning_led, settings.warning_led_temp, (settings.warning_led_temp > -1));
+	r = dev->driver->led(dev, handle, &settings.led_color, &settings.warning_led, settings.warning_led_temp, (settings.warning_led_temp > -1));
 
 	r = dev->driver->deinit(handle, dev->write_endpoint);
 	msg_debug("DEBUG: deinit done\n");

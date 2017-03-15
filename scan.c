@@ -48,8 +48,9 @@ int corsairlink_close(libusb_context *context)
 	for (i=0; i<scanlist_count; i++) {
 		corsairlink_handle_close(scanlist[i].handle);
 	}
-
 	libusb_exit(context);
+
+	return 0;
 }
 
 int corsairlink_device_scanner(libusb_context *context)
@@ -83,7 +84,7 @@ int corsairlink_device_scanner(libusb_context *context)
 			}
 			if (scanlist[scanlist_count].handle != NULL) {
 				/* get device_id if we have a proper device handle */
-				device->driver->device_id(device, &device_id);
+				device->driver->device_id(device, scanlist[scanlist_count].handle, &device_id);
 				msg_debug("device_id 0x%02X\n", device_id);
 				/* check to see if the device_id is the right one */
 				if (device->device_id == device_id) {
@@ -91,8 +92,6 @@ int corsairlink_device_scanner(libusb_context *context)
 					 * the device connections
 					 */
 					scanlist[scanlist_count].device = device;
-					scanlist[scanlist_count].device->handle = 
-						scanlist[scanlist_count].handle;
 					msg_info("Dev=%d, CorsairLink Device Found: %s!\n",
 						scanlist_count, device->name);
 					r = libusb_detach_kernel_driver(

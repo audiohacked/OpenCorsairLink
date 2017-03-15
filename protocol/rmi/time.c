@@ -31,8 +31,7 @@
 #include "../../driver.h"
 #include "core.h"
 
-int corsairlink_rmi_time_powered(struct corsair_device_info *dev,
-			uint32_t *powered)
+int corsairlink_rmi_time_powered(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint32_t *powered)
 {
 	int r;
 	uint8_t response[64];
@@ -47,16 +46,15 @@ int corsairlink_rmi_time_powered(struct corsair_device_info *dev,
 	commands[4] = 0x00;
 	commands[5] = 0x00;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 6);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 6);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(powered, response+2, 4);
 
 	return 0;
 }
 
-int corsairlink_rmi_time_uptime(struct corsair_device_info *dev,
-			uint32_t *uptime)
+int corsairlink_rmi_time_uptime(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint32_t *uptime)
 {
 	int r;
 	uint8_t response[64];
@@ -71,8 +69,8 @@ int corsairlink_rmi_time_uptime(struct corsair_device_info *dev,
 	commands[4] = 0x00;
 	commands[5] = 0x00;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 6);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 6);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(uptime, response+2, 4);
 

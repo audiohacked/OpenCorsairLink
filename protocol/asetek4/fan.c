@@ -27,7 +27,7 @@
 #include "../../driver.h"
 #include "core.h"
 
-int corsairlink_asetek_fan_mode(struct corsair_device_info *dev,
+int corsairlink_asetek_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 	uint8_t fan_mode)
 {
 	int r;
@@ -38,12 +38,12 @@ int corsairlink_asetek_fan_mode(struct corsair_device_info *dev,
 	else if (fan_mode == QUIET) {
 		ASETEK_FAN_TABLE_QUIET(curve);
 	}
-	r = dev->driver->fan.custom(dev, &curve);
+	r = dev->driver->fan.custom(dev, handle, &curve);
 
 	return r;
 }
 
-int corsairlink_asetek_fan_curve(struct corsair_device_info *dev,
+int corsairlink_asetek_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 	struct fan_table *fan)
 {
 	int r;
@@ -69,8 +69,8 @@ int corsairlink_asetek_fan_curve(struct corsair_device_info *dev,
 	commands[12] = fan->s5;
 	commands[13] = fan->s6;
 	
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 14);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 32);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 14);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
 	return r;
 }

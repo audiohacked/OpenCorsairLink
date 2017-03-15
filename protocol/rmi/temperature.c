@@ -32,8 +32,7 @@
 #include "../../print.h"
 #include "core.h"
 
-int corsairlink_rmi_temperature(struct corsair_device_info *dev,
-			uint8_t select, uint16_t *temperature)
+int corsairlink_rmi_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t select, uint16_t *temperature)
 {
 	int r;
 	uint8_t response[64];
@@ -46,8 +45,8 @@ int corsairlink_rmi_temperature(struct corsair_device_info *dev,
 	commands[2] = 0x00;
 	commands[3] = 0x00;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 4);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 4);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(temperature, response+2, 2);
 

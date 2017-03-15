@@ -28,8 +28,7 @@
 #include "../../driver.h"
 #include "core.h"
 
-int corsairlink_hid_change_led(struct corsair_device_info *dev,
-			struct color *color_led, struct color *warning_led,
+int corsairlink_hid_change_led(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct color *color_led, struct color *warning_led,
 			uint8_t Warning_Temp, uint8_t Warning_Enable)
 {
 	int r;
@@ -74,8 +73,8 @@ int corsairlink_hid_change_led(struct corsair_device_info *dev,
 
 	commands[0] = i; // Length
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, i);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, i);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	// fan_rpm = (long int) response[0]*16*16 + response[1];
 	// pump_rpm = (response[8]*16*16)+response[9];

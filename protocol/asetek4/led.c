@@ -27,8 +27,7 @@
 #include "../../driver.h"
 
 
-int corsairlink_asetek_change_led(struct corsair_device_info *dev,
-			struct color *color_led, struct color *warning_led,
+int corsairlink_asetek_change_led(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct color *color_led, struct color *warning_led,
 			uint8_t Warning_Temp, uint8_t Warning_Enable)
 {
 	int r;
@@ -57,8 +56,8 @@ int corsairlink_asetek_change_led(struct corsair_device_info *dev,
 	commands[17] = 0x00;
 	commands[19] = 0x01;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 19);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 32);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 19);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
 	// fan_rpm = (long int) response[0]*16*16 + response[1];
 	// pump_rpm = (response[8]*16*16)+response[9];

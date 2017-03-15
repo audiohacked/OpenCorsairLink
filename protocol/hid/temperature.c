@@ -28,8 +28,7 @@
 #include "../../driver.h"
 #include "core.h"
 
-int corsairlink_hid_temperature(struct corsair_device_info *dev,
-			uint8_t selector, uint16_t *temperature)
+int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *temperature)
 {
 	int r;
 	uint8_t response[64];
@@ -52,8 +51,8 @@ int corsairlink_hid_temperature(struct corsair_device_info *dev,
 
 	commands[0] = i; // Length
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, i);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, i);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	*(temperature) = (response[5]<<8) + response[4];
 

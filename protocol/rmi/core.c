@@ -48,22 +48,21 @@ double convert_bytes_double(uint16_t v16)
 	return (double)fraction * pow(2.0, (double)exponent);
 }
 
-int corsairlink_rmi_device_id(struct corsair_device_info *dev, uint8_t *device_id)
+int corsairlink_rmi_device_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *device_id)
 {
 	//memset(device_id, 0x00, 1);
 	(*device_id) = 0xFF;
 	return 0;
 }
 
-int corsairlink_rmi_firmware_id(struct corsair_device_info *dev, char *firmware)
+int corsairlink_rmi_firmware_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *firmware)
 {
 	sprintf(firmware, "NA");
 
 	return 0;
 }
 
-int corsairlink_rmi_name(struct corsair_device_info *dev,
-			char *name)
+int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name)
 {
 	int r;
 	uint8_t response[64];
@@ -75,16 +74,15 @@ int corsairlink_rmi_name(struct corsair_device_info *dev,
 	commands[1] = 0x03;
 	commands[2] = 0x00;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 2);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 2);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(name, response+2, 16);
 
 	return 0;
 }
 
-int corsairlink_rmi_vendor(struct corsair_device_info *dev,
-			char *name)
+int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name)
 {
 	int r;
 	uint8_t response[64];
@@ -96,16 +94,15 @@ int corsairlink_rmi_vendor(struct corsair_device_info *dev,
 	commands[1] = 0x99;
 	commands[2] = 0x00;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 2);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 2);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(name, response+2, 16);
 
 	return 0;
 }
 
-int corsairlink_rmi_product(struct corsair_device_info *dev,
-			char *name)
+int corsairlink_rmi_product(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name)
 {
 	int r;
 	uint8_t response[64];
@@ -117,8 +114,8 @@ int corsairlink_rmi_product(struct corsair_device_info *dev,
 	commands[1] = 0x9a;
 	commands[2] = 0x00;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 2);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 2);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(name, response+2, 16);
 

@@ -27,37 +27,37 @@ struct corsair_device_driver {
 	int (*write)(struct libusb_device_handle*, uint8_t, uint8_t*, int);
 	
 	/** protocol functions */
-	int (*name)(struct corsair_device_info *dev, char *name);
-	int (*vendor)(struct corsair_device_info *dev, char *name);
-	int (*product)(struct corsair_device_info *dev, char *name);
-	int (*device_id)(struct corsair_device_info *dev, uint8_t *device_id);
-	int (*fw_version)(struct corsair_device_info *dev, char *name);
+	int (*name)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
+	int (*vendor)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
+	int (*product)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
+	int (*device_id)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *device_id);
+	int (*fw_version)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
 	
-	int (*led)(struct corsair_device_info *dev, struct color *l, struct color *w, uint8_t t, uint8_t e);
-	int (*temperature)(struct corsair_device_info *dev, uint8_t select, uint16_t *temp);
+	int (*led)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct color *l, struct color *w, uint8_t t, uint8_t e);
+	int (*temperature)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t select, uint16_t *temp);
 
 	struct fan_functions {
-		int (*profile)(struct corsair_device_info *dev, uint8_t profile);
-		int (*custom)(struct corsair_device_info *dev, struct fan_table *custom_profile);
+		int (*profile)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t profile);
+		int (*custom)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct fan_table *custom_profile);
 	} fan;
 
 	struct pump_functions {
-		int (*profile)(struct corsair_device_info *dev, uint8_t profile);
-		int (*custom)(struct corsair_device_info *dev, struct fan_table *custom_profile);
+		int (*profile)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t profile);
+		int (*custom)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct fan_table *custom_profile);
 	} pump;
 
 	struct power_functions {
-		int (*supply_voltage)(struct corsair_device_info *dev, uint16_t *volts);
-		int (*total_wattage)(struct corsair_device_info *dev, uint16_t *watts);
-		int (*select)(struct corsair_device_info *dev, uint8_t output_select);
-		int (*voltage)(struct corsair_device_info *dev, uint16_t *volts);
-		int (*amperage)(struct corsair_device_info *dev, uint16_t *amps);
-		int (*wattage)(struct corsair_device_info *dev, uint16_t *watts);
+		int (*supply_voltage)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint16_t *volts);
+		int (*total_wattage)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint16_t *watts);
+		int (*select)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t output_select);
+		int (*voltage)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint16_t *volts);
+		int (*amperage)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint16_t *amps);
+		int (*wattage)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint16_t *watts);
 	} power;
 
 	struct time_functions {
-		int (*powered)(struct corsair_device_info *dev, uint32_t *v32);
-		int (*uptime)(struct corsair_device_info *dev, uint32_t *v32);
+		int (*powered)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint32_t *v32);
+		int (*uptime)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint32_t *v32);
 	} psu_time;
 
 	int (*fan_speed_read)();

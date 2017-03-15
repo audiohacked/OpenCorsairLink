@@ -33,6 +33,7 @@
 #include "core.h"
 
 int corsairlink_rmi_output_select(struct corsair_device_info *dev,
+			struct libusb_device_handle *handle,
 			uint8_t output_select)
 {
 	int r;
@@ -47,13 +48,14 @@ int corsairlink_rmi_output_select(struct corsair_device_info *dev,
 	commands[1] = 0x00; // Command Opcode: Output X Select
 	commands[2] = output_select; // Command data...
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 3);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 3);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	return 0;
 }
 
 int corsairlink_rmi_output_volts(struct corsair_device_info *dev,
+			struct libusb_device_handle *handle,
 			uint16_t *volts)
 {
 	int r;
@@ -70,8 +72,8 @@ int corsairlink_rmi_output_volts(struct corsair_device_info *dev,
 	commands[2] = 0x00; // Command data...
 	commands[3] = 0x00;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 4);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 4);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(volts, response+2, 2);
 	// *volts = response[2]<<8 + response[3];
@@ -84,6 +86,7 @@ int corsairlink_rmi_output_volts(struct corsair_device_info *dev,
 }
 
 int corsairlink_rmi_output_amps(struct corsair_device_info *dev,
+			struct libusb_device_handle *handle,
 			uint16_t *amps)
 {
 	int r;
@@ -99,8 +102,8 @@ int corsairlink_rmi_output_amps(struct corsair_device_info *dev,
 	commands[2] = 0x00; // Command data...
 	commands[3] = 0x00;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 4);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 4);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 	memcpy(amps, response+2, 2);
 
 	msg_debug("%02X %02X %02X %02X %02X %02X\n", 
@@ -111,6 +114,7 @@ int corsairlink_rmi_output_amps(struct corsair_device_info *dev,
 }
 
 int corsairlink_rmi_output_watts(struct corsair_device_info *dev,
+			struct libusb_device_handle *handle,
 			uint16_t *watts)
 {
 	int r;
@@ -126,8 +130,8 @@ int corsairlink_rmi_output_watts(struct corsair_device_info *dev,
 	commands[2] = 0x00; // Command data...
 	commands[3] = 0x00;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 4);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 4);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(watts, response+2, 2);
 
@@ -139,6 +143,7 @@ int corsairlink_rmi_output_watts(struct corsair_device_info *dev,
 }
 
 int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev,
+			struct libusb_device_handle *handle,
 			uint16_t *supply)
 {
 	int r;
@@ -154,8 +159,8 @@ int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev,
 	commands[2] = 0x00; // Command data...
 	commands[3] = 0x00;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 4);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 4);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(supply, response+2, 2);
 
@@ -167,6 +172,7 @@ int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev,
 }
 
 int corsairlink_rmi_power_total_wattage(struct corsair_device_info *dev,
+			struct libusb_device_handle *handle,
 			uint16_t *watts)
 {
 	int r;
@@ -182,8 +188,8 @@ int corsairlink_rmi_power_total_wattage(struct corsair_device_info *dev,
 	commands[2] = 0x00; // Command data...
 	commands[3] = 0x00;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 4);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 64);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 4);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(watts, response+2, 2);
 

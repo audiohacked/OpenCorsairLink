@@ -80,19 +80,19 @@ int main(int argc, char *argv[])
 	msg_debug("DEBUG: init done\n");
 
 	/* fetch device name, vendor name, product name */
-	r = dev->driver->name(dev, name);
+	r = dev->driver->name(dev, handle, name);
 	msg_info("Name: %s\n", name);
-	r = dev->driver->vendor(dev, name);
+	r = dev->driver->vendor(dev, handle, name);
 	msg_info("Vendor: %s\n", name);
-	r = dev->driver->product(dev, name);
+	r = dev->driver->product(dev, handle, name);
 	msg_info("Product: %s\n", name);
 	msg_debug("DEBUG: string done\n");
 
 	/* fetch device powered time and device uptime */
-	r = dev->driver->psu_time.powered(dev, &time);
+	r = dev->driver->psu_time.powered(dev, handle, &time);
 	msg_info("Powered: %u (%dd.  %dh)\n",
 		time, time/(24*60*60), time/(60*60)%24);
-	r = dev->driver->psu_time.uptime(dev, &time);
+	r = dev->driver->psu_time.uptime(dev, handle, &time);
 	msg_info("Uptime: %u (%dd.  %dh)\n",
 		time, time/(24*60*60), time/(60*60)%24);
 	msg_debug("DEBUG: time done\n");

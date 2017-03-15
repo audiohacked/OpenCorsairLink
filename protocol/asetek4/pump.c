@@ -27,7 +27,7 @@
 #include "../../driver.h"
 #include "core.h"
 
-int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, uint8_t pump_mode)
+int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t pump_mode)
 {
 	int r;
 	uint8_t response[32];
@@ -41,8 +41,8 @@ int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, uint8_t pump_m
 	else if (pump_mode == QUIET)
 		commands[1] = Asetek_Quiet;
 
-	r = dev->driver->write(dev->handle, dev->write_endpoint, commands, 2);
-	r = dev->driver->read(dev->handle, dev->read_endpoint, response, 32);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 2);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
 	return r;
 }
