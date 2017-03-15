@@ -78,31 +78,30 @@ int corsairlink_device_scanner(libusb_context *context)
 			msg_debug("corsair device %d\n", j);
 			device = &corsairlink_devices[j];
 			r = libusb_get_device_descriptor(devices[i], &desc);
-			if ((device->vendor_id == desc.idVendor)
-				&&(device->product_id == desc.idProduct)) {
+			if ((device->vendor_id == desc.idVendor)&&(device->product_id == desc.idProduct)) {
 				r = libusb_open(devices[i], &scanlist[scanlist_count].handle);
-			}
-			if (scanlist[scanlist_count].handle != NULL) {
-				/* get device_id if we have a proper device handle */
-				device->driver->device_id(device, scanlist[scanlist_count].handle, &device_id);
-				msg_debug("device_id 0x%02X\n", device_id);
-				/* check to see if the device_id is the right one */
-				if (device->device_id == device_id) {
-					/* if we have the right device id we can setup the rest of
-					 * the device connections
-					 */
-					scanlist[scanlist_count].device = device;
-					msg_info("Dev=%d, CorsairLink Device Found: %s!\n",
-						scanlist_count, device->name);
-					r = libusb_detach_kernel_driver(
-						scanlist[scanlist_count].handle, 0);
-					r = libusb_claim_interface(
-						scanlist[scanlist_count].handle, 1);
-					scanlist_count++;
-					break;
-				//} else {
-				//	corsairlink_handle_close(scanlist[scanlist_count].handle);
-				//	continue;
+				if (scanlist[scanlist_count].handle != NULL) {
+					/* get device_id if we have a proper device handle */
+					device->driver->device_id(device, scanlist[scanlist_count].handle, &device_id);
+					msg_debug("device_id 0x%02X\n", device_id);
+					/* check to see if the device_id is the right one */
+					if (device->device_id == device_id) {
+						/* if we have the right device id we can setup the rest of
+						 * the device connections
+						 */
+						scanlist[scanlist_count].device = device;
+						msg_info("Dev=%d, CorsairLink Device Found: %s!\n",
+							scanlist_count, device->name);
+						r = libusb_detach_kernel_driver(
+							scanlist[scanlist_count].handle, 0);
+						r = libusb_claim_interface(
+							scanlist[scanlist_count].handle, 1);
+						scanlist_count++;
+						break;
+					} else {
+						corsairlink_handle_close(scanlist[scanlist_count].handle);
+						continue;
+					}
 				}
 			}
 		}
