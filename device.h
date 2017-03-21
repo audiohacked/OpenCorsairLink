@@ -32,11 +32,6 @@ struct corsair_device_info {
 	uint8_t read_endpoint;
 	uint8_t write_endpoint;
 
-	/** libusb device structures */
-	// struct libusb_device_handle *handle;
-	// libusb_context *context;
-	// int interface;
-
 	/** device control info */
 	struct corsair_device_driver *driver;
 	uint8_t led_control_count; // used mostly with HID driver
