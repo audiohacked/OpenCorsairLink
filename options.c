@@ -139,12 +139,22 @@ int options_parse(int argc, char **argv,
 
 void options_print() {
 	msg_info("OpenCorsairLink [options]\n");
+
 	msg_info("Options:\n");
 	msg_info("\t--help :Prints this Message\n");
 	msg_info("\t--version :Displays version.\n");
 	msg_info("\t--debug :Displays enhanced Debug Messages.\n");
+	msg_info("\t--device <Device Number> :Select device.\n");
 
-	msg_info("\t-l, --led <HTML Color Code> :Define Color for LED.\n");
-	msg_info("\t-l, --led-warn <HTML Color Code> :Define Color for Warning Temp.\n");
-	msg_info("\t-l, --led-temp <temp in Celsius> :Define Warning Temperature.\n");
+	msg_info("\tLED:\n");
+	msg_info("\t\t--led <HTML Color Code> :Define Color for LED.\n");
+	msg_info("\t\t--led-warn <HTML Color Code> :Define Color for Warning Temp.\n");
+	msg_info("\t\t--led-temp <Temperature in Celsius> :Define Warning Temperature.\n");
+
+	msg_info("\tFan:\n");
+	msg_info("\t\t--fan-temps <CSV of Temperatures> :Define Comma Separated Values of Temperatures for Fan.\n");
+	msg_info("\t\t--fan-speeds <CSV of Speed Percentage> :Define Comma Separated Values of RPM for Fan.\n");
+
+	msg_info("\tPump:\n");
+	msg_info("\t\t--pump <Pump Speed in RPM> :Define RPM Speed of Pump.\n");
 }
