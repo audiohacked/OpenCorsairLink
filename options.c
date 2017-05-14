@@ -43,7 +43,7 @@ static struct option long_options[] = {
 	{"fan-temps",         required_argument, NULL,  10},
 	{"fan-speeds",        required_argument, NULL,  11},
 
-	{"pump",              required_argument, NULL,  12},
+	{"pump-mode",         required_argument, NULL,  12},
 
 	{0, 0, 0, 0}
 };
@@ -159,6 +159,6 @@ void options_print() {
 	msg_info("\t\t--fan-temps <CSV of Temperatures> :Define Comma Separated Values of Temperatures for Fan.\n");
 	msg_info("\t\t--fan-speeds <CSV of Speed Percentage> :Define Comma Separated Values of RPM for Fan.\n");
 
-	msg_info("\tPump:\n");
-	msg_info("\t\t--pump <Pump Speed in RPM> :Define RPM Speed of Pump.\n");
+	msg_info("\tPump mode:\n");
+	msg_info("\t\t--pump-mode <mode> :set to 3 for quiet, and 5 for performance\n");
 }
