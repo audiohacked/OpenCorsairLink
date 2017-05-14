@@ -53,7 +53,7 @@ int corsairlink_asetek_temperature(struct corsair_device_info *dev, struct libus
 	commands[15] = 0x00;
 	commands[16] = 0x01;
 	commands[17] = 0x00;
-	commands[19] = 0x01;
+	commands[18] = 0x01;
 
 	r = dev->driver->write(handle, dev->write_endpoint, commands, 19);
 	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
