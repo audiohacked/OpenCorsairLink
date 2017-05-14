@@ -109,20 +109,22 @@ int options_parse(int argc, char **argv,
 			break;
 
 		case 10:
-			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd",
+			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd,%hhd",
 				&settings->fan1.t1,
 				&settings->fan1.t2,
 				&settings->fan1.t3,
 				&settings->fan1.t4,
-				&settings->fan1.t5);
+				&settings->fan1.t5,
+				&settings->fan1.t6);
 			break;
 		case 11:
-			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd",
+			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd,%hhd",
 				&settings->fan1.s1,
 				&settings->fan1.s2,
 				&settings->fan1.s3,
 				&settings->fan1.s4,
-				&settings->fan1.s5);
+				&settings->fan1.s5,
+				&settings->fan1.s6);
 			break;
 		case 12:
 			sscanf(optarg, "%hhu", &settings->pump_mode);
