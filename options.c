@@ -61,8 +61,10 @@ int options_parse(int argc, char **argv,
 {
 	int c, returnCode = 0;
 
+	memset(settings, 0, sizeof(struct option_parse_return));
 	INIT_WARNING_LED(settings->warning_led);
 	settings->warning_led_temp = 60;
+	settings->pump_mode = DEFAULT;
 
 	while (1) {
 		int option_index = 0;
