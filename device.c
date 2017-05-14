@@ -71,6 +71,18 @@ struct corsair_device_info corsairlink_devices[] = {
 	},
 	{
 		.vendor_id = 0x1b1c,
+		.product_id = 0x0c08,
+		.device_id = 0xFF,
+		.name = "H80i V2", /** H80i V2 */
+		.read_endpoint = 0x02|LIBUSB_ENDPOINT_IN,
+		.write_endpoint = 0x02|LIBUSB_ENDPOINT_OUT,
+		.driver = &corsairlink_driver_asetek,
+		.led_control_count = 1,
+		.fan_control_count = 1,
+		.pump_index = 0,
+	},
+	{
+		.vendor_id = 0x1b1c,
 		.product_id = 0x0c09,
 		.device_id = 0xFF,
 		.name = "H100i V2", /** also called H100i GTX */
