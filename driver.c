@@ -54,6 +54,9 @@ struct corsair_device_driver corsairlink_driver_asetek = {
 	.temperature = corsairlink_asetek_temperature,
 	.fan = {
 		.custom = corsairlink_asetek_fan_curve,
+	},
+	.pump = {
+		.profile = corsairlink_asetek_pump_mode,
 	}
 };
 

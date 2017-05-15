@@ -149,6 +149,13 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 
 	r = dev->driver->led(dev, handle, &settings.led_color, &settings.warning_led, settings.warning_led_temp, (settings.warning_led_temp > -1));
 
+	if (dev->driver == &corsairlink_driver_asetek) {
+		if (settings.fan1.s6 != 0)
+			dev->driver->fan.custom(dev, handle, &settings.fan1);
+		if (settings.pump_mode != DEFAULT)
+			dev->driver->pump.profile(dev, handle, settings.pump_mode);
+	}
+
 	r = dev->driver->deinit(handle, dev->write_endpoint);
 	msg_debug("DEBUG: deinit done\n");
 	

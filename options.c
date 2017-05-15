@@ -43,7 +43,7 @@ static struct option long_options[] = {
 	{"fan-temps",         required_argument, NULL,  10},
 	{"fan-speeds",        required_argument, NULL,  11},
 
-	{"pump",              required_argument, NULL,  12},
+	{"pump-mode",         required_argument, NULL,  12},
 
 	{0, 0, 0, 0}
 };
@@ -61,8 +61,10 @@ int options_parse(int argc, char **argv,
 {
 	int c, returnCode = 0;
 
+	memset(settings, 0, sizeof(struct option_parse_return));
 	INIT_WARNING_LED(settings->warning_led);
 	settings->warning_led_temp = 60;
+	settings->pump_mode = DEFAULT;
 
 	while (1) {
 		int option_index = 0;
@@ -109,20 +111,22 @@ int options_parse(int argc, char **argv,
 			break;
 
 		case 10:
-			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd",
+			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd,%hhd",
 				&settings->fan1.t1,
 				&settings->fan1.t2,
 				&settings->fan1.t3,
 				&settings->fan1.t4,
-				&settings->fan1.t5);
+				&settings->fan1.t5,
+				&settings->fan1.t6);
 			break;
 		case 11:
-			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd",
+			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd,%hhd",
 				&settings->fan1.s1,
 				&settings->fan1.s2,
 				&settings->fan1.s3,
 				&settings->fan1.s4,
-				&settings->fan1.s5);
+				&settings->fan1.s5,
+				&settings->fan1.s6);
 			break;
 		case 12:
 			sscanf(optarg, "%hhu", &settings->pump_mode);
@@ -155,6 +159,6 @@ void options_print() {
 	msg_info("\t\t--fan-temps <CSV of Temperatures> :Define Comma Separated Values of Temperatures for Fan.\n");
 	msg_info("\t\t--fan-speeds <CSV of Speed Percentage> :Define Comma Separated Values of RPM for Fan.\n");
 
-	msg_info("\tPump:\n");
-	msg_info("\t\t--pump <Pump Speed in RPM> :Define RPM Speed of Pump.\n");
+	msg_info("\tPump mode:\n");
+	msg_info("\t\t--pump-mode <mode> :set to 3 for quiet, and 5 for performance\n");
 }
