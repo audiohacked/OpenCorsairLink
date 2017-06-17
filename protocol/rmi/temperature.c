@@ -36,7 +36,7 @@ int corsairlink_rmi_temperature(struct corsair_device_info *dev, struct libusb_d
 {
 	int r;
 	uint8_t response[64];
-	uint8_t commands[32];
+	uint8_t commands[64];
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -45,7 +45,7 @@ int corsairlink_rmi_temperature(struct corsair_device_info *dev, struct libusb_d
 	commands[2] = 0x00;
 	commands[3] = 0x00;
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, 4);
+	r = dev->driver->write(handle, dev->write_endpoint, commands, 64);
 	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(temperature, response+2, 2);
