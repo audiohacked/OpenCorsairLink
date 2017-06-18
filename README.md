@@ -5,20 +5,16 @@ OpenCorsairLink
 
 Supported Water Coolers (but not fully tested):
  - USB HID:  
-  - H80i  
-  - H100i  
-  - H110i  
- - Asetek:  
-  - H55  
-  - H75  
-  - H80i v2  
-  - H90  
-  - H105  
-  - H100i v2  
-  - H115i  
+ - H80i (HID)  
+ - H80i v2 (Asetek)  
+ - H100i (HID)  
+ - H100i v2 (Asetek)  
+ - H110i (HID)  
+ - H115i (Asetek)  
 
 Supported Power Supplies:
  - RM750i  
+ - RM850i  
 
 ### What should work:
 LED control  
