@@ -8,7 +8,6 @@ libusb-1.0
 
 ### Support
 Supported Water Coolers (but not fully tested):
- - USB HID:  
  - H80i (HID)  
  - H80i v2 (Asetek)  
  - H100i (HID)  
