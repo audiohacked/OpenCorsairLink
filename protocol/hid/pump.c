@@ -25,6 +25,7 @@
 #include "../../lowlevel/hid.h"
 #include "../../device.h"
 #include "../../driver.h"
+#include "../../print.h"
 #include "core.h"
 
 int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t pump_mode)
@@ -34,18 +35,25 @@ int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_dev
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
-	commands[0] = PumpMode;
+
+	uint8_t i = 1;
+
+	i = 1;
+	commands[i++] = CommandId++;
+	commands[i++] = WriteOneByte;
+	commands[i++] = FAN_Mode;
 
 	if (pump_mode == PERFORMANCE)
-		commands[1] = HID_Performance;
+		commands[i++] = HID_Performance;
 	else if (pump_mode == BALANCED)
-		commands[1] = HID_Balanced;
+		commands[i++] = HID_Balanced;
 	else if (pump_mode == QUIET)
-		commands[1] = HID_Quiet;
+		commands[i++] = HID_Quiet;
 	else if (pump_mode == DEFAULT)
-		commands[1] = HID_Default;
+		commands[i++] = HID_Default;
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, 2);
+	commands[0] = i;
+	r = dev->driver->write(handle, dev->write_endpoint, commands, i);
 	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
 	return r;
@@ -65,7 +73,7 @@ int corsairlink_hid_pump_speed(struct corsair_device_info *dev, struct libusb_de
 	commands[i++] = CommandId++;
 	commands[i++] = WriteOneByte;
 	commands[i++] = FAN_Select;
-	commands[i++] = 0x00;
+	commands[i++] = selector;
 
 	commands[i++] = CommandId++;
 	commands[i++] = ReadTwoBytes;

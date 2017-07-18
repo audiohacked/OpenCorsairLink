@@ -25,6 +25,7 @@
 #include "../../lowlevel/asetek4.h"
 #include "../../device.h"
 #include "../../driver.h"
+#include "../../print.h"
 #include "core.h"
 
 int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t pump_mode)
@@ -34,6 +35,7 @@ int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
+
 	commands[0] = PumpMode;
 
 	if (pump_mode == PERFORMANCE)

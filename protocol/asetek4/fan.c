@@ -25,6 +25,7 @@
 #include "../../lowlevel/asetek4.h"
 #include "../../device.h"
 #include "../../driver.h"
+#include "../../print.h"
 #include "core.h"
 
 int corsairlink_asetek_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,

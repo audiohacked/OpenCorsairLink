@@ -100,4 +100,11 @@ int corsairlink_hid_change_led(struct corsair_device_info *dev, struct libusb_de
 
 int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *temperature);
 
+int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t fan_mode);
+int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct fan_table *fan);
+int corsairlink_hid_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed);
+
+int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t pump_mode);
+int corsairlink_hid_pump_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed);
+
 #endif

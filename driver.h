@@ -39,11 +39,13 @@ struct corsair_device_driver {
 	struct fan_functions {
 		int (*profile)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t profile);
 		int (*custom)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct fan_table *custom_profile);
+		int (*speed)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed);
 	} fan;
 
 	struct pump_functions {
 		int (*profile)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t profile);
 		int (*custom)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct fan_table *custom_profile);
+		int (*speed)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed);
 	} pump;
 
 	struct power_functions {

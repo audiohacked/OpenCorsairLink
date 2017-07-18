@@ -57,12 +57,13 @@ int corsairlink_asetek_firmware_id(struct corsair_device_info *dev, struct libus
 int corsairlink_asetek_change_led(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 			struct color *color_led, struct color *warning_led,
 			uint8_t Warning_Temp, uint8_t Warning_Enable);
-int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-			uint8_t pump_mode);
-int corsairlink_asetek_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-			uint8_t fan_mode);
-int corsairlink_asetek_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-			struct fan_table *fan);
+
+int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t pump_mode);
+int corsairlink_asetek_pump_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed);
+
+int corsairlink_asetek_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t fan_mode);
+int corsairlink_asetek_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct fan_table *fan);
+int corsairlink_asetek_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed);
 
 int corsairlink_asetek_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 			uint8_t selector, uint16_t *temperature);

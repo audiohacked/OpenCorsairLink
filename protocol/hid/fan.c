@@ -25,20 +25,49 @@
 #include "../../lowlevel/hid.h"
 #include "../../device.h"
 #include "../../driver.h"
+#include "../../print.h"
 #include "core.h"
 
 int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 	uint8_t fan_mode)
 {
+	// int r;
+	// struct fan_table curve;
+	// if (fan_mode == PERFORMANCE) {
+	// 	HID_FAN_TABLE_EXTREME(curve);
+	// }
+	// else if (fan_mode == QUIET) {
+	// 	HID_FAN_TABLE_QUIET(curve);
+	// }
+	// r = dev->driver->fan.custom(dev, handle, &curve);
+	//
+	// return r;
+
 	int r;
-	struct fan_table curve;
-	if (fan_mode == PERFORMANCE) {
-		HID_FAN_TABLE_EXTREME(curve);
-	}
-	else if (fan_mode == QUIET) {
-		HID_FAN_TABLE_QUIET(curve);
-	}
-	r = dev->driver->fan.custom(dev, handle, &curve);
+	uint8_t response[32];
+	uint8_t commands[32] ;
+	memset(response, 0, sizeof(response));
+	memset(commands, 0, sizeof(commands));
+
+	uint8_t i = 1;
+
+	i = 1;
+	commands[i++] = CommandId++;
+	commands[i++] = WriteOneByte;
+	commands[i++] = FAN_Mode;
+
+	if (fan_mode == PERFORMANCE)
+		commands[i++] = HID_Performance;
+	else if (fan_mode == BALANCED)
+		commands[i++] = HID_Balanced;
+	else if (fan_mode == QUIET)
+		commands[i++] = HID_Quiet;
+	else if (fan_mode == DEFAULT)
+		commands[i++] = HID_Default;
+
+	commands[0] = i;
+	r = dev->driver->write(handle, dev->write_endpoint, commands, i);
+	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
 	return r;
 }
@@ -52,13 +81,13 @@ int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_dev
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
-	commands[0] = FanCurve;
-	commands[1] = UnknownFanCurve;
-	
+	// commands[0] = FanCurve;
+	// commands[1] = UnknownFanCurve;
+
 	uint8_t i = 1;
 
 	i = 1;
-	commands[i++] = CommandId++
+	commands[i++] = CommandId++;
 	commands[i++] = WriteThreeBytes;
 	commands[i++] = FAN_TempTable;
 	commands[i++] = 0x0A;
@@ -74,7 +103,7 @@ int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_dev
 	commands[i++] = fan->t5;
 	commands[i++] = 0x00;
 
-	commands[i++] = CommandId++
+	commands[i++] = CommandId++;
 	commands[i++] = WriteThreeBytes;
 	commands[i++] = FAN_RPMTable;
 	commands[i++] = 0x0A;
@@ -111,7 +140,7 @@ int corsairlink_hid_fan_speed(struct corsair_device_info *dev, struct libusb_dev
 	commands[i++] = CommandId++;
 	commands[i++] = WriteOneByte;
 	commands[i++] = FAN_Select;
-	commands[i++] = 0x00;
+	commands[i++] = selector;
 
 	// commands[i++] = CommandId++;
 	// commands[i++] = ReadOneByte;

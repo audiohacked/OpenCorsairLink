@@ -25,7 +25,9 @@ OBJS_PROTO = protocol/asetek4/core.o \
 	protocol/rmi/temperature.o \
 	protocol/rmi/time.o \
 	protocol/hid/core.o \
+	protocol/hid/fan.o \
 	protocol/hid/led.o \
+	protocol/hid/pump.o \
 	protocol/hid/temperature.o
 
 default: all

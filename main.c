@@ -117,6 +117,8 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 	struct libusb_device_handle *handle;
 	uint16_t temperature;
 	double celsius = 0;
+	uint16_t pump_speed = 0;
+	uint16_t fan_speed = 0;
 
 	dev = scanned_device.device;
 	handle = scanned_device.handle;
@@ -146,6 +148,14 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 			break;
 		} 
 	}
+
+	for (i=0; i<3; i++) {
+		r = dev->driver->fan.speed(dev, handle, i, &fan_speed);
+		msg_info("Fan Speed %d: %i\n", i, fan_speed);
+	}
+	
+	r = dev->driver->pump.speed(dev, handle, dev->pump_index, &pump_speed);
+	msg_info("Pump Speed: %i\n", pump_speed);
 
 	r = dev->driver->led(dev, handle, &settings.led_color, &settings.warning_led, settings.warning_led_temp, (settings.warning_led_temp > -1));
 
