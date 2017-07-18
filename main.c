@@ -149,7 +149,7 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 		} 
 	}
 
-	for (i=0; i<3; i++) {
+	for (i=0; i<dev->fan_control_count; i++) {
 		r = dev->driver->fan.speed(dev, handle, i, &fan_speed);
 		msg_info("Fan Speed %d: %i\n", i, fan_speed);
 	}
