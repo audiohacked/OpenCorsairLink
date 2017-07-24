@@ -153,6 +153,18 @@ struct corsair_device_info corsairlink_devices[] = {
 		.fan_control_count = 1,
 		.pump_index = 0,
 	},
+	{
+		.vendor_id = 0x1b1c,
+		.product_id = 0x1c06,
+		.device_id = 0xFF,
+		.name = "HX850i",
+		.read_endpoint = 0x01|LIBUSB_ENDPOINT_IN,
+		.write_endpoint = 0x01|LIBUSB_ENDPOINT_OUT,
+		.driver = &corsairlink_driver_rmi,
+		.led_control_count = 0,
+		.fan_control_count = 1,
+		.pump_index = 0,
+	},	
 };
 
 size_t corsairlink_device_count = sizeof(corsairlink_devices)/sizeof(corsairlink_devices[0]);
