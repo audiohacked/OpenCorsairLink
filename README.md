@@ -18,6 +18,7 @@ Supported Water Coolers (but not fully tested):
 Supported Power Supplies:
  - RM750i  
  - RM850i  
+ - HX850i  
 
 #### Warning: Some things might not work for you!
 #### Previous version of OpenCorsairLink has been moved to the legacy branch!
