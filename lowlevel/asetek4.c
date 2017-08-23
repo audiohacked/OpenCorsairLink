@@ -38,12 +38,12 @@
 int corsairlink_asetek_init(struct libusb_device_handle *dev_handle,
 			uint8_t endpoint)
 {
-	int r;
+	int rr;
 
-	r = libusb_control_transfer(dev_handle, 0x40, 0x00, 0xffff, 0x0000, NULL, 0, 0);
-	r = libusb_control_transfer(dev_handle, 0x40, 0x02, 0x0002, 0x0000, NULL, 0, 0);
+	rr = libusb_control_transfer(dev_handle, 0x40, 0x00, 0xffff, 0x0000, NULL, 0, 0);
+	rr = libusb_control_transfer(dev_handle, 0x40, 0x02, 0x0002, 0x0000, NULL, 0, 0);
 
-	return r;
+	return rr;
 }
 
 /*! Asetek De-Init routine.
@@ -53,11 +53,11 @@ int corsairlink_asetek_init(struct libusb_device_handle *dev_handle,
 int corsairlink_asetek_deinit(struct libusb_device_handle *dev_handle,
 			uint8_t endpoint)
 {
-	int r;
+	int rr;
 
-	r = libusb_control_transfer(dev_handle, 0x40, 0x02, 0x0004, 0x0000, NULL, 0, 200);
+	rr = libusb_control_transfer(dev_handle, 0x40, 0x02, 0x0004, 0x0000, NULL, 0, 200);
 
-	return r;
+	return rr;
 }
 
 /*! Lowlevel Asetek Write routine.
@@ -70,11 +70,11 @@ int corsairlink_asetek_write(struct libusb_device_handle *dev_handle,
 			int length)
 {
 	int bytes_transferred;
-	int r;
+	int rr;
 	
-	r = libusb_bulk_transfer(dev_handle, endpoint, data, length, &bytes_transferred, TIMEOUT_DEFAULT);
+	rr = libusb_bulk_transfer(dev_handle, endpoint, data, length, &bytes_transferred, TIMEOUT_DEFAULT);
 
-	return r;
+	return rr;
 }
 
 /*! Lowlevel Asetek Read routine.
@@ -87,9 +87,9 @@ int corsairlink_asetek_read(struct libusb_device_handle *dev_handle,
 			int length)
 {
 	int bytes_transferred;
-	int r;
+	int rr;
 	
-	r = libusb_bulk_transfer(dev_handle, endpoint, data, length, &bytes_transferred, TIMEOUT_DEFAULT);
+	rr = libusb_bulk_transfer(dev_handle, endpoint, data, length, &bytes_transferred, TIMEOUT_DEFAULT);
 
-	return r;
+	return rr;
 }

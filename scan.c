@@ -33,20 +33,20 @@ int scanlist_count = 0;
 
 int corsairlink_handle_close(struct libusb_device_handle *handle)
 {
-	int r;
+	int rr;
 
-	r = libusb_release_interface(handle, 0);
+	rr = libusb_release_interface(handle, 0);
 	libusb_close(handle);
 
-	return r;
+	return rr;
 }
 
 int corsairlink_close(libusb_context *context)
 {
-	int i;
+	int ii;
 
-	for (i=0; i<scanlist_count; i++) {
-		corsairlink_handle_close(scanlist[i].handle);
+	for (ii=0; ii<scanlist_count; ii++) {
+		corsairlink_handle_close(scanlist[ii].handle);
 	}
 	libusb_exit(context);
 
@@ -55,34 +55,34 @@ int corsairlink_close(libusb_context *context)
 
 int corsairlink_device_scanner(libusb_context *context)
 {
-	int r;
+	int rr;
 
 	/* Start: scan code */
-	int i; // for loops
-	int j; // for loops
+	int ii; // for loops
+	int jj; // for loops
 	ssize_t cnt;
 	struct corsair_device_info *device;
 	libusb_device **devices;
 	uint8_t device_id = 0x00;
 
 	cnt = libusb_get_device_list(context, &devices);
-	for (i=0; i<cnt; i++) {
+	for (ii=0; ii<cnt; ii++) {
 		if (scanlist_count>=10) {
 			msg_debug("Limited to 10 CorsairLink devices\n");
 			break;
 		}
-		msg_debug("usb device %d\n", i);
-		for(j=0; j<corsairlink_device_count; j++) {
+		msg_debug("usb device %d\n", ii);
+		for(jj=0; jj<corsairlink_device_count; jj++) {
 			struct libusb_device_descriptor desc;
 
-			msg_debug("corsair device %d\n", j);
-			device = &corsairlink_devices[j];
-			r = libusb_get_device_descriptor(devices[i], &desc);
+			msg_debug("corsair device %d\n", jj);
+			device = &corsairlink_devices[jj];
+			rr = libusb_get_device_descriptor(devices[ii], &desc);
 			if ((device->vendor_id == desc.idVendor)&&(device->product_id == desc.idProduct)) {
-				r = libusb_open(devices[i], &scanlist[scanlist_count].handle);
+				rr = libusb_open(devices[ii], &scanlist[scanlist_count].handle);
 				if (scanlist[scanlist_count].handle != NULL) {
-					r = libusb_detach_kernel_driver(scanlist[scanlist_count].handle, 0);
-					r = libusb_claim_interface(scanlist[scanlist_count].handle, 0);
+					rr = libusb_detach_kernel_driver(scanlist[scanlist_count].handle, 0);
+					rr = libusb_claim_interface(scanlist[scanlist_count].handle, 0);
 					/* get device_id if we have a proper device handle */
 					device->driver->device_id(device, scanlist[scanlist_count].handle, &device_id);
 					msg_debug("device_id 0x%02X\n", device_id);

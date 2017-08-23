@@ -31,7 +31,7 @@
 int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 	uint8_t fan_mode)
 {
-	// int r;
+	// int rr;
 	// struct fan_table curve;
 	// if (fan_mode == PERFORMANCE) {
 	// 	HID_FAN_TABLE_EXTREME(curve);
@@ -43,39 +43,39 @@ int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_devi
 	//
 	// return r;
 
-	int r;
+	int rr;
 	uint8_t response[32];
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
-	uint8_t i = 1;
+	uint8_t ii = 1;
 
-	i = 1;
-	commands[i++] = CommandId++;
-	commands[i++] = WriteOneByte;
-	commands[i++] = FAN_Mode;
+	ii = 1;
+	commands[ii++] = CommandId++;
+	commands[ii++] = WriteOneByte;
+	commands[ii++] = FAN_Mode;
 
 	if (fan_mode == PERFORMANCE)
-		commands[i++] = HID_Performance;
+		commands[ii++] = HID_Performance;
 	else if (fan_mode == BALANCED)
-		commands[i++] = HID_Balanced;
+		commands[ii++] = HID_Balanced;
 	else if (fan_mode == QUIET)
-		commands[i++] = HID_Quiet;
+		commands[ii++] = HID_Quiet;
 	else if (fan_mode == DEFAULT)
-		commands[i++] = HID_Default;
+		commands[ii++] = HID_Default;
 
-	commands[0] = i;
-	r = dev->driver->write(handle, dev->write_endpoint, commands, i);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
+	commands[0] = ii;
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
-	return r;
+	return rr;
 }
 
 int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 	struct fan_table *fan)
 {
-	int r;
+	int rr;
 	uint8_t response[32];
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
@@ -84,79 +84,79 @@ int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_dev
 	// commands[0] = FanCurve;
 	// commands[1] = UnknownFanCurve;
 
-	uint8_t i = 1;
+	uint8_t ii = 1;
 
-	i = 1;
-	commands[i++] = CommandId++;
-	commands[i++] = WriteThreeBytes;
-	commands[i++] = FAN_TempTable;
-	commands[i++] = 0x0A;
+	ii = 1;
+	commands[ii++] = CommandId++;
+	commands[ii++] = WriteThreeBytes;
+	commands[ii++] = FAN_TempTable;
+	commands[ii++] = 0x0A;
 
-	commands[i++] = fan->t1;
-	commands[i++] = 0x00;
-	commands[i++] = fan->t2;
-	commands[i++] = 0x00;
-	commands[i++] = fan->t3;
-	commands[i++] = 0x00;
-	commands[i++] = fan->t4;
-	commands[i++] = 0x00;
-	commands[i++] = fan->t5;
-	commands[i++] = 0x00;
+	commands[ii++] = fan->t1;
+	commands[ii++] = 0x00;
+	commands[ii++] = fan->t2;
+	commands[ii++] = 0x00;
+	commands[ii++] = fan->t3;
+	commands[ii++] = 0x00;
+	commands[ii++] = fan->t4;
+	commands[ii++] = 0x00;
+	commands[ii++] = fan->t5;
+	commands[ii++] = 0x00;
 
-	commands[i++] = CommandId++;
-	commands[i++] = WriteThreeBytes;
-	commands[i++] = FAN_RPMTable;
-	commands[i++] = 0x0A;
+	commands[ii++] = CommandId++;
+	commands[ii++] = WriteThreeBytes;
+	commands[ii++] = FAN_RPMTable;
+	commands[ii++] = 0x0A;
 
-	commands[i++] = fan->s1;
-	commands[i++] = 0x00;
-	commands[i++] = fan->s2;
-	commands[i++] = 0x00;
-	commands[i++] = fan->s3;
-	commands[i++] = 0x00;
-	commands[i++] = fan->s4;
-	commands[i++] = 0x00;
-	commands[i++] = fan->s5;
-	commands[i++] = 0x00;
+	commands[ii++] = fan->s1;
+	commands[ii++] = 0x00;
+	commands[ii++] = fan->s2;
+	commands[ii++] = 0x00;
+	commands[ii++] = fan->s3;
+	commands[ii++] = 0x00;
+	commands[ii++] = fan->s4;
+	commands[ii++] = 0x00;
+	commands[ii++] = fan->s5;
+	commands[ii++] = 0x00;
 	
-	commands[0] = i;
-	r = dev->driver->write(handle, dev->write_endpoint, commands, i);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
+	commands[0] = ii;
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
-	return r;
+	return rr;
 }
 
 int corsairlink_hid_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed)
 {
-	int r;
+	int rr;
 	uint8_t response[32];
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
-	uint8_t i = 1;
+	uint8_t ii = 1;
 
-	i = 1;
-	commands[i++] = CommandId++;
-	commands[i++] = WriteOneByte;
-	commands[i++] = FAN_Select;
-	commands[i++] = selector;
+	ii = 1;
+	commands[ii++] = CommandId++;
+	commands[ii++] = WriteOneByte;
+	commands[ii++] = FAN_Select;
+	commands[ii++] = selector;
 
-	// commands[i++] = CommandId++;
-	// commands[i++] = ReadOneByte;
-	// commands[i++] = FAN_Mode;
+	// commands[ii++] = CommandId++;
+	// commands[ii++] = ReadOneByte;
+	// commands[ii++] = FAN_Mode;
 
-	commands[i++] = CommandId++;
-	commands[i++] = ReadTwoBytes;
-	commands[i++] = FAN_ReadRPM;
+	commands[ii++] = CommandId++;
+	commands[ii++] = ReadTwoBytes;
+	commands[ii++] = FAN_ReadRPM;
 
-	commands[0] = i;
+	commands[0] = ii;
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, i);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
 	msg_debug("%02X %02X\n", response[0], response[1]);
 	*(speed) = (response[0]<<8) + response[1];
 
-	return r;
+	return rr;
 }

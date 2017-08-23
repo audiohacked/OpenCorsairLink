@@ -91,7 +91,7 @@ int corsairlink_asetek_product(struct corsair_device_info *dev,
 int corsairlink_asetek_firmware_id(struct corsair_device_info *dev,
 			struct libusb_device_handle *handle, char *firmware)
 {
-	int r;
+	int rr;
 	uint8_t response[32];
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
@@ -117,10 +117,10 @@ int corsairlink_asetek_firmware_id(struct corsair_device_info *dev,
 	commands[17] = 0x00;
 	commands[19] = 0x01;
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, 19);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 19);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
 	sprintf(firmware, "%d.%d.%d.%d", response[0x17], response[0x18], response[0x19], response[0x1A]);
 
-	return r;
+	return rr;
 }

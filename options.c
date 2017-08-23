@@ -50,16 +50,16 @@ static struct option long_options[] = {
 
 void options_print(void);
 
-#define INIT_WARNING_LED(x) \
-	x.red = 0xFF; \
-	x.green = 0x00; \
-	x.blue = 0x00;
+#define INIT_WARNING_LED(xx) \
+	xx.red = 0xFF; \
+	xx.green = 0x00; \
+	xx.blue = 0x00;
 
 int options_parse(int argc, char **argv,
 	struct option_flags *flags, int8_t *device_number,
 	struct option_parse_return *settings)
 {
-	int c, returnCode = 0;
+	int cc, returnCode = 0;
 
 	memset(settings, 0, sizeof(struct option_parse_return));
 	INIT_WARNING_LED(settings->warning_led);
@@ -69,12 +69,12 @@ int options_parse(int argc, char **argv,
 	while (1) {
 		int option_index = 0;
 
-		c = getopt_long (argc, argv, "", long_options, &option_index);
+		cc = getopt_long (argc, argv, "", long_options, &option_index);
 
-		if (c == -1 || returnCode != 0)
+		if (cc == -1 || returnCode != 0)
 			break;
 
-		switch (c) {
+		switch (cc) {
 		case 0:
 			options_print();
 			break;

@@ -34,8 +34,8 @@
 #include "protocol/rmi/core.h"
 
 int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings) {
-	int r;
-	int i;
+	int rr;
+	int ii;
 	char name[20];
 	name[sizeof(name) - 1] = 0;
 	uint32_t time = 0;
@@ -48,69 +48,69 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
 	handle = scanned_device.handle;
 	msg_debug("DEBUG: shortcuts set\n");
 
-	r = dev->driver->init(handle, dev->write_endpoint);
+	rr = dev->driver->init(handle, dev->write_endpoint);
 	msg_debug("DEBUG: init done\n");
 
 	/* fetch device name, vendor name, product name */
-	r = dev->driver->vendor(dev, handle, name);
+	rr = dev->driver->vendor(dev, handle, name);
 	msg_info("Vendor: %s\n", name);
-	r = dev->driver->product(dev, handle, name);
+	rr = dev->driver->product(dev, handle, name);
 	msg_info("Product: %s\n", name);
-	r = dev->driver->fw_version(dev, handle, name);
+	rr = dev->driver->fw_version(dev, handle, name);
 	msg_info("Firmware: %s\n", name);
 	msg_debug("DEBUG: string done\n");
 
 	/* fetch temperatures */
-	for (i=0; i<2; i++) {
-		r = dev->driver->temperature(dev, handle, i, &temperature);
-		msg_info("Temperature %d: %5.2f C\n", i, convert_bytes_double(temperature));
+	for (ii=0; ii<2; ii++) {
+		rr = dev->driver->temperature(dev, handle, ii, &temperature);
+		msg_info("Temperature %d: %5.2f C\n", ii, convert_bytes_double(temperature));
 	}
 
 	/* fetch device powered time and device uptime */
-	r = dev->driver->psu_time.powered(dev, handle, &time);
+	rr = dev->driver->psu_time.powered(dev, handle, &time);
 	msg_info("Powered: %u (%dd.  %dh)\n",
 		time, time/(24*60*60), time/(60*60)%24);
-	r = dev->driver->psu_time.uptime(dev, handle, &time);
+	rr = dev->driver->psu_time.uptime(dev, handle, &time);
 	msg_info("Uptime: %u (%dd.  %dh)\n",
 		time, time/(24*60*60), time/(60*60)%24);
 	msg_debug("DEBUG: time done\n");
 
 	/* fetch Supply Voltage and Total Watts Consumming */
-	r = dev->driver->power.supply_voltage(dev, handle, &supply_volts);
+	rr = dev->driver->power.supply_voltage(dev, handle, &supply_volts);
 	msg_info("Supply Voltage: %5.2f\n", convert_bytes_double(supply_volts));
-	r = dev->driver->power.total_wattage(dev, handle, &supply_watts);
+	rr = dev->driver->power.total_wattage(dev, handle, &supply_watts);
 	msg_info("Total Watts: %5.2f\n", convert_bytes_double(supply_watts));
 	msg_debug("DEBUG: supply done\n");
 
 	/* fetch PSU output */
-	for (i=0; i<3; i++) {
-		if (i==0)
+	for (ii=0; ii<3; ii++) {
+		if (ii==0)
 			msg_info("Output 12v:\n");
-		if (i==1)
+		if (ii==1)
 			msg_info("Output 5v:\n");
-		if (i==2)
+		if (ii==2)
 			msg_info("Output 3.3v:\n");
 			
-		r = dev->driver->power.select(dev, handle, i);
-		r = dev->driver->power.voltage(dev, handle, &output_volts);
+		rr = dev->driver->power.select(dev, handle, ii);
+		rr = dev->driver->power.voltage(dev, handle, &output_volts);
 		msg_info("\tVoltage %5.2f\n", convert_bytes_double(output_volts));
 
-		r = dev->driver->power.amperage(dev, handle, &output_amps);
+		rr = dev->driver->power.amperage(dev, handle, &output_amps);
 		msg_info("\tAmps %5.2f\n", convert_bytes_double(output_amps));
 
-		r = dev->driver->power.wattage(dev, handle, &output_watts);
+		rr = dev->driver->power.wattage(dev, handle, &output_watts);
 		msg_info("\tWatts %5.2f\n", convert_bytes_double(output_watts));
 	}
-	r = dev->driver->power.select(dev, handle, 0);
+	rr = dev->driver->power.select(dev, handle, 0);
 
-	r = dev->driver->deinit(handle, dev->write_endpoint);
+	rr = dev->driver->deinit(handle, dev->write_endpoint);
 
 	return 0;
 }
 
 int hydro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings) {
-	int r;
-	int i;
+	int rr;
+	int ii;
 	char name[20];
 	name[sizeof(name) - 1] = 0;
 	struct corsair_device_info *dev;
@@ -124,40 +124,40 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 	handle = scanned_device.handle;
 	msg_debug("DEBUG: shortcuts set\n");
 
-	r = dev->driver->init(handle, dev->write_endpoint);
+	rr = dev->driver->init(handle, dev->write_endpoint);
 	msg_debug("DEBUG: init done\n");
 
 	/* fetch device name, vendor name, product name */
-	r = dev->driver->vendor(dev, handle, name);
+	rr = dev->driver->vendor(dev, handle, name);
 	msg_info("Vendor: %s\n", name);
-	r = dev->driver->product(dev, handle, name);
+	rr = dev->driver->product(dev, handle, name);
 	msg_info("Product: %s\n", name);
-	r = dev->driver->fw_version(dev, handle, name);
+	rr = dev->driver->fw_version(dev, handle, name);
 	msg_info("Firmware: %s\n", name);
 
-	for (i=0; i<3; i++) {
-		r = dev->driver->temperature(dev, handle, i, &temperature);
+	for (ii=0; ii<3; ii++) {
+		rr = dev->driver->temperature(dev, handle, ii, &temperature);
 		if (dev->driver == &corsairlink_driver_asetek) {
 			uint8_t v1 = (temperature>>8);
 			uint8_t v2 = (temperature&0xFF);
 			msg_debug("DEBUG: %02X %02X\n", v1, v2);
 			celsius = (double)v1 + ((double)v2/10);
 		}
-		msg_info("Temperature %d: %5.2f\n", i, (double)celsius);
+		msg_info("Temperature %d: %5.2f\n", ii, (double)celsius);
 		if (dev->driver == &corsairlink_driver_asetek) {
 			break;
 		} 
 	}
 
-	for (i=0; i<dev->fan_control_count; i++) {
-		r = dev->driver->fan.speed(dev, handle, i, &fan_speed);
-		msg_info("Fan Speed %d: %i\n", i, fan_speed);
+	for (ii=0; ii<dev->fan_control_count; ii++) {
+		rr = dev->driver->fan.speed(dev, handle, ii, &fan_speed);
+		msg_info("Fan Speed %d: %i\n", ii, fan_speed);
 	}
 	
-	r = dev->driver->pump.speed(dev, handle, dev->pump_index, &pump_speed);
+	rr = dev->driver->pump.speed(dev, handle, dev->pump_index, &pump_speed);
 	msg_info("Pump Speed: %i\n", pump_speed);
 
-	r = dev->driver->led(dev, handle, &settings.led_color, &settings.warning_led, settings.warning_led_temp, (settings.warning_led_temp > -1));
+	rr = dev->driver->led(dev, handle, &settings.led_color, &settings.warning_led, settings.warning_led_temp, (settings.warning_led_temp > -1));
 
 	if (dev->driver == &corsairlink_driver_asetek) {
 		if (settings.fan1.s6 != 0)
@@ -166,7 +166,7 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 			dev->driver->pump.profile(dev, handle, settings.pump_mode);
 	}
 
-	r = dev->driver->deinit(handle, dev->write_endpoint);
+	rr = dev->driver->deinit(handle, dev->write_endpoint);
 	msg_debug("DEBUG: deinit done\n");
 	
 	return 0;
@@ -174,7 +174,7 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 
 int main(int argc, char *argv[])
 {
-	int r; // result from libusb functions
+	int rr; // result from libusb functions
 
 	int8_t device_number = -1;
 
@@ -186,9 +186,9 @@ int main(int argc, char *argv[])
 	
 	libusb_context *context = NULL;
 
-	r = libusb_init(&context);
-	if (r < 0) {
-		msg_info("Init Error %d\n", r);
+	rr = libusb_init(&context);
+	if (rr < 0) {
+		msg_info("Init Error %d\n", rr);
 		return 1;
 	}
 	libusb_set_debug(context, 3);

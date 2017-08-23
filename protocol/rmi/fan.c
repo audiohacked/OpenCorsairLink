@@ -21,7 +21,7 @@
  */
 int corsairlink_rmi_fan_rpm(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint16_t rpm)
 {
-	int r;
+	int rr;
 	uint8_t response[64];
 	uint8_t commands[64];
 	memset(response, 0, sizeof(response));
@@ -32,8 +32,8 @@ int corsairlink_rmi_fan_rpm(struct corsair_device_info *dev, struct libusb_devic
 	commands[2] = 0x00;
 	commands[3] = 0x00;
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, 64);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 //	rpm = 0;
 	return 0;

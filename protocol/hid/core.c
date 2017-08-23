@@ -30,25 +30,25 @@
 
 int corsairlink_hid_device_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *device_id)
 {
-	int r;
+	int rr;
 	uint8_t response[64];
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
-	uint8_t i = 1;
+	uint8_t ii = 1;
 
-	i = 1;
+	ii = 1;
 	// Read Device ID: 0x3b = H80i. 0x3c = H100i. 0x41 = H110i. 0x42 = H110i Extreme
-	commands[i++] = CommandId++; // Command ID
-	commands[i++] = ReadOneByte; // Command Opcode
-	commands[i++] = DeviceID; // Command data...
-	commands[i++] = 0x00;
+	commands[ii++] = CommandId++; // Command ID
+	commands[ii++] = ReadOneByte; // Command Opcode
+	commands[ii++] = DeviceID; // Command data...
+	commands[ii++] = 0x00;
 
-	commands[0] = i; // Length
+	commands[0] = ii; // Length
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, i);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(device_id, response+2, 1);
 
@@ -75,24 +75,24 @@ int corsairlink_hid_product(struct corsair_device_info *dev, struct libusb_devic
 
 int corsairlink_hid_firmware_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *firmware)
 {
-	int r;
+	int rr;
 	uint8_t response[64];
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
-	uint8_t i = 1;
+	uint8_t ii = 1;
 
-	i = 1;
-	commands[i++] = CommandId++; // Command ID
-	commands[i++] = ReadTwoBytes; // Command Opcode
-	commands[i++] = FirmwareID; // Command data...
-	commands[i++] = 0x00;
+	ii = 1;
+	commands[ii++] = CommandId++; // Command ID
+	commands[ii++] = ReadTwoBytes; // Command Opcode
+	commands[ii++] = FirmwareID; // Command data...
+	commands[ii++] = 0x00;
 
-	commands[0] = i; // Length
+	commands[0] = ii; // Length
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, i);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	sprintf(firmware, "%d.%d.0.0", response[3], response[2]);
 

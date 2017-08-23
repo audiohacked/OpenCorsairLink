@@ -30,7 +30,7 @@
 int corsairlink_asetek_change_led(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct color *color_led, struct color *warning_led,
 			uint8_t Warning_Temp, uint8_t Warning_Enable)
 {
-	int r;
+	int rr;
 	uint8_t response[32];
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
@@ -56,12 +56,12 @@ int corsairlink_asetek_change_led(struct corsair_device_info *dev, struct libusb
 	commands[17] = 0x00;
 	commands[18] = 0x01;
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, 19);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 19);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
 	// fan_rpm = (long int) response[0]*16*16 + response[1];
 	// pump_rpm = (response[8]*16*16)+response[9];
 	// liquid_temp = (double) response[10] + (double) response[14]/10;
 
-	return r;
+	return rr;
 }

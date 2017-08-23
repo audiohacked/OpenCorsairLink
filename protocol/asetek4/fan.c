@@ -31,7 +31,7 @@
 int corsairlink_asetek_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 	uint8_t fan_mode)
 {
-	int r;
+	int rr;
 	struct fan_table curve;
 	if (fan_mode == PERFORMANCE) {
 		ASETEK_FAN_TABLE_EXTREME(curve);
@@ -39,15 +39,15 @@ int corsairlink_asetek_fan_mode(struct corsair_device_info *dev, struct libusb_d
 	else if (fan_mode == QUIET) {
 		ASETEK_FAN_TABLE_QUIET(curve);
 	}
-	r = dev->driver->fan.custom(dev, handle, &curve);
+	rr = dev->driver->fan.custom(dev, handle, &curve);
 
-	return r;
+	return rr;
 }
 
 int corsairlink_asetek_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle,
 	struct fan_table *fan)
 {
-	int r;
+	int rr;
 	uint8_t response[32];
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
@@ -70,15 +70,15 @@ int corsairlink_asetek_fan_curve(struct corsair_device_info *dev, struct libusb_
 	commands[12] = fan->s5;
 	commands[13] = fan->s6;
 	
-	r = dev->driver->write(handle, dev->write_endpoint, commands, 14);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 14);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
-	return r;
+	return rr;
 }
 
 int corsairlink_asetek_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed)
 {
-	int r;
+	int rr;
 	uint8_t response[32];
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
@@ -104,11 +104,11 @@ int corsairlink_asetek_fan_speed(struct corsair_device_info *dev, struct libusb_
 	commands[17] = 0x00;
 	commands[18] = 0x01;
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, 19);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 32);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 19);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
 	msg_debug("%02X %02X\n", response[0], response[1]);
 	*(speed) = (response[0]<<8) + response[1];
 
-	return r;
+	return rr;
 }

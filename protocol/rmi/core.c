@@ -64,7 +64,7 @@ int corsairlink_rmi_firmware_id(struct corsair_device_info *dev, struct libusb_d
 
 int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name)
 {
-	int r;
+	int rr;
 	uint8_t response[64];
 	uint8_t commands[64];
 	memset(response, 0, sizeof(response));
@@ -73,8 +73,8 @@ int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_h
 	commands[0] = 0xfe;
 	commands[1] = 0x03;
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, 64);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(name, response+2, 16);
 
@@ -83,7 +83,7 @@ int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_h
 
 int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name)
 {
-	int r;
+	int rr;
 	uint8_t response[64];
 	uint8_t commands[64];
 	memset(response, 0, sizeof(response));
@@ -93,8 +93,8 @@ int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device
 	commands[1] = 0x99;
 	commands[2] = 0x00;
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, 64);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(name, response+2, 16);
 
@@ -103,7 +103,7 @@ int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device
 
 int corsairlink_rmi_product(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name)
 {
-	int r;
+	int rr;
 	uint8_t response[64];
 	uint8_t commands[64];
 	memset(response, 0, sizeof(response));
@@ -113,8 +113,8 @@ int corsairlink_rmi_product(struct corsair_device_info *dev, struct libusb_devic
 	commands[1] = 0x9a;
 	commands[2] = 0x00;
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, 64);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(name, response+2, 16);
 

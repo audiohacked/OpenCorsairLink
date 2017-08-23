@@ -30,31 +30,31 @@
 
 int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *temperature)
 {
-	int r;
+	int rr;
 	uint8_t response[64];
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
-	uint8_t i = 1;
+	uint8_t ii = 1;
 
-	commands[i++] = CommandId++; // Command ID
-	commands[i++] = WriteOneByte; // Command Opcode
-	commands[i++] = TEMP_SelectActiveSensor; // Command data...
-	commands[i++] = selector;
+	commands[ii++] = CommandId++; // Command ID
+	commands[ii++] = WriteOneByte; // Command Opcode
+	commands[ii++] = TEMP_SelectActiveSensor; // Command data...
+	commands[ii++] = selector;
 
-	commands[i++] = CommandId++; // Command ID
-	commands[i++] = ReadTwoBytes; // Command Opcode
-	commands[i++] = TEMP_Read; // Command data...
-	commands[i++] = 0x00;
-	commands[i++] = 0x00;
+	commands[ii++] = CommandId++; // Command ID
+	commands[ii++] = ReadTwoBytes; // Command Opcode
+	commands[ii++] = TEMP_Read; // Command data...
+	commands[ii++] = 0x00;
+	commands[ii++] = 0x00;
 
-	commands[0] = i; // Length
+	commands[0] = ii; // Length
 
-	r = dev->driver->write(handle, dev->write_endpoint, commands, i);
-	r = dev->driver->read(handle, dev->read_endpoint, response, 64);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	*(temperature) = (response[5]<<8) + response[4];
 
-	return r;
+	return rr;
 }
