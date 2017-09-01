@@ -52,6 +52,7 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
 	msg_debug("DEBUG: init done\n");
 
 	/* fetch device name, vendor name, product name */
+	rr = dev->driver->name(dev, handle, name);
 	rr = dev->driver->vendor(dev, handle, name);
 	msg_info("Vendor: %s\n", name);
 	rr = dev->driver->product(dev, handle, name);
