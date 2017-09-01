@@ -23,7 +23,7 @@
 
 struct corsair_device_info {
 	/** device info */
-	char name[16];
+	char name[64];
 	uint16_t vendor_id;
 	uint16_t product_id;
 	uint16_t device_id;
