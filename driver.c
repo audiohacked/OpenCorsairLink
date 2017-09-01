@@ -95,3 +95,16 @@ struct corsair_device_driver corsairlink_driver_rmi = {
 		.uptime = corsairlink_rmi_time_uptime,
 	}
 };
+
+struct corsair_device_driver corsairlink_driver_dongle = {
+	.init = corsairlink_rmi_init,
+	.deinit = corsairlink_rmi_deinit,
+    .name = corsairlink_rmi_name,
+    .vendor = corsairlink_rmi_vendor,
+    .product = corsairlink_rmi_product,
+    .device_id = corsairlink_rmi_device_id,
+    .fw_version = corsairlink_rmi_firmware_id,
+    .read = corsairlink_rmi_read,
+    .write = corsairlink_rmi_write
+};
+
