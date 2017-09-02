@@ -32,7 +32,10 @@
 #include "../../print.h"
 #include "core.h"
 
-int corsairlink_rmi_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t select, uint16_t *temperature)
+int corsairlink_rmi_temperature(struct corsair_device_info *dev,
+			struct libusb_device_handle *handle,
+			uint8_t probe,
+			uint16_t *temperature)
 {
 	int rr;
 	uint8_t response[64];
@@ -41,7 +44,7 @@ int corsairlink_rmi_temperature(struct corsair_device_info *dev, struct libusb_d
 	memset(commands, 0, sizeof(commands));
 
 	commands[0] = 0x03;
-	commands[1] = 0x8D + select;
+	commands[1] = 0x8D + probe;
 	commands[2] = 0x00;
 	commands[3] = 0x00;
 
