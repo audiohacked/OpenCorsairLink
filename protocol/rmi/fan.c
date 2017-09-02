@@ -19,7 +19,9 @@
 /*! \file protocol/rmi/fan.c
  *  \brief Fan Routines for RMi Series of Power Supplies
  */
-int corsairlink_rmi_fan_rpm(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint16_t rpm)
+int corsairlink_rmi_fan_rpm(struct corsair_device_info *dev,
+			struct libusb_device_handle *handle,
+			uint16_t rpm)
 {
 	int rr;
 	uint8_t response[64];
@@ -35,6 +37,11 @@ int corsairlink_rmi_fan_rpm(struct corsair_device_info *dev, struct libusb_devic
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
-//	rpm = 0;
+	memcpy(rpm, response+2, 2);
+
+	msg_debug("%02X %02X %02X %02X %02X %02X\n", 
+		response[0], response[1], response[2],
+		response[3], response[4], response[5]);
+
 	return 0;
 }
