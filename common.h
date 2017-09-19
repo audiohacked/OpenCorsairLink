@@ -19,6 +19,10 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
-#define VERSION "1.9.8"
+#define MAJOR 0
+#define MINOR 4
+#define PATCH 0
+
+#define VERSION MAJOR "." MINOR "." PATCH
 
 #endif /* _COMMON_H */
