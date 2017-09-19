@@ -19,10 +19,13 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
+
 #define MAJOR 0
 #define MINOR 4
 #define PATCH 0
 
-#define VERSION MAJOR "." MINOR "." PATCH
+#define VERSION "v"STR(MAJOR)"."STR(MINOR)"."STR(PATCH)
 
 #endif /* _COMMON_H */
