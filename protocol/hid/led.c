@@ -37,39 +37,38 @@ int corsairlink_hid_change_led(struct corsair_device_info *dev, struct libusb_de
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
-	uint8_t ii = 1;
+	uint8_t ii = 0;
 
-	ii = 1;
-	commands[ii++] = CommandId++; // Command ID
-	commands[ii++] = WriteOneByte; // Command Opcode
-	commands[ii++] = LED_SelectCurrent; // Command data...
-	commands[ii++] = 0;
+	commands[++ii] = CommandId++; // Command ID
+	commands[++ii] = WriteOneByte; // Command Opcode
+	commands[++ii] = LED_SelectCurrent; // Command data...
+	commands[++ii] = 0;
 
-	commands[ii++] = CommandId++; // Command ID
-	commands[ii++] = WriteOneByte; // Command Opcode
-	commands[ii++] = LED_Mode; // Command data...
-	commands[ii++] = 0x00;
+	commands[++ii] = CommandId++; // Command ID
+	commands[++ii] = WriteOneByte; // Command Opcode
+	commands[++ii] = LED_Mode; // Command data...
+	commands[++ii] = 0x00;
 
-	commands[ii++] = CommandId++; // Command ID
-	commands[ii++] = WriteThreeBytes; // Command Opcode
-	commands[ii++] = LED_CycleColors; // Command data...
-	commands[ii++] = 0x0C;
+	commands[++ii] = CommandId++; // Command ID
+	commands[++ii] = WriteThreeBytes; // Command Opcode
+	commands[++ii] = LED_CycleColors; // Command data...
+	commands[++ii] = 0x0C;
 
-	commands[ii++] = color_led->red;
-	commands[ii++] = color_led->green;
-	commands[ii++] = color_led->blue;
+	commands[++ii] = color_led->red;
+	commands[++ii] = color_led->green;
+	commands[++ii] = color_led->blue;
 
-	commands[ii++] = color_led->red;
-	commands[ii++] = color_led->green;
-	commands[ii++] = color_led->blue;
+	commands[++ii] = color_led->red;
+	commands[++ii] = color_led->green;
+	commands[++ii] = color_led->blue;
 
-	commands[ii++] = color_led->red;
-	commands[ii++] = color_led->green;
-	commands[ii++] = color_led->blue;
+	commands[++ii] = color_led->red;
+	commands[++ii] = color_led->green;
+	commands[++ii] = color_led->blue;
 
-	commands[ii++] = color_led->red;
-	commands[ii++] = color_led->green;
-	commands[ii++] = color_led->blue;
+	commands[++ii] = color_led->red;
+	commands[++ii] = color_led->green;
+	commands[++ii] = color_led->blue;
 
 	commands[0] = ii; // Length
 

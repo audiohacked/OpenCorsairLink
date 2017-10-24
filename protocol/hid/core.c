@@ -26,31 +26,30 @@
 #include "../../lowlevel/hid.h"
 #include "../../device.h"
 #include "../../driver.h"
+#include "../../print.h"
 #include "core.h"
 
 int corsairlink_hid_device_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *device_id)
 {
 	int rr;
 	uint8_t response[64];
-	uint8_t commands[32] ;
+	uint8_t commands[32];
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
-	uint8_t ii = 1;
+	uint8_t ii = 0;
 
-	ii = 1;
-	// Read Device ID: 0x3b = H80i. 0x3c = H100i. 0x41 = H110i. 0x42 = H110i Extreme
-	commands[ii++] = CommandId++; // Command ID
-	commands[ii++] = ReadOneByte; // Command Opcode
-	commands[ii++] = DeviceID; // Command data...
-	commands[ii++] = 0x00;
-
+	commands[++ii] = CommandId++; // Command ID
+	commands[++ii] = ReadOneByte; // Command Opcode
+	commands[++ii] = DeviceID; // Command data...
 	commands[0] = ii; // Length
 
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(device_id, response+2, 1);
+
+	dump_packet(response,sizeof(response));
 
 	return 0;
 }
@@ -77,18 +76,15 @@ int corsairlink_hid_firmware_id(struct corsair_device_info *dev, struct libusb_d
 {
 	int rr;
 	uint8_t response[64];
-	uint8_t commands[32] ;
+	uint8_t commands[32];
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
-	uint8_t ii = 1;
+	uint8_t ii = 0;
 
-	ii = 1;
-	commands[ii++] = CommandId++; // Command ID
-	commands[ii++] = ReadTwoBytes; // Command Opcode
-	commands[ii++] = FirmwareID; // Command data...
-	commands[ii++] = 0x00;
-
+	commands[++ii] = CommandId++; // Command ID
+	commands[++ii] = ReadTwoBytes; // Command Opcode
+	commands[++ii] = FirmwareID; // Command data...
 	commands[0] = ii; // Length
 
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);

@@ -36,21 +36,20 @@ int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_dev
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
-	uint8_t ii = 1;
+	uint8_t ii = 0;
 
-	ii = 1;
-	commands[ii++] = CommandId++;
-	commands[ii++] = WriteOneByte;
-	commands[ii++] = FAN_Mode;
+	commands[++ii] = CommandId++;
+	commands[++ii] = WriteOneByte;
+	commands[++ii] = FAN_Mode;
 
 	if (pump_mode == PERFORMANCE)
-		commands[ii++] = HID_Performance;
+		commands[++ii] = HID_Performance;
 	else if (pump_mode == BALANCED)
-		commands[ii++] = HID_Balanced;
+		commands[++ii] = HID_Balanced;
 	else if (pump_mode == QUIET)
-		commands[ii++] = HID_Quiet;
+		commands[++ii] = HID_Quiet;
 	else if (pump_mode == DEFAULT)
-		commands[ii++] = HID_Default;
+		commands[++ii] = HID_Default;
 
 	commands[0] = ii;
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
@@ -67,17 +66,16 @@ int corsairlink_hid_pump_speed(struct corsair_device_info *dev, struct libusb_de
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
-	uint8_t ii = 1;
+	uint8_t ii = 0;
 
-	ii = 1;
-	commands[ii++] = CommandId++;
-	commands[ii++] = WriteOneByte;
-	commands[ii++] = FAN_Select;
-	commands[ii++] = selector;
+	commands[++ii] = CommandId++;
+	commands[++ii] = WriteOneByte;
+	commands[++ii] = FAN_Select;
+	commands[++ii] = selector;
 
-	commands[ii++] = CommandId++;
-	commands[ii++] = ReadTwoBytes;
-	commands[ii++] = FAN_ReadRPM;
+	commands[++ii] = CommandId++;
+	commands[++ii] = ReadTwoBytes;
+	commands[++ii] = FAN_ReadRPM;
 
 	commands[0] = ii;
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);

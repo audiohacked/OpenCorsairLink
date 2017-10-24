@@ -36,18 +36,18 @@ int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_d
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
-	uint8_t ii = 1;
+	uint8_t ii = 0;
 
-	commands[ii++] = CommandId++; // Command ID
-	commands[ii++] = WriteOneByte; // Command Opcode
-	commands[ii++] = TEMP_SelectActiveSensor; // Command data...
-	commands[ii++] = selector;
+	commands[++ii] = CommandId++; // Command ID
+	commands[++ii] = WriteOneByte; // Command Opcode
+	commands[++ii] = TEMP_SelectActiveSensor; // Command data...
+	commands[++ii] = selector;
 
-	commands[ii++] = CommandId++; // Command ID
-	commands[ii++] = ReadTwoBytes; // Command Opcode
-	commands[ii++] = TEMP_Read; // Command data...
-	commands[ii++] = 0x00;
-	commands[ii++] = 0x00;
+	commands[++ii] = CommandId++; // Command ID
+	commands[++ii] = ReadTwoBytes; // Command Opcode
+	commands[++ii] = TEMP_Read; // Command data...
+	commands[++ii] = 0x00;
+	commands[++ii] = 0x00;
 
 	commands[0] = ii; // Length
 
