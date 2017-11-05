@@ -160,7 +160,7 @@ void options_print() {
 
 	msg_info("\n\tFan:\n");
 	msg_info("\t--fan-temps <CSV of Temperatures>\t:Define Comma Separated Values of Temperatures for Fan.\n");
-	msg_info("\t--fan-speeds <CSV of Speed Percentage>\t:Define Comma Separated Values of RPM for Fan.\n");
+	msg_info("\t--fan-speeds <CSV of Speed Percentage>\t:Define Comma Separated Values of RPM Percentage for Fan.\n");
 
 	msg_info("\n\tPump mode:\n");
 	msg_info("\t--pump-mode <mode>\t:set to 3 for quiet, and 5 for performance\n");
