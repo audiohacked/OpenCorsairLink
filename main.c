@@ -143,6 +143,8 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 			uint8_t v2 = (temperature&0xFF);
 			msg_debug("DEBUG: %02X %02X\n", v1, v2);
 			celsius = (double)v1 + ((double)v2/10);
+		} else if (dev->driver == &corsairlink_driver_hid) {
+			celsius = (double)temperature / 256;
 		}
 		msg_info("Temperature %d: %5.2f\n", ii, (double)celsius);
 		if (dev->driver == &corsairlink_driver_asetek) {

@@ -127,7 +127,7 @@ int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_dev
 int corsairlink_hid_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed)
 {
 	int rr;
-	uint8_t response[32];
+	uint8_t response[64];
 	uint8_t commands[32] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
@@ -146,14 +146,16 @@ int corsairlink_hid_fan_speed(struct corsair_device_info *dev, struct libusb_dev
 	commands[++ii] = CommandId++;
 	commands[++ii] = ReadTwoBytes;
 	commands[++ii] = FAN_ReadRPM;
+	commands[++ii] = 0x00;
+	commands[++ii] = 0x00;
 
 	commands[0] = ii;
 
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
-	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
-	msg_debug("%02X %02X\n", response[0], response[1]);
-	*(speed) = (response[0]<<8) + response[1];
+	msg_debug("%02X %02X\n", response[5], response[4]);
+	*(speed) = (response[5]<<8) + response[4];
 
 	return rr;
 }
