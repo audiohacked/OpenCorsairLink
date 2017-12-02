@@ -90,8 +90,8 @@ struct corsair_device_info corsairlink_devices[] = {
 		.write_endpoint = LIBUSB_REQUEST_TYPE_CLASS|LIBUSB_RECIPIENT_INTERFACE|LIBUSB_ENDPOINT_OUT,
 		.driver = &corsairlink_driver_hid,
 		.led_control_count = 1,
-		.fan_control_count = 4,
-		.pump_index = 5,
+		.fan_control_count = 2,
+		.pump_index = 2,
 	},
 	{
 		.vendor_id = 0x1b1c,
