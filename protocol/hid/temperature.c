@@ -32,7 +32,7 @@ int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_d
 {
 	int rr;
 	uint8_t response[64];
-	uint8_t commands[32] ;
+	uint8_t commands[64];
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -46,12 +46,10 @@ int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_d
 	commands[++ii] = CommandId++; // Command ID
 	commands[++ii] = ReadTwoBytes; // Command Opcode
 	commands[++ii] = TEMP_Read; // Command data...
-	commands[++ii] = 0x00;
-	commands[++ii] = 0x00;
 
 	commands[0] = ii; // Length
 
-	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	*(temperature) = (response[5]<<8) + response[4];

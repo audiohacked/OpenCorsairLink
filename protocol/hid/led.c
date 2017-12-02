@@ -33,7 +33,7 @@ int corsairlink_hid_change_led(struct corsair_device_info *dev, struct libusb_de
 {
 	int rr;
 	uint8_t response[64];
-	uint8_t commands[32] ;
+	uint8_t commands[64];
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -72,7 +72,7 @@ int corsairlink_hid_change_led(struct corsair_device_info *dev, struct libusb_de
 
 	commands[0] = ii; // Length
 
-	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	// fan_rpm = (long int) response[0]*16*16 + response[1];

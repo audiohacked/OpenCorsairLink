@@ -33,7 +33,7 @@ int corsairlink_hid_device_id(struct corsair_device_info *dev, struct libusb_dev
 {
 	int rr;
 	uint8_t response[64];
-	uint8_t commands[32];
+	uint8_t commands[64];
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -44,7 +44,7 @@ int corsairlink_hid_device_id(struct corsair_device_info *dev, struct libusb_dev
 	commands[++ii] = DeviceID; // Command data...
 	commands[0] = ii; // Length
 
-	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	memcpy(device_id, response+2, 1);
@@ -76,7 +76,7 @@ int corsairlink_hid_firmware_id(struct corsair_device_info *dev, struct libusb_d
 {
 	int rr;
 	uint8_t response[64];
-	uint8_t commands[32];
+	uint8_t commands[64];
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -87,7 +87,7 @@ int corsairlink_hid_firmware_id(struct corsair_device_info *dev, struct libusb_d
 	commands[++ii] = FirmwareID; // Command data...
 	commands[0] = ii; // Length
 
-	rr = dev->driver->write(handle, dev->write_endpoint, commands, ii);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
 	sprintf(firmware, "%d.%d.0.0", response[3], response[2]);
