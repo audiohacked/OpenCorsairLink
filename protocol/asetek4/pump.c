@@ -28,7 +28,7 @@
 #include "../../print.h"
 #include "core.h"
 
-int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t pump_mode)
+int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *pump_mode)
 {
 	int rr;
 	uint8_t response[32];
@@ -38,9 +38,9 @@ int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_
 
 	commands[0] = PumpMode;
 
-	if (pump_mode == PERFORMANCE)
+	if (*(pump_mode) == PERFORMANCE)
 		commands[1] = Asetek_Performance;
-	else if (pump_mode == QUIET)
+	else if (*(pump_mode) == QUIET)
 		commands[1] = Asetek_Quiet;
 
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
@@ -49,7 +49,8 @@ int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_
 	return rr;
 }
 
-int corsairlink_asetek_pump_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed)
+int corsairlink_asetek_pump_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+	uint16_t *speed, uint16_t *maxspeed)
 {
 	int rr;
 	uint8_t response[32];

@@ -41,10 +41,14 @@ static struct option long_options[] = {
 	{"led-warn",          required_argument, NULL,  9},
 	{"led-temp",          required_argument, NULL,  10},
 
-	{"fan-temps",         required_argument, NULL,  11},
-	{"fan-speeds",        required_argument, NULL,  12},
+	{"fan",               required_argument, NULL,  11},
+	{"fan-mode",          required_argument, NULL,  12},
+	{"fan-pwm",           required_argument, NULL,  13},
+	{"fan-rpm",           required_argument, NULL,  14},
+	{"fan-temps",         required_argument, NULL,  15},
+	{"fan-speeds",        required_argument, NULL,  16},
 
-	{"pump-mode",         required_argument, NULL,  13},
+	{"pump-mode",         required_argument, NULL,  17},
 
 	{0, 0, 0, 0}
 };
@@ -111,8 +115,19 @@ int options_parse(int argc, char **argv,
 		case 10: /* led warning temperature */
 			sscanf(optarg, "%hhd", &settings->warning_led_temp);
 			break;
-
 		case 11:
+			sscanf(optarg, "%hhd", &settings->fan);
+			break;
+		case 12:
+			sscanf(optarg, "%hhd", &settings->fan_mode);
+			break;
+		case 13:
+			sscanf(optarg, "%hhd", &settings->fan_data);
+			break;
+		case 14:
+			sscanf(optarg, "%d", &settings->fan_data);
+			break;
+		case 15:
 			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd,%hhd",
 				&settings->fan1.t1,
 				&settings->fan1.t2,
@@ -121,7 +136,7 @@ int options_parse(int argc, char **argv,
 				&settings->fan1.t5,
 				&settings->fan1.t6);
 			break;
-		case 12:
+		case 16:
 			sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd,%hhd",
 				&settings->fan1.s1,
 				&settings->fan1.s2,
@@ -130,7 +145,7 @@ int options_parse(int argc, char **argv,
 				&settings->fan1.s5,
 				&settings->fan1.s6);
 			break;
-		case 13:
+		case 17:
 			sscanf(optarg, "%hhu", &settings->pump_mode);
 			break;
 
@@ -159,6 +174,18 @@ void options_print() {
 	msg_info("\t--led-temp <Temperature in Celsius>\t:Define Warning Temperature.\n");
 
 	msg_info("\n\tFan:\n");
+	msg_info("\t--fan <fan number> :Selects a fan to setup. Accepted values are 1, 2, 3 or 4.\n");
+	msg_info("\t--fan-mode <fan mode> :Sets the mode for the selected fan\n");
+	msg_info("\t\tModes:\n");
+	msg_info("\t\t 0 - Fixed PWM (requires to specify the PWM)\n");
+	msg_info("\t\t 1 - Fixed RPM (requires to specify the RPM)\n");
+	msg_info("\t\t 2 - Default\n");
+	msg_info("\t\t 3 - Quiet\n");
+	msg_info("\t\t 4 - Balanced\n");
+	msg_info("\t\t 5 - Performance\n");
+	msg_info("\t\t 6 - Custom Curve\n");
+	msg_info("\t--fan-pwm <fan PWM> :The desired PWM speed for the selected fan. NOTE: it only works when fan mode is set to Fixed PWM\n");
+	msg_info("\t--fan-rpm <fan RPM> :The desired RPM for the selected fan. NOTE: it works only when fan mode is set to Fixed RPM\n");
 	msg_info("\t--fan-temps <CSV of Temperatures>\t:Define Comma Separated Values of Temperatures for Fan.\n");
 	msg_info("\t--fan-speeds <CSV of Speed Percentage>\t:Define Comma Separated Values of RPM Percentage for Fan.\n");
 

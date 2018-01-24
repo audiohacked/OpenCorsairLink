@@ -27,6 +27,14 @@
 #include "../../driver.h"
 #include "../../print.h"
 
+int corsairlink_asetek_tempsensorscount(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *temperature_sensors_count)
+{
+	int rr = 0;
+	// not defined - set default value of 3
+	*(temperature_sensors_count) = 3;
+	return rr;
+}
+
 int corsairlink_asetek_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *temperature)
 {
 	int rr;

@@ -35,17 +35,20 @@ struct corsair_device_driver {
 	
 	int (*led)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct color *l, struct color *w, uint8_t t, uint8_t e);
 	int (*temperature)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t select, uint16_t *temp);
+	int (*tempsensorscount)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *temperature_sensors_count);
 
 	struct fan_functions {
-		int (*profile)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t profile);
-		int (*custom)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct fan_table *custom_profile);
-		int (*speed)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed);
+		int (*count)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *fan_count);
+		int (*profile)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint8_t *profile, uint16_t *data);
+		int (*custom)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, struct fan_table *custom_profile);
+		int (*speed)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed, uint16_t *maxspeed);
+		int (*print_mode)(uint8_t mode, uint16_t data, char *modestr);
 	} fan;
 
 	struct pump_functions {
-		int (*profile)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t profile);
+		int (*profile)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *profile);
 		int (*custom)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct fan_table *custom_profile);
-		int (*speed)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed);
+		int (*speed)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint16_t *speed, uint16_t *maxspeed);
 	} pump;
 
 	struct power_functions {

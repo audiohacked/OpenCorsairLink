@@ -99,12 +99,15 @@ int corsairlink_hid_change_led(struct corsair_device_info *dev, struct libusb_de
 			uint8_t Warning_Temp, uint8_t Warning_Enable);
 
 int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *temperature);
+int corsairlink_hid_tempsensorscount(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *temperature_sensors_count);
 
-int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t fan_mode);
-int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct fan_table *fan);
-int corsairlink_hid_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed);
+int corsairlink_hid_fan_count(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *fan_count);
+int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint8_t *fan_mode, uint16_t *fan_data);
+int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, struct fan_table *fan);
+int corsairlink_hid_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed, uint16_t *maxspeed);
+int corsairlink_hid_fan_print_mode(uint8_t mode, uint16_t data, char *modestr);
 
-int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t pump_mode);
-int corsairlink_hid_pump_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed);
+int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *pump_mode);
+int corsairlink_hid_pump_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint16_t *speed, uint16_t *maxspeed);
 
 #endif

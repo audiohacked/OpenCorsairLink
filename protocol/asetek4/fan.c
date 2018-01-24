@@ -28,24 +28,42 @@
 #include "../../print.h"
 #include "core.h"
 
+int corsairlink_asetek_fan_count(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+	uint8_t *fan_count)
+{
+	int rr = 0;
+	// undefined, return device value from device.c
+	*(fan_count) = dev->fan_control_count;
+	return rr;
+}
+
+int corsairlink_asetek_fan_print_mode(uint8_t mode, uint16_t data, char *modestr)
+{
+
+	int rr = 0;
+	// undefined, return hex value of mode
+	sprintf(modestr,"Mode 0x%02X",mode);
+	return rr;
+}
+
 int corsairlink_asetek_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-	uint8_t fan_mode)
+	uint8_t selector, uint8_t *fan_mode, uint16_t *fan_data)
 {
 	int rr;
 	struct fan_table curve;
-	if (fan_mode == PERFORMANCE) {
+	if ( *(fan_mode) == PERFORMANCE) {
 		ASETEK_FAN_TABLE_EXTREME(curve);
 	}
-	else if (fan_mode == QUIET) {
+	else if ( *(fan_mode) == QUIET) {
 		ASETEK_FAN_TABLE_QUIET(curve);
 	}
-	rr = dev->driver->fan.custom(dev, handle, &curve);
+	rr = dev->driver->fan.custom(dev, handle, selector, &curve);
 
 	return rr;
 }
 
 int corsairlink_asetek_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-	struct fan_table *fan)
+	uint8_t selector, struct fan_table *fan)
 {
 	int rr;
 	uint8_t response[32];
@@ -76,7 +94,8 @@ int corsairlink_asetek_fan_curve(struct corsair_device_info *dev, struct libusb_
 	return rr;
 }
 
-int corsairlink_asetek_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed)
+int corsairlink_asetek_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+	uint8_t selector, uint16_t *speed, uint16_t *maxspeed)
 {
 	int rr;
 	uint8_t response[32];

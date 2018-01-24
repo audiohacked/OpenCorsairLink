@@ -36,7 +36,7 @@
 int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings) {
 	int rr;
 	int ii;
-	char name[20];
+	char name[32];
 	name[sizeof(name) - 1] = 0;
 	uint32_t time = 0;
 	uint16_t supply_volts, supply_watts, temperature,
@@ -117,9 +117,17 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 	struct corsair_device_info *dev;
 	struct libusb_device_handle *handle;
 	uint16_t temperature;
+	uint8_t temperature_sensors_count=0;
+	uint8_t fan_count=0;
 	double celsius = 0;
+	uint8_t pump_mode = 0;
 	uint16_t pump_speed = 0;
+	uint16_t pump_max_speed = 0;
+	uint8_t fan_index = 0;
+	uint8_t fan_mode = UNDEFINED;
+	uint16_t fan_data = 0;
 	uint16_t fan_speed = 0;
+	uint16_t fan_max_speed = 0;
 
 	dev = scanned_device.device;
 	handle = scanned_device.handle;
@@ -135,8 +143,11 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 	msg_info("Product: %s\n", name);
 	rr = dev->driver->fw_version(dev, handle, name);
 	msg_info("Firmware: %s\n", name);
+	
+	/* get number of temperature sensors */
+	rr = dev->driver->tempsensorscount(dev, handle, &temperature_sensors_count);
 
-	for (ii=0; ii<3; ii++) {
+	for (ii=0; ii<temperature_sensors_count; ii++) {
 		rr = dev->driver->temperature(dev, handle, ii, &temperature);
 		if (dev->driver == &corsairlink_driver_asetek) {
 			uint8_t v1 = (temperature>>8);
@@ -151,22 +162,56 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 			break;
 		} 
 	}
-
-	for (ii=0; ii<dev->fan_control_count; ii++) {
-		rr = dev->driver->fan.speed(dev, handle, ii, &fan_speed);
-		msg_info("Fan Speed %d: %i\n", ii, fan_speed);
+	
+	/* get number of fans */
+	rr = dev->driver->fan.count(dev, handle, &fan_count);
+	
+	for (ii=0; ii<fan_count; ii++) {
+		fan_mode = UNDEFINED;
+		fan_speed = 0;
+		fan_max_speed = 0;
+		fan_data = 0;
+		rr = dev->driver->fan.profile(dev, handle, ii, &fan_mode, &fan_data);
+		rr = dev->driver->fan.print_mode(fan_mode,fan_data,name);
+		rr = dev->driver->fan.speed(dev, handle, ii, &fan_speed, &fan_max_speed);
+		msg_info("Fan %d:\t%s\n", ii, name);
+		msg_info("\tCurrent/Max Speed %i/%i RPM\n", fan_speed, fan_max_speed);
 	}
 	
-	rr = dev->driver->pump.speed(dev, handle, dev->pump_index, &pump_speed);
-	msg_info("Pump Speed: %i\n", pump_speed);
+	rr = dev->driver->pump.profile(dev, handle, &pump_mode);
+	rr = dev->driver->pump.speed(dev, handle, &pump_speed, &pump_max_speed);
+
+	msg_info("Pump:\tMode 0x%02X\n", pump_mode);
+	msg_info("\tCurrent/Max Speed %i/%i RPM\n", pump_speed, pump_max_speed);
 
 	rr = dev->driver->led(dev, handle, &settings.led_color, &settings.warning_led, settings.warning_led_temp, (settings.warning_led_temp > -1));
 
 	if (dev->driver == &corsairlink_driver_asetek) {
 		if (settings.fan1.s6 != 0)
-			dev->driver->fan.custom(dev, handle, &settings.fan1);
+			dev->driver->fan.custom(dev, handle, 0, &settings.fan1);
 		if (settings.pump_mode != DEFAULT)
-			dev->driver->pump.profile(dev, handle, settings.pump_mode);
+			dev->driver->pump.profile(dev, handle, &settings.pump_mode);
+	} else
+	if (dev->driver == &corsairlink_driver_hid) {
+		if (settings.pump_mode != DEFAULT) {
+			msg_info("Setting pump to mode: %i\n", settings.pump_mode);
+			rr = dev->driver->pump.profile(dev, handle, &settings.pump_mode);
+			pump_mode = 0;
+			pump_speed = 0;
+			pump_max_speed = 0;
+			rr = dev->driver->pump.profile(dev, handle, &pump_mode);
+			// sleep 3 seconds for pump to reach new value
+			sleep(3);
+			rr = dev->driver->pump.speed(dev, handle, &pump_speed, &pump_max_speed);
+			msg_info("Pump:\tMode 0x%02X\n", pump_mode);
+			msg_info("\tCurrent/Max Speed %i/%i RPM\n", pump_speed, pump_max_speed);
+		}
+		if (settings.fan > 0 && settings.fan < fan_count + 1) {
+			
+			fan_mode = settings.fan_mode;
+			fan_data = settings.fan_data;
+			rr = dev->driver->fan.profile(dev, handle, settings.fan - 1, &fan_mode, &fan_data);
+		}
 	}
 
 	rr = dev->driver->deinit(handle, dev->write_endpoint);

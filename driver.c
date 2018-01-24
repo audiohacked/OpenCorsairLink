@@ -38,9 +38,13 @@ struct corsair_device_driver corsairlink_driver_hid = {
 	.write = corsairlink_hid_write,
 	.led = corsairlink_hid_change_led,
 	.temperature = corsairlink_hid_temperature,
+	.tempsensorscount = corsairlink_hid_tempsensorscount,
 	.fan = {
+		.count = corsairlink_hid_fan_count,
 		.custom = corsairlink_hid_fan_curve,
+		.profile = corsairlink_hid_fan_mode,
 		.speed = corsairlink_hid_fan_speed,
+		.print_mode = corsairlink_hid_fan_print_mode,
 	},
 	.pump = {
 		.profile = corsairlink_hid_pump_mode,
@@ -60,9 +64,13 @@ struct corsair_device_driver corsairlink_driver_asetek = {
 	.write = corsairlink_asetek_write,
 	.led = corsairlink_asetek_change_led,
 	.temperature = corsairlink_asetek_temperature,
+	.tempsensorscount = corsairlink_asetek_tempsensorscount,
 	.fan = {
+		.count = corsairlink_asetek_fan_count,
 		.custom = corsairlink_asetek_fan_curve,
+		.profile = corsairlink_asetek_fan_mode,
 		.speed = corsairlink_asetek_fan_speed,
+		.print_mode = corsairlink_asetek_fan_print_mode,
 	},
 	.pump = {
 		.profile = corsairlink_asetek_pump_mode,

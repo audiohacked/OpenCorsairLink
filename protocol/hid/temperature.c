@@ -28,6 +28,31 @@
 #include "../../driver.h"
 #include "core.h"
 
+int corsairlink_hid_tempsensorscount(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+	uint8_t *temperature_sensors_count)
+{
+	int rr;
+	uint8_t response[64];
+	uint8_t commands[64];
+	memset(response, 0, sizeof(response));
+	memset(commands, 0, sizeof(commands));
+
+	uint8_t ii = 0;
+
+	commands[++ii] = CommandId++; // Command ID
+	commands[++ii] = ReadOneByte; // Command Opcode
+	commands[++ii] = TEMP_CountSensors; // Command data...
+
+	commands[0] = ii; // Length
+
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
+
+	*(temperature_sensors_count) = response[2];
+
+	return rr;
+}
+
 int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *temperature)
 {
 	int rr;

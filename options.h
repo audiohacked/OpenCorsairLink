@@ -55,6 +55,7 @@ enum pump_modes {
 	BALANCED = 4,
 	PERFORMANCE = 5,
 	CUSTOM = 6,
+	UNDEFINED = 7,
 };
 
 struct option_flags {
@@ -69,6 +70,9 @@ struct option_parse_return {
 	struct color led_color;
 	struct color warning_led;
 	int8_t warning_led_temp;
+	uint8_t fan;
+	uint8_t fan_mode;
+	uint16_t fan_data;
 	struct fan_table fan1;
 	struct fan_table pump;
 	uint8_t pump_mode;
