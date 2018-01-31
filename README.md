@@ -20,6 +20,8 @@ Supported Power Supplies:
  - RM750i  
  - RM850i  
  - HX850i  
+ - HX1000i  
+ - HX1200i  
 
 #### Warning: Some things might not work for you!
 #### Previous version of OpenCorsairLink has been moved to the legacy branch!
