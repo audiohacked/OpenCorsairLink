@@ -11,6 +11,7 @@ Supported Water Coolers (but not fully tested):
  - H80i (HID)  
  - H80i v2 (Asetek)  
  - H100i (HID)  
+ - H100i GTX  
  - H100i v2 (Asetek)  
  - H110i (HID)  
  - H115i (Asetek)  
