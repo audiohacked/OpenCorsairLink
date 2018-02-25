@@ -5,6 +5,7 @@ Since the program needs direct hardware access you should run this with 'sudo' o
 
 ### Dependencies
 libusb-1.0  
+pkg-config  
 
 ### Support
 Supported Water Coolers (but not fully tested):
