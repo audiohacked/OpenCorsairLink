@@ -114,6 +114,8 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 	int ii;
 	char name[20];
 	name[sizeof(name) - 1] = 0;
+	char fan_mode_string[64];
+	fan_mode_string[sizeof(fan_mode_string) - 1] = 0;
 	struct corsair_device_info *dev;
 	struct libusb_device_handle *handle;
 	uint16_t temperature;
@@ -172,9 +174,9 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 		fan_max_speed = 0;
 		fan_data = 0;
 		rr = dev->driver->fan.profile(dev, handle, ii, &fan_mode, &fan_data);
-		rr = dev->driver->fan.print_mode(fan_mode,fan_data,name);
+		rr = dev->driver->fan.print_mode(fan_mode, fan_data, fan_mode_string);
 		rr = dev->driver->fan.speed(dev, handle, ii, &fan_speed, &fan_max_speed);
-		msg_info("Fan %d:\t%s\n", ii, name);
+		msg_info("Fan %d:\t%s\n", ii, fan_mode_string);
 		msg_info("\tCurrent/Max Speed %i/%i RPM\n", fan_speed, fan_max_speed);
 	}
 	
