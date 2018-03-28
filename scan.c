@@ -54,7 +54,7 @@ int corsairlink_close(libusb_context *context)
 	return 0;
 }
 
-int corsairlink_device_scanner(libusb_context *context)
+int corsairlink_device_scanner(libusb_context *context, int *_scanlist_count)
 {
 	int rr; // This could be safely ignored. It is just a success flag for libusb functions.
 
@@ -114,6 +114,7 @@ int corsairlink_device_scanner(libusb_context *context)
 		}
 	}
 	msg_info("\n");
+	*_scanlist_count = scanlist_count;
 	/* End: scan code */
 
 	return 0;

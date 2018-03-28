@@ -27,11 +27,11 @@ struct corsair_device_driver {
 	int (*write)(struct libusb_device_handle*, uint8_t, uint8_t*, int);
 	
 	/** protocol functions */
-	int (*name)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
-	int (*vendor)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
-	int (*product)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
+	int (*name)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size);
+	int (*vendor)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size);
+	int (*product)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size);
 	int (*device_id)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *device_id);
-	int (*fw_version)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
+	int (*fw_version)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size);
 	
 	int (*led)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct color *l, struct color *w, uint8_t t, uint8_t e);
 	int (*temperature)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t select, uint16_t *temp);
@@ -42,7 +42,7 @@ struct corsair_device_driver {
 		int (*profile)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint8_t *profile, uint16_t *data);
 		int (*custom)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, struct fan_table *custom_profile);
 		int (*speed)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *speed, uint16_t *maxspeed);
-		int (*print_mode)(uint8_t mode, uint16_t data, char *modestr);
+		int (*print_mode)(uint8_t mode, uint16_t data, char *modestr, size_t modestr_size);
 	} fan;
 
 	struct pump_functions {

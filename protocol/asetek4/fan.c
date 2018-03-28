@@ -37,12 +37,12 @@ int corsairlink_asetek_fan_count(struct corsair_device_info *dev, struct libusb_
 	return rr;
 }
 
-int corsairlink_asetek_fan_print_mode(uint8_t mode, uint16_t data, char *modestr)
+int corsairlink_asetek_fan_print_mode(uint8_t mode, uint16_t data, char *modestr, size_t modestr_size)
 {
 
 	int rr = 0;
 	// undefined, return hex value of mode
-	sprintf(modestr,"Mode 0x%02X",mode);
+	snprintf(modestr,modestr_size, "Mode 0x%02X",mode);
 	return rr;
 }
 

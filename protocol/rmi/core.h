@@ -27,7 +27,7 @@
 double convert_bytes_double(uint16_t v16);
 
 int corsairlink_rmi_device_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *device_id);
-int corsairlink_rmi_firmware_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *firmware);
+int corsairlink_rmi_firmware_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *firmware, size_t firmware_size);
 int corsairlink_rmi_channel_id(struct corsair_device_info *dev);
 int corsairlink_rmi_product_id(struct corsair_device_info *dev);
 
@@ -50,8 +50,8 @@ int corsairlink_rmi_fan_status(struct corsair_device_info *dev, struct libusb_de
 int corsairlink_rmi_time_powered(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint32_t *v32);
 int corsairlink_rmi_time_uptime(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint32_t *v32);
 
-int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
-int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
-int corsairlink_rmi_product(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name);
+int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size);
+int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size);
+int corsairlink_rmi_product(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size);
 
 #endif

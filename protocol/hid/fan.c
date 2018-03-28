@@ -53,7 +53,7 @@ int corsairlink_hid_fan_count(struct corsair_device_info *dev, struct libusb_dev
 	return rr;
 }
 
-int corsairlink_hid_fan_print_mode(uint8_t mode, uint16_t data, char *modestr)
+int corsairlink_hid_fan_print_mode(uint8_t mode, uint16_t data, char *modestr, size_t modestr_size)
 {
 	int rr = 0;
 	uint8_t isConnected = mode & 0x80;
@@ -61,21 +61,21 @@ int corsairlink_hid_fan_print_mode(uint8_t mode, uint16_t data, char *modestr)
 	uint8_t real_mode = mode & 0x0E;
 	
 	if (!isConnected)
-		sprintf(modestr, "Not connected or failed");
+		snprintf(modestr, modestr_size, "Not connected or failed");
 	else if (real_mode == HID_Performance)
-		sprintf(modestr,"Performance Mode (%s)", is4pin ? "4PIN" : "3PIN");
+		snprintf(modestr, modestr_size, "Performance Mode (%s)", is4pin ? "4PIN" : "3PIN");
 	else if (real_mode == HID_Balanced)
-		sprintf(modestr,"Balanced Mode (%s)", is4pin ? "4PIN" : "3PIN");
+		snprintf(modestr, modestr_size, "Balanced Mode (%s)", is4pin ? "4PIN" : "3PIN");
 	else if (real_mode == HID_Quiet)
-		sprintf(modestr,"Quiet Mode (%s)", is4pin ? "4PIN" : "3PIN");
+		snprintf(modestr, modestr_size, "Quiet Mode (%s)", is4pin ? "4PIN" : "3PIN");
 	else if (real_mode == HID_Default)
-		sprintf(modestr,"Default Mode (%s)", is4pin ? "4PIN" : "3PIN");
+		snprintf(modestr, modestr_size, "Default Mode (%s)", is4pin ? "4PIN" : "3PIN");
 	else if (real_mode == HID_FixedPWM)
-		sprintf(modestr,"Fixed PWM Mode (%s) set to %d%%", is4pin ? "4PIN" : "3PIN", (data+1)*100/256);
+		snprintf(modestr, modestr_size, "Fixed PWM Mode (%s) set to %d%%", is4pin ? "4PIN" : "3PIN", (data+1)*100/256);
 	else if (real_mode == HID_FixedRPM)
-		sprintf(modestr,"Fixed RPM Mode (%s) set to %d", is4pin ? "4PIN" : "3PIN", data);
+		snprintf(modestr, modestr_size, "Fixed RPM Mode (%s) set to %d", is4pin ? "4PIN" : "3PIN", data);
 	else if (real_mode == HID_Custom)
-		sprintf(modestr,"Custom Curve Mode (%s)", is4pin ? "4PIN" : "3PIN");
+		snprintf(modestr, modestr_size, "Custom Curve Mode (%s)", is4pin ? "4PIN" : "3PIN");
 	return rr;
 }
 

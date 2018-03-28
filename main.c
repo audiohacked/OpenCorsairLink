@@ -52,12 +52,12 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
 	msg_debug("DEBUG: init done\n");
 
 	/* fetch device name, vendor name, product name */
-	rr = dev->driver->name(dev, handle, name);
-	rr = dev->driver->vendor(dev, handle, name);
+	rr = dev->driver->name(dev, handle, name, sizeof(name));
+	rr = dev->driver->vendor(dev, handle, name, sizeof(name));
 	msg_info("Vendor: %s\n", name);
-	rr = dev->driver->product(dev, handle, name);
+	rr = dev->driver->product(dev, handle, name, sizeof(name));
 	msg_info("Product: %s\n", name);
-	rr = dev->driver->fw_version(dev, handle, name);
+	rr = dev->driver->fw_version(dev, handle, name, sizeof(name));
 	msg_info("Firmware: %s\n", name);
 	msg_debug("DEBUG: string done\n");
 
@@ -113,9 +113,9 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 	int rr;
 	int ii;
 	char name[20];
-	name[sizeof(name) - 1] = 0;
+	memset(name, '\0', sizeof(name));
 	char fan_mode_string[64];
-	fan_mode_string[sizeof(fan_mode_string) - 1] = 0;
+	memset(fan_mode_string, '\0', sizeof(fan_mode_string));
 	struct corsair_device_info *dev;
 	struct libusb_device_handle *handle;
 	uint16_t temperature;
@@ -139,11 +139,11 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 	msg_debug("DEBUG: init done\n");
 
 	/* fetch device name, vendor name, product name */
-	rr = dev->driver->vendor(dev, handle, name);
+	rr = dev->driver->vendor(dev, handle, name, sizeof(name));
 	msg_info("Vendor: %s\n", name);
-	rr = dev->driver->product(dev, handle, name);
+	rr = dev->driver->product(dev, handle, name, sizeof(name));
 	msg_info("Product: %s\n", name);
-	rr = dev->driver->fw_version(dev, handle, name);
+	rr = dev->driver->fw_version(dev, handle, name, sizeof(name));
 	msg_info("Firmware: %s\n", name);
 	
 	/* get number of temperature sensors */
@@ -174,7 +174,7 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
 		fan_max_speed = 0;
 		fan_data = 0;
 		rr = dev->driver->fan.profile(dev, handle, ii, &fan_mode, &fan_data);
-		rr = dev->driver->fan.print_mode(fan_mode, fan_data, fan_mode_string);
+		rr = dev->driver->fan.print_mode(fan_mode, fan_data, fan_mode_string, sizeof(fan_mode_string));
 		rr = dev->driver->fan.speed(dev, handle, ii, &fan_speed, &fan_max_speed);
 		msg_info("Fan %d:\t%s\n", ii, fan_mode_string);
 		msg_info("\tCurrent/Max Speed %i/%i RPM\n", fan_speed, fan_max_speed);
@@ -228,6 +228,8 @@ int main(int argc, char *argv[])
 
 	int8_t device_number = -1;
 
+	int scanlist_count = 0;
+
 	struct option_flags flags;
 	struct option_parse_return settings;
 
@@ -243,15 +245,19 @@ int main(int argc, char *argv[])
 	}
 	libusb_set_debug(context, 3);
 
-	corsairlink_device_scanner(context);
+	corsairlink_device_scanner(context, &scanlist_count);
 	msg_debug("DEBUG: scan done, start routines\n");
 	msg_debug("DEBUG: device_number = %d\n", device_number);
 
 	if (device_number >= 0) {
-		if (scanlist[device_number].device->driver == &corsairlink_driver_rmi) {
-			psu_settings(scanlist[device_number], settings);
+		if(device_number >= scanlist_count) {
+			msg_info("Detected %d device(s), submitted device %d is out of range\n", scanlist_count, device_number);
 		} else {
-			hydro_settings(scanlist[device_number], settings);
+			if (scanlist[device_number].device->driver == &corsairlink_driver_rmi) {
+				psu_settings(scanlist[device_number], settings);
+			} else {
+				hydro_settings(scanlist[device_number], settings);
+			}
 		}
 	}
 

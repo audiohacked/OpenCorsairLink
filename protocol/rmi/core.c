@@ -55,14 +55,14 @@ int corsairlink_rmi_device_id(struct corsair_device_info *dev, struct libusb_dev
 	return 0;
 }
 
-int corsairlink_rmi_firmware_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *firmware)
+int corsairlink_rmi_firmware_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *firmware, size_t firmware_size)
 {
-	sprintf(firmware, "NA");
+	snprintf(firmware, firmware_size, "NA");
 
 	return 0;
 }
 
-int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name)
+int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size)
 {
 	int rr;
 	uint8_t response[64];
@@ -76,12 +76,16 @@ int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_h
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
-	memcpy(name, response+2, 16);
+	uint32_t bytes_to_copy = 16;
+	if(name_size < bytes_to_copy) {
+		bytes_to_copy = name_size;
+	}
+	memcpy(name, response+2, bytes_to_copy);
 
 	return 0;
 }
 
-int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name)
+int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size)
 {
 	int rr;
 	uint8_t response[64];
@@ -96,12 +100,16 @@ int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
-	memcpy(name, response+2, 16);
+	uint32_t bytes_to_copy = 16;
+	if(name_size < bytes_to_copy) {
+		bytes_to_copy = name_size;
+	}
+	memcpy(name, response+2, bytes_to_copy);
 
 	return 0;
 }
 
-int corsairlink_rmi_product(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name)
+int corsairlink_rmi_product(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size)
 {
 	int rr;
 	uint8_t response[64];
@@ -116,7 +124,11 @@ int corsairlink_rmi_product(struct corsair_device_info *dev, struct libusb_devic
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
-	memcpy(name, response+2, 16);
+	uint32_t bytes_to_copy = 16;
+	if(name_size < bytes_to_copy) {
+		bytes_to_copy = name_size;
+	}
+	memcpy(name, response+2, bytes_to_copy);
 
 	return 0;
 }

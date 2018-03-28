@@ -50,9 +50,9 @@ int corsairlink_asetek_device_id(struct corsair_device_info *dev,
  *  @return 0
  */
 int corsairlink_asetek_name(struct corsair_device_info *dev,
-			struct libusb_device_handle *handle, char *name)
+			struct libusb_device_handle *handle, char *name, size_t name_size)
 {
-	sprintf(name, "%s", dev->name);
+	snprintf(name, name_size, "%s", dev->name);
 	return 0;
 }
 
@@ -63,9 +63,9 @@ int corsairlink_asetek_name(struct corsair_device_info *dev,
  *  @return 0
  */
 int corsairlink_asetek_vendor(struct corsair_device_info *dev,
-			struct libusb_device_handle *handle, char *name)
+			struct libusb_device_handle *handle, char *name, size_t name_size)
 {
-	sprintf(name, "Corsair");
+	snprintf(name, name_size, "Corsair");
 	return 0;
 }
 
@@ -76,9 +76,9 @@ int corsairlink_asetek_vendor(struct corsair_device_info *dev,
  *  @return 0
  */
 int corsairlink_asetek_product(struct corsair_device_info *dev,
-			struct libusb_device_handle *handle, char *name)
+			struct libusb_device_handle *handle, char *name, size_t name_size)
 {
-	sprintf(name, "%s", dev->name);
+	snprintf(name, name_size, "%s", dev->name);
 	return 0;
 }
 
@@ -89,7 +89,7 @@ int corsairlink_asetek_product(struct corsair_device_info *dev,
  *  @return 0
  */
 int corsairlink_asetek_firmware_id(struct corsair_device_info *dev,
-			struct libusb_device_handle *handle, char *firmware)
+			struct libusb_device_handle *handle, char *firmware, size_t firmware_size)
 {
 	int rr;
 	uint8_t response[32];
@@ -120,7 +120,7 @@ int corsairlink_asetek_firmware_id(struct corsair_device_info *dev,
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, 19);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
-	sprintf(firmware, "%d.%d.%d.%d", response[0x17], response[0x18], response[0x19], response[0x1A]);
+	snprintf(firmware, firmware_size, "%d.%d.%d.%d", response[0x17], response[0x18], response[0x19], response[0x1A]);
 
 	return rr;
 }
