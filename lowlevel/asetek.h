@@ -16,7 +16,7 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*! \file lowlevel/asetek4.h
+/*! \file lowlevel/asetek.h
  *  \brief Lowlevel Routines for Asetek
  */
 #ifndef _LOWLEVEL_ASETEK_H

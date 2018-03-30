@@ -22,20 +22,14 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "../../lowlevel/asetek4.h"
+#include "../../lowlevel/asetek.h"
 #include "../../device.h"
 #include "../../driver.h"
-#include "../../print.h"
 
-int corsairlink_asetek_tempsensorscount(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *temperature_sensors_count)
-{
-    int rr = 0;
-    // not defined - set default value of 3
-    *(temperature_sensors_count) = 3;
-    return rr;
-}
 
-int corsairlink_asetek_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *temperature)
+int corsairlink_asetek_change_led(struct corsair_device_info *dev,
+            struct libusb_device_handle *handle, struct color *color_led,
+            struct color *warning_led, uint8_t Warning_Temp, uint8_t Warning_Enable)
 {
     int rr;
     uint8_t response[32];
@@ -44,30 +38,31 @@ int corsairlink_asetek_temperature(struct corsair_device_info *dev, struct libus
     memset(commands, 0, sizeof(commands));
 
     commands[0] = 0x10;
-    commands[1] = 0x00; //RR
-    commands[2] = 0xff; //GG
-    commands[3] = 0xff; //BB
+    commands[1] = color_led->red;
+    commands[2] = color_led->green;
+    commands[3] = color_led->blue;
     commands[4] = 0x00;
     commands[5] = 0xff;
     commands[6] = 0xff;
-    commands[7] = 0xff; //RR
-    commands[8] = 0x00; //GG
-    commands[9] = 0x00; //BB
-    commands[10] = 0x41; // 0x37 = ??, 0x2d = ??
+    commands[7] = warning_led->red;
+    commands[8] = warning_led->green;
+    commands[9] = warning_led->blue;
+    commands[10] = Warning_Temp; // 0x37 = ??, 0x2d = ??
     commands[11] = 0x0a;
     commands[12] = 0x05;
     commands[13] = 0x01;
     commands[14] = 0x00;
     commands[15] = 0x00;
-    commands[16] = 0x01;
+    commands[16] = Warning_Enable;
     commands[17] = 0x00;
     commands[18] = 0x01;
 
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 19);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
-    msg_debug("%02X %02X\n", response[10], response[14]);
-    *(temperature) = (response[10]<<8) + response[14];
+    // fan_rpm = (long int) response[0]*16*16 + response[1];
+    // pump_rpm = (response[8]*16*16)+response[9];
+    // liquid_temp = (double) response[10] + (double) response[14]/10;
 
     return rr;
 }

@@ -16,12 +16,12 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*! \file lowlevel/asetek4.c
+/*! \file lowlevel/asetek.c
  *  \brief Lowlevel Routines for Asetek
  */
 #include <stdio.h>
 #include <libusb.h>
-#include "../lowlevel/asetek4.h"
+#include "../lowlevel/asetek.h"
 
 #define HID_SET_REPORT 0x09 /*!< HID_SET_REPORT */
 #define HID_GET_REPORT 0x01 /*!< HID_GET_REPORT */

@@ -19,10 +19,10 @@
 #include <libusb.h>
 #include "device.h"
 #include "driver.h"
-#include "lowlevel/asetek4.h"
+#include "lowlevel/asetek.h"
 #include "lowlevel/hid.h"
 #include "lowlevel/rmi.h"
-#include "protocol/asetek4/core.h"
+#include "protocol/asetek/core.h"
 #include "protocol/hid/core.h"
 #include "protocol/rmi/core.h"
 

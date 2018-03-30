@@ -27,7 +27,7 @@
 #include "driver.h"
 #include "print.h"
 #include "scan.h"
-#include "lowlevel/asetek4.h"
+#include "lowlevel/asetek.h"
 #include "lowlevel/hid.h"
 #include "lowlevel/rmi.h"
 #include "protocol/hid/core.h"

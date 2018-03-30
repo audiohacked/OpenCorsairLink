@@ -16,7 +16,7 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*! \file protocol/asetek4/core.c
+/*! \file protocol/asetek/core.c
  *  \brief Core Routines for RMi Series of Power Supplies
  */
 #include <errno.h>
@@ -25,7 +25,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "../../lowlevel/asetek4.h"
+#include "../../lowlevel/asetek.h"
 #include "../../device.h"
 #include "../../driver.h"
 

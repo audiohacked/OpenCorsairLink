@@ -12,14 +12,14 @@ OBJS = main.o \
 	options.o \
 	print.o \
 	scan.o
-OBJS_LL = lowlevel/asetek4.o \
+OBJS_LL = lowlevel/asetek.o \
 	lowlevel/hid.o \
 	lowlevel/rmi.o
-OBJS_PROTO = protocol/asetek4/core.o \
-	protocol/asetek4/fan.o \
-	protocol/asetek4/led.o \
-	protocol/asetek4/pump.o \
-	protocol/asetek4/temperature.o \
+OBJS_PROTO = protocol/asetek/core.o \
+	protocol/asetek/fan.o \
+	protocol/asetek/led.o \
+	protocol/asetek/pump.o \
+	protocol/asetek/temperature.o \
 	protocol/rmi/core.o \
 	protocol/rmi/power.o \
 	protocol/rmi/temperature.o \
