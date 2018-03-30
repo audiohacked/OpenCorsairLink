@@ -23,19 +23,19 @@
 #define _LOWLEVEL_HID_H
 
 int corsairlink_hid_init(struct libusb_device_handle *dev_handle,
-			uint8_t endpoint);
+            uint8_t endpoint);
 
 int corsairlink_hid_deinit(struct libusb_device_handle *dev_handle,
-			uint8_t endpoint);
+            uint8_t endpoint);
 
 int corsairlink_hid_write(struct libusb_device_handle *dev_handle,
- 			uint8_t endpoint,
-			uint8_t *data,
-			int length);
+            uint8_t endpoint,
+            uint8_t *data,
+            int length);
 
 int corsairlink_hid_read(struct libusb_device_handle *dev_handle,
-			uint8_t endpoint,
-			uint8_t *data,
-			int length);
+            uint8_t endpoint,
+            uint8_t *data,
+            int length);
 
 #endif

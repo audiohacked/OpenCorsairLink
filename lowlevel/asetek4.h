@@ -23,19 +23,19 @@
 #define _LOWLEVEL_ASETEK_H
 
 int corsairlink_asetek_init(struct libusb_device_handle *dev_handle,
-			uint8_t endpoint);
+            uint8_t endpoint);
 
 int corsairlink_asetek_deinit(struct libusb_device_handle *dev_handle,
-			uint8_t endpoint);
+            uint8_t endpoint);
 
 int corsairlink_asetek_write(struct libusb_device_handle *dev_handle,
- 			uint8_t endpoint,
-			uint8_t *data,
-			int length);
+            uint8_t endpoint,
+            uint8_t *data,
+            int length);
 
 int corsairlink_asetek_read(struct libusb_device_handle *dev_handle,
-			uint8_t endpoint,
-			uint8_t *data,
-			int length);
+            uint8_t endpoint,
+            uint8_t *data,
+            int length);
 
 #endif

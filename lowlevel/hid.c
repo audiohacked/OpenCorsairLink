@@ -43,9 +43,9 @@ static const int CONTROL_REQUEST_TYPE_OUT = LIBUSB_ENDPOINT_OUT | LIBUSB_REQUEST
  *  @return 0
  */
 int corsairlink_hid_init(struct libusb_device_handle *dev_handle,
-			uint8_t endpoint)
+            uint8_t endpoint)
 {
-	return 0;
+    return 0;
 }
 
 /*! USB HID De-Init routine
@@ -55,9 +55,9 @@ int corsairlink_hid_init(struct libusb_device_handle *dev_handle,
  *  @return 0
  */
 int corsairlink_hid_deinit(struct libusb_device_handle *dev_handle,
-			uint8_t endpoint)
+            uint8_t endpoint)
 {
-	return 0;
+    return 0;
 }
 
 /*! USB HID Lowlevel Write
@@ -69,21 +69,21 @@ int corsairlink_hid_deinit(struct libusb_device_handle *dev_handle,
  *  @return 0
  */
 int corsairlink_hid_write(struct libusb_device_handle *dev_handle,
- 			uint8_t endpoint,
-			uint8_t *data,
-			int length)
+            uint8_t endpoint,
+            uint8_t *data,
+            int length)
 {
-	int bytes_transferred;
-	int rr;
-	
-	rr = libusb_control_transfer(dev_handle,
- 				CONTROL_REQUEST_TYPE_OUT,
-				HID_SET_REPORT, /** HID Set_Report */
-				(HID_REPORT_TYPE_OUTPUT<<8)|0x00,
-				INTERFACE_NUMBER,
-				data, length, TIMEOUT_DEFAULT);
+    int bytes_transferred;
+    int rr;
 
-	return rr;
+    rr = libusb_control_transfer(dev_handle,
+                CONTROL_REQUEST_TYPE_OUT,
+                HID_SET_REPORT, /** HID Set_Report */
+                (HID_REPORT_TYPE_OUTPUT<<8)|0x00,
+                INTERFACE_NUMBER,
+                data, length, TIMEOUT_DEFAULT);
+
+    return rr;
 }
 
 /*! USB HID Lowlevel Read
@@ -95,17 +95,17 @@ int corsairlink_hid_write(struct libusb_device_handle *dev_handle,
  *  @return 0
  */
 int corsairlink_hid_read(struct libusb_device_handle *dev_handle,
-			uint8_t endpoint,
-			uint8_t *data,
-			int length)
+            uint8_t endpoint,
+            uint8_t *data,
+            int length)
 {
-	int bytes_transferred;
-	int rr;
-	
-	rr = libusb_interrupt_transfer(dev_handle,
-				endpoint,
-				data, length,
-				&bytes_transferred, TIMEOUT_DEFAULT);
+    int bytes_transferred;
+    int rr;
 
-	return rr;
+    rr = libusb_interrupt_transfer(dev_handle,
+                endpoint,
+                data, length,
+                &bytes_transferred, TIMEOUT_DEFAULT);
+
+    return rr;
 }

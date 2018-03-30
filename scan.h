@@ -20,11 +20,11 @@
 #define _SCAN_H
 
 struct corsair_device_scan {
-	struct corsair_device_info *device;
+    struct corsair_device_info *device;
 
-	/** libusb device structures */
-	struct libusb_device_handle *handle;
-} scanlist[10]; 
+    /** libusb device structures */
+    struct libusb_device_handle *handle;
+} scanlist[10];
 
 int corsairlink_handle_close(struct libusb_device_handle *handle);
 int corsairlink_close(libusb_context *context);
