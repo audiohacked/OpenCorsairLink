@@ -155,6 +155,54 @@ struct corsair_device_info corsairlink_devices[] = {
     },
     {
         .vendor_id = 0x1b1c,
+        .product_id = 0x0c12,
+        .device_id = 0xFF,
+        .name = "H150i Pro", /** H150i Pro */
+        .read_endpoint = 0x01|LIBUSB_ENDPOINT_IN,
+        .write_endpoint = 0x01|LIBUSB_ENDPOINT_OUT,
+        .driver = &corsairlink_driver_asetekpro,
+        .led_control_count = 1,
+        .fan_control_count = 2,
+        .pump_index = 0,
+    },
+    {
+        .vendor_id = 0x1b1c,
+        .product_id = 0x0c13,
+        .device_id = 0xFF,
+        .name = "H115i Pro", /** H115i Pro */
+        .read_endpoint = 0x01|LIBUSB_ENDPOINT_IN,
+        .write_endpoint = 0x01|LIBUSB_ENDPOINT_OUT,
+        .driver = &corsairlink_driver_asetekpro,
+        .led_control_count = 1,
+        .fan_control_count = 2,
+        .pump_index = 0,
+    },
+    {
+        .vendor_id = 0x1b1c,
+        .product_id = 0x0c15,
+        .device_id = 0xFF,
+        .name = "H100i Pro", /** H100i Pro */
+        .read_endpoint = 0x01|LIBUSB_ENDPOINT_IN,
+        .write_endpoint = 0x01|LIBUSB_ENDPOINT_OUT,
+        .driver = &corsairlink_driver_asetekpro,
+        .led_control_count = 1,
+        .fan_control_count = 2,
+        .pump_index = 0,
+    },
+    {
+        .vendor_id = 0x1b1c,
+        .product_id = 0x0c16,
+        .device_id = 0xFF,
+        .name = "H80i Pro", /** H80i Pro */
+        .read_endpoint = 0x01|LIBUSB_ENDPOINT_IN,
+        .write_endpoint = 0x01|LIBUSB_ENDPOINT_OUT,
+        .driver = &corsairlink_driver_asetekpro,
+        .led_control_count = 1,
+        .fan_control_count = 2,
+        .pump_index = 0,
+    },
+    {
+        .vendor_id = 0x1b1c,
         .product_id = 0x1c00,
         .device_id = 0xFF,
         .name = "USB Dongle", /** H115i */

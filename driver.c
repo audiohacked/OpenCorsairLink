@@ -94,6 +94,40 @@ struct corsair_device_driver corsairlink_driver_asetek = {
     }
 };
 
+struct corsair_device_driver corsairlink_driver_asetekpro = {
+    .init = corsairlink_asetek_init,
+    .deinit = corsairlink_asetek_deinit,
+    .name = corsairlink_asetek_name,
+    .vendor = corsairlink_asetek_vendor,
+    .product = corsairlink_asetek_product,
+    .device_id = corsairlink_asetek_device_id,
+    .fw_version = corsairlink_asetekpro_firmware_id,
+    .read = corsairlink_asetek_read,
+    .write = corsairlink_asetek_write,
+    // .led = corsairlink_asetek_change_led,
+    .temperature = corsairlink_asetekpro_temperature,
+    .tempsensorscount = corsairlink_asetekpro_tempsensorscount,
+    .led = {
+        .static_color = corsairlink_asetekpro_led_static_color,
+        .blink = corsairlink_asetekpro_led_blink,
+        .color_pulse = corsairlink_asetekpro_led_color_pulse,
+        .color_shift = corsairlink_asetekpro_led_color_shift,
+        .rainbow = corsairlink_asetekpro_led_rainbow,
+        .temperature = corsairlink_asetekpro_led_temperature,
+    },
+    .fan = {
+        .count = corsairlink_asetek_fan_count,
+        .custom = corsairlink_asetek_fan_curve,
+        .profile = corsairlink_asetek_fan_mode,
+        .speed = corsairlink_asetekpro_fan_speed,
+        .print_mode = corsairlink_asetek_fan_print_mode,
+    },
+    .pump = {
+        .profile = corsairlink_asetek_pump_mode,
+        .speed = corsairlink_asetekpro_pump_speed,
+    }
+};
+
 struct corsair_device_driver corsairlink_driver_commanderpro = {
     .init = corsairlink_commanderpro_init,
     .deinit = corsairlink_commanderpro_deinit,

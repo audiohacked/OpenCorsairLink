@@ -47,6 +47,11 @@ OBJS_PROTO = \
 	protocol/asetek/led.o \
 	protocol/asetek/pump.o \
 	protocol/asetek/temperature.o \
+	protocol/asetekpro/core.o \
+	protocol/asetekpro/fan.o \
+	protocol/asetekpro/led.o \
+	protocol/asetekpro/pump.o \
+	protocol/asetekpro/temperature.o \
 	protocol/commanderpro/core.o \
 	protocol/commanderpro/fan.o \
 	protocol/commanderpro/power.o \
