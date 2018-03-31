@@ -28,7 +28,8 @@
 #include "../../print.h"
 #include "core.h"
 
-int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *pump_mode)
+int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            uint8_t *pump_mode)
 {
     int rr;
     uint8_t response[32];
@@ -49,8 +50,9 @@ int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_
     return rr;
 }
 
-int corsairlink_asetek_pump_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-    uint16_t *speed, uint16_t *maxspeed)
+int corsairlink_asetek_pump_speed(struct corsair_device_info *dev,
+            struct libusb_device_handle *handle,
+            uint16_t *speed, uint16_t *maxspeed)
 {
     int rr;
     uint8_t response[32];

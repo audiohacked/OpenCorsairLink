@@ -32,8 +32,7 @@
 #include "../../print.h"
 #include "core.h"
 
-int corsairlink_rmi_output_select(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
+int corsairlink_rmi_output_select(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t output_select)
 {
     int rr;
@@ -54,8 +53,7 @@ int corsairlink_rmi_output_select(struct corsair_device_info *dev,
     return 0;
 }
 
-int corsairlink_rmi_output_volts(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
+int corsairlink_rmi_output_volts(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint16_t *volts)
 {
     int rr;
@@ -85,8 +83,7 @@ int corsairlink_rmi_output_volts(struct corsair_device_info *dev,
     return 0;
 }
 
-int corsairlink_rmi_output_amps(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
+int corsairlink_rmi_output_amps(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint16_t *amps)
 {
     int rr;
@@ -113,8 +110,7 @@ int corsairlink_rmi_output_amps(struct corsair_device_info *dev,
     return 0;
 }
 
-int corsairlink_rmi_output_watts(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
+int corsairlink_rmi_output_watts(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint16_t *watts)
 {
     int rr;
@@ -142,8 +138,7 @@ int corsairlink_rmi_output_watts(struct corsair_device_info *dev,
     return 0;
 }
 
-int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
+int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint16_t *supply)
 {
     int rr;
@@ -171,8 +166,7 @@ int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev,
     return 0;
 }
 
-int corsairlink_rmi_power_total_wattage(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
+int corsairlink_rmi_power_total_wattage(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint16_t *watts)
 {
     int rr;

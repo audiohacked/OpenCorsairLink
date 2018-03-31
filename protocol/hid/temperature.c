@@ -29,7 +29,7 @@
 #include "core.h"
 
 int corsairlink_hid_tempsensorscount(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-    uint8_t *temperature_sensors_count)
+            uint8_t *temperature_sensors_count)
 {
     int rr;
     uint8_t response[64];
@@ -53,7 +53,8 @@ int corsairlink_hid_tempsensorscount(struct corsair_device_info *dev, struct lib
     return rr;
 }
 
-int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *temperature)
+int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            uint8_t selector, char *temperature, uint8_t temperature_str_len)
 {
     int rr;
     uint8_t response[64];
@@ -77,7 +78,9 @@ int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_d
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
-    *(temperature) = (response[5]<<8) + response[4];
+    // *(temperature) = (response[5]<<8) + response[4];
+    snprintf(temperature, temperature_str_len, "%d.%d C",
+                response[5], response[4]);
 
     return rr;
 }

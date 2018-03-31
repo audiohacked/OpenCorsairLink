@@ -29,7 +29,7 @@
 #include "core.h"
 
 int corsairlink_hid_fan_count(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-    uint8_t *fan_count)
+            uint8_t *fan_count)
 {
     int rr;
     uint8_t response[64];
@@ -71,16 +71,18 @@ int corsairlink_hid_fan_print_mode(uint8_t mode, uint16_t data, char *modestr, s
     else if (real_mode == HID_Default)
         snprintf(modestr, modestr_size, "Default Mode (%s)", is4pin ? "4PIN" : "3PIN");
     else if (real_mode == HID_FixedPWM)
-        snprintf(modestr, modestr_size, "Fixed PWM Mode (%s) set to %d%%", is4pin ? "4PIN" : "3PIN", (data+1)*100/256);
+        snprintf(modestr, modestr_size, "Fixed PWM Mode (%s) set to %d%%", is4pin ? "4PIN" : "3PIN",
+                    (data+1)*100/256);
     else if (real_mode == HID_FixedRPM)
-        snprintf(modestr, modestr_size, "Fixed RPM Mode (%s) set to %d", is4pin ? "4PIN" : "3PIN", data);
+        snprintf(modestr, modestr_size, "Fixed RPM Mode (%s) set to %d", 
+                    is4pin ? "4PIN" : "3PIN", data);
     else if (real_mode == HID_Custom)
         snprintf(modestr, modestr_size, "Custom Curve Mode (%s)", is4pin ? "4PIN" : "3PIN");
     return rr;
 }
 
 int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-    uint8_t selector, uint8_t *fan_mode, uint16_t *fan_data)
+            uint8_t selector, uint8_t *fan_mode, uint16_t *fan_data)
 {
     int rr;
     uint8_t response[64];
@@ -176,7 +178,7 @@ int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_devi
 }
 
 int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-    uint8_t selector, struct fan_table *fan)
+            uint8_t selector, struct fan_table *fan)
 {
     int rr;
     uint8_t response[64];
@@ -228,8 +230,8 @@ int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_dev
     return rr;
 }
 
-int corsairlink_hid_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector,
-    uint16_t *speed, uint16_t *maxspeed)
+int corsairlink_hid_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            uint8_t selector, uint16_t *speed, uint16_t *maxspeed)
 {
     int rr;
     uint8_t response[64];

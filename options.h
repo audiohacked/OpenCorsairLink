@@ -29,6 +29,12 @@ struct color {
     uint8_t blue;
 };
 
+struct led_temperatures {
+    uint8_t temp1;
+    uint8_t temp2;
+    uint8_t temp3;
+};
+
 struct fan_table {
     /** temperatures */
     int8_t t1;
@@ -79,7 +85,8 @@ struct option_parse_return {
 };
 
 int options_parse(int argc, char **argv,
-    struct option_flags *flags, int8_t *device_number,
+    struct option_flags *flags,
+    int8_t *device_number,
     struct option_parse_return *settings);
 
 #endif

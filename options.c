@@ -61,7 +61,8 @@ void options_print(void);
     xx.blue = 0x00;
 
 int options_parse(int argc, char **argv,
-    struct option_flags *flags, int8_t *device_number,
+    struct option_flags *flags,
+    int8_t *device_number,
     struct option_parse_return *settings)
 {
     int cc, returnCode = 0;

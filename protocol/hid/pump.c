@@ -28,7 +28,8 @@
 #include "../../print.h"
 #include "core.h"
 
-int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *pump_mode)
+int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            uint8_t *pump_mode)
 {
     int rr;
     uint8_t response[64];
@@ -117,7 +118,7 @@ int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_dev
 }
 
 int corsairlink_hid_pump_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-    uint16_t *speed, uint16_t *maxspeed)
+            uint16_t *speed, uint16_t *maxspeed)
 {
     int rr;
     uint8_t response[64];

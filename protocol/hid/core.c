@@ -29,7 +29,8 @@
 #include "../../print.h"
 #include "core.h"
 
-int corsairlink_hid_device_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *device_id)
+int corsairlink_hid_device_id(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            uint8_t *device_id)
 {
     int rr;
     uint8_t response[64];
@@ -54,25 +55,30 @@ int corsairlink_hid_device_id(struct corsair_device_info *dev, struct libusb_dev
     return 0;
 }
 
-int corsairlink_hid_name(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size)
+int corsairlink_hid_name(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            char *name, size_t name_size)
 {
     snprintf(name, name_size, "%s", dev->name);
     return 0;
 }
 
-int corsairlink_hid_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size)
+int corsairlink_hid_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            char *name, size_t name_size)
 {
     snprintf(name, name_size, "Corsair");
     return 0;
 }
 
-int corsairlink_hid_product(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size)
+int corsairlink_hid_product(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            char *name, size_t name_size)
 {
     snprintf(name, name_size, "%s", dev->name);
     return 0;
 }
 
-int corsairlink_hid_firmware_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *firmware, size_t firmware_size)
+int corsairlink_hid_firmware_id(struct corsair_device_info *dev,
+            struct libusb_device_handle *handle, char *firmware,
+            size_t firmware_size)
 {
     int rr;
     uint8_t response[64];

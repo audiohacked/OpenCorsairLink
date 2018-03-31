@@ -31,7 +31,8 @@
 #include "../../driver.h"
 #include "core.h"
 
-int corsairlink_rmi_time_powered(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint32_t *powered)
+int corsairlink_rmi_time_powered(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            uint32_t *powered)
 {
     int rr;
     uint8_t response[64];
@@ -54,7 +55,8 @@ int corsairlink_rmi_time_powered(struct corsair_device_info *dev, struct libusb_
     return 0;
 }
 
-int corsairlink_rmi_time_uptime(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint32_t *uptime)
+int corsairlink_rmi_time_uptime(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            uint32_t *uptime)
 {
     int rr;
     uint8_t response[64];

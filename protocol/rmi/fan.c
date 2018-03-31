@@ -19,8 +19,7 @@
 /*! \file protocol/rmi/fan.c
  *  \brief Fan Routines for RMi Series of Power Supplies
  */
-int corsairlink_rmi_fan_rpm(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
+int corsairlink_rmi_fan_rpm(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint16_t rpm)
 {
     int rr;

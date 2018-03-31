@@ -27,7 +27,8 @@
 #include "../../driver.h"
 #include "../../print.h"
 
-int corsairlink_asetek_tempsensorscount(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *temperature_sensors_count)
+int corsairlink_asetek_tempsensorscount(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            uint8_t *temperature_sensors_count)
 {
     int rr = 0;
     // not defined - set default value of 3
@@ -35,7 +36,8 @@ int corsairlink_asetek_tempsensorscount(struct corsair_device_info *dev, struct 
     return rr;
 }
 
-int corsairlink_asetek_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t selector, uint16_t *temperature)
+int corsairlink_asetek_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            uint8_t selector, char *temperature, uint8_t temperature_str_len)
 {
     int rr;
     uint8_t response[32];
@@ -67,7 +69,10 @@ int corsairlink_asetek_temperature(struct corsair_device_info *dev, struct libus
     rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
     msg_debug("%02X %02X\n", response[10], response[14]);
-    *(temperature) = (response[10]<<8) + response[14];
+
+    //*(temperature) = (response[10]<<8) + response[14];
+    double celsius = (double)response[10] + ((double)response[14]/10);
+    snprintf(temperature, temperature_str_len, "%5.2f C", celsius);
 
     return rr;
 }

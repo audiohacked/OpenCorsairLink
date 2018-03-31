@@ -48,21 +48,25 @@ double convert_bytes_double(uint16_t v16)
     return (double)fraction * pow(2.0, (double)exponent);
 }
 
-int corsairlink_rmi_device_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *device_id)
+int corsairlink_rmi_device_id(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            uint8_t *device_id)
 {
     //memset(device_id, 0x00, 1);
     (*device_id) = 0xFF;
     return 0;
 }
 
-int corsairlink_rmi_firmware_id(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *firmware, size_t firmware_size)
+int corsairlink_rmi_firmware_id(struct corsair_device_info *dev,
+            struct libusb_device_handle *handle, char *firmware,
+            size_t firmware_size)
 {
     snprintf(firmware, firmware_size, "NA");
 
     return 0;
 }
 
-int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size)
+int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            char *name, size_t name_size)
 {
     int rr;
     uint8_t response[64];
@@ -85,7 +89,8 @@ int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_h
     return 0;
 }
 
-int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size)
+int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            char *name, size_t name_size)
 {
     int rr;
     uint8_t response[64];
@@ -109,7 +114,8 @@ int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device
     return 0;
 }
 
-int corsairlink_rmi_product(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, size_t name_size)
+int corsairlink_rmi_product(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            char *name, size_t name_size)
 {
     int rr;
     uint8_t response[64];

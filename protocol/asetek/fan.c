@@ -28,8 +28,9 @@
 #include "../../print.h"
 #include "core.h"
 
-int corsairlink_asetek_fan_count(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-    uint8_t *fan_count)
+int corsairlink_asetek_fan_count(struct corsair_device_info *dev,
+            struct libusb_device_handle *handle,
+            uint8_t *fan_count)
 {
     int rr = 0;
     // undefined, return device value from device.c
@@ -37,7 +38,8 @@ int corsairlink_asetek_fan_count(struct corsair_device_info *dev, struct libusb_
     return rr;
 }
 
-int corsairlink_asetek_fan_print_mode(uint8_t mode, uint16_t data, char *modestr, size_t modestr_size)
+int corsairlink_asetek_fan_print_mode(uint8_t mode, uint16_t data,
+            char *modestr, size_t modestr_size)
 {
 
     int rr = 0;
@@ -46,8 +48,9 @@ int corsairlink_asetek_fan_print_mode(uint8_t mode, uint16_t data, char *modestr
     return rr;
 }
 
-int corsairlink_asetek_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-    uint8_t selector, uint8_t *fan_mode, uint16_t *fan_data)
+int corsairlink_asetek_fan_mode(struct corsair_device_info *dev,
+            struct libusb_device_handle *handle,
+            uint8_t selector, uint8_t *fan_mode, uint16_t *fan_data)
 {
     int rr;
     struct fan_table curve;
@@ -62,8 +65,9 @@ int corsairlink_asetek_fan_mode(struct corsair_device_info *dev, struct libusb_d
     return rr;
 }
 
-int corsairlink_asetek_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-    uint8_t selector, struct fan_table *fan)
+int corsairlink_asetek_fan_curve(struct corsair_device_info *dev,
+            struct libusb_device_handle *handle,
+            uint8_t selector, struct fan_table *fan)
 {
     int rr;
     uint8_t response[32];
@@ -94,8 +98,9 @@ int corsairlink_asetek_fan_curve(struct corsair_device_info *dev, struct libusb_
     return rr;
 }
 
-int corsairlink_asetek_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-    uint8_t selector, uint16_t *speed, uint16_t *maxspeed)
+int corsairlink_asetek_fan_speed(struct corsair_device_info *dev,
+            struct libusb_device_handle *handle,
+            uint8_t selector, uint16_t *speed, uint16_t *maxspeed)
 {
     int rr;
     uint8_t response[32];
