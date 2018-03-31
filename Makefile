@@ -1,3 +1,21 @@
+#
+# This file is part of OpenCorsairLink.
+# Copyright (C) 2017,2018  Sean Nelson <audiohacked@gmail.com>
+#
+# OpenCorsairLink is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# any later version.
+#
+# OpenCorsairLink is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
+#
+
 CC ?= gcc
 CFLAGS ?= -std=c99 -pedantic-errors
 LDFLAGS ?= -lm
@@ -6,16 +24,23 @@ LDFLAGS ?= -lm
 CFLAGS += $(shell pkg-config --cflags libusb-1.0)
 LDFLAGS += $(shell pkg-config --libs libusb-1.0)
 
-OBJS = main.o \
+OBJS = \
+	main.o \
 	device.o \
 	driver.o \
+	hydro.o \
 	options.o \
 	print.o \
+	psu.o \
 	scan.o
-OBJS_LL = lowlevel/asetek.o \
+
+OBJS_LL = \
+	lowlevel/asetek.o \
 	lowlevel/hid.o \
 	lowlevel/rmi.o
-OBJS_PROTO = protocol/asetek/core.o \
+
+OBJS_PROTO = \
+	protocol/asetek/core.o \
 	protocol/asetek/fan.o \
 	protocol/asetek/led.o \
 	protocol/asetek/pump.o \

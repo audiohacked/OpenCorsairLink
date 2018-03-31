@@ -1,6 +1,6 @@
 /*
  * This file is part of OpenCorsairLink.
- * Copyright (C) 2017  Sean Nelson <audiohacked@gmail.com>
+ * Copyright (C) 2017,2018  Sean Nelson <audiohacked@gmail.com>
 
  * OpenCorsairLink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,11 @@
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
 
-#define MAJOR 0
-#define MINOR 4
-#define PATCH 0
+#define MAJOR 0 // Full Rewrite
+#define MINOR 5 // Major API Change
+#define PATCH_MAJOR 0 // Backward-compatible API Change
+#define PATCH_MINOR 0 // Patch/Fix Change
 
-#define VERSION "v"STR(MAJOR)"."STR(MINOR)"."STR(PATCH)
+#define VERSION "v"STR(MAJOR)"."STR(MINOR)"."STR(PATCH_MAJOR)"."STR(PATCH_MINOR)
 
 #endif /* _COMMON_H */

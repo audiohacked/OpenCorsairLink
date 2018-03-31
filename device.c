@@ -1,6 +1,6 @@
 /*
  * This file is part of OpenCorsairLink.
- * Copyright (C) 2017  Sean Nelson <audiohacked@gmail.com>
+ * Copyright (C) 2017,2018  Sean Nelson <audiohacked@gmail.com>
 
  * OpenCorsairLink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -287,4 +287,4 @@ struct corsair_device_info corsairlink_devices[] = {
     },
 };
 
-size_t corsairlink_device_count = sizeof(corsairlink_devices)/sizeof(corsairlink_devices[0]);
+uint8_t corsairlink_device_count = sizeof(corsairlink_devices)/sizeof(corsairlink_devices[0]);

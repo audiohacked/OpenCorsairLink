@@ -1,6 +1,6 @@
 /*
  * This file is part of OpenCorsairLink.
- * Copyright (C) 2017  Sean Nelson <audiohacked@gmail.com>
+ * Copyright (C) 2017,2018  Sean Nelson <audiohacked@gmail.com>
 
  * OpenCorsairLink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include "lowlevel/hid.h"
 #include "lowlevel/rmi.h"
 #include "protocol/asetek/core.h"
+#include "protocol/asetekpro/core.h"
 #include "protocol/hid/core.h"
 #include "protocol/rmi/core.h"
 
@@ -36,9 +37,16 @@ struct corsair_device_driver corsairlink_driver_hid = {
     .fw_version = corsairlink_hid_firmware_id,
     .read = corsairlink_hid_read,
     .write = corsairlink_hid_write,
-    .led = corsairlink_hid_change_led,
     .temperature = corsairlink_hid_temperature,
     .tempsensorscount = corsairlink_hid_tempsensorscount,
+    .led = {
+        .static_color = corsairlink_hid_change_led,
+        .blink = NULL,
+        .color_pulse = NULL,
+        .color_shift = NULL,
+        .rainbow = NULL,
+        .temperature = NULL,
+    },
     .fan = {
         .count = corsairlink_hid_fan_count,
         .custom = corsairlink_hid_fan_curve,
@@ -62,9 +70,16 @@ struct corsair_device_driver corsairlink_driver_asetek = {
     .fw_version = corsairlink_asetek_firmware_id,
     .read = corsairlink_asetek_read,
     .write = corsairlink_asetek_write,
-    .led = corsairlink_asetek_change_led,
     .temperature = corsairlink_asetek_temperature,
     .tempsensorscount = corsairlink_asetek_tempsensorscount,
+    .led = {
+        .static_color = corsairlink_asetek_change_led,
+        .blink = NULL,
+        .color_pulse = NULL,
+        .color_shift = NULL,
+        .rainbow = NULL,
+        .temperature = NULL,
+    },
     .fan = {
         .count = corsairlink_asetek_fan_count,
         .custom = corsairlink_asetek_fan_curve,
