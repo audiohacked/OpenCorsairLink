@@ -72,7 +72,7 @@ struct corsair_device_info corsairlink_devices[] = {
 	{
 		.vendor_id = 0x1b1c,
 		.product_id = 0x0c04,
-		.device_id = 0x41, /** H110i */
+		.device_id = 0x40, /** H110i */
 		.name = "H110i",
 		.read_endpoint = 0x01|LIBUSB_ENDPOINT_IN,
 		.write_endpoint = LIBUSB_REQUEST_TYPE_CLASS|LIBUSB_RECIPIENT_INTERFACE|LIBUSB_ENDPOINT_OUT,
@@ -80,6 +80,18 @@ struct corsair_device_info corsairlink_devices[] = {
 		.led_control_count = 1,
 		.fan_control_count = 4,
 		.pump_index = 5,
+	},
+	{
+		.vendor_id = 0x1b1c,
+		.product_id = 0x0c04,
+		.device_id = 0x41, /** H110i GT */
+		.name = "H110i GT",
+		.read_endpoint = 0x01|LIBUSB_ENDPOINT_IN,
+		.write_endpoint = LIBUSB_REQUEST_TYPE_CLASS|LIBUSB_RECIPIENT_INTERFACE|LIBUSB_ENDPOINT_OUT,
+		.driver = &corsairlink_driver_hid,
+		.led_control_count = 1,
+		.fan_control_count = 2,
+		.pump_index = 2,
 	},
 	{
 		.vendor_id = 0x1b1c,
