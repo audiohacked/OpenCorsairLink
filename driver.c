@@ -24,6 +24,7 @@
 #include "lowlevel/hid.h"
 #include "lowlevel/rmi.h"
 #include "protocol/asetek/core.h"
+#include "protocol/asetekpro/core.h"
 #include "protocol/commanderpro/core.h"
 #include "protocol/hid/core.h"
 #include "protocol/rmi/core.h"
