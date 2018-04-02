@@ -16,6 +16,7 @@ Supported Water Coolers (but not fully tested):
  - H100i v2 (Asetek)  
  - H110i (HID)  
  - H115i (Asetek)  
+ - H115i Pro (Asetek Pro)  
 
 Supported Power Supplies:
  - RM650i  
@@ -25,6 +26,11 @@ Supported Power Supplies:
  - HX1000i  
  - HX1200i  
 
-#### Warning: Some things might not work for you!
+Supported Additional CorsairLink Devices:
+ - Commander Pro  
+
+#### Warning: Some/Most things might not work for you!
+All the following code is preliminary support. Many features found in Corsair Link won't exactly work in OpenCorsairLink.  
+
 #### Previous version of OpenCorsairLink has been moved to the legacy branch!
 
