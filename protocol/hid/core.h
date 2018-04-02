@@ -92,13 +92,13 @@ static uint8_t CommandId = 0x81;
 int corsairlink_hid_device_id(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t *device_id);
 int corsairlink_hid_name(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *name, size_t name_size);
+            char *name, uint8_t name_size);
 int corsairlink_hid_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *name, size_t name_size);
+            char *name, uint8_t name_size);
 int corsairlink_hid_product(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *name, size_t name_size);
+            char *name, uint8_t name_size);
 int corsairlink_hid_firmware_id(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *firmware, size_t firmware_size);
+            char *firmware, uint8_t firmware_size);
 
 int corsairlink_hid_change_led(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             struct color *color_led, struct color *warning_led, uint8_t Warning_Temp, uint8_t Warning_Enable);
@@ -116,7 +116,7 @@ int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_dev
             uint8_t selector, struct fan_table *fan);
 int corsairlink_hid_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t selector, uint16_t *speed, uint16_t *maxspeed);
-int corsairlink_hid_fan_print_mode(uint8_t mode, uint16_t data, char *modestr, size_t modestr_size);
+int corsairlink_hid_fan_print_mode(uint8_t mode, uint16_t data, char *modestr, uint8_t modestr_size);
 
 int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t *pump_mode);

@@ -39,7 +39,7 @@ int corsairlink_asetek_fan_count(struct corsair_device_info *dev,
 }
 
 int corsairlink_asetek_fan_print_mode(uint8_t mode, uint16_t data,
-            char *modestr, size_t modestr_size)
+            char *modestr, uint8_t modestr_size)
 {
 
     int rr = 0;

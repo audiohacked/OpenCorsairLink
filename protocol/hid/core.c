@@ -56,21 +56,21 @@ int corsairlink_hid_device_id(struct corsair_device_info *dev, struct libusb_dev
 }
 
 int corsairlink_hid_name(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *name, size_t name_size)
+            char *name, uint8_t name_size)
 {
     snprintf(name, name_size, "%s", dev->name);
     return 0;
 }
 
 int corsairlink_hid_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *name, size_t name_size)
+            char *name, uint8_t name_size)
 {
     snprintf(name, name_size, "Corsair");
     return 0;
 }
 
 int corsairlink_hid_product(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *name, size_t name_size)
+            char *name, uint8_t name_size)
 {
     snprintf(name, name_size, "%s", dev->name);
     return 0;
@@ -78,7 +78,7 @@ int corsairlink_hid_product(struct corsair_device_info *dev, struct libusb_devic
 
 int corsairlink_hid_firmware_id(struct corsair_device_info *dev,
             struct libusb_device_handle *handle, char *firmware,
-            size_t firmware_size)
+            uint8_t firmware_size)
 {
     int rr;
     uint8_t response[64];

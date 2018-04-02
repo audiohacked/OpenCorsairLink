@@ -102,7 +102,6 @@ struct corsair_device_driver corsairlink_driver_rmi = {
     .fw_version = corsairlink_rmi_firmware_id,
     .read = corsairlink_rmi_read,
     .write = corsairlink_rmi_write,
-    .led = NULL,
     .temperature = corsairlink_rmi_temperature,
     .power = {
         .supply_voltage = corsairlink_rmi_power_supply_voltage,

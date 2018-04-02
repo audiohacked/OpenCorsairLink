@@ -58,7 +58,7 @@ int corsairlink_rmi_device_id(struct corsair_device_info *dev, struct libusb_dev
 
 int corsairlink_rmi_firmware_id(struct corsair_device_info *dev,
             struct libusb_device_handle *handle, char *firmware,
-            size_t firmware_size)
+            uint8_t firmware_size)
 {
     snprintf(firmware, firmware_size, "NA");
 
@@ -66,7 +66,7 @@ int corsairlink_rmi_firmware_id(struct corsair_device_info *dev,
 }
 
 int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *name, size_t name_size)
+            char *name, uint8_t name_size)
 {
     int rr;
     uint8_t response[64];
@@ -90,7 +90,7 @@ int corsairlink_rmi_name(struct corsair_device_info *dev, struct libusb_device_h
 }
 
 int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *name, size_t name_size)
+            char *name, uint8_t name_size)
 {
     int rr;
     uint8_t response[64];
@@ -115,7 +115,7 @@ int corsairlink_rmi_vendor(struct corsair_device_info *dev, struct libusb_device
 }
 
 int corsairlink_rmi_product(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *name, size_t name_size)
+            char *name, uint8_t name_size)
 {
     int rr;
     uint8_t response[64];

@@ -53,7 +53,7 @@ int corsairlink_hid_fan_count(struct corsair_device_info *dev, struct libusb_dev
     return rr;
 }
 
-int corsairlink_hid_fan_print_mode(uint8_t mode, uint16_t data, char *modestr, size_t modestr_size)
+int corsairlink_hid_fan_print_mode(uint8_t mode, uint16_t data, char *modestr, uint8_t modestr_size)
 {
     int rr = 0;
     uint8_t isConnected = mode & 0x80;

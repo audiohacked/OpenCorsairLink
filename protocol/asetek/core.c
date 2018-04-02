@@ -50,7 +50,7 @@ int corsairlink_asetek_device_id(struct corsair_device_info *dev, struct libusb_
  *  @return 0
  */
 int corsairlink_asetek_name(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *name, size_t name_size)
+            char *name, uint8_t name_size)
 {
     snprintf(name, name_size, "%s", dev->name);
     return 0;
@@ -63,7 +63,7 @@ int corsairlink_asetek_name(struct corsair_device_info *dev, struct libusb_devic
  *  @return 0
  */
 int corsairlink_asetek_vendor(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *name, size_t name_size)
+            char *name, uint8_t name_size)
 {
     snprintf(name, name_size, "Corsair");
     return 0;
@@ -76,7 +76,7 @@ int corsairlink_asetek_vendor(struct corsair_device_info *dev, struct libusb_dev
  *  @return 0
  */
 int corsairlink_asetek_product(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *name, size_t name_size)
+            char *name, uint8_t name_size)
 {
     snprintf(name, name_size, "%s", dev->name);
     return 0;
@@ -89,7 +89,7 @@ int corsairlink_asetek_product(struct corsair_device_info *dev, struct libusb_de
  *  @return 0
  */
 int corsairlink_asetek_firmware_id(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *firmware, size_t firmware_size)
+            char *firmware, uint8_t firmware_size)
 {
     int rr;
     uint8_t response[32];
