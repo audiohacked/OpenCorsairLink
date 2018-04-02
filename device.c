@@ -143,6 +143,18 @@ struct corsair_device_info corsairlink_devices[] = {
     },
     {
         .vendor_id = 0x1b1c,
+        .product_id = 0x0c10,
+        .device_id = 0xFF,
+        .name = "Commander PRO", /** Commander Pro */
+        .read_endpoint = 0x01|LIBUSB_ENDPOINT_IN,
+        .write_endpoint = 0x02|LIBUSB_ENDPOINT_OUT,
+        .driver = &corsairlink_driver_commanderpro,
+        .led_control_count = 2,
+        .fan_control_count = 6,
+        .pump_index = 0,
+    },
+    {
+        .vendor_id = 0x1b1c,
         .product_id = 0x1c00,
         .device_id = 0xFF,
         .name = "USB Dongle", /** H115i */

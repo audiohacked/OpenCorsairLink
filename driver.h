@@ -76,6 +76,7 @@ struct corsair_device_driver {
     int (*fan_speed_read)();
 };
 
+extern struct corsair_device_driver corsairlink_driver_commanderpro;
 extern struct corsair_device_driver corsairlink_driver_hid;
 extern struct corsair_device_driver corsairlink_driver_asetek;
 extern struct corsair_device_driver corsairlink_driver_rmi;

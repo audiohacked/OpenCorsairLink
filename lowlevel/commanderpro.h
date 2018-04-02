@@ -16,32 +16,23 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _DEVICE_H
-#define _DEVICE_H
+#ifndef _LOWLEVEL_PRO_H
 
-#include "options.h"
+int corsairlink_commanderpro_init(struct libusb_device_handle *dev_handle,
+			uint8_t endpoint);
 
-struct corsair_device_info {
-    /** device info */
-    char name[64];
-    uint16_t vendor_id;
-    uint16_t product_id;
-    uint16_t device_id;
+int corsairlink_commanderpro_deinit(struct libusb_device_handle *dev_handle,
+			uint8_t endpoint);
 
-    /** device endpoints */
-    uint8_t read_endpoint;
-    uint8_t write_endpoint;
+int corsairlink_commanderpro_write(struct libusb_device_handle *dev_handle,
+ 			uint8_t endpoint,
+			uint8_t *data,
+			int length);
 
-    /** device control info */
-    struct corsair_device_driver *driver;
-    uint8_t led_control_count; // used mostly with HID driver
-    uint8_t fan_control_count; // used with HID driver
-    uint8_t temperature_control_count;
-    uint8_t pump_index; // used with HID driver
-};
+int corsairlink_commanderpro_read(struct libusb_device_handle *dev_handle,
+			uint8_t endpoint,
+			uint8_t *data,
+			int length);
 
-extern struct corsair_device_info corsairlink_devices[];
-extern uint8_t corsairlink_device_count;
-
+#define _LOWLEVEL_PRO_H
 #endif
-

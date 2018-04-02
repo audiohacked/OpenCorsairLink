@@ -20,9 +20,11 @@
 #include "device.h"
 #include "driver.h"
 #include "lowlevel/asetek.h"
+#include "lowlevel/commanderpro.h"
 #include "lowlevel/hid.h"
 #include "lowlevel/rmi.h"
 #include "protocol/asetek/core.h"
+#include "protocol/commanderpro/core.h"
 #include "protocol/hid/core.h"
 #include "protocol/rmi/core.h"
 
@@ -89,6 +91,38 @@ struct corsair_device_driver corsairlink_driver_asetek = {
     .pump = {
         .profile = corsairlink_asetek_pump_mode,
         .speed = corsairlink_asetek_pump_speed,
+    }
+};
+
+struct corsair_device_driver corsairlink_driver_commanderpro = {
+    .init = corsairlink_commanderpro_init,
+    .deinit = corsairlink_commanderpro_deinit,
+    .name = corsairlink_commanderpro_name,
+    .vendor = corsairlink_commanderpro_vendor,
+    .product = corsairlink_commanderpro_product,
+    .device_id = corsairlink_commanderpro_device_id,
+    .fw_version = corsairlink_commanderpro_firmware_id,
+    .read = corsairlink_commanderpro_read,
+    .write = corsairlink_commanderpro_write,
+    .temperature = corsairlink_commanderpro_temperature,
+    .tempsensorscount = corsairlink_commanderpro_tempsensorscount,
+    .led = {
+        .static_color = NULL,
+        .blink = NULL,
+        .color_pulse = NULL,
+        .color_shift = NULL,
+        .rainbow = NULL,
+        .temperature = NULL,
+    },
+    .fan = {
+        // .count = corsairlink_commanderpro_get_fan_setup_mask,
+        // .custom = corsairlink_commanderpro_fan_curve,
+        // .profile = corsairlink_commanderpro_fan_mode,
+        .speed = corsairlink_commanderpro_get_fan_speed_rpm,
+        // .print_mode = corsairlink_commanderpro_fan_print_mode,
+    },
+    .power = {
+        .voltage = corsairlink_commanderpro_voltage,
     }
 };
 

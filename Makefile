@@ -26,6 +26,7 @@ LDFLAGS += $(shell pkg-config --libs libusb-1.0)
 
 OBJS = \
 	main.o \
+	commander.o \
 	device.o \
 	driver.o \
 	hydro.o \
@@ -36,6 +37,7 @@ OBJS = \
 
 OBJS_LL = \
 	lowlevel/asetek.o \
+	lowlevel/commanderpro.o \
 	lowlevel/hid.o \
 	lowlevel/rmi.o
 
@@ -45,6 +47,10 @@ OBJS_PROTO = \
 	protocol/asetek/led.o \
 	protocol/asetek/pump.o \
 	protocol/asetek/temperature.o \
+	protocol/commanderpro/core.o \
+	protocol/commanderpro/fan.o \
+	protocol/commanderpro/power.o \
+	protocol/commanderpro/temperature.o \
 	protocol/rmi/core.o \
 	protocol/rmi/power.o \
 	protocol/rmi/temperature.o \

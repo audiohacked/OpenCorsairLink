@@ -28,6 +28,7 @@
 #include "print.h"
 #include "scan.h"
 
+int commanderpro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
 int hydro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
 int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
 
@@ -65,6 +66,8 @@ int main(int argc, char *argv[])
         } else {
             if (scanlist[device_number].device->driver == &corsairlink_driver_rmi) {
                 psu_settings(scanlist[device_number], settings);
+            } else if (scanlist[device_number].device->driver == &corsairlink_driver_commanderpro) {
+                commanderpro_settings(scanlist[device_number], settings);
             } else {
                 hydro_settings(scanlist[device_number], settings);
             }
