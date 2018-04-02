@@ -60,6 +60,11 @@ void options_print(void);
     xx.green = 0x00; \
     xx.blue = 0x00;
 
+#define INIT_DEFAULT_LED(xx) \
+    xx.red = 0xFF; \
+    xx.green = 0xFF; \
+    xx.blue = 0x00;
+
 int options_parse(int argc, char **argv,
     struct option_flags *flags,
     int8_t *device_number,
@@ -68,6 +73,7 @@ int options_parse(int argc, char **argv,
     int cc, returnCode = 0;
 
     memset(settings, 0, sizeof(struct option_parse_return));
+    INIT_DEFAULT_LED(settings->led_color);
     INIT_WARNING_LED(settings->warning_led);
     settings->warning_led_temp = 60;
     settings->pump_mode = DEFAULT;
