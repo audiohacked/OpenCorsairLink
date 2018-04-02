@@ -45,14 +45,14 @@ int corsairlink_commanderpro_tempsensorscount(struct corsair_device_info *dev,
 
     msg_debug("%02X %02X %02X %02X\n", response[1], response[2], response[2], response[2]);
 
-    *(temperature_sensors_count) = 0;
-    for (int ii = 1; ii <= 4; ++ii)
-    {
-        if (response[ii] == 0x01)
-        {
-            *(temperature_sensors_count)++;
-        }
-    }
+    *(temperature_sensors_count) = 4;
+    // for (int ii = 1; ii <= 4; ++ii)
+    // {
+    //     if (response[ii] == 0x01)
+    //     {
+    //         *(temperature_sensors_count)++;
+    //     }
+    // }
 
     return rr;
 }
@@ -63,17 +63,21 @@ int corsairlink_commanderpro_temperature(struct corsair_device_info *dev,
             char *temperature,
             uint8_t temperature_str_len)
 {
-	int rr;
-	uint8_t response[16];
-	uint8_t commands[16] ;
-	memset(response, 0, sizeof(response));
-	memset(commands, 0, sizeof(commands));
+    int rr;
+    uint8_t response[16];
+    uint8_t commands[16] ;
+    memset(response, 0, sizeof(response));
+    memset(commands, 0, sizeof(commands));
 
-	commands[0] = 0x11;
+    commands[0] = 0x11;
     commands[1] = sensor_index;
 
-	rr = dev->driver->write(handle, dev->write_endpoint, commands, 16);
-	rr = dev->driver->read(handle, dev->read_endpoint, response, 16);
+    rr = dev->driver->write(handle, dev->write_endpoint, commands, 16);
+    rr = dev->driver->read(handle, dev->read_endpoint, response, 16);
 
-	return rr;
+    uint16_t data;
+    memcpy(&data, response+1, 2);
+    snprintf(temperature, temperature_str_len, "%5.2f C", (double)data/100);
+
+    return rr;
 }

@@ -38,7 +38,6 @@ int commanderpro_settings(struct corsair_device_scan scanned_device, struct opti
     name[sizeof(name) - 1] = 0;
     char output_volts[10];
     uint32_t time = 0;
-    uint16_t supply_volts, supply_watts, temperature, output_amps, output_watts;
     struct corsair_device_info *dev;
     struct libusb_device_handle *handle;
 
@@ -60,8 +59,8 @@ int commanderpro_settings(struct corsair_device_scan scanned_device, struct opti
     msg_debug("DEBUG: string done\n");
 
     /* fetch temperatures */
-    for (ii=0; ii<2; ii++) {
-        char temperature[32];
+    for (ii=0; ii<4; ii++) {
+        char temperature[16];
         rr = dev->driver->temperature(dev, handle, ii, temperature, sizeof(temperature));
         msg_info("Temperature %d: %s C\n", ii, temperature);
     }
@@ -69,14 +68,14 @@ int commanderpro_settings(struct corsair_device_scan scanned_device, struct opti
     /* fetch SATA voltages */
     for (ii=0; ii<3; ii++) {
         if (ii==0)
-            msg_info("Output 12v:\n");
+            msg_info("Output 12v: ");
         if (ii==1)
-            msg_info("Output 5v:\n");
+            msg_info("Output 5v: ");
         if (ii==2)
-            msg_info("Output 3.3v:\n");
+            msg_info("Output 3.3v: ");
 
         rr = dev->driver->power.voltage(dev, handle, ii, output_volts, sizeof(output_volts));
-        msg_info("\tVoltage %s\n", output_volts);
+        msg_info("%s\n", output_volts);
     }
 
     rr = dev->driver->deinit(handle, dev->write_endpoint);
