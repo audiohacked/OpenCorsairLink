@@ -31,7 +31,7 @@
 #include "../../print.h"
 
 int corsairlink_asetekpro_firmware_id(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle, char *firmware, size_t firmware_size)
+            struct libusb_device_handle *handle, char *firmware, uint8_t firmware_size)
 {
     int rr;
     uint8_t response[32];
