@@ -68,15 +68,15 @@ int corsairlink_commanderpro_firmware_id(struct corsair_device_info *dev,
             uint8_t firmware_str_len)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
 	commands[0] = 0x02;
 
-	rr = dev->driver->write(handle, dev->write_endpoint, commands, 32);
-	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 16);
 
 	snprintf(firmware, firmware_str_len, "V%d.%d.%d", response[1], response[2], response[3]);
 
@@ -89,15 +89,15 @@ int corsairlink_commanderpro_software_id(struct corsair_device_info *dev,
             uint8_t firmware_str_len)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
 	commands[0] = 0x03;
 
-	rr = dev->driver->write(handle, dev->write_endpoint, commands, 32);
-	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 16);
 
 	snprintf(firmware, firmware_str_len, "%d.%d.%d.%d", response[1], response[2], response[3], response[4]);
 
@@ -110,15 +110,15 @@ int corsairlink_commanderpro_bootloader_id(struct corsair_device_info *dev,
             uint8_t firmware_str_len)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
 	commands[0] = 0x06;
 
-	rr = dev->driver->write(handle, dev->write_endpoint, commands, 32);
-	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
+	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
+	rr = dev->driver->read(handle, dev->read_endpoint, response, 16);
 
 	snprintf(firmware, firmware_str_len, "V0.%d.%d", response[1], response[2]);
 
