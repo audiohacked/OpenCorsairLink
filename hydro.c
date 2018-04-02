@@ -27,11 +27,6 @@
 #include "driver.h"
 #include "print.h"
 #include "scan.h"
-#include "lowlevel/asetek.h"
-#include "lowlevel/hid.h"
-#include "lowlevel/rmi.h"
-#include "protocol/hid/core.h"
-#include "protocol/rmi/core.h"
 
 int hydro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings)
 {

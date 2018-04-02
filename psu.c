@@ -27,10 +27,6 @@
 #include "driver.h"
 #include "print.h"
 #include "scan.h"
-#include "lowlevel/asetek.h"
-#include "lowlevel/hid.h"
-#include "lowlevel/rmi.h"
-#include "protocol/hid/core.h"
 #include "protocol/rmi/core.h"
 
 int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings)
@@ -40,8 +36,8 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
     char name[32];
     name[sizeof(name) - 1] = 0;
     uint32_t time = 0;
-    uint16_t supply_volts, supply_watts, temperature,
-        output_volts, output_amps, output_watts;
+    char supply_volts[16], supply_watts[16], temperature[16],
+        output_volts[16], output_amps[16], output_watts[16];
     struct corsair_device_info *dev;
     struct libusb_device_handle *handle;
 
@@ -79,10 +75,10 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
     msg_debug("DEBUG: time done\n");
 
     /* fetch Supply Voltage and Total Watts Consumming */
-    rr = dev->driver->power.supply_voltage(dev, handle, &supply_volts);
-    msg_info("Supply Voltage: %5.2f\n", convert_bytes_double(supply_volts));
-    rr = dev->driver->power.total_wattage(dev, handle, &supply_watts);
-    msg_info("Total Watts: %5.2f\n", convert_bytes_double(supply_watts));
+    rr = dev->driver->power.supply_voltage(dev, handle, supply_volts, sizeof(supply_volts));
+    msg_info("Supply Voltage: %s\n", supply_volts);
+    rr = dev->driver->power.total_wattage(dev, handle, supply_watts, sizeof(supply_watts));
+    msg_info("Total Watts: %s\n", supply_watts);
     msg_debug("DEBUG: supply done\n");
 
     /* fetch PSU output */
@@ -95,14 +91,14 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
             msg_info("Output 3.3v:\n");
 
         rr = dev->driver->power.select(dev, handle, ii);
-        rr = dev->driver->power.voltage(dev, handle, &output_volts);
-        msg_info("\tVoltage %5.2f\n", convert_bytes_double(output_volts));
+        rr = dev->driver->power.voltage(dev, handle, ii, output_volts, sizeof(output_volts));
+        msg_info("\tVoltage %s\n", output_volts);
 
-        rr = dev->driver->power.amperage(dev, handle, &output_amps);
-        msg_info("\tAmps %5.2f\n", convert_bytes_double(output_amps));
+        rr = dev->driver->power.amperage(dev, handle, ii, output_amps, sizeof(output_amps));
+        msg_info("\tAmps %s\n", output_amps);
 
-        rr = dev->driver->power.wattage(dev, handle, &output_watts);
-        msg_info("\tWatts %5.2f\n", convert_bytes_double(output_watts));
+        rr = dev->driver->power.wattage(dev, handle, ii, output_watts, sizeof(output_watts));
+        msg_info("\tWatts %s\n", output_watts);
     }
     rr = dev->driver->power.select(dev, handle, 0);
 
