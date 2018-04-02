@@ -54,8 +54,8 @@ int corsairlink_rmi_temperature(struct corsair_device_info *dev, struct libusb_d
         response[3], response[4], response[5]);
 
     // memcpy(temperature, response+2, 2);
-    uint16_t temp = (response[1]<<8) + response[2];
-    double temp_double = convert_bytes_double(temp);
+    uint16_t temp = (response[2]<<8) + response[3];
+    double temp_double = (double)temp/1000;
     snprintf(temperature, temperature_str_len, "%5.2f C", temp_double);
 
     return 0;

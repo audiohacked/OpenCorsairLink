@@ -66,7 +66,7 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
     for (ii=0; ii<2; ii++) {
         char temperature[32];
         rr = dev->driver->temperature(dev, handle, ii, temperature, sizeof(temperature));
-        msg_info("Temperature %d: %s C\n", ii, temperature);
+        msg_info("Temperature %d: %s\n", ii, temperature);
     }
 
     /* fetch device powered time and device uptime */
