@@ -23,11 +23,11 @@
 #include <getopt.h>
 #include <string.h>
 #include <libusb.h>
-#include "common.h"
-#include "device.h"
-#include "driver.h"
-#include "print.h"
-#include "scan.h"
+#include "../common.h"
+#include "../device.h"
+#include "../driver.h"
+#include "../print.h"
+#include "../logic/scan.h"
 
 int scanlist_count = 0;
 

@@ -19,8 +19,6 @@
 #ifndef _DEVICE_H
 #define _DEVICE_H
 
-#include "options.h"
-
 struct corsair_device_info {
     /** device info */
     char name[64];

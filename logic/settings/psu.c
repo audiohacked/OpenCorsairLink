@@ -22,22 +22,22 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "options.h"
-#include "device.h"
-#include "driver.h"
-#include "print.h"
-#include "scan.h"
-#include "lowlevel/commanderpro.h"
-#include "protocol/commanderpro/core.h"
+#include "../options.h"
+#include "../../device.h"
+#include "../../driver.h"
+#include "../../print.h"
+#include "../scan.h"
+#include "../../protocol/rmi/core.h"
 
-int commanderpro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings)
+int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings)
 {
     int rr;
     int ii;
     char name[32];
     name[sizeof(name) - 1] = 0;
-    char output_volts[10];
     uint32_t time = 0;
+    char supply_volts[16], supply_watts[16], temperature[16],
+        output_volts[16], output_amps[16], output_watts[16];
     struct corsair_device_info *dev;
     struct libusb_device_handle *handle;
 
@@ -59,24 +59,48 @@ int commanderpro_settings(struct corsair_device_scan scanned_device, struct opti
     msg_debug("DEBUG: string done\n");
 
     /* fetch temperatures */
-    for (ii=0; ii<4; ii++) {
-        char temperature[16];
+    for (ii=0; ii<2; ii++) {
+        char temperature[32];
         rr = dev->driver->temperature(dev, handle, ii, temperature, sizeof(temperature));
         msg_info("Temperature %d: %s\n", ii, temperature);
     }
 
-    /* fetch SATA voltages */
+    /* fetch device powered time and device uptime */
+    rr = dev->driver->psu_time.powered(dev, handle, &time);
+    msg_info("Powered: %u (%dd.  %dh)\n",
+        time, time/(24*60*60), time/(60*60)%24);
+    rr = dev->driver->psu_time.uptime(dev, handle, &time);
+    msg_info("Uptime: %u (%dd.  %dh)\n",
+        time, time/(24*60*60), time/(60*60)%24);
+    msg_debug("DEBUG: time done\n");
+
+    /* fetch Supply Voltage and Total Watts Consumming */
+    rr = dev->driver->power.supply_voltage(dev, handle, supply_volts, sizeof(supply_volts));
+    msg_info("Supply Voltage: %s\n", supply_volts);
+    rr = dev->driver->power.total_wattage(dev, handle, supply_watts, sizeof(supply_watts));
+    msg_info("Total Watts: %s\n", supply_watts);
+    msg_debug("DEBUG: supply done\n");
+
+    /* fetch PSU output */
     for (ii=0; ii<3; ii++) {
         if (ii==0)
-            msg_info("Output 12v: ");
+            msg_info("Output 12v:\n");
         if (ii==1)
-            msg_info("Output 5v: ");
+            msg_info("Output 5v:\n");
         if (ii==2)
-            msg_info("Output 3.3v: ");
+            msg_info("Output 3.3v:\n");
 
+        rr = dev->driver->power.select(dev, handle, ii);
         rr = dev->driver->power.voltage(dev, handle, ii, output_volts, sizeof(output_volts));
-        msg_info("%s\n", output_volts);
+        msg_info("\tVoltage %s\n", output_volts);
+
+        rr = dev->driver->power.amperage(dev, handle, ii, output_amps, sizeof(output_amps));
+        msg_info("\tAmps %s\n", output_amps);
+
+        rr = dev->driver->power.wattage(dev, handle, ii, output_watts, sizeof(output_watts));
+        msg_info("\tWatts %s\n", output_watts);
     }
+    rr = dev->driver->power.select(dev, handle, 0);
 
     rr = dev->driver->deinit(handle, dev->write_endpoint);
 

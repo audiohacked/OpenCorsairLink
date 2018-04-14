@@ -22,14 +22,16 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "options.h"
 #include "device.h"
 #include "driver.h"
+#include "logic/options.h"
 #include "print.h"
-#include "scan.h"
+#include "logic/scan.h"
 
 int commanderpro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
-int hydro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
+int hydro_asetek_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
+int hydro_asetekpro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
+int hydro_hid_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
 int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
 
 int main(int argc, char *argv[])
@@ -49,7 +51,8 @@ int main(int argc, char *argv[])
     libusb_context *context = NULL;
 
     rr = libusb_init(&context);
-    if (rr < 0) {
+    if (rr < 0)
+    {
         msg_info("Init Error %d\n", rr);
         return 1;
     }
@@ -59,17 +62,34 @@ int main(int argc, char *argv[])
     msg_debug("DEBUG: scan done, start routines\n");
     msg_debug("DEBUG: device_number = %d\n", device_number);
 
-    if (device_number >= 0) {
-        if(device_number >= scanlist_count) {
+    if (device_number >= 0)
+    {
+        if(device_number >= scanlist_count)
+        {
             msg_info("Detected %d device(s), submitted device %d is out of range\n",
                         scanlist_count, device_number);
-        } else {
-            if (scanlist[device_number].device->driver == &corsairlink_driver_rmi) {
+        }
+        else
+        {
+            if (scanlist[device_number].device->driver == &corsairlink_driver_rmi)
+            {
                 psu_settings(scanlist[device_number], settings);
-            } else if (scanlist[device_number].device->driver == &corsairlink_driver_commanderpro) {
+            }
+            else if (scanlist[device_number].device->driver == &corsairlink_driver_commanderpro)
+            {
                 commanderpro_settings(scanlist[device_number], settings);
-            } else {
-                hydro_settings(scanlist[device_number], settings);
+            }
+            else if (scanlist[device_number].device->driver == &corsairlink_driver_asetek)
+            {
+                hydro_asetek_settings(scanlist[device_number], settings);
+            }
+            else  if (scanlist[device_number].device->driver == &corsairlink_driver_asetekpro)
+            {
+                hydro_asetekpro_settings(scanlist[device_number], settings);
+            }
+            else  if (scanlist[device_number].device->driver == &corsairlink_driver_hid)
+            {
+                hydro_hid_settings(scanlist[device_number], settings);
             }
         }
     }

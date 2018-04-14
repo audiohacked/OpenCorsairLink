@@ -26,14 +26,16 @@ LDFLAGS += $(shell pkg-config --libs libusb-1.0)
 
 OBJS = \
 	main.o \
-	commander.o \
 	device.o \
 	driver.o \
-	hydro.o \
-	options.o \
 	print.o \
-	psu.o \
-	scan.o
+	logic/options.o \
+	logic/scan.o \
+	logic/settings/commanderpro.o \
+	logic/settings/hydro_asetekpro.o \
+	logic/settings/hydro_asetek.o \
+	logic/settings/hydro_hid.o \
+	logic/settings/psu.o
 
 OBJS_LL = \
 	lowlevel/asetek.o \

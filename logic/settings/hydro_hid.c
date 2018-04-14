@@ -22,13 +22,13 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "options.h"
-#include "device.h"
-#include "driver.h"
-#include "print.h"
-#include "scan.h"
+#include "../../device.h"
+#include "../../driver.h"
+#include "../options.h"
+#include "../../print.h"
+#include "../scan.h"
 
-int hydro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings)
+int hydro_hid_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings)
 {
     int rr;
     int ii;
@@ -69,7 +69,8 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
     /* get number of temperature sensors */
     rr = dev->driver->tempsensorscount(dev, handle, &temperature_sensors_count);
 
-    for (ii=0; ii<temperature_sensors_count; ii++) {
+    for (ii=0; ii<temperature_sensors_count; ii++)
+    {
         char temperature[10];
         rr = dev->driver->temperature(dev, handle, ii, temperature, sizeof(temperature));
         msg_info("Temperature %d: %s\n", ii, temperature);
@@ -78,7 +79,8 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
     /* get number of fans */
     rr = dev->driver->fan.count(dev, handle, &fan_count);
 
-    for (ii=0; ii<fan_count; ii++) {
+    for (ii=0; ii<fan_count; ii++)
+    {
         fan_mode = UNDEFINED;
         fan_speed = 0;
         fan_max_speed = 0;
@@ -102,14 +104,17 @@ int hydro_settings(struct corsair_device_scan scanned_device, struct option_pars
                 settings.warning_led_temp,
                 (settings.warning_led_temp > -1));
 
-    if (dev->driver == &corsairlink_driver_asetek) {
+    if (dev->driver == &corsairlink_driver_asetek)
+    {
         if (settings.fan1.s6 != 0)
             dev->driver->fan.custom(dev, handle, 0, &settings.fan1);
         if (settings.pump_mode != DEFAULT)
             dev->driver->pump.profile(dev, handle, &settings.pump_mode);
-    } else
-    if (dev->driver == &corsairlink_driver_hid) {
-        if (settings.pump_mode != DEFAULT) {
+    }
+    else if (dev->driver == &corsairlink_driver_hid)
+    {
+        if (settings.pump_mode != DEFAULT)
+        {
             msg_info("Setting pump to mode: %i\n", settings.pump_mode);
             rr = dev->driver->pump.profile(dev, handle, &settings.pump_mode);
             pump_mode = 0;
