@@ -90,7 +90,7 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
         if (ii==2)
             msg_info("Output 3.3v:\n");
 
-        rr = dev->driver->power.select(dev, handle, ii);
+        rr = dev->driver->power.sensor_select(dev, handle, ii);
         rr = dev->driver->power.voltage(dev, handle, ii, output_volts, sizeof(output_volts));
         msg_info("\tVoltage %s\n", output_volts);
 
@@ -100,7 +100,7 @@ int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_
         rr = dev->driver->power.wattage(dev, handle, ii, output_watts, sizeof(output_watts));
         msg_info("\tWatts %s\n", output_watts);
     }
-    rr = dev->driver->power.select(dev, handle, 0);
+    rr = dev->driver->power.sensor_select(dev, handle, 0);
 
     rr = dev->driver->deinit(handle, dev->write_endpoint);
 

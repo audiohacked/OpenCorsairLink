@@ -31,9 +31,10 @@ struct option_flags {
 };
 
 struct option_parse_return {
-    struct color led_color;
-    struct color warning_led;
+    uint8_t led_mode;
+    struct color led_color[7];
     int8_t warning_led_temp;
+    struct color warning_led;
     uint8_t fan;
     uint8_t fan_mode;
     uint16_t fan_data;

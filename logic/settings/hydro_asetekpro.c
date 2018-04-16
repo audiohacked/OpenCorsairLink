@@ -97,39 +97,18 @@ int hydro_asetekpro_settings(struct corsair_device_scan scanned_device, struct o
     msg_info("\tCurrent/Max Speed %i/%i RPM\n", pump_speed, pump_max_speed);
 
     rr = dev->driver->led.static_color(dev, handle,
-                &settings.led_color,
+                &settings.led_color[0],
                 &settings.warning_led,
                 settings.warning_led_temp,
                 (settings.warning_led_temp > -1));
 
-    if (dev->driver == &corsairlink_driver_asetek)
+    if (settings.fan1.s6 != 0)
     {
-        if (settings.fan1.s6 != 0)
-            dev->driver->fan.custom(dev, handle, 0, &settings.fan1);
-        if (settings.pump_mode != DEFAULT)
-            dev->driver->pump.profile(dev, handle, &settings.pump_mode);
+        dev->driver->fan.custom(dev, handle, 0, &settings.fan1);
     }
-    else if (dev->driver == &corsairlink_driver_hid)
+    if (settings.pump_mode != DEFAULT)
     {
-        if (settings.pump_mode != DEFAULT) {
-            msg_info("Setting pump to mode: %i\n", settings.pump_mode);
-            rr = dev->driver->pump.profile(dev, handle, &settings.pump_mode);
-            pump_mode = 0;
-            pump_speed = 0;
-            pump_max_speed = 0;
-            rr = dev->driver->pump.profile(dev, handle, &pump_mode);
-            // sleep 3 seconds for pump to reach new value
-            sleep(3);
-            rr = dev->driver->pump.speed(dev, handle, &pump_speed, &pump_max_speed);
-            msg_info("Pump:\tMode 0x%02X\n", pump_mode);
-            msg_info("\tCurrent/Max Speed %i/%i RPM\n", pump_speed, pump_max_speed);
-        }
-        if (settings.fan > 0 && settings.fan < fan_count + 1) {
-
-            fan_mode = settings.fan_mode;
-            fan_data = settings.fan_data;
-            rr = dev->driver->fan.profile(dev, handle, settings.fan - 1, &fan_mode, &fan_data);
-        }
+        dev->driver->pump.profile(dev, handle, &settings.pump_mode);
     }
 
     rr = dev->driver->deinit(handle, dev->write_endpoint);

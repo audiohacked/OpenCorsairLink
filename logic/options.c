@@ -37,18 +37,19 @@ static struct option long_options[] = {
     {"print-temperature", no_argument,          0,  6},
     {"print-fan-speed",   no_argument,          0,  7},
 
-    {"led",               required_argument,    0,  8},
-    {"led-warn",          required_argument, NULL,  9},
-    {"led-temp",          required_argument, NULL,  10},
+    {"led-mode",          required_argument,    0,  8},
+    {"led-colors",        required_argument,    0,  9},
+    {"led-warn",          required_argument, NULL,  10},
+    {"led-temp",          required_argument, NULL,  11},
 
-    {"fan",               required_argument, NULL,  11},
-    {"fan-mode",          required_argument, NULL,  12},
-    {"fan-pwm",           required_argument, NULL,  13},
-    {"fan-rpm",           required_argument, NULL,  14},
-    {"fan-temps",         required_argument, NULL,  15},
-    {"fan-speeds",        required_argument, NULL,  16},
+    {"fan",               required_argument, NULL,  12},
+    {"fan-mode",          required_argument, NULL,  13},
+    {"fan-pwm",           required_argument, NULL,  14},
+    {"fan-rpm",           required_argument, NULL,  15},
+    {"fan-temps",         required_argument, NULL,  16},
+    {"fan-speeds",        required_argument, NULL,  17},
 
-    {"pump-mode",         required_argument, NULL,  17},
+    {"pump-mode",         required_argument, NULL,  18},
 
     {0, 0, 0, 0}
 };
@@ -73,7 +74,7 @@ int options_parse(int argc, char **argv,
     int cc, returnCode = 0;
 
     memset(settings, 0, sizeof(struct option_parse_return));
-    INIT_DEFAULT_LED(settings->led_color);
+    INIT_DEFAULT_LED(settings->led_color[0]);
     INIT_WARNING_LED(settings->warning_led);
     settings->warning_led_temp = 60;
     settings->pump_mode = DEFAULT;
@@ -93,11 +94,13 @@ int options_parse(int argc, char **argv,
         case 1: /* program version */
             msg_info("OpenCorsairLink Version: %s", VERSION);
             break;
-        case 3:
-            verbose++;
+
         case 2:
             verbose++;
+        case 3:
+            verbose++;
             break;
+
         case 4:
             sscanf(optarg, "%hhd", device_number);
             break;
@@ -109,32 +112,55 @@ int options_parse(int argc, char **argv,
         case 6:
             flags->read_temperature = 1;
             break;
+
         case 7:
             flags->read_fan_speed = 1;
             break;
 
-        case 8: /* led color */
-            sscanf(optarg, "%02hhX%02hhX%02hhX", &settings->led_color.red, &settings->led_color.green, &settings->led_color.blue);
+        case 8:
+            sscanf(optarg, "%2s", &settings->led_mode);
             break;
-        case 9: /* led warning color */
+
+        case 9: /* led color */
+        {
+            uint8_t ii = 0;
+            char* token = strtok(optarg, ",");
+            while( token != NULL )
+            {
+                msg_debug("Found Color %d: %s\n", ii, token);
+                sscanf(token, "%02hhX%02hhX%02hhX,", &settings->led_color[ii].red,
+                        &settings->led_color[ii].green, &settings->led_color[ii].blue);
+                ++ii;
+                token = strtok(NULL, ",");
+            }
+            break;
+        }
+
+        case 10: /* led warning color */
             sscanf(optarg, "%02hhX%02hhX%02hhX", &settings->warning_led.red, &settings->warning_led.green, &settings->warning_led.blue);
             break;
-        case 10: /* led warning temperature */
+
+        case 11: /* led warning temperature */
             sscanf(optarg, "%hhd", &settings->warning_led_temp);
             break;
-        case 11:
+
+        case 12:
             sscanf(optarg, "%hhd", &settings->fan);
             break;
-        case 12:
+
+        case 13:
             sscanf(optarg, "%hhd", &settings->fan_mode);
             break;
-        case 13:
-            sscanf(optarg, "%hhd", &settings->fan_data);
-            break;
+
         case 14:
-            sscanf(optarg, "%d", &settings->fan_data);
+            sscanf(optarg, "%hu", &settings->fan_data);
             break;
+
         case 15:
+            sscanf(optarg, "%hu", &settings->fan_data);
+            break;
+
+        case 16:
             sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd,%hhd",
                 &settings->fan1.t1,
                 &settings->fan1.t2,
@@ -143,7 +169,8 @@ int options_parse(int argc, char **argv,
                 &settings->fan1.t5,
                 &settings->fan1.t6);
             break;
-        case 16:
+
+        case 17:
             sscanf(optarg, "%hhd,%hhd,%hhd,%hhd,%hhd,%hhd",
                 &settings->fan1.s1,
                 &settings->fan1.s2,
@@ -152,7 +179,8 @@ int options_parse(int argc, char **argv,
                 &settings->fan1.s5,
                 &settings->fan1.s6);
             break;
-        case 17:
+
+        case 18:
             sscanf(optarg, "%hhu", &settings->pump_mode);
             break;
 
@@ -176,7 +204,15 @@ void options_print() {
     msg_info("\t--device <Device Number>\t:Select device.\n");
 
     msg_info("\n\tLED:\n");
-    msg_info("\t--led <HTML Color Code>\t\t\t:Define Color for LED.\n");
+    msg_info("\t--led-mode");
+    msg_info("\t\tModes:\n");
+    msg_info("\t\t 0 - Static\n");
+    msg_info("\t\t 1 - Blink (Only Commander Pro and Asetek Pro)\n");
+    msg_info("\t\t 2 - Color Pulse (Only Commander Pro and Asetek Pro)\n");
+    msg_info("\t\t 3 - Color Shift (Only Commander Pro and Asetek Pro)\n");
+    msg_info("\t\t 4 - Rainbow (Only Commander Pro and Asetek Pro)\n");
+    msg_info("\t\t 5 - Temperature (Only Commander Pro and Asetek Pro)\n");
+    msg_info("\t--led-colors <HTML Color Code>\t\t\t:Define Color for LED.\n");
     msg_info("\t--led-warn <HTML Color Code>\t\t:Define Color for Warning Temp.\n");
     msg_info("\t--led-temp <Temperature in Celsius>\t:Define Warning Temperature.\n");
 

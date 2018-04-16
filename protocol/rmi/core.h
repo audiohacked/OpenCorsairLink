@@ -33,14 +33,14 @@ int corsairlink_rmi_firmware_id(struct corsair_device_info *dev, struct libusb_d
 int corsairlink_rmi_channel_id(struct corsair_device_info *dev);
 int corsairlink_rmi_product_id(struct corsair_device_info *dev);
 
-int corsairlink_rmi_output_select(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t output_select);
+int corsairlink_rmi_sensor_select(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            uint8_t sensor_select);
 int corsairlink_rmi_output_volts(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t output_select, char *volts, uint8_t volts_str_len);
+            uint8_t sensor_select, char *volts, uint8_t volts_str_len);
 int corsairlink_rmi_output_amps(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t output_select, char *amps, uint8_t amps_str_len);
+            uint8_t sensor_select, char *amps, uint8_t amps_str_len);
 int corsairlink_rmi_output_watts(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t output_select, char *watts, uint8_t watts_str_len);
+            uint8_t sensor_select, char *watts, uint8_t watts_str_len);
 
 int corsairlink_rmi_power_total_wattage(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             char *watts, uint8_t watts_str_len);
@@ -48,7 +48,7 @@ int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev, struct
             char *volts, uint8_t volts_str_len);
 
 int corsairlink_rmi_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t select, char *temp, uint8_t temp_str_len);
+            uint8_t sensor_select, char *temp, uint8_t temp_str_len);
 
 int corsairlink_rmi_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint16_t *mode);

@@ -32,8 +32,8 @@
 #include "../../print.h"
 #include "core.h"
 
-int corsairlink_rmi_output_select(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t output_select)
+int corsairlink_rmi_sensor_select(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+            uint8_t sensor_select)
 {
     int rr;
     uint8_t response[64];
@@ -45,7 +45,7 @@ int corsairlink_rmi_output_select(struct corsair_device_info *dev, struct libusb
 
     commands[0] = 0x02; // Length
     commands[1] = 0x00; // Command Opcode: Output X Select
-    commands[2] = output_select; // Command data...
+    commands[2] = sensor_select; // Command data...
 
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
@@ -54,7 +54,7 @@ int corsairlink_rmi_output_select(struct corsair_device_info *dev, struct libusb
 }
 
 int corsairlink_rmi_output_volts(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t output_select, char *volts, uint8_t volts_str_len)
+            uint8_t sensor_select, char *volts, uint8_t volts_str_len)
 {
     int rr;
     uint8_t response[64];
@@ -82,7 +82,7 @@ int corsairlink_rmi_output_volts(struct corsair_device_info *dev, struct libusb_
 }
 
 int corsairlink_rmi_output_amps(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t output_select, char *amps, uint8_t amps_str_len)
+            uint8_t sensor_select, char *amps, uint8_t amps_str_len)
 {
     int rr;
     uint8_t response[64];
@@ -112,7 +112,7 @@ int corsairlink_rmi_output_amps(struct corsair_device_info *dev, struct libusb_d
 }
 
 int corsairlink_rmi_output_watts(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t output_select, char *watts, uint8_t watts_str_len)
+            uint8_t sensor_select, char *watts, uint8_t watts_str_len)
 {
     int rr;
     uint8_t response[64];
