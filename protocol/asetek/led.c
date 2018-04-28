@@ -40,21 +40,21 @@ int corsairlink_asetek_change_led(struct corsair_device_info *dev, struct libusb
     commands[1] = color_led->red;
     commands[2] = color_led->green;
     commands[3] = color_led->blue;
-    commands[4] = 0x00;
-    commands[5] = 0xff;
-    commands[6] = 0xff;
+    commands[4] = 0x00; //color_fade->red;
+    commands[5] = 0xff; //color_fade->green;
+    commands[6] = 0xff; //color_fade->blue;
     commands[7] = warning_led->red;
     commands[8] = warning_led->green;
     commands[9] = warning_led->blue;
     commands[10] = Warning_Temp; // 0x37 = ??, 0x2d = ??
-    commands[11] = 0x0a;
-    commands[12] = 0x05;
-    commands[13] = 0x01;
-    commands[14] = 0x00;
-    commands[15] = 0x00;
+    commands[11] = 0x0a; //FadeThobInterval
+    commands[12] = 0x05; //ThrobSequence
+    commands[13] = 0x01; //LED Enable
+    commands[14] = 0x00; //Fade Enable
+    commands[15] = 0x00; //Throb Enable
     commands[16] = Warning_Enable;
-    commands[17] = 0x00;
-    commands[18] = 0x01;
+    commands[17] = 0x00; //BootMode
+    commands[18] = 0x01; //FanType
 
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 19);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
