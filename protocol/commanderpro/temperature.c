@@ -34,7 +34,7 @@ int corsairlink_commanderpro_tempsensorscount(struct corsair_device_info *dev,
     int rr = 0;
 
     uint8_t response[16];
-    uint8_t commands[16] ;
+    uint8_t commands[64] ;
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 
@@ -64,7 +64,7 @@ int corsairlink_commanderpro_temperature(struct corsair_device_info *dev,
 {
     int rr;
     uint8_t response[16];
-    uint8_t commands[16] ;
+    uint8_t commands[64] ;
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 

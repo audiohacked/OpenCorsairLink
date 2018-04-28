@@ -98,8 +98,8 @@ int corsairlink_commanderpro_get_fan_speed_pwm(struct corsair_device_info *dev,
             uint8_t *pwm)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -120,8 +120,8 @@ int corsairlink_commanderpro_get_fan_detect_type(struct corsair_device_info *dev
             uint8_t *device_id)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 

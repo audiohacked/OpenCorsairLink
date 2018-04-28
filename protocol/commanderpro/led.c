@@ -22,7 +22,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "lowlevel/asetek4.h"
+#include "lowlevel/commanderpro.h"
 #include "device.h"
 #include "driver.h"
 
@@ -30,8 +30,8 @@ int corsairlink_commanderpro_get_led_setup_mask(struct corsair_device_info *dev,
 			struct libusb_device_handle *handle, uint8_t port)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -48,8 +48,8 @@ int corsairlink_commanderpro_set_led_rgb_colour(struct corsair_device_info *dev,
 			struct libusb_device_handle *handle, uint8_t port, struct color *color_led)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -66,8 +66,8 @@ int corsairlink_commanderpro_set_led_rgb_values(struct corsair_device_info *dev,
 			struct libusb_device_handle *handle, uint8_t port, struct color *color_led)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -83,8 +83,8 @@ int corsairlink_commanderpro_set_commit(struct corsair_device_info *dev,
 			struct libusb_device_handle *handle, uint8_t port, struct color *color_led)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -101,8 +101,8 @@ int corsairlink_commanderpro_set_begin(struct corsair_device_info *dev,
 			struct libusb_device_handle *handle, uint8_t port, struct color *color_led)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -120,8 +120,8 @@ int corsairlink_commanderpro_set_led_config(struct corsair_device_info *dev,
 			uint8_t strip_led_count, uint8_t mode)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -141,8 +141,8 @@ int corsairlink_commanderpro_set_led_temperature(struct corsair_device_info *dev
 			struct libusb_device_handle *handle, uint8_t port, struct color *color_led)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -162,8 +162,8 @@ int corsairlink_commanderpro_set_led_group_reset(struct corsair_device_info *dev
 			struct libusb_device_handle *handle, uint8_t port, struct color *color_led)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -180,8 +180,8 @@ int corsairlink_commanderpro_set_port_state(struct corsair_device_info *dev,
 			struct libusb_device_handle *handle, uint8_t port, struct color *color_led)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -199,8 +199,8 @@ int corsairlink_commanderpro_set_port_brightness(struct corsair_device_info *dev
 			struct libusb_device_handle *handle, uint8_t port, struct color *color_led)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -216,8 +216,8 @@ int corsairlink_commanderpro_set_port_led_count(struct corsair_device_info *dev,
 			struct libusb_device_handle *handle, uint8_t port, struct color *color_led)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
@@ -233,8 +233,8 @@ int corsairlink_commanderpro_set_port_protocol(struct corsair_device_info *dev,
 			struct libusb_device_handle *handle, uint8_t port, struct color *color_led)
 {
 	int rr;
-	uint8_t response[32];
-	uint8_t commands[32] ;
+	uint8_t response[16];
+	uint8_t commands[64] ;
 	memset(response, 0, sizeof(response));
 	memset(commands, 0, sizeof(commands));
 
