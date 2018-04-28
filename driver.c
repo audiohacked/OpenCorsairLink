@@ -75,12 +75,12 @@ struct corsair_device_driver corsairlink_driver_asetek = {
     .temperature = corsairlink_asetek_temperature,
     .tempsensorscount = corsairlink_asetek_tempsensorscount,
     .led = {
-        .static_color = corsairlink_asetek_change_led,
+        .static_color = corsairlink_asetek_led_static_color,
         .blink = NULL,
         .color_pulse = NULL,
         .color_shift = NULL,
         .rainbow = NULL,
-        .temperature = NULL,
+        .temperature = corsairlink_asetek_led_temperature,
     },
     .fan = {
         .count = corsairlink_asetek_fan_count,

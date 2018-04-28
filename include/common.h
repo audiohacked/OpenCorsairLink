@@ -41,6 +41,15 @@ struct led_temperatures {
     uint8_t temp3;
 };
 
+enum led_modes {
+    STATIC = 0,
+    BLINK = 1,
+    PULSE = 2,
+    SHIFT = 3,
+    RAINBOW = 4,
+    TEMPERATURE = 5,
+};
+
 struct fan_table {
     /** temperatures */
     int8_t t1;

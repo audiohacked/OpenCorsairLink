@@ -68,12 +68,14 @@ int corsairlink_asetek_firmware_id(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
             char *firmware, uint8_t firmware_size);
 
-int corsairlink_asetek_change_led(struct corsair_device_info *dev,
+int corsairlink_asetek_led_static_color(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
-            struct color *color_led,
-            struct color *warning_led,
-            uint8_t Warning_Temp,
-            uint8_t Warning_Enable);
+            struct color *color_led);
+
+int corsairlink_asetek_led_temperature(struct corsair_device_info *dev,
+            struct libusb_device_handle *handle,
+            struct led_temperatures *led_temps, struct color *temp1_led,
+            struct color *temp2_led, struct color *temp3_led);
 
 int corsairlink_asetek_pump_mode(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,

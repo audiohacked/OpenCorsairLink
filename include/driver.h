@@ -39,7 +39,7 @@ struct corsair_device_driver {
     int (*tempsensorscount)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *temperature_sensors_count);
 
     struct led_functions {
-        int (*static_color)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct color *l, struct color *w, uint8_t t, uint8_t e);
+        int (*static_color)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct color *led);
         int (*blink)       (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count, struct color *led1, struct color *led2, struct color *led3, struct color *led4, struct color *led5, struct color *led6, struct color *led7);
         int (*color_pulse) (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count, struct color *led1, struct color *led2, struct color *led3, struct color *led4, struct color *led5, struct color *led6, struct color *led7);
         int (*color_shift) (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count, struct color *led1, struct color *led2, struct color *led3, struct color *led4, struct color *led5, struct color *led6, struct color *led7);

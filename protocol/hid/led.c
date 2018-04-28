@@ -28,8 +28,9 @@
 #include "driver.h"
 #include "protocol/hid/core.h"
 
-int corsairlink_hid_change_led(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            struct color *color_led, struct color *warning_led, uint8_t Warning_Temp, uint8_t Warning_Enable)
+int corsairlink_hid_change_led(struct corsair_device_info *dev,
+            struct libusb_device_handle *handle,
+            struct color *color_led)
 {
     int rr;
     uint8_t response[64];

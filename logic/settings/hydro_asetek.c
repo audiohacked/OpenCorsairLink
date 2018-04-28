@@ -102,13 +102,23 @@ int hydro_asetek_settings(struct corsair_device_scan scanned_device,
     msg_info("\tCurrent/Max Speed %i/%i RPM\n", pump_speed, pump_max_speed);
     msg_machine("pump:%d:%i:%i\n", pump_mode, pump_speed, pump_max_speed);
 
+
     if (flags.set_led == 1)
     {
-        rr = dev->driver->led.static_color(dev, handle,
-                &settings.led_color[0],
-                &settings.warning_led,
-                settings.warning_led_temp,
-                (settings.warning_led_temp > -1));
+        switch(settings.led_mode)
+        {
+        case TEMPERATURE:
+            rr = dev->driver->led.temperature(dev, handle,
+                        &settings.led_temperatures,
+                        &settings.led_color[0],
+                        &settings.led_color[1],
+                        &settings.led_color[2]); // Warning LED Color
+            break;
+        case STATIC:
+        default:
+            rr = dev->driver->led.static_color(dev, handle, &settings.led_color[0]);
+            break;
+        }
     }
 
     if (flags.set_fan == 1)

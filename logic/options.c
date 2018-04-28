@@ -75,9 +75,14 @@ int options_parse(int argc, char **argv,
     int opt, returnCode = 0, option_index = 0;
 
     memset(settings, 0, sizeof(struct option_parse_return));
+
     INIT_DEFAULT_LED(settings->led_color[0]);
-    INIT_WARNING_LED(settings->warning_led);
-    settings->warning_led_temp = 60;
+    INIT_WARNING_LED(settings->led_color[2]);
+
+    settings->led_temperatures.temp1 = 35;
+    settings->led_temperatures.temp2 = 45;
+    settings->led_temperatures.temp3 = 55;
+
     settings->pump_mode = DEFAULT;
 
     while ((opt = getopt_long(argc, argv, "", long_options, &option_index)) != EOF) {
@@ -135,6 +140,7 @@ int options_parse(int argc, char **argv,
             char* token = strtok(optarg, ",");
             while( token != NULL )
             {
+                if (ii == 7) break;
                 msg_debug("Found Color %d: %s\n", ii, token);
                 sscanf(token, "%02hhX%02hhX%02hhX,", &settings->led_color[ii].red,
                         &settings->led_color[ii].green, &settings->led_color[ii].blue);
@@ -145,12 +151,25 @@ int options_parse(int argc, char **argv,
         }
 
         case 10: /* led warning color */
-            sscanf(optarg, "%02hhX%02hhX%02hhX", &settings->warning_led.red, &settings->warning_led.green, &settings->warning_led.blue);
+            sscanf(optarg, "%02hhX%02hhX%02hhX", &settings->led_color[2].red, &settings->led_color[2].green, &settings->led_color[2].blue);
             break;
 
-        case 11: /* led warning temperature */
-            sscanf(optarg, "%hhd", &settings->warning_led_temp);
+        case 11: /* led warning temperatures */
+        {
+            uint8_t ii = 0;
+            char* token = strtok(optarg, ",");
+            while( token != NULL )
+            {
+                if (ii == 3) break;
+                msg_debug("Found Color %d: %s\n", ii, token);
+                if (ii==0) sscanf(token, "%hhd", &settings->led_temperatures.temp1);
+                if (ii==1) sscanf(token, "%hhd", &settings->led_temperatures.temp2);
+                if (ii==2) sscanf(token, "%hhd", &settings->led_temperatures.temp3);
+                ++ii;
+                token = strtok(NULL, ",");
+            }
             break;
+        }
 
         case 12:
             sscanf(optarg, "%hhd", &settings->fan);
@@ -220,7 +239,7 @@ void options_print() {
     msg_info("\t\t 2 - Color Pulse (Only Commander Pro and Asetek Pro)\n");
     msg_info("\t\t 3 - Color Shift (Only Commander Pro and Asetek Pro)\n");
     msg_info("\t\t 4 - Rainbow (Only Commander Pro and Asetek Pro)\n");
-    msg_info("\t\t 5 - Temperature (Only Commander Pro and Asetek Pro)\n");
+    msg_info("\t\t 5 - Temperature (Only Commander Pro, Asetek, and Asetek Pro)\n");
     msg_info("\t--led-colors <HTML Color Code>\t\t\t:Define Color for LED.\n");
     msg_info("\t--led-warn <HTML Color Code>\t\t:Define Color for Warning Temp.\n");
     msg_info("\t--led-temp <Temperature in Celsius>\t:Define Warning Temperature.\n");

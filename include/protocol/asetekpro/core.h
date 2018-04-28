@@ -38,8 +38,7 @@ int corsairlink_asetekpro_fan_speed(struct corsair_device_info *dev,
 
 /* led */
 int corsairlink_asetekpro_led_static_color(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle, struct color *color_led,
-            struct color *warning_led, uint8_t Warning_Temp, uint8_t Warning_Enable);
+            struct libusb_device_handle *handle, struct color *color_led);
 
 int corsairlink_asetekpro_led_blink(struct corsair_device_info *dev,
             struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count,

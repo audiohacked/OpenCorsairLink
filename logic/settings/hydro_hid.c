@@ -101,11 +101,16 @@ int hydro_hid_settings(struct corsair_device_scan scanned_device,
     msg_info("Pump:\tMode 0x%02X\n", pump_mode);
     msg_info("\tCurrent/Max Speed %i/%i RPM\n", pump_speed, pump_max_speed);
 
-    rr = dev->driver->led.static_color(dev, handle,
-                &settings.led_color[0],
-                &settings.warning_led,
-                settings.warning_led_temp,
-                (settings.warning_led_temp > -1));
+    if (flags.set_led == 1)
+    {
+        switch(settings.led_mode)
+        {
+        case STATIC:
+        default:
+            rr = dev->driver->led.static_color(dev, handle, &settings.led_color[0]);
+            break;
+        }
+    }
 
     if (settings.pump_mode != DEFAULT)
     {

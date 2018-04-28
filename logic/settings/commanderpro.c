@@ -79,6 +79,65 @@ int commanderpro_settings(struct corsair_device_scan scanned_device,
         msg_info("%5.2f V\n", output_volts);
     }
 
+    if (flags.set_led == 1)
+    {
+        switch(settings.led_mode)
+        {
+        case BLINK:
+            rr = dev->driver->led.blink(dev, handle,
+                        settings.led_change_speed,
+                        settings.led_count,
+                        &settings.led_color[0],
+                        &settings.led_color[1],
+                        &settings.led_color[2],
+                        &settings.led_color[3],
+                        &settings.led_color[4],
+                        &settings.led_color[5],
+                        &settings.led_color[6]);
+            break;
+        case PULSE:
+            rr = dev->driver->led.color_pulse(dev, handle,
+                        settings.led_change_speed,
+                        settings.led_count,
+                        &settings.led_color[0],
+                        &settings.led_color[1],
+                        &settings.led_color[2],
+                        &settings.led_color[3],
+                        &settings.led_color[4],
+                        &settings.led_color[5],
+                        &settings.led_color[6]);
+            break;
+        case SHIFT:
+            rr = dev->driver->led.color_shift(dev, handle,
+                        settings.led_change_speed,
+                        settings.led_count,
+                        &settings.led_color[0],
+                        &settings.led_color[1],
+                        &settings.led_color[2],
+                        &settings.led_color[3],
+                        &settings.led_color[4],
+                        &settings.led_color[5],
+                        &settings.led_color[6]);
+            break;
+        case RAINBOW:
+            rr = dev->driver->led.rainbow(dev, handle,
+                        settings.led_change_speed);
+            break;
+        case TEMPERATURE:
+            rr = dev->driver->led.temperature(dev, handle,
+                        &settings.led_temperatures,
+                        &settings.led_color[0], // Good LED Color
+                        &settings.led_color[1], // Caution LED Color
+                        &settings.led_color[2]); // Warning LED Color
+            
+            break;
+        case STATIC:
+        default:
+            rr = dev->driver->led.static_color(dev, handle, &settings.led_color[0]);
+            break;
+        }
+    }
+
     rr = dev->driver->deinit(handle, dev->write_endpoint);
 
     return 0;
