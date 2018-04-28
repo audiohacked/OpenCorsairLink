@@ -26,10 +26,10 @@
 #include <string.h>
 #include <libusb.h>
 
-#include "../../lowlevel/rmi.h"
-#include "../../device.h"
-#include "../../driver.h"
-#include "core.h"
+#include "lowlevel/rmi.h"
+#include "device.h"
+#include "driver.h"
+#include "protocol/rmi/core.h"
 
 int corsairlink_rmi_time_powered(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint32_t *powered)

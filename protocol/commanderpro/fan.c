@@ -22,11 +22,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "../../lowlevel/commanderpro.h"
-#include "../../device.h"
-#include "../../driver.h"
-#include "../../print.h"
-#include "core.h"
+#include "lowlevel/commanderpro.h"
+#include "device.h"
+#include "driver.h"
+#include "print.h"
+#include "protocol/commanderpro/core.h"
 
 int corsairlink_commanderpro_get_fan_setup_mask(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,

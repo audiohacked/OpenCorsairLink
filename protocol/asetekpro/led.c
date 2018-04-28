@@ -22,11 +22,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "../../lowlevel/asetek.h"
-#include "../../device.h"
-#include "../../driver.h"
-#include "../../print.h"
-#include "core.h"
+#include "lowlevel/asetek.h"
+#include "device.h"
+#include "driver.h"
+#include "print.h"
+#include "protocol/asetekpro/core.h"
 
 int corsairlink_asetekpro_led_static_color(struct corsair_device_info *dev,
             struct libusb_device_handle *handle, struct color *color_led,

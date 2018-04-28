@@ -22,11 +22,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "../../device.h"
-#include "../../driver.h"
-#include "../options.h"
-#include "../scan.h"
-#include "../../print.h"
+#include "device.h"
+#include "driver.h"
+#include "logic/options.h"
+#include "logic/scan.h"
+#include "print.h"
 
 int hydro_asetek_settings(struct corsair_device_scan scanned_device,
             struct option_flags flags,

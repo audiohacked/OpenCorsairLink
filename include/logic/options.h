@@ -20,7 +20,7 @@
 #define _OPTIONS_H
 
 #include <stdint.h>
-#include "../common.h"
+#include "common.h"
 
 struct option_flags {
     // flags

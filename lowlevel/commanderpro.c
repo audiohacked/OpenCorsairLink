@@ -18,7 +18,7 @@
 
 #include <stdio.h>
 #include <libusb.h>
-#include "../lowlevel/commanderpro.h"
+#include "lowlevel/commanderpro.h"
 
 #define HID_SET_REPORT 0x09 /*!< HID_SET_REPORT */
 #define HID_GET_REPORT 0x01 /*!< HID_GET_REPORT */

@@ -22,11 +22,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "../../lowlevel/hid.h"
-#include "../../device.h"
-#include "../../driver.h"
-#include "../../print.h"
-#include "core.h"
+#include "lowlevel/hid.h"
+#include "device.h"
+#include "driver.h"
+#include "print.h"
+#include "protocol/hid/core.h"
 
 int corsairlink_hid_fan_count(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t *fan_count)

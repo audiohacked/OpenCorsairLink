@@ -22,11 +22,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "../../device.h"
-#include "../../driver.h"
-#include "../../print.h"
-#include "../scan.h"
-#include "../options.h"
+#include "device.h"
+#include "driver.h"
+#include "print.h"
+#include "logic/scan.h"
+#include "logic/options.h"
 
 int commanderpro_settings(struct corsair_device_scan scanned_device,
             struct option_flags flags,

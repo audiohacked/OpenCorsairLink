@@ -22,10 +22,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "../../lowlevel/commanderpro.h"
-#include "../../device.h"
-#include "../../driver.h"
-#include "../../print.h"
+#include "lowlevel/commanderpro.h"
+#include "device.h"
+#include "driver.h"
+#include "print.h"
 
 int corsairlink_commanderpro_tempsensorscount(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,

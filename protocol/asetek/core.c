@@ -25,9 +25,9 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "../../lowlevel/asetek.h"
-#include "../../device.h"
-#include "../../driver.h"
+#include "lowlevel/asetek.h"
+#include "device.h"
+#include "driver.h"
 
 /*! RMi Power Supply Device ID
  *  RMi Power Supply Device ID is empty

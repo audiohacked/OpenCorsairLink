@@ -21,7 +21,7 @@
  */
 #include <stdio.h>
 #include <libusb.h>
-#include "../lowlevel/hid.h"
+#include "lowlevel/hid.h"
 
 #define HID_SET_REPORT 0x09
 #define HID_GET_REPORT 0x01

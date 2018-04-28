@@ -22,9 +22,9 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "../../lowlevel/asetek.h"
-#include "../../device.h"
-#include "../../driver.h"
+#include "lowlevel/asetek.h"
+#include "device.h"
+#include "driver.h"
 
 
 int corsairlink_asetek_change_led(struct corsair_device_info *dev, struct libusb_device_handle *handle,

@@ -22,8 +22,8 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <string.h>
-#include "options.h"
-#include "../print.h"
+#include "logic/options.h"
+#include "print.h"
 
 static struct option long_options[] = {
     {"help",              no_argument,          0,  0},

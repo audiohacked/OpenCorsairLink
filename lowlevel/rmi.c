@@ -21,7 +21,7 @@
  */
 #include <stdio.h>
 #include <libusb.h>
-#include "../lowlevel/rmi.h"
+#include "lowlevel/rmi.h"
 
 #define TIMEOUT_DEFAULT 5000
 #define INTERRUPT_IN_ENDPOINT 0x81
