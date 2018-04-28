@@ -78,7 +78,7 @@ int corsairlink_asetek_fan_speed(struct corsair_device_info *dev, struct libusb_
 int corsairlink_asetek_fan_print_mode(uint8_t mode, uint16_t data,  char *modestr, uint8_t modestr_size);
 
 int corsairlink_asetek_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t selector, char *temperature, uint8_t temp_str_len);
+            uint8_t selector, double *temperature);
 int corsairlink_asetek_tempsensorscount(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t *temperature_sensors_count);
 

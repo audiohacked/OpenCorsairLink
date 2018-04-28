@@ -39,7 +39,7 @@ int corsairlink_asetekpro_tempsensorscount(struct corsair_device_info *dev,
 
 int corsairlink_asetekpro_temperature(struct corsair_device_info *dev,
             struct libusb_device_handle *handle, uint8_t selector,
-            char *temperature, uint8_t temperature_str_len)
+            double *temperature)
 {
     int rr;
     uint8_t response[32];
@@ -60,9 +60,8 @@ int corsairlink_asetekpro_temperature(struct corsair_device_info *dev,
         msg_debug("Bad Response\n");
     }
 
-    // *(temperature) = (response[3]<<8) + response[4];
-    snprintf(temperature, temperature_str_len, "%d.%d C",
-                response[3], response[4]);
+     *(temperature) = (double)response[3] + ((double)response[4]/100);
+    // snprintf(temperature, temperature_str_len, "%d.%d C", response[3], response[4]);
 
     return rr;
 }

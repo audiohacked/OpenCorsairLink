@@ -110,7 +110,6 @@ int corsairlink_commanderpro_tempsensorscount(struct corsair_device_info *dev,
 int corsairlink_commanderpro_temperature(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
             uint8_t sensor_index,
-            char *temperature,
-            uint8_t temperature_str_len);
+            double *temperature);
 
 #endif // _PROTOCOL_PRO_H

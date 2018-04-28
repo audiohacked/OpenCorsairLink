@@ -79,5 +79,5 @@ int corsairlink_asetekpro_tempsensorscount(struct corsair_device_info *dev,
 
 int corsairlink_asetekpro_temperature(struct corsair_device_info *dev,
             struct libusb_device_handle *handle, uint8_t selector,
-            char *temperature, uint8_t temperature_str_len);
+            double *temperature);
 #endif

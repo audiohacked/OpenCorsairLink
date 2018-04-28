@@ -209,6 +209,7 @@ void options_print() {
     msg_info("\t--version\t\t\t:Displays version.\n");
     msg_info("\t--debug\t\t\t\t:Displays enhanced Debug Messages.\n");
     msg_info("\t--dump\t\t\t\t:Implies --debug. Dump the raw data recieved from the device.\n");
+    msg_info("\t--machine\t\t\t:Prints statuses in Machine Readable Format.\n");
     msg_info("\t--device <Device Number>\t:Select device.\n");
 
     msg_info("\n\tLED:\n");

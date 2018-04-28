@@ -60,9 +60,10 @@ int commanderpro_settings(struct corsair_device_scan scanned_device,
 
     /* fetch temperatures */
     for (ii=0; ii<4; ii++) {
-        char temperature[16];
-        rr = dev->driver->temperature(dev, handle, ii, temperature, sizeof(temperature));
-        msg_info("Temperature %d: %s\n", ii, temperature);
+        // char temperature[16];
+        double temperature;
+        rr = dev->driver->temperature(dev, handle, ii, &temperature);
+        msg_info("Temperature %d: %5.2f C\n", ii, temperature);
     }
 
     /* fetch SATA voltages */

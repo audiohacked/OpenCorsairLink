@@ -35,7 +35,7 @@ struct corsair_device_driver {
     int (*device_id) (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *device_id);
     int (*fw_version)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *name, uint8_t name_size);
 
-    int (*temperature)     (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t sensor_select, char *temp, uint8_t str_len);
+    int (*temperature)     (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t sensor_select, double *temp);
     int (*tempsensorscount)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *temperature_sensors_count);
 
     struct led_functions {

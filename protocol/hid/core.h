@@ -104,7 +104,7 @@ int corsairlink_hid_change_led(struct corsair_device_info *dev, struct libusb_de
             struct color *color_led, struct color *warning_led, uint8_t Warning_Temp, uint8_t Warning_Enable);
 
 int corsairlink_hid_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t selector, char *temperature, uint8_t temperature_str_len);
+            uint8_t selector, double *temperature);
 int corsairlink_hid_tempsensorscount(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t *temperature_sensors_count);
 

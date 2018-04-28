@@ -73,9 +73,10 @@ int hydro_hid_settings(struct corsair_device_scan scanned_device,
 
     for (ii=0; ii<temperature_sensors_count; ii++)
     {
-        char temperature[10];
-        rr = dev->driver->temperature(dev, handle, ii, temperature, sizeof(temperature));
-        msg_info("Temperature %d: %s\n", ii, temperature);
+        // char temperature[10];
+        double temperature;
+        rr = dev->driver->temperature(dev, handle, ii, &temperature);
+        msg_info("Temperature %d: %5.2f C\n", ii, temperature);
     }
 
     /* get number of fans */

@@ -37,7 +37,7 @@ int corsairlink_asetek_tempsensorscount(struct corsair_device_info *dev, struct 
 }
 
 int corsairlink_asetek_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t selector, char *temperature, uint8_t temperature_str_len)
+            uint8_t selector, double *temperature)
 {
     int rr;
     uint8_t response[32];
@@ -53,8 +53,8 @@ int corsairlink_asetek_temperature(struct corsair_device_info *dev, struct libus
     msg_debug("%02X %02X\n", response[10], response[14]);
 
     //*(temperature) = (response[10]<<8) + response[14];
-    double celsius = (double)response[10] + ((double)response[14]/10);
-    snprintf(temperature, temperature_str_len, "%5.2f C", celsius);
+    *(temperature) = (double)response[10] + ((double)response[14]/10);
+    // snprintf(temperature, temperature_str_len, "%5.2f C", celsius);
 
     return rr;
 }

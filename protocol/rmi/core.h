@@ -48,7 +48,7 @@ int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev, struct
             char *volts, uint8_t volts_str_len);
 
 int corsairlink_rmi_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t sensor_select, char *temp, uint8_t temp_str_len);
+            uint8_t sensor_select, double *temp);
 
 int corsairlink_rmi_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint16_t *mode);
