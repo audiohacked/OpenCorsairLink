@@ -60,27 +60,9 @@ int corsairlink_asetek_pump_speed(struct corsair_device_info *dev,
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 
-    commands[0] = 0x10;
-    commands[1] = 0x00; //RR
-    commands[2] = 0xff; //GG
-    commands[3] = 0xff; //BB
-    commands[4] = 0x00;
-    commands[5] = 0xff;
-    commands[6] = 0xff;
-    commands[7] = 0xff; //RR
-    commands[8] = 0x00; //GG
-    commands[9] = 0x00; //BB
-    commands[10] = 0x41; // 0x37 = ??, 0x2d = ??
-    commands[11] = 0x0a;
-    commands[12] = 0x05;
-    commands[13] = 0x01;
-    commands[14] = 0x00;
-    commands[15] = 0x00;
-    commands[16] = 0x01;
-    commands[17] = 0x00;
-    commands[18] = 0x01;
+    commands[0] = 0x20;
 
-    rr = dev->driver->write(handle, dev->write_endpoint, commands, 19);
+    rr = dev->driver->write(handle, dev->write_endpoint, commands, 32);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
     msg_debug("%02X %02X\n", response[8], response[9]);
