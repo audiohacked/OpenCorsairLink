@@ -23,13 +23,7 @@
 #include <libusb.h>
 #include "lowlevel/asetek.h"
 
-#define HID_SET_REPORT 0x09 /*!< HID_SET_REPORT */
-#define HID_GET_REPORT 0x01 /*!< HID_GET_REPORT */
-#define HID_REPORT_TYPE_INPUT 0x01 /*!< HID_REPORT_TYPE_INPUT */
-#define HID_REPORT_TYPE_OUTPUT 0x02 /*!< HID_REPORT_TYPE_OUTPUT */
-#define HID_REPORT_TYPE_FEATURE 0x03 /*!< HID_REPORT_TYPE_FEATURE */
 #define TIMEOUT_DEFAULT 1000 /*!< TIMEOUT_DEFAULT */
-#define INTERFACE_NUMBER 0 /*!< INTERFACE_NUMBER */
 
 /*! Asetek Init routine.
  *  Asetek init routine uses two control transfers.
