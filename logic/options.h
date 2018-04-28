@@ -25,6 +25,10 @@
 struct option_flags {
     // flags
     //unsigned int debug_messages:1;
+    unsigned int set_led:1;
+    unsigned int set_temperature:1;
+    unsigned int set_fan:1;
+    unsigned int set_pump:1;
     unsigned int device_firmware:1;
     unsigned int read_temperature:1;
     unsigned int read_fan_speed:1;

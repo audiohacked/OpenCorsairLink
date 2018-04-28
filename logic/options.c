@@ -30,6 +30,7 @@ static struct option long_options[] = {
     {"version",           no_argument,          0,  1},
     {"debug",             no_argument,          0,  2},
     {"dump",              no_argument,          0,  3},
+    {"machine",           no_argument,          0,  19},
 
     {"device",            required_argument,    0,  4},
     {"firmware",          no_argument,          0,  5},
@@ -71,7 +72,7 @@ int options_parse(int argc, char **argv,
     int8_t *device_number,
     struct option_parse_return *settings)
 {
-    int cc, returnCode = 0;
+    int opt, returnCode = 0, option_index = 0;
 
     memset(settings, 0, sizeof(struct option_parse_return));
     INIT_DEFAULT_LED(settings->led_color[0]);
@@ -79,18 +80,19 @@ int options_parse(int argc, char **argv,
     settings->warning_led_temp = 60;
     settings->pump_mode = DEFAULT;
 
-    while (1) {
+    while ((opt = getopt_long(argc, argv, "", long_options, &option_index)) != EOF) {
         int option_index = 0;
 
-        cc = getopt_long (argc, argv, "", long_options, &option_index);
+        //cc = getopt_long (argc, argv, "", long_options, &option_index);
 
-        if (cc == -1 || returnCode != 0)
-            break;
+        //if (cc == -1 || returnCode != 0)
+        //    break;
 
-        switch (cc) {
+        switch (opt) {
         case 0:
             options_print();
             break;
+
         case 1: /* program version */
             msg_info("OpenCorsairLink Version: %s", VERSION);
             break;
@@ -99,6 +101,11 @@ int options_parse(int argc, char **argv,
             verbose++;
         case 3:
             verbose++;
+            break;
+
+        case 19:
+            verbose = MSG_MACHINE;
+            //machine = MSG_MACHINE;
             break;
 
         case 4:
@@ -118,6 +125,7 @@ int options_parse(int argc, char **argv,
             break;
 
         case 8:
+            flags->set_led = 1;
             sscanf(optarg, "%2s", &settings->led_mode);
             break;
 
@@ -237,3 +245,4 @@ void options_print() {
 
     msg_info("\n Without options, OpenCorsairLink will show the status of any detected Corsair Link device.\n");
 }
+

@@ -25,10 +25,12 @@
 #include "../../device.h"
 #include "../../driver.h"
 #include "../options.h"
-#include "../../print.h"
 #include "../scan.h"
+#include "../../print.h"
 
-int hydro_asetek_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings)
+int hydro_asetek_settings(struct corsair_device_scan scanned_device,
+            struct option_flags flags,
+            struct option_parse_return settings)
 {
     int rr;
     int ii;
@@ -73,6 +75,7 @@ int hydro_asetek_settings(struct corsair_device_scan scanned_device, struct opti
         char temperature[10];
         rr = dev->driver->temperature(dev, handle, ii, temperature, sizeof(temperature));
         msg_info("Temperature %d: %s\n", ii, temperature);
+        msg_machine("temperature:%d:%s\n", ii, temperature);
     }
 
     /* get number of fans */
@@ -88,6 +91,7 @@ int hydro_asetek_settings(struct corsair_device_scan scanned_device, struct opti
         rr = dev->driver->fan.speed(dev, handle, ii, &fan_speed, &fan_max_speed);
         msg_info("Fan %d:\t%s\n", ii, fan_mode_string);
         msg_info("\tCurrent/Max Speed %i/%i RPM\n", fan_speed, fan_max_speed);
+        msg_machine("fan:%d:%d:%i:%i\n", ii, fan_mode, fan_speed, fan_max_speed);
     }
 
     rr = dev->driver->pump.profile(dev, handle, &pump_mode);
@@ -95,20 +99,30 @@ int hydro_asetek_settings(struct corsair_device_scan scanned_device, struct opti
 
     msg_info("Pump:\tMode 0x%02X\n", pump_mode);
     msg_info("\tCurrent/Max Speed %i/%i RPM\n", pump_speed, pump_max_speed);
+    msg_machine("pump:%d:%i:%i\n", pump_mode, pump_speed, pump_max_speed);
 
-    rr = dev->driver->led.static_color(dev, handle,
+    if (flags.set_led == 1)
+    {
+        rr = dev->driver->led.static_color(dev, handle,
                 &settings.led_color[0],
                 &settings.warning_led,
                 settings.warning_led_temp,
                 (settings.warning_led_temp > -1));
-
-    if (settings.fan1.s6 != 0)
-    {
-        dev->driver->fan.custom(dev, handle, 0, &settings.fan1);
     }
-    if (settings.pump_mode != DEFAULT)
+
+    if (flags.set_fan == 1)
     {
-        dev->driver->pump.profile(dev, handle, &settings.pump_mode);
+        if (settings.fan1.s6 != 0)
+        {
+            dev->driver->fan.custom(dev, handle, 0, &settings.fan1);
+        }
+    }
+    if (flags.set_pump == 1)
+    {
+        if (settings.pump_mode != DEFAULT)
+        {
+            dev->driver->pump.profile(dev, handle, &settings.pump_mode);
+        }
     }
 
     rr = dev->driver->deinit(handle, dev->write_endpoint);

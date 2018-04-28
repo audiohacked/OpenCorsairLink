@@ -28,11 +28,16 @@
 #include "print.h"
 #include "logic/scan.h"
 
-int commanderpro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
-int hydro_asetek_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
-int hydro_asetekpro_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
-int hydro_hid_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
-int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings);
+int commanderpro_settings(struct corsair_device_scan scanned_device,
+        struct option_flags flags, struct option_parse_return settings);
+int hydro_asetek_settings(struct corsair_device_scan scanned_device,
+        struct option_flags flags, struct option_parse_return settings);
+int hydro_asetekpro_settings(struct corsair_device_scan scanned_device,
+        struct option_flags flags, struct option_parse_return settings);
+int hydro_hid_settings(struct corsair_device_scan scanned_device,
+        struct option_flags flags, struct option_parse_return settings);
+int psu_settings(struct corsair_device_scan scanned_device,
+        struct option_flags flags, struct option_parse_return settings);
 
 int main(int argc, char *argv[])
 {
@@ -73,23 +78,23 @@ int main(int argc, char *argv[])
         {
             if (scanlist[device_number].device->driver == &corsairlink_driver_rmi)
             {
-                psu_settings(scanlist[device_number], settings);
+                psu_settings(scanlist[device_number], flags, settings);
             }
             else if (scanlist[device_number].device->driver == &corsairlink_driver_commanderpro)
             {
-                commanderpro_settings(scanlist[device_number], settings);
+                commanderpro_settings(scanlist[device_number], flags, settings);
             }
             else if (scanlist[device_number].device->driver == &corsairlink_driver_asetek)
             {
-                hydro_asetek_settings(scanlist[device_number], settings);
+                hydro_asetek_settings(scanlist[device_number], flags, settings);
             }
             else  if (scanlist[device_number].device->driver == &corsairlink_driver_asetekpro)
             {
-                hydro_asetekpro_settings(scanlist[device_number], settings);
+                hydro_asetekpro_settings(scanlist[device_number], flags, settings);
             }
             else  if (scanlist[device_number].device->driver == &corsairlink_driver_hid)
             {
-                hydro_hid_settings(scanlist[device_number], settings);
+                hydro_hid_settings(scanlist[device_number], flags, settings);
             }
         }
     }

@@ -27,9 +27,10 @@
 #include "../../driver.h"
 #include "../../print.h"
 #include "../scan.h"
-#include "../../protocol/rmi/core.h"
 
-int psu_settings(struct corsair_device_scan scanned_device, struct option_parse_return settings)
+int psu_settings(struct corsair_device_scan scanned_device,
+            struct option_flags flags,
+            struct option_parse_return settings)
 {
     int rr;
     int ii;
