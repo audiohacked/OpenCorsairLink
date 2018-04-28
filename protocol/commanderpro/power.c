@@ -32,10 +32,10 @@
 #include "../../print.h"
 #include "core.h"
 
-int corsairlink_commanderpro_voltage(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+int corsairlink_commanderpro_voltage(struct corsair_device_info *dev,
+            struct libusb_device_handle *handle,
             uint8_t sensor_index,
-            char *voltage,
-            uint8_t voltage_str_len)
+            double *voltage)
 {
     int rr;
     uint8_t response[16];
@@ -52,9 +52,9 @@ int corsairlink_commanderpro_voltage(struct corsair_device_info *dev, struct lib
     msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     uint16_t data = (response[1]<<8) + response[2];
-    double volts = (double)data/(double)1000;
+    *(voltage) = (double)data/1000;
 
-    snprintf(voltage, voltage_str_len, "%2.3f V", volts);
+    // snprintf(voltage, voltage_str_len, "%2.3f V", volts);
 
     return 0;
 }

@@ -36,7 +36,7 @@ int commanderpro_settings(struct corsair_device_scan scanned_device,
     int ii;
     char name[32];
     name[sizeof(name) - 1] = 0;
-    char output_volts[10];
+    double output_volts;
     uint32_t time = 0;
     struct corsair_device_info *dev;
     struct libusb_device_handle *handle;
@@ -75,8 +75,8 @@ int commanderpro_settings(struct corsair_device_scan scanned_device,
         if (ii==2)
             msg_info("Output 3.3v: ");
 
-        rr = dev->driver->power.voltage(dev, handle, ii, output_volts, sizeof(output_volts));
-        msg_info("%s\n", output_volts);
+        rr = dev->driver->power.voltage(dev, handle, ii, &output_volts);
+        msg_info("%5.2f V\n", output_volts);
     }
 
     rr = dev->driver->deinit(handle, dev->write_endpoint);

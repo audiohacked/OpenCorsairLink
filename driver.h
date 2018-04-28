@@ -62,12 +62,12 @@ struct corsair_device_driver {
     } pump;
 
     struct power_functions {
-        int (*supply_voltage)(struct corsair_device_info *dev, struct libusb_device_handle *handle, char *volts, uint8_t volts_str_len);
-        int (*total_wattage) (struct corsair_device_info *dev, struct libusb_device_handle *handle, char *watts, uint8_t watts_str_len);
+        int (*supply_voltage)(struct corsair_device_info *dev, struct libusb_device_handle *handle, double *volts);
+        int (*total_wattage) (struct corsair_device_info *dev, struct libusb_device_handle *handle, double *watts);
         int (*sensor_select) (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t sensor_select);
-        int (*voltage)       (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t sensor_select, char *volts, uint8_t volts_str_len);
-        int (*amperage)      (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t sensor_select, char *amps, uint8_t amps_str_len);
-        int (*wattage)       (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t sensor_select, char *watts, uint8_t watts_str_len);
+        int (*voltage)       (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t sensor_select, double *volts);
+        int (*amperage)      (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t sensor_select, double *amps);
+        int (*wattage)       (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t sensor_select, double *watts);
     } power;
 
     struct time_functions {

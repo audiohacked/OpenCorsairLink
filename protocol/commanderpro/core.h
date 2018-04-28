@@ -100,8 +100,7 @@ int corsairlink_commanderpro_get_fan_detect_type(struct corsair_device_info *dev
 int corsairlink_commanderpro_voltage(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
             uint8_t sensor_index,
-            char *voltage,
-            uint8_t voltage_str_len);
+            double *voltage);
 
 int corsairlink_commanderpro_tempsensorscount(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,

@@ -53,8 +53,9 @@ int corsairlink_rmi_sensor_select(struct corsair_device_info *dev, struct libusb
     return 0;
 }
 
-int corsairlink_rmi_output_volts(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t sensor_select, char *volts, uint8_t volts_str_len)
+int corsairlink_rmi_output_volts(struct corsair_device_info *dev,
+            struct libusb_device_handle *handle,
+            uint8_t sensor_select, double *volts)
 {
     int rr;
     uint8_t response[64];
@@ -76,13 +77,14 @@ int corsairlink_rmi_output_volts(struct corsair_device_info *dev, struct libusb_
 
     uint16_t data;
     memcpy(&data, response+2, 2);
-    snprintf(volts, volts_str_len, "%5.2f V", convert_bytes_double(data));
+    *(volts) = convert_bytes_double(data);
+    // snprintf(volts, volts_str_len, "%5.2f V", convert_bytes_double(data));
 
     return 0;
 }
 
 int corsairlink_rmi_output_amps(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t sensor_select, char *amps, uint8_t amps_str_len)
+            uint8_t sensor_select, double *amps)
 {
     int rr;
     uint8_t response[64];
@@ -106,13 +108,14 @@ int corsairlink_rmi_output_amps(struct corsair_device_info *dev, struct libusb_d
 
     uint16_t data;
     memcpy(&data, response+2, 2);
-    snprintf(amps, amps_str_len, "%5.2f A", convert_bytes_double(data));
+    *(amps) = convert_bytes_double(data);
+    // snprintf(amps, amps_str_len, "%5.2f A", convert_bytes_double(data));
 
     return 0;
 }
 
 int corsairlink_rmi_output_watts(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t sensor_select, char *watts, uint8_t watts_str_len)
+            uint8_t sensor_select, double *watts)
 {
     int rr;
     uint8_t response[64];
@@ -136,13 +139,14 @@ int corsairlink_rmi_output_watts(struct corsair_device_info *dev, struct libusb_
 
     uint16_t data;
     memcpy(&data, response+2, 2);
-    snprintf(watts, watts_str_len, "%5.2f W", convert_bytes_double(data));
+    *(watts) = convert_bytes_double(data);
+    // snprintf(watts, watts_str_len, "%5.2f W", convert_bytes_double(data));
 
     return 0;
 }
 
 int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *volts, uint8_t volts_str_len)
+            double *volts)
 {
     int rr;
     uint8_t response[64];
@@ -166,13 +170,14 @@ int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev, struct
 
     uint16_t data = 0;
     memcpy(&data, response+2, 2);
-    snprintf(volts, volts_str_len, "%5.2f V", convert_bytes_double(data));
+    *(volts) = convert_bytes_double(data);
+    // snprintf(volts, volts_str_len, "%5.2f V", convert_bytes_double(data));
 
     return 0;
 }
 
 int corsairlink_rmi_power_total_wattage(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            char *watts, uint8_t watts_str_len)
+            double *watts)
 {
     int rr;
     uint8_t response[64];
@@ -196,7 +201,8 @@ int corsairlink_rmi_power_total_wattage(struct corsair_device_info *dev, struct 
 
     uint16_t data;
     memcpy(&data, response+2, 2);
-    snprintf(watts, watts_str_len, "%5.2f W", convert_bytes_double(data));
+    *(watts) = convert_bytes_double(data);
+    // snprintf(watts, watts_str_len, "%5.2f W", convert_bytes_double(data));
 
     return 0;
 }
