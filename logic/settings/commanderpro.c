@@ -79,11 +79,14 @@ int commanderpro_settings(struct corsair_device_scan scanned_device,
         msg_info("%5.2f V\n", output_volts);
     }
 
-    if (flags.set_led == 1)
+    msg_debug("Setting LED\n");
+    if (flags.set_led == 2)
     {
+        msg_debug("Setting LED FLag found\n");
         switch(settings.led_mode)
         {
         case BLINK:
+            msg_debug("Setting LED to BLINK\n");
             rr = dev->driver->led.blink(dev, handle,
                         settings.led_change_speed,
                         settings.led_count,
@@ -96,6 +99,7 @@ int commanderpro_settings(struct corsair_device_scan scanned_device,
                         &settings.led_color[6]);
             break;
         case PULSE:
+            msg_debug("Setting LED to PULSE\n");
             rr = dev->driver->led.color_pulse(dev, handle,
                         settings.led_change_speed,
                         settings.led_count,
@@ -108,6 +112,7 @@ int commanderpro_settings(struct corsair_device_scan scanned_device,
                         &settings.led_color[6]);
             break;
         case SHIFT:
+            msg_debug("Setting LED to SHIFT\n");
             rr = dev->driver->led.color_shift(dev, handle,
                         settings.led_change_speed,
                         settings.led_count,
@@ -120,10 +125,12 @@ int commanderpro_settings(struct corsair_device_scan scanned_device,
                         &settings.led_color[6]);
             break;
         case RAINBOW:
+            msg_debug("Setting LED to RAINBOW\n");
             rr = dev->driver->led.rainbow(dev, handle,
                         settings.led_change_speed);
             break;
         case TEMPERATURE:
+            msg_debug("Setting LED to TEMPERATURE\n");
             rr = dev->driver->led.temperature(dev, handle,
                         &settings.led_temperatures,
                         &settings.led_color[0], // Good LED Color
@@ -132,7 +139,9 @@ int commanderpro_settings(struct corsair_device_scan scanned_device,
             
             break;
         case STATIC:
+            msg_debug("Setting LED STATIC\n");
         default:
+            msg_debug("Setting LED DEFAULT\n");
             rr = dev->driver->led.static_color(dev, handle, &settings.led_color[0]);
             break;
         }

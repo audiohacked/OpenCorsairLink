@@ -103,10 +103,13 @@ int hydro_hid_settings(struct corsair_device_scan scanned_device,
 
     if (flags.set_led == 1)
     {
+        msg_debug("Setting LED Flag found\n");
         switch(settings.led_mode)
         {
         case STATIC:
+            msg_debug("Setting LED STATIC\n");
         default:
+            msg_debug("Setting LED DEFAULT\n");
             rr = dev->driver->led.static_color(dev, handle, &settings.led_color[0]);
             break;
         }

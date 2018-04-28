@@ -35,7 +35,7 @@ struct option_flags {
 };
 
 struct option_parse_return {
-    uint8_t led_mode;
+    enum led_modes led_mode;
     uint8_t led_count;
     uint8_t led_change_speed;
     struct color led_color[7];

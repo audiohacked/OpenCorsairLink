@@ -57,6 +57,29 @@ static struct option long_options[] = {
 
 void options_print(void);
 
+#define INIT_RAINBOW_LED(xx) \
+    xx[0].red = 0xff; \
+    xx[0].green = 0x00; \
+    xx[0].blue = 0x00; \
+    xx[1].red = 0xff; \
+    xx[1].green = 0x80; \
+    xx[1].blue = 0x00; \
+    xx[2].red = 0xff; \
+    xx[2].green = 0xff; \
+    xx[2].blue = 0x00; \
+    xx[3].red = 0x00; \
+    xx[3].green = 0xff; \
+    xx[3].blue = 0x00; \
+    xx[4].red = 0x00; \
+    xx[4].green = 0x00; \
+    xx[4].blue = 0xff; \
+    xx[5].red = 0x4b; \
+    xx[5].green = 0x00; \
+    xx[5].blue = 0x82; \
+    xx[6].red = 0x7f; \
+    xx[6].green = 0x00; \
+    xx[6].blue = 0xff;
+
 #define INIT_WARNING_LED(xx) \
     xx.red = 0xFF; \
     xx.green = 0x00; \
@@ -78,6 +101,9 @@ int options_parse(int argc, char **argv,
 
     INIT_DEFAULT_LED(settings->led_color[0]);
     INIT_WARNING_LED(settings->led_color[2]);
+
+    settings->led_mode = STATIC;
+    settings->led_change_speed = 5;
 
     settings->led_temperatures.temp1 = 35;
     settings->led_temperatures.temp2 = 45;
@@ -131,7 +157,15 @@ int options_parse(int argc, char **argv,
 
         case 8:
             flags->set_led = 1;
-            sscanf(optarg, "%2s", &settings->led_mode);
+            sscanf(optarg, "%hhd", &settings->led_mode);
+            switch(settings->led_mode)
+            {
+                case BLINK:
+                case PULSE:
+                case SHIFT:
+                    INIT_RAINBOW_LED(settings->led_color);
+                    break;
+            }
             break;
 
         case 9: /* led color */
@@ -147,6 +181,7 @@ int options_parse(int argc, char **argv,
                 ++ii;
                 token = strtok(NULL, ",");
             }
+            settings->led_count = ii;
             break;
         }
 
