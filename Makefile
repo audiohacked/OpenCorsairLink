@@ -17,7 +17,8 @@
 #
 
 CC ?= gcc
-CFLAGS ?= -std=c99 -pedantic-errors -Iinclude
+CFLAGS ?= -std=c99 -pedantic-errors
+CFLAGS += -Iinclude
 LDFLAGS ?= -lm
 
 # pkg-config for libusb-1.0
