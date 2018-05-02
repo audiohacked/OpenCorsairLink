@@ -36,7 +36,7 @@ int corsairlink_handle_close(struct libusb_device_handle *handle)
     int rr;
 
     rr = libusb_release_interface(handle, 0);
-    rr = libusb_attach_kernel_driver(handle, 0);
+    //rr = libusb_attach_kernel_driver(handle, 0);
     libusb_close(handle);
 
     return rr;
