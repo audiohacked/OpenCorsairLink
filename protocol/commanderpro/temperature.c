@@ -81,3 +81,4 @@ int corsairlink_commanderpro_temperature(struct corsair_device_info *dev,
 
     return rr;
 }
+

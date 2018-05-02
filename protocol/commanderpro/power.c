@@ -58,3 +58,4 @@ int corsairlink_commanderpro_voltage(struct corsair_device_info *dev,
 
     return 0;
 }
+

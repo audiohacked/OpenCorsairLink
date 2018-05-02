@@ -124,3 +124,4 @@ int corsairlink_commanderpro_bootloader_id(struct corsair_device_info *dev,
 
 	return rr;
 }
+

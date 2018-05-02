@@ -133,3 +133,4 @@ int corsairlink_commanderpro_get_fan_detect_type(struct corsair_device_info *dev
 
 	return rr;
 }
+
