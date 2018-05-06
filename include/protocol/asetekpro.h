@@ -20,7 +20,6 @@
 #define _PROTOCOL_ASETEKPRO_H
 
 #include <stdint.h>
-#include "../../common.h"
 
 enum AsetekProSpeed {
     AsetekProSpeedSlow = 0,
@@ -38,33 +37,28 @@ int corsairlink_asetekpro_fan_speed(struct corsair_device_info *dev,
 
 /* led */
 int corsairlink_asetekpro_led_static_color(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle, struct color *color_led);
+            struct libusb_device_handle *handle,
+            struct led_control *ctrl);
 
 int corsairlink_asetekpro_led_blink(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count,
-            struct color *led1, struct color *led2, struct color *led3,
-            struct color *led4, struct color *led5, struct color *led6,
-            struct color *led7);
+            struct libusb_device_handle *handle,
+            struct led_control *ctrl);
 
 int corsairlink_asetekpro_led_color_pulse(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count,
-            struct color *led1, struct color *led2, struct color *led3,
-            struct color *led4, struct color *led5, struct color *led6,
-            struct color *led7);
-
+            struct libusb_device_handle *handle,
+            struct led_control *ctrl);
+            
 int corsairlink_asetekpro_led_color_shift(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count,
-            struct color *led1, struct color *led2, struct color *led3,
-            struct color *led4, struct color *led5, struct color *led6,
-            struct color *led7);
+            struct libusb_device_handle *handle,
+            struct led_control *ctrl);
 
 int corsairlink_asetekpro_led_rainbow(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle, uint8_t speed);
+            struct libusb_device_handle *handle,
+            struct led_control *ctrl);
 
 int corsairlink_asetekpro_led_temperature(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
-            struct led_temperatures *led_temps, struct color *temp1_led,
-            struct color *temp2_led, struct color *temp3_led);
+            struct led_control *ctrl);
 
 /* pump */
 int corsairlink_asetekpro_pump_speed(struct corsair_device_info *dev,

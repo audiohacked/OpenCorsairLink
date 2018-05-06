@@ -30,7 +30,7 @@
 #include "device.h"
 #include "driver.h"
 #include "print.h"
-#include "protocol/rmi/core.h"
+#include "protocol/rmi.h"
 
 int corsairlink_rmi_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t probe, double *temperature)

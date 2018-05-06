@@ -26,10 +26,9 @@
 #include "device.h"
 #include "driver.h"
 
-
 int corsairlink_asetek_led_static_color(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
-            struct color *color_led)
+            struct led_control *ctrl)
 {
     int rr;
     uint8_t response[64];
@@ -38,9 +37,9 @@ int corsairlink_asetek_led_static_color(struct corsair_device_info *dev,
     memset(commands, 0, sizeof(commands));
 
     commands[0] = 0x10;
-    commands[1] = color_led->red;
-    commands[2] = color_led->green;
-    commands[3] = color_led->blue;
+    commands[1] = ctrl->led_colors[0].red;
+    commands[2] = ctrl->led_colors[0].green;
+    commands[3] = ctrl->led_colors[0].blue;
     commands[4] = 0x00;
     commands[5] = 0xff;
     commands[6] = 0xff;
@@ -63,11 +62,9 @@ int corsairlink_asetek_led_static_color(struct corsair_device_info *dev,
     return rr;
 }
 
-
 int corsairlink_asetek_led_temperature(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
-            struct led_temperatures *led_temps, struct color *led_color,
-            struct color *color_fade, struct color *color_warning)
+            struct led_control *ctrl)
 {
     int rr;
     uint8_t response[64];
@@ -76,16 +73,16 @@ int corsairlink_asetek_led_temperature(struct corsair_device_info *dev,
     memset(commands, 0, sizeof(commands));
 
     commands[0] = 0x10;
-    commands[1] = led_color->red;
-    commands[2] = led_color->green;
-    commands[3] = led_color->blue;
-    commands[4] = color_fade->blue;
-    commands[5] = color_fade->green;
-    commands[6] = color_fade->blue;
-    commands[7] = color_warning->red;
-    commands[8] = color_warning->green;
-    commands[9] = color_warning->blue;
-    commands[10] = led_temps->temp1; // 0x37 = ??, 0x2d = ??
+    commands[1] = ctrl->led_colors[0].red;
+    commands[2] = ctrl->led_colors[0].green;
+    commands[3] = ctrl->led_colors[0].blue;
+    commands[4] = ctrl->led_colors[1].blue; // fade
+    commands[5] = ctrl->led_colors[1].green;
+    commands[6] = ctrl->led_colors[1].blue;
+    commands[7] = ctrl->led_colors[2].red; // warning
+    commands[8] = ctrl->led_colors[2].green;
+    commands[9] = ctrl->led_colors[2].blue;
+    commands[10] = ctrl->temperatures[2]; // 0x37 = ??, 0x2d = ??
     commands[11] = 10; //FadeThobInterval
     commands[12] = 5; //ThrobSequence
     commands[13] = 0x01; //LED Enable

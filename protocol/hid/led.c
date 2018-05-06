@@ -26,11 +26,11 @@
 #include "lowlevel/hid.h"
 #include "device.h"
 #include "driver.h"
-#include "protocol/hid/core.h"
+#include "protocol/hid.h"
 
 int corsairlink_hid_change_led(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
-            struct color *color_led)
+            struct led_control *ctrl)
 {
     int rr;
     uint8_t response[64];
@@ -55,21 +55,21 @@ int corsairlink_hid_change_led(struct corsair_device_info *dev,
     commands[++ii] = LED_CycleColors; // Command data...
     commands[++ii] = 0x0C;
 
-    commands[++ii] = color_led->red;
-    commands[++ii] = color_led->green;
-    commands[++ii] = color_led->blue;
+    commands[++ii] = ctrl->led_colors[0].red;
+    commands[++ii] = ctrl->led_colors[0].green;
+    commands[++ii] = ctrl->led_colors[0].blue;
 
-    commands[++ii] = color_led->red;
-    commands[++ii] = color_led->green;
-    commands[++ii] = color_led->blue;
+    commands[++ii] = ctrl->led_colors[0].red;
+    commands[++ii] = ctrl->led_colors[0].green;
+    commands[++ii] = ctrl->led_colors[0].blue;
 
-    commands[++ii] = color_led->red;
-    commands[++ii] = color_led->green;
-    commands[++ii] = color_led->blue;
+    commands[++ii] = ctrl->led_colors[0].red;
+    commands[++ii] = ctrl->led_colors[0].green;
+    commands[++ii] = ctrl->led_colors[0].blue;
 
-    commands[++ii] = color_led->red;
-    commands[++ii] = color_led->green;
-    commands[++ii] = color_led->blue;
+    commands[++ii] = ctrl->led_colors[0].red;
+    commands[++ii] = ctrl->led_colors[0].green;
+    commands[++ii] = ctrl->led_colors[0].blue;
 
     commands[0] = ii; // Length
 

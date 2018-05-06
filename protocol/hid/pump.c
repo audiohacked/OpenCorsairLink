@@ -26,7 +26,7 @@
 #include "device.h"
 #include "driver.h"
 #include "print.h"
-#include "protocol/hid/core.h"
+#include "protocol/hid.h"
 
 int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t *pump_mode)

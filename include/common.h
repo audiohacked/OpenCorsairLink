@@ -23,60 +23,10 @@
 #define STR(x) STR_HELPER(x)
 
 #define MAJOR 0 // Full Rewrite
-#define MINOR 6 // Major API Change
+#define MINOR 7 // Major API Change
 #define PATCH_MAJOR 0 // Backward-compatible API Change
 #define PATCH_MINOR 0 // Patch/Fix Change
 
 #define VERSION "v"STR(MAJOR)"."STR(MINOR)"."STR(PATCH_MAJOR)"."STR(PATCH_MINOR)
-
-struct color {
-    uint8_t red;
-    uint8_t green;
-    uint8_t blue;
-};
-
-struct led_temperatures {
-    uint8_t temp1;
-    uint8_t temp2;
-    uint8_t temp3;
-};
-
-enum led_modes {
-    STATIC = 0,
-    BLINK = 1,
-    PULSE = 2,
-    SHIFT = 3,
-    RAINBOW = 4,
-    TEMPERATURE = 5,
-};
-
-struct fan_table {
-    /** temperatures */
-    int8_t t1;
-    int8_t t2;
-    int8_t t3;
-    int8_t t4;
-    int8_t t5;
-    int8_t t6;
-
-    /** fan speeds */
-    int8_t s1;
-    int8_t s2;
-    int8_t s3;
-    int8_t s4;
-    int8_t s5;
-    int8_t s6;
-};
-
-enum pump_modes {
-    PWM = 0,
-    RPM = 1,
-    DEFAULT = 2,
-    QUIET = 3,
-    BALANCED = 4,
-    PERFORMANCE = 5,
-    CUSTOM = 6,
-    UNDEFINED = 7,
-};
 
 #endif /* _COMMON_H */

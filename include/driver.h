@@ -19,7 +19,7 @@
 #ifndef _DRIVER_H
 #define _DRIVER_H
 
-#include "common.h"
+#include "logic/options.h"
 
 struct corsair_device_driver {
     /** device communication helper functions */
@@ -39,12 +39,12 @@ struct corsair_device_driver {
     int (*tempsensorscount)(struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t *temperature_sensors_count);
 
     struct led_functions {
-        int (*static_color)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct color *led);
-        int (*blink)       (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count, struct color *led1, struct color *led2, struct color *led3, struct color *led4, struct color *led5, struct color *led6, struct color *led7);
-        int (*color_pulse) (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count, struct color *led1, struct color *led2, struct color *led3, struct color *led4, struct color *led5, struct color *led6, struct color *led7);
-        int (*color_shift) (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count, struct color *led1, struct color *led2, struct color *led3, struct color *led4, struct color *led5, struct color *led6, struct color *led7);
-        int (*rainbow)     (struct corsair_device_info *dev, struct libusb_device_handle *handle, uint8_t speed);
-        int (*temperature) (struct corsair_device_info *dev, struct libusb_device_handle *handle, struct led_temperatures *led_temps, struct color *temp1_led, struct color *temp2_led, struct color *temp3_led);
+        int (*static_color)(struct corsair_device_info *dev, struct libusb_device_handle *handle, struct led_control *ctrl);
+        int (*blink)       (struct corsair_device_info *dev, struct libusb_device_handle *handle, struct led_control *ctrl);
+        int (*color_pulse) (struct corsair_device_info *dev, struct libusb_device_handle *handle, struct led_control *ctrl);
+        int (*color_shift) (struct corsair_device_info *dev, struct libusb_device_handle *handle, struct led_control *ctrl);
+        int (*rainbow)     (struct corsair_device_info *dev, struct libusb_device_handle *handle, struct led_control *ctrl);
+        int (*temperature) (struct corsair_device_info *dev, struct libusb_device_handle *handle, struct led_control *ctrl);
     } led;
 
     struct fan_functions {

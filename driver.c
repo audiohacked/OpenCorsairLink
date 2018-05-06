@@ -23,11 +23,11 @@
 #include "lowlevel/commanderpro.h"
 #include "lowlevel/hid.h"
 #include "lowlevel/rmi.h"
-#include "protocol/asetek/core.h"
-#include "protocol/asetekpro/core.h"
-#include "protocol/commanderpro/core.h"
-#include "protocol/hid/core.h"
-#include "protocol/rmi/core.h"
+#include "protocol/asetek.h"
+#include "protocol/asetekpro.h"
+#include "protocol/commanderpro.h"
+#include "protocol/hid.h"
+#include "protocol/rmi.h"
 
 struct corsair_device_driver corsairlink_driver_hid = {
     .init = corsairlink_hid_init,

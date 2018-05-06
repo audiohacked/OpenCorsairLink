@@ -19,8 +19,6 @@
 #ifndef _PROTOCOL_HID_H
 #define _PROTOCOL_HID_H
 
-#include "../../common.h"
-
 enum HID_Commands {
     DeviceID = 0x00,
     FirmwareID = 0x01,
@@ -111,7 +109,7 @@ int corsairlink_hid_firmware_id(struct corsair_device_info *dev,
 
 int corsairlink_hid_change_led(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
-            struct color *color_led);
+            struct led_control *ctrl);
 
 int corsairlink_hid_temperature(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,

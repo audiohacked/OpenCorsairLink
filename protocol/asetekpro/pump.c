@@ -26,7 +26,7 @@
 #include "device.h"
 #include "driver.h"
 #include "print.h"
-#include "protocol/asetekpro/core.h"
+#include "protocol/asetekpro.h"
 
 int corsairlink_asetekpro_pump_speed(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,

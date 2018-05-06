@@ -26,7 +26,7 @@
 #include "device.h"
 #include "driver.h"
 #include "print.h"
-#include "protocol/asetek/core.h"
+#include "protocol/asetek.h"
 
 int corsairlink_asetek_fan_count(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,

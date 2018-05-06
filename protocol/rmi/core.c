@@ -30,7 +30,7 @@
 #include "lowlevel/rmi.h"
 #include "device.h"
 #include "driver.h"
-#include "protocol/rmi/core.h"
+#include "protocol/rmi.h"
 
 double convert_bytes_double(uint16_t v16)
 {

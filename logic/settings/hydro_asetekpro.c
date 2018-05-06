@@ -102,66 +102,33 @@ int hydro_asetekpro_settings(struct corsair_device_scan scanned_device,
     if (flags.set_led == 1)
     {
         msg_debug("Setting LED Flag found\n");
-        switch(settings.led_mode)
+        switch(settings.led_ctrl.mode)
         {
         case 1:
             msg_debug("Setting LED to BLINK\n");
-            rr = dev->driver->led.blink(dev, handle,
-                        settings.led_change_speed,
-                        settings.led_count,
-                        &settings.led_color[0],
-                        &settings.led_color[1],
-                        &settings.led_color[2],
-                        &settings.led_color[3],
-                        &settings.led_color[4],
-                        &settings.led_color[5],
-                        &settings.led_color[6]);
+            rr = dev->driver->led.blink(dev, handle, &settings.led_ctrl);
             break;
         case 2:
             msg_debug("Setting LED to PULSE\n");
-            rr = dev->driver->led.color_pulse(dev, handle,
-                        settings.led_change_speed,
-                        settings.led_count,
-                        &settings.led_color[0],
-                        &settings.led_color[1],
-                        &settings.led_color[2],
-                        &settings.led_color[3],
-                        &settings.led_color[4],
-                        &settings.led_color[5],
-                        &settings.led_color[6]);
+            rr = dev->driver->led.color_pulse(dev, handle, &settings.led_ctrl);
             break;
         case 3:
             msg_debug("Setting LED to SHIFT\n");
-            rr = dev->driver->led.color_shift(dev, handle,
-                        settings.led_change_speed,
-                        settings.led_count,
-                        &settings.led_color[0],
-                        &settings.led_color[1],
-                        &settings.led_color[2],
-                        &settings.led_color[3],
-                        &settings.led_color[4],
-                        &settings.led_color[5],
-                        &settings.led_color[6]);
+            rr = dev->driver->led.color_shift(dev, handle, &settings.led_ctrl);
             break;
         case 4:
             msg_debug("Setting LED to RAINBOW\n");
-            rr = dev->driver->led.rainbow(dev, handle,
-                        settings.led_change_speed);
+            rr = dev->driver->led.rainbow(dev, handle, &settings.led_ctrl);
             break;
         case 5:
             msg_debug("Setting LED to TEMPERATURE\n");
-            rr = dev->driver->led.temperature(dev, handle,
-                        &settings.led_temperatures,
-                        &settings.led_color[0], // Good LED Color
-                        &settings.led_color[1], // Caution LED Color
-                        &settings.led_color[2]); // Warning LED Color
-            
+            rr = dev->driver->led.temperature(dev, handle, &settings.led_ctrl);
             break;
         case STATIC:
             msg_debug("Setting LED STATIC\n");
         default:
             msg_debug("Setting LED DEFAULT\n");
-            rr = dev->driver->led.static_color(dev, handle, &settings.led_color[0]);
+            rr = dev->driver->led.static_color(dev, handle, &settings.led_ctrl);
             break;
         }
     }

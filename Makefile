@@ -17,7 +17,9 @@
 #
 
 CC ?= gcc
-CFLAGS ?= -std=c99 -pedantic-errors
+CFLAGS ?= -std=c99
+# CFLAGS += -std=c99
+CFLAGS += -pedantic-errors
 CFLAGS += -Iinclude
 LDFLAGS ?= -lm
 
@@ -31,10 +33,13 @@ OBJS = \
 	driver.o \
 	print.o \
 	logic/options.o \
+	logic/options_fan.o \
+	logic/options_led.o \
+	logic/options_pump.o \
 	logic/scan.o \
 	logic/settings/commanderpro.o \
-	logic/settings/hydro_asetekpro.o \
 	logic/settings/hydro_asetek.o \
+	logic/settings/hydro_asetekpro.o \
 	logic/settings/hydro_hid.o \
 	logic/settings/psu.o
 
@@ -73,7 +78,7 @@ default: all
 
 all: OpenCorsairLink.elf
 
-OpenCorsairLink.elf: $(OBJS) $(OBJS_PROTO) $(OBJS_LL) $(OBJS)
+OpenCorsairLink.elf: $(OBJS) $(OBJS_PROTO) $(OBJS_LL)
 	$(CC) $^ $(CFLAGS) $(LDFLAGS) -o $@
 
 %.o: %.c

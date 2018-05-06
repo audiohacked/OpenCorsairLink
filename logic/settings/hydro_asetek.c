@@ -106,21 +106,17 @@ int hydro_asetek_settings(struct corsair_device_scan scanned_device,
     if (flags.set_led == 1)
     {
         msg_debug("Setting LED Flag found\n");
-        switch(settings.led_mode)
+        switch(settings.led_ctrl.mode)
         {
         case TEMPERATURE:
             msg_debug("Setting LED to TEMPERATURE\n");
-            rr = dev->driver->led.temperature(dev, handle,
-                        &settings.led_temperatures,
-                        &settings.led_color[0],
-                        &settings.led_color[1],
-                        &settings.led_color[2]); // Warning LED Color
+            rr = dev->driver->led.temperature(dev, handle, &settings.led_ctrl);
             break;
         case STATIC:
             msg_debug("Setting LED STATIC\n");
         default:
             msg_debug("Setting LED DEFAULT\n");
-            rr = dev->driver->led.static_color(dev, handle, &settings.led_color[0]);
+            rr = dev->driver->led.static_color(dev, handle, &settings.led_ctrl);
             break;
         }
     }

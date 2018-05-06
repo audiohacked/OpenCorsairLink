@@ -22,8 +22,6 @@
 #ifndef _PROTOCOL_RMI_H
 #define _PROTOCOL_RMI_H
 
-#include "../../common.h"
-
 double convert_bytes_double(uint16_t v16);
 
 int corsairlink_rmi_device_id(struct corsair_device_info *dev,

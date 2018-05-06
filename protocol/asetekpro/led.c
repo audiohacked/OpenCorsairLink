@@ -26,11 +26,11 @@
 #include "device.h"
 #include "driver.h"
 #include "print.h"
-#include "protocol/asetekpro/core.h"
+#include "protocol/asetekpro.h"
 
 int corsairlink_asetekpro_led_static_color(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
-            struct color *color_led)
+            struct led_control *ctrl)
 {
     int rr;
     uint8_t response[64];
@@ -38,21 +38,33 @@ int corsairlink_asetekpro_led_static_color(struct corsair_device_info *dev,
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 
+    for (int ii = 0; ii<7; ++ii)
+    {
+        msg_debug2("DEBUG: Color%d %02x%02x%02x\n", ii,
+                    ctrl->led_colors[ii].red,
+                    ctrl->led_colors[ii].green,
+                    ctrl->led_colors[ii].blue);
+    }
+
     commands[0] = 0x56;
     commands[1] = 0x02;
 
-    commands[2] = color_led->red;
-    commands[3] = color_led->green;
-    commands[4] = color_led->blue;
+    commands[2] = ctrl->led_colors[0].red;
+    commands[3] = ctrl->led_colors[0].green;
+    commands[4] = ctrl->led_colors[0].blue;
 
-    rr = dev->driver->write(handle, dev->write_endpoint, commands, 5);
+    commands[5] = ctrl->led_colors[0].red;
+    commands[6] = ctrl->led_colors[0].green;
+    commands[7] = ctrl->led_colors[0].blue;
+
+    rr = dev->driver->write(handle, dev->write_endpoint, commands, 8);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     if (response[0] != 0x56 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     commands[0] = 0x55;
@@ -61,21 +73,19 @@ int corsairlink_asetekpro_led_static_color(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     if (response[0] != 0x55 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     return rr;
 }
 
 int corsairlink_asetekpro_led_blink(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count,
-            struct color *led1, struct color *led2, struct color *led3,
-            struct color *led4, struct color *led5, struct color *led6,
-            struct color *led7)
+            struct libusb_device_handle *handle,
+            struct led_control *ctrl)
 {
     int rr;
     uint8_t response[64];
@@ -84,48 +94,48 @@ int corsairlink_asetekpro_led_blink(struct corsair_device_info *dev,
     memset(commands, 0, sizeof(commands));
 
     commands[0] = 0x56;
-    commands[1] = led_count;
+    commands[1] = ctrl->count;
 
-    commands[2] = led1->red;
-    commands[3] = led1->green;
-    commands[4] = led1->blue;
+    commands[2] = ctrl->led_colors[0].red;
+    commands[3] = ctrl->led_colors[0].green;
+    commands[4] = ctrl->led_colors[0].blue;
 
-    commands[5] = led2->red;
-    commands[6] = led2->green;
-    commands[7] = led2->blue;
+    commands[5] = ctrl->led_colors[1].red;
+    commands[6] = ctrl->led_colors[1].green;
+    commands[7] = ctrl->led_colors[1].blue;
 
-    commands[8] = led3->red;
-    commands[9] = led3->green;
-    commands[10] = led3->blue;
+    commands[8] = ctrl->led_colors[2].red;
+    commands[9] = ctrl->led_colors[2].green;
+    commands[10] = ctrl->led_colors[2].blue;
 
-    commands[11] = led4->red;
-    commands[12] = led4->green;
-    commands[13] = led4->blue;
+    commands[11] = ctrl->led_colors[3].red;
+    commands[12] = ctrl->led_colors[3].green;
+    commands[13] = ctrl->led_colors[3].blue;
 
-    commands[14] = led5->red;
-    commands[15] = led5->green;
-    commands[16] = led5->blue;
+    commands[14] = ctrl->led_colors[4].red;
+    commands[15] = ctrl->led_colors[4].green;
+    commands[16] = ctrl->led_colors[4].blue;
 
-    commands[17] = led6->red;
-    commands[18] = led6->green;
-    commands[19] = led6->blue;
+    commands[17] = ctrl->led_colors[5].red;
+    commands[18] = ctrl->led_colors[5].green;
+    commands[19] = ctrl->led_colors[5].blue;
 
-    commands[20] = led7->red;
-    commands[21] = led7->green;
-    commands[22] = led7->blue;
+    commands[20] = ctrl->led_colors[6].red;
+    commands[21] = ctrl->led_colors[6].green;
+    commands[22] = ctrl->led_colors[6].blue;
 
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 23);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     if (response[0] != 0x56 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     commands[0] = 0x53;
-    switch(speed) {
+    switch(ctrl->speed) {
         case AsetekProSpeedSlow:
             commands[1] = 0x0F;
             break;
@@ -140,11 +150,11 @@ int corsairlink_asetekpro_led_blink(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     if (response[0] != 0x53 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     commands[0] = 0x58;
@@ -153,21 +163,19 @@ int corsairlink_asetekpro_led_blink(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     if (response[0] != 0x58 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     return rr;
 }
 
 int corsairlink_asetekpro_led_color_pulse(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count,
-            struct color *led1, struct color *led2, struct color *led3,
-            struct color *led4, struct color *led5, struct color *led6,
-            struct color *led7)
+            struct libusb_device_handle *handle,
+            struct led_control *ctrl)
 {
     int rr;
     uint8_t response[64];
@@ -175,49 +183,51 @@ int corsairlink_asetekpro_led_color_pulse(struct corsair_device_info *dev,
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 
+    /* colors */
     commands[0] = 0x56;
-    commands[1] = led_count;
+    commands[1] = ctrl->count;
 
-    commands[2] = led1->red;
-    commands[3] = led1->green;
-    commands[4] = led1->blue;
+    commands[2] = ctrl->led_colors[0].red;
+    commands[3] = ctrl->led_colors[0].green;
+    commands[4] = ctrl->led_colors[0].blue;
 
-    commands[5] = led2->red;
-    commands[6] = led2->green;
-    commands[7] = led2->blue;
+    commands[5] = ctrl->led_colors[1].red;
+    commands[6] = ctrl->led_colors[1].green;
+    commands[7] = ctrl->led_colors[1].blue;
 
-    commands[8] = led3->red;
-    commands[9] = led3->green;
-    commands[10] = led3->blue;
+    commands[8] = ctrl->led_colors[2].red;
+    commands[9] = ctrl->led_colors[2].green;
+    commands[10] = ctrl->led_colors[2].blue;
 
-    commands[11] = led4->red;
-    commands[12] = led4->green;
-    commands[13] = led4->blue;
+    commands[11] = ctrl->led_colors[3].red;
+    commands[12] = ctrl->led_colors[3].green;
+    commands[13] = ctrl->led_colors[3].blue;
 
-    commands[14] = led5->red;
-    commands[15] = led5->green;
-    commands[16] = led5->blue;
+    commands[14] = ctrl->led_colors[4].red;
+    commands[15] = ctrl->led_colors[4].green;
+    commands[16] = ctrl->led_colors[4].blue;
 
-    commands[17] = led6->red;
-    commands[18] = led6->green;
-    commands[19] = led6->blue;
+    commands[17] = ctrl->led_colors[5].red;
+    commands[18] = ctrl->led_colors[5].green;
+    commands[19] = ctrl->led_colors[5].blue;
 
-    commands[20] = led7->red;
-    commands[21] = led7->green;
-    commands[22] = led7->blue;
+    commands[20] = ctrl->led_colors[6].red;
+    commands[21] = ctrl->led_colors[6].green;
+    commands[22] = ctrl->led_colors[6].blue;
 
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 23);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     if (response[0] != 0x56 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
+    /* Mode */
     commands[0] = 0x53;
-    switch(speed) {
+    switch(ctrl->speed) {
         case AsetekProSpeedSlow:
             commands[1] = 0x50;
             break;
@@ -232,34 +242,33 @@ int corsairlink_asetekpro_led_color_pulse(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     if (response[0] != 0x53 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
+    /* Commit */
     commands[0] = 0x52;
     commands[1] = 0x01;
 
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     if (response[0] != 0x52 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     return rr;
 }
 
 int corsairlink_asetekpro_led_color_shift(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle, uint8_t speed, uint8_t led_count,
-            struct color *led1, struct color *led2, struct color *led3,
-            struct color *led4, struct color *led5, struct color *led6,
-            struct color *led7)
+            struct libusb_device_handle *handle,
+            struct led_control *ctrl)
 {
     int rr;
     uint8_t response[64];
@@ -268,48 +277,48 @@ int corsairlink_asetekpro_led_color_shift(struct corsair_device_info *dev,
     memset(commands, 0, sizeof(commands));
 
     commands[0] = 0x56;
-    commands[1] = led_count;
+    commands[1] = ctrl->count;
 
-    commands[2] = led1->red;
-    commands[3] = led1->green;
-    commands[4] = led1->blue;
+    commands[2] = ctrl->led_colors[0].red;
+    commands[3] = ctrl->led_colors[0].green;
+    commands[4] = ctrl->led_colors[0].blue;
 
-    commands[5] = led2->red;
-    commands[6] = led2->green;
-    commands[7] = led2->blue;
+    commands[5] = ctrl->led_colors[1].red;
+    commands[6] = ctrl->led_colors[1].green;
+    commands[7] = ctrl->led_colors[1].blue;
 
-    commands[8] = led3->red;
-    commands[9] = led3->green;
-    commands[10] = led3->blue;
+    commands[8] = ctrl->led_colors[2].red;
+    commands[9] = ctrl->led_colors[2].green;
+    commands[10] = ctrl->led_colors[2].blue;
 
-    commands[11] = led4->red;
-    commands[12] = led4->green;
-    commands[13] = led4->blue;
+    commands[11] = ctrl->led_colors[3].red;
+    commands[12] = ctrl->led_colors[3].green;
+    commands[13] = ctrl->led_colors[3].blue;
 
-    commands[14] = led5->red;
-    commands[15] = led5->green;
-    commands[16] = led5->blue;
+    commands[14] = ctrl->led_colors[4].red;
+    commands[15] = ctrl->led_colors[4].green;
+    commands[16] = ctrl->led_colors[4].blue;
 
-    commands[17] = led6->red;
-    commands[18] = led6->green;
-    commands[19] = led6->blue;
+    commands[17] = ctrl->led_colors[5].red;
+    commands[18] = ctrl->led_colors[5].green;
+    commands[19] = ctrl->led_colors[5].blue;
 
-    commands[20] = led7->red;
-    commands[21] = led7->green;
-    commands[22] = led7->blue;
+    commands[20] = ctrl->led_colors[6].red;
+    commands[21] = ctrl->led_colors[6].green;
+    commands[22] = ctrl->led_colors[6].blue;
 
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 23);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     if (response[0] != 0x56 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     commands[0] = 0x53;
-    switch(speed) {
+    switch(ctrl->speed) {
         case AsetekProSpeedSlow:
             commands[1] = 0x46;
             break;
@@ -324,11 +333,11 @@ int corsairlink_asetekpro_led_color_shift(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     if (response[0] != 0x53 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     commands[0] = 0x55;
@@ -337,18 +346,19 @@ int corsairlink_asetekpro_led_color_shift(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     if (response[0] != 0x55 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     return rr;
 }
 
 int corsairlink_asetekpro_led_rainbow(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle, uint8_t speed)
+            struct libusb_device_handle *handle,
+            struct led_control *ctrl)
 {
     int rr;
     uint8_t response[64];
@@ -357,7 +367,7 @@ int corsairlink_asetekpro_led_rainbow(struct corsair_device_info *dev,
     memset(commands, 0, sizeof(commands));
 
     commands[0] = 0x53;
-    switch(speed) {
+    switch(ctrl->speed) {
         case AsetekProSpeedSlow:
             commands[1] = 0x30;
             break;
@@ -372,11 +382,12 @@ int corsairlink_asetekpro_led_rainbow(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("DEBUG: Rainbow mode response %02X %02X %02X\n",
+                response[0], response[1], response[2]);
 
     if (response[0] != 0x53 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     commands[0] = 0x55;
@@ -385,11 +396,12 @@ int corsairlink_asetekpro_led_rainbow(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("DEBUG: Rainbow commit response %02X %02X %02X\n",
+                response[0], response[1], response[2]);
 
     if (response[0] != 0x55 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     return rr;
@@ -397,8 +409,7 @@ int corsairlink_asetekpro_led_rainbow(struct corsair_device_info *dev,
 
 int corsairlink_asetekpro_led_temperature(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
-            struct led_temperatures *led_temps, struct color *temp1_led,
-            struct color *temp2_led, struct color *temp3_led)
+            struct led_control *ctrl)
 {
     int rr;
     uint8_t response[64];
@@ -407,31 +418,31 @@ int corsairlink_asetekpro_led_temperature(struct corsair_device_info *dev,
     memset(commands, 0, sizeof(commands));
 
     commands[0] = 0x5f;
-    commands[1] = led_temps->temp1;
+    commands[1] = ctrl->temperatures[0];
     commands[2] = 0x00;
-    commands[3] = led_temps->temp2;
+    commands[3] = ctrl->temperatures[1];
     commands[4] = 0x00;
-    commands[5] = led_temps->temp3;
+    commands[5] = ctrl->temperatures[2];
     commands[6] = 0x00;
-    commands[7] = temp1_led->red;
-    commands[8] = temp1_led->green;
-    commands[9] = temp1_led->blue;
-    commands[10] = temp2_led->red;
-    commands[11] = temp2_led->green;
-    commands[12] = temp2_led->blue;
-    commands[13] = temp3_led->red;
-    commands[14] = temp3_led->green;
-    commands[15] = temp3_led->blue;
+    commands[7] = ctrl->led_colors[0].red;
+    commands[8] = ctrl->led_colors[0].green;
+    commands[9] = ctrl->led_colors[0].blue;
+    commands[10] = ctrl->led_colors[1].red;
+    commands[11] = ctrl->led_colors[1].green;
+    commands[12] = ctrl->led_colors[1].blue;
+    commands[13] = ctrl->led_colors[2].red;
+    commands[14] = ctrl->led_colors[2].green;
+    commands[15] = ctrl->led_colors[2].blue;
 
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 16);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 6);
 
-    msg_debug("%02X %02X %02X %02X %02X %02X\n", response[0], response[1],
+    msg_debug2("%02X %02X %02X %02X %02X %02X\n", response[0], response[1],
                 response[2], response[3], response[4], response[5]);
 
     if (response[0] != 0x5f || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     commands[0] = 0x5E;
@@ -440,11 +451,11 @@ int corsairlink_asetekpro_led_temperature(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     if (response[0] != 0x5E || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     return rr;
