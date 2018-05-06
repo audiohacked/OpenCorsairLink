@@ -32,8 +32,8 @@ int corsairlink_asetek_led_static_color(struct corsair_device_info *dev,
             struct color *color_led)
 {
     int rr;
-    uint8_t response[32];
-    uint8_t commands[32] ;
+    uint8_t response[64];
+    uint8_t commands[64];
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 
@@ -70,8 +70,8 @@ int corsairlink_asetek_led_temperature(struct corsair_device_info *dev,
             struct color *color_fade, struct color *color_warning)
 {
     int rr;
-    uint8_t response[32];
-    uint8_t commands[32] ;
+    uint8_t response[64];
+    uint8_t commands[64];
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 

@@ -150,7 +150,7 @@ int corsairlink_rmi_power_supply_voltage(struct corsair_device_info *dev, struct
 {
     int rr;
     uint8_t response[64];
-    uint8_t commands[32] ;
+    uint8_t commands[64];
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 

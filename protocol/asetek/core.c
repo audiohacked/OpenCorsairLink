@@ -92,8 +92,8 @@ int corsairlink_asetek_firmware_id(struct corsair_device_info *dev, struct libus
             char *firmware, uint8_t firmware_size)
 {
     int rr;
-    uint8_t response[32];
-    uint8_t commands[32] ;
+    uint8_t response[64];
+    uint8_t commands[64];
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 
