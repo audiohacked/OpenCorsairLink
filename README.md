@@ -1,5 +1,10 @@
 OpenCorsairLink
 ===============
+### Branches
+ - master: Use this branch as stable/release version  
+ - testing: Use this branch as testing/release canidate  
+ - feature/*: Use these branches as cutting edge features (Use at your own risk)  
+
 ### Running
 Since the program needs direct hardware access you should run this with 'sudo' or as root.  
 
