@@ -33,23 +33,19 @@ int corsairlink_asetekpro_led_static_color(struct corsair_device_info *dev,
             struct color *color_led)
 {
     int rr;
-    uint8_t response[32];
-    uint8_t commands[32] ;
+    uint8_t response[64];
+    uint8_t commands[64];
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 
     commands[0] = 0x56;
     commands[1] = 0x02;
 
-    commands[7] = color_led->red;
-    commands[8] = color_led->green;
-    commands[9] = color_led->blue;
+    commands[2] = color_led->red;
+    commands[3] = color_led->green;
+    commands[4] = color_led->blue;
 
-    commands[10] = color_led->red;
-    commands[11] = color_led->green;
-    commands[12] = color_led->blue;
-
-    rr = dev->driver->write(handle, dev->write_endpoint, commands, 8);
+    rr = dev->driver->write(handle, dev->write_endpoint, commands, 5);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 3);
 
     msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
@@ -82,8 +78,8 @@ int corsairlink_asetekpro_led_blink(struct corsair_device_info *dev,
             struct color *led7)
 {
     int rr;
-    uint8_t response[32];
-    uint8_t commands[32] ;
+    uint8_t response[64];
+    uint8_t commands[64];
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 
@@ -174,8 +170,8 @@ int corsairlink_asetekpro_led_color_pulse(struct corsair_device_info *dev,
             struct color *led7)
 {
     int rr;
-    uint8_t response[32];
-    uint8_t commands[32] ;
+    uint8_t response[64];
+    uint8_t commands[64];
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 
@@ -266,8 +262,8 @@ int corsairlink_asetekpro_led_color_shift(struct corsair_device_info *dev,
             struct color *led7)
 {
     int rr;
-    uint8_t response[32];
-    uint8_t commands[32] ;
+    uint8_t response[64];
+    uint8_t commands[64];
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 
@@ -355,8 +351,8 @@ int corsairlink_asetekpro_led_rainbow(struct corsair_device_info *dev,
             struct libusb_device_handle *handle, uint8_t speed)
 {
     int rr;
-    uint8_t response[32];
-    uint8_t commands[32] ;
+    uint8_t response[64];
+    uint8_t commands[64];
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 
@@ -405,8 +401,8 @@ int corsairlink_asetekpro_led_temperature(struct corsair_device_info *dev,
             struct color *temp2_led, struct color *temp3_led)
 {
     int rr;
-    uint8_t response[32];
-    uint8_t commands[32] ;
+    uint8_t response[64];
+    uint8_t commands[64];
     memset(response, 0, sizeof(response));
     memset(commands, 0, sizeof(commands));
 

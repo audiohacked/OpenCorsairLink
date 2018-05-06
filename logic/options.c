@@ -99,11 +99,14 @@ int options_parse(int argc, char **argv,
 
     memset(settings, 0, sizeof(struct option_parse_return));
 
-    INIT_DEFAULT_LED(settings->led_color[0]);
-    INIT_WARNING_LED(settings->led_color[2]);
+    settings->led_count = 7;
+    INIT_RAINBOW_LED(settings->led_color);
+
+    // INIT_DEFAULT_LED(settings->led_color[0]);
+    // INIT_WARNING_LED(settings->led_color[2]);
 
     settings->led_mode = STATIC;
-    settings->led_change_speed = 5;
+    settings->led_change_speed = 3;
 
     settings->led_temperatures.temp1 = 35;
     settings->led_temperatures.temp2 = 45;
@@ -120,10 +123,6 @@ int options_parse(int argc, char **argv,
         //    break;
 
         switch (opt) {
-        case 0:
-            options_print();
-            break;
-
         case 1: /* program version */
             msg_info("OpenCorsairLink Version: %s", VERSION);
             break;
@@ -157,15 +156,7 @@ int options_parse(int argc, char **argv,
 
         case 8:
             flags->set_led = 1;
-            sscanf(optarg, "%hhd", &settings->led_mode);
-            switch(settings->led_mode)
-            {
-                case BLINK:
-                case PULSE:
-                case SHIFT:
-                    INIT_RAINBOW_LED(settings->led_color);
-                    break;
-            }
+            sscanf(optarg, "%d", &settings->led_mode);
             break;
 
         case 9: /* led color */
@@ -246,6 +237,7 @@ int options_parse(int argc, char **argv,
             sscanf(optarg, "%hhu", &settings->pump_mode);
             break;
 
+        case 0:
         default:
             options_print();
             exit(1);
