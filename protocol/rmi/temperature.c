@@ -49,7 +49,7 @@ int corsairlink_rmi_temperature(struct corsair_device_info *dev, struct libusb_d
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
-    msg_debug("%02X %02X %02X %02X %02X %02X\n",
+    msg_debug2("%02X %02X %02X %02X %02X %02X\n",
         response[0], response[1], response[2],
         response[3], response[4], response[5]);
 

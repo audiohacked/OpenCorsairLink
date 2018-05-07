@@ -259,8 +259,8 @@ int corsairlink_hid_fan_speed(struct corsair_device_info *dev, struct libusb_dev
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
 
-    msg_debug("Speed: %02X %02X\n", response[5], response[4]);
-    msg_debug("Max Speed: %02X %02X\n", response[9], response[8]);
+    msg_debug2("Speed: %02X %02X\n", response[5], response[4]);
+    msg_debug2("Max Speed: %02X %02X\n", response[9], response[8]);
     *(speed) = (response[5]<<8) + response[4];
     *(maxspeed) = (response[9]<<8) + response[8];
 

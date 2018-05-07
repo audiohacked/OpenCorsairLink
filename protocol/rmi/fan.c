@@ -38,7 +38,7 @@ int corsairlink_rmi_fan_rpm(struct corsair_device_info *dev, struct libusb_devic
 
     memcpy(rpm, response+2, 2);
 
-    msg_debug("%02X %02X %02X %02X %02X %02X\n",
+    msg_debug2("%02X %02X %02X %02X %02X %02X\n",
         response[0], response[1], response[2],
         response[3], response[4], response[5]);
 

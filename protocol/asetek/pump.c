@@ -65,7 +65,7 @@ int corsairlink_asetek_pump_speed(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 32);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
-    msg_debug("%02X %02X\n", response[8], response[9]);
+    msg_debug2("%02X %02X\n", response[8], response[9]);
     *(speed) = (response[8]<<8) + response[9];
 
     return rr;

@@ -43,12 +43,12 @@ int corsairlink_asetekpro_pump_speed(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 1);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 5);
 
-    msg_debug("%02X %02X %02X %02X %02X\n", response[0], response[1],
+    msg_debug2("%02X %02X %02X %02X %02X\n", response[0], response[1],
                 response[2], response[3], response[4]);
 
     if (response[0] != 0x31 || response[1] != 0x12 || response[2] != 0x34)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     *(speed) = (response[3]<<8) + response[4];

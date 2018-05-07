@@ -49,7 +49,7 @@ int corsairlink_commanderpro_voltage(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 16);
     
-    msg_debug("%02X %02X %02X\n", response[0], response[1], response[2]);
+    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
 
     uint16_t data = (response[1]<<8) + response[2];
     *(voltage) = (double)data/1000;

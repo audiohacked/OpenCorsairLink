@@ -113,7 +113,7 @@ int corsairlink_asetek_fan_speed(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 32);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
-    msg_debug("%02X %02X\n", response[0], response[1]);
+    msg_debug2("%02X %02X\n", response[0], response[1]);
     *(speed) = (response[0]<<8) + response[1];
 
     return rr;

@@ -138,25 +138,25 @@ int corsairlink_commanderpro_set_led_config(struct corsair_device_info *dev,
     commands[0x08] = 0xFF;
 
     commands[0x09] = led_color[0]->red;
-    commands[0x10] = led_color[0]->green;
-    commands[0x11] = led_color[0]->blue;
+    commands[0x0A] = led_color[0]->green;
+    commands[0x0B] = led_color[0]->blue;
 
-    commands[0x12] = led_color[1]->red;
-    commands[0x13] = led_color[1]->green;
-    commands[0x14] = led_color[1]->blue;
+    commands[0x0C] = led_color[1]->red;
+    commands[0x0D] = led_color[1]->green;
+    commands[0x0E] = led_color[1]->blue;
 
-    commands[0x15] = led_color[2]->red;
-    commands[0x16] = led_color[2]->green;
-    commands[0x17] = led_color[2]->blue;
+    commands[0x0F] = led_color[2]->red;
+    commands[0x10] = led_color[2]->green;
+    commands[0x11] = led_color[2]->blue;
 
-    commands[0x18] = (led_temperature->temp1>>8);
-    commands[0x19] = (led_temperature->temp1 && 0xFF);
+    commands[0x12] = (led_temperature->temp1>>8);
+    commands[0x13] = (led_temperature->temp1 && 0xFF);
 
-    commands[0x20] = (led_temperature->temp2>>8);
-    commands[0x21] = (led_temperature->temp2 && 0xFF);
+    commands[0x14] = (led_temperature->temp2>>8);
+    commands[0x15] = (led_temperature->temp2 && 0xFF);
 
-    commands[0x22] = (led_temperature->temp3>>8);
-    commands[0x23] = (led_temperature->temp3 && 0xFF);
+    commands[0x16] = (led_temperature->temp3>>8);
+    commands[0x17] = (led_temperature->temp3 && 0xFF);
 
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 16);

@@ -44,13 +44,13 @@ int corsairlink_asetekpro_fan_speed(struct corsair_device_info *dev,
     rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
     rr = dev->driver->read(handle, dev->read_endpoint, response, 6);
 
-    msg_debug("%02X %02X %02X %02X %02X %02X\n", response[0], response[1],
+    msg_debug2("%02X %02X %02X %02X %02X %02X\n", response[0], response[1],
                 response[2], response[3], response[4], response[5]);
 
     if (response[0] != 0x41 || response[1] != 0x12
         || response[2] != 0x34 || response[3] != selector)
     {
-        msg_debug("Bad Response\n");
+        msg_debug2("Bad Response\n");
     }
 
     *(speed) = (response[4]<<8) + response[5];
