@@ -19,7 +19,7 @@
 CC ?= gcc
 CFLAGS ?= -std=c99
 # CFLAGS += -std=c99
-CFLAGS += -pedantic-errors
+# CFLAGS += -pedantic-errors
 CFLAGS += -Iinclude
 LDFLAGS ?= -lm
 

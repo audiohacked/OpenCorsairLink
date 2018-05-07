@@ -132,16 +132,13 @@ int corsairlink_commanderpro_set_fan_speed_pwm(struct corsair_device_info *dev,
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, 14);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
 
-    *(pwm) = response[1];
-
 	return rr;
 }
 
 int corsairlink_commanderpro_set_fan_speed_rpm(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
             uint8_t sensor_index,
-            uint16_t *rpm,
-            uint16_t *maxrpm)
+            uint16_t rpm)
 {
 	int rr;
 	uint8_t response[16];
@@ -156,8 +153,6 @@ int corsairlink_commanderpro_set_fan_speed_rpm(struct corsair_device_info *dev,
 
 	rr = dev->driver->write(handle, dev->write_endpoint, commands, 14);
 	rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
-
-    *(rpm) = (response[1]<<8) + response[2];
 
 	return rr;
 }

@@ -42,12 +42,12 @@ void fan_suboptions_parse(char *subopts, struct option_parse_return *settings)
     switch ( getsubopt(&subopts, fan_options, &value) )
     {
     case SUBOPTION_FAN_CHANNEL:
-        sscanf(value, "%hhd", &settings->fan);
+        sscanf(value, "%hhu", &settings->fan);
         msg_debug("FAN Channel = %s\n", value);
         break;
 
     case SUBOPTION_FAN_MODE:
-        sscanf(value, "%hhd", &settings->fan_mode);
+        sscanf(value, "%hhu", &settings->fan_mode);
         msg_debug("FAN Mode = %s\n", value);
         break;
 

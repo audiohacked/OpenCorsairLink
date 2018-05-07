@@ -57,7 +57,7 @@ void led_suboptions_parse(char *subopts, struct led_control *settings)
         break;
 
     case SUBOPTION_LED_MODE:
-        sscanf(value, "%d", &settings->mode);
+        sscanf(value, "%u", &settings->mode);
         msg_debug("LED Mode = %s\n", value);
         switch(settings->mode)
         {
