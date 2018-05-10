@@ -23,12 +23,12 @@
 #include <string.h>
 #include <libusb.h>
 
-#include "lowlevel/hid.h"
+#include "lowlevel/coolit.h"
 #include "device.h"
 #include "driver.h"
-#include "protocol/hid.h"
+#include "protocol/coolit.h"
 
-int corsairlink_hid_change_led(struct corsair_device_info *dev,
+int corsairlink_coolit_change_led(struct corsair_device_info *dev,
             struct libusb_device_handle *handle,
             struct led_control *ctrl)
 {

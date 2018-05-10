@@ -22,13 +22,13 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "lowlevel/hid.h"
+#include "lowlevel/coolit.h"
 #include "device.h"
 #include "driver.h"
 #include "print.h"
-#include "protocol/hid.h"
+#include "protocol/coolit.h"
 
-int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+int corsairlink_coolit_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t *pump_mode)
 {
     int rr;
@@ -69,44 +69,27 @@ int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_dev
         commands[++ii] = CommandId++;
         commands[++ii] = WriteOneByte;
         commands[++ii] = FAN_Mode;
-
-        if (dev->device_id != 0x42)
+        
+        if(dev->device_id == CoolitH110i || dev->device_id == CoolitH110iGT) //both only accept fixed RPMs
         {
-            if (new_pump_mode == PERFORMANCE)
-                commands[++ii] = HID_Performance;
-            else if (new_pump_mode == BALANCED)
-                commands[++ii] = HID_Balanced;
-            else if (new_pump_mode == QUIET)
-                commands[++ii] = HID_Quiet;
-            else if (new_pump_mode == DEFAULT)
-                commands[++ii] = HID_Default;
-            else commands[++ii] = HID_Default;
-        } else
-        {
-            // My H110i Extreme with device_id 0x42 requires setting fixed RPM
-            commands[++ii] = HID_FixedRPM;
+            commands[++ii] = COOLIT_FixedRPM;
             commands[++ii] = CommandId++;
             commands[++ii] = WriteTwoBytes;
             commands[++ii] = FAN_FixedRPM;
-
+            commands[++ii] = new_pump_mode == PERFORMANCE ? 0x86 : 0x2E;
+            commands[++ii] = new_pump_mode == PERFORMANCE ? 0x0B : 0x09;
+        } else 
+        {
             if (new_pump_mode == PERFORMANCE)
-            {
-                // CorsairLink software sets to 2950 => 0x0B86
-                commands[++ii] = 0x86;
-                commands[++ii] = 0x0B;
-            }
+                commands[++ii] = COOLIT_Performance;
+            else if (new_pump_mode == BALANCED)
+                commands[++ii] = COOLIT_Balanced;
             else if (new_pump_mode == QUIET)
-            {
-                // CorsairLink software sets to 2350 => 0x092E
-                commands[++ii] = 0x2E;
-                commands[++ii] = 0x09;
-            }
-            else
-            {
-                // For any other mode, set to 2650 => 0x0A5A
-                commands[++ii] = 0x5A;
-                commands[++ii] = 0x0A;
-            }
+                commands[++ii] = COOLIT_Quiet;
+            else if (new_pump_mode == DEFAULT)
+                commands[++ii] = COOLIT_Default;
+            else commands[++ii] = COOLIT_Default;
+
         }
         commands[0] = ii;
 
@@ -117,7 +100,7 @@ int corsairlink_hid_pump_mode(struct corsair_device_info *dev, struct libusb_dev
     return rr;
 }
 
-int corsairlink_hid_pump_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+int corsairlink_coolit_pump_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint16_t *speed, uint16_t *maxspeed)
 {
     int rr;

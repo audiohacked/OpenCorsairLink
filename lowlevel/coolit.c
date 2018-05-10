@@ -16,12 +16,12 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*! \file lowlevel/hid.c
- *  \brief Lowlevel Routines for USB HID based devices
+/*! \file lowlevel/coolit.c
+ *  \brief Lowlevel Routines for CoolIT USB HID based devices
  */
 #include <stdio.h>
 #include <libusb.h>
-#include "lowlevel/hid.h"
+#include "lowlevel/coolit.h"
 
 #define HID_SET_REPORT 0x09
 #define HID_GET_REPORT 0x01
@@ -42,7 +42,7 @@ static const int CONTROL_REQUEST_TYPE_OUT = LIBUSB_ENDPOINT_OUT | LIBUSB_REQUEST
  *  @param[in] device endpoint for the data
  *  @return 0
  */
-int corsairlink_hid_init(struct libusb_device_handle *dev_handle,
+int corsairlink_coolit_init(struct libusb_device_handle *dev_handle,
             uint8_t endpoint)
 {
     return 0;
@@ -54,7 +54,7 @@ int corsairlink_hid_init(struct libusb_device_handle *dev_handle,
  *  @param[in] device endpoint for the data
  *  @return 0
  */
-int corsairlink_hid_deinit(struct libusb_device_handle *dev_handle,
+int corsairlink_coolit_deinit(struct libusb_device_handle *dev_handle,
             uint8_t endpoint)
 {
     return 0;
@@ -68,7 +68,7 @@ int corsairlink_hid_deinit(struct libusb_device_handle *dev_handle,
  *  @param[in] length of data to send, in bytes
  *  @return 0
  */
-int corsairlink_hid_write(struct libusb_device_handle *dev_handle,
+int corsairlink_coolit_write(struct libusb_device_handle *dev_handle,
             uint8_t endpoint,
             uint8_t *data,
             int length)
@@ -94,7 +94,7 @@ int corsairlink_hid_write(struct libusb_device_handle *dev_handle,
  *  @param[in] length of data to received, in bytes
  *  @return 0
  */
-int corsairlink_hid_read(struct libusb_device_handle *dev_handle,
+int corsairlink_coolit_read(struct libusb_device_handle *dev_handle,
             uint8_t endpoint,
             uint8_t *data,
             int length)

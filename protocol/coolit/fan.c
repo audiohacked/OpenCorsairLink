@@ -22,13 +22,13 @@
 #include <unistd.h>
 #include <string.h>
 #include <libusb.h>
-#include "lowlevel/hid.h"
+#include "lowlevel/coolit.h"
 #include "device.h"
 #include "driver.h"
 #include "print.h"
-#include "protocol/hid.h"
+#include "protocol/coolit.h"
 
-int corsairlink_hid_fan_count(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+int corsairlink_coolit_fan_count(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t *fan_count)
 {
     int rr;
@@ -53,7 +53,7 @@ int corsairlink_hid_fan_count(struct corsair_device_info *dev, struct libusb_dev
     return rr;
 }
 
-int corsairlink_hid_fan_print_mode(uint8_t mode, uint16_t data, char *modestr, uint8_t modestr_size)
+int corsairlink_coolit_fan_print_mode(uint8_t mode, uint16_t data, char *modestr, uint8_t modestr_size)
 {
     int rr = 0;
     uint8_t isConnected = mode & 0x80;
@@ -62,26 +62,26 @@ int corsairlink_hid_fan_print_mode(uint8_t mode, uint16_t data, char *modestr, u
 
     if (!isConnected)
         snprintf(modestr, modestr_size, "Not connected or failed");
-    else if (real_mode == HID_Performance)
+    else if (real_mode == COOLIT_Performance)
         snprintf(modestr, modestr_size, "Performance Mode (%s)", is4pin ? "4PIN" : "3PIN");
-    else if (real_mode == HID_Balanced)
+    else if (real_mode == COOLIT_Balanced)
         snprintf(modestr, modestr_size, "Balanced Mode (%s)", is4pin ? "4PIN" : "3PIN");
-    else if (real_mode == HID_Quiet)
+    else if (real_mode == COOLIT_Quiet)
         snprintf(modestr, modestr_size, "Quiet Mode (%s)", is4pin ? "4PIN" : "3PIN");
-    else if (real_mode == HID_Default)
+    else if (real_mode == COOLIT_Default)
         snprintf(modestr, modestr_size, "Default Mode (%s)", is4pin ? "4PIN" : "3PIN");
-    else if (real_mode == HID_FixedPWM)
+    else if (real_mode == COOLIT_FixedPWM)
         snprintf(modestr, modestr_size, "Fixed PWM Mode (%s) set to %d%%", is4pin ? "4PIN" : "3PIN",
                     (data+1)*100/256);
-    else if (real_mode == HID_FixedRPM)
+    else if (real_mode == COOLIT_FixedRPM)
         snprintf(modestr, modestr_size, "Fixed RPM Mode (%s) set to %d", 
                     is4pin ? "4PIN" : "3PIN", data);
-    else if (real_mode == HID_Custom)
+    else if (real_mode == COOLIT_Custom)
         snprintf(modestr, modestr_size, "Custom Curve Mode (%s)", is4pin ? "4PIN" : "3PIN");
     return rr;
 }
 
-int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+int corsairlink_coolit_fan_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t selector, uint8_t *fan_mode, uint16_t *fan_data)
 {
     int rr;
@@ -110,16 +110,16 @@ int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_devi
         commands[++ii] = FAN_Mode;
 
         if (new_fan_mode == PERFORMANCE)
-            commands[++ii] = HID_Performance;
+            commands[++ii] = COOLIT_Performance;
         else if (new_fan_mode == BALANCED)
-            commands[++ii] = HID_Balanced;
+            commands[++ii] = COOLIT_Balanced;
         else if (new_fan_mode == QUIET)
-            commands[++ii] = HID_Quiet;
+            commands[++ii] = COOLIT_Quiet;
         else if (new_fan_mode == DEFAULT)
-            commands[++ii] = HID_Default;
+            commands[++ii] = COOLIT_Default;
         else if (new_fan_mode == RPM)
         {
-            commands[++ii] = HID_FixedRPM;
+            commands[++ii] = COOLIT_FixedRPM;
             commands[++ii] = CommandId++;
             commands[++ii] = WriteTwoBytes;
             commands[++ii] = FAN_FixedRPM;
@@ -128,15 +128,15 @@ int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_devi
         }
         else if (new_fan_mode == PWM)
         {
-            commands[++ii] = HID_FixedPWM;
+            commands[++ii] = COOLIT_FixedPWM;
             commands[++ii] = CommandId++;
             commands[++ii] = WriteOneByte;
             commands[++ii] = FAN_FixedPWM;
             commands[++ii] = *(fan_data) & 0xFF;
         }
         else if (new_fan_mode == CUSTOM)
-            commands[++ii] = HID_Custom;
-        else commands[++ii] = HID_Default;
+            commands[++ii] = COOLIT_Custom;
+        else commands[++ii] = COOLIT_Default;
     }
 
     commands[0] = ii;
@@ -151,7 +151,7 @@ int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_devi
         memset(response, 0, sizeof(response));
         memset(commands, 0, sizeof(commands));
 
-        if ((*(fan_mode) & 0x0E) == HID_FixedRPM)
+        if ((*(fan_mode) & 0x0E) == COOLIT_FixedRPM)
         {
             commands[++ii] = CommandId++;
             commands[++ii] = ReadTwoBytes;
@@ -161,7 +161,7 @@ int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_devi
             rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
             *(fan_data) = (response[3]<<8) + response[2];
         }
-        else if ((*(fan_mode) & 0x0E) == HID_FixedPWM)
+        else if ((*(fan_mode) & 0x0E) == COOLIT_FixedPWM)
         {
             commands[++ii] = CommandId++;
             commands[++ii] = ReadOneByte;
@@ -177,7 +177,7 @@ int corsairlink_hid_fan_mode(struct corsair_device_info *dev, struct libusb_devi
     return rr;
 }
 
-int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+int corsairlink_coolit_fan_curve(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t selector, struct fan_table *fan)
 {
     int rr;
@@ -230,7 +230,7 @@ int corsairlink_hid_fan_curve(struct corsair_device_info *dev, struct libusb_dev
     return rr;
 }
 
-int corsairlink_hid_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle,
+int corsairlink_coolit_fan_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle,
             uint8_t selector, uint16_t *speed, uint16_t *maxspeed)
 {
     int rr;

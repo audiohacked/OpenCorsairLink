@@ -38,16 +38,18 @@ void pump_suboptions_parse(char *subopts, struct option_parse_return *settings)
     uint8_t ii = 0;
 
     while (*subopts != '\0')
-    switch ( getsubopt(&subopts, pump_options, &value) )
     {
-    case SUBOPTION_PUMP_MODE:
-        sscanf(value, "%hhd", &settings->pump_mode);
-        msg_debug("PUMP Mode = %s\n", value);
-        break;
+        switch ( getsubopt(&subopts, pump_options, &value) )
+        {
+        case SUBOPTION_PUMP_MODE:
+            sscanf(value, "%hhd", &settings->pump_mode);
+            msg_debug("PUMP Mode = %s\n", value);
+            break;
 
-    default:
-        /* Unknown suboption. */
-        msg_info("Unknown suboption `%s'\n", value);
-        break;
+        default:
+            /* Unknown suboption. */
+            msg_info("Unknown suboption `%s'\n", value);
+            break;
+        }
     }
 }

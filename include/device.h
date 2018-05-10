@@ -32,10 +32,10 @@ struct corsair_device_info {
 
     /** device control info */
     struct corsair_device_driver *driver;
-    uint8_t led_control_count; // used mostly with HID driver
-    uint8_t fan_control_count; // used with HID driver
+    uint8_t led_control_count; // used mostly with COOLIT driver
+    uint8_t fan_control_count; // used with COOLIT driver
     uint8_t temperature_control_count;
-    uint8_t pump_index; // used with HID driver
+    uint8_t pump_index; // used with COOLIT driver
 };
 
 extern struct corsair_device_info corsairlink_devices[];

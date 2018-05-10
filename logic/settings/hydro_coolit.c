@@ -28,7 +28,7 @@
 #include "print.h"
 #include "logic/scan.h"
 
-int hydro_hid_settings(struct corsair_device_scan scanned_device,
+int hydro_coolit_settings(struct corsair_device_scan scanned_device,
             struct option_flags flags,
             struct option_parse_return settings)
 {
@@ -115,7 +115,7 @@ int hydro_hid_settings(struct corsair_device_scan scanned_device,
         }
     }
 
-    if (settings.pump_mode != DEFAULT)
+    if (flags.set_pump && settings.pump_mode != DEFAULT)
     {
         msg_info("Setting pump to mode: %i\n", settings.pump_mode);
         rr = dev->driver->pump.profile(dev, handle, &settings.pump_mode);

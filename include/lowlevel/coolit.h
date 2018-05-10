@@ -16,24 +16,24 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*! \file lowlevel/hid.h
- *  \brief Lowlevel Routines for USB HID based devices
+/*! \file lowlevel/coolit.h
+ *  \brief Lowlevel Routines for CoolIT USB HID based devices
  */
-#ifndef _LOWLEVEL_HID_H
-#define _LOWLEVEL_HID_H
+#ifndef _LOWLEVEL_COOLIT_H
+#define _LOWLEVEL_COOLIT_H
 
-int corsairlink_hid_init(struct libusb_device_handle *dev_handle,
+int corsairlink_coolit_init(struct libusb_device_handle *dev_handle,
             uint8_t endpoint);
 
-int corsairlink_hid_deinit(struct libusb_device_handle *dev_handle,
+int corsairlink_coolit_deinit(struct libusb_device_handle *dev_handle,
             uint8_t endpoint);
 
-int corsairlink_hid_write(struct libusb_device_handle *dev_handle,
+int corsairlink_coolit_write(struct libusb_device_handle *dev_handle,
             uint8_t endpoint,
             uint8_t *data,
             int length);
 
-int corsairlink_hid_read(struct libusb_device_handle *dev_handle,
+int corsairlink_coolit_read(struct libusb_device_handle *dev_handle,
             uint8_t endpoint,
             uint8_t *data,
             int length);

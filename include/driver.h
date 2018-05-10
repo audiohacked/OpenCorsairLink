@@ -82,7 +82,7 @@ extern struct corsair_device_driver corsairlink_driver_asetek;
 extern struct corsair_device_driver corsairlink_driver_asetekpro;
 extern struct corsair_device_driver corsairlink_driver_commanderpro;
 extern struct corsair_device_driver corsairlink_driver_dongle;
-extern struct corsair_device_driver corsairlink_driver_hid;
+extern struct corsair_device_driver corsairlink_driver_coolit;
 extern struct corsair_device_driver corsairlink_driver_rmi;
 
 #endif

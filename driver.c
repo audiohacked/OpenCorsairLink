@@ -21,28 +21,28 @@
 #include "driver.h"
 #include "lowlevel/asetek.h"
 #include "lowlevel/commanderpro.h"
-#include "lowlevel/hid.h"
+#include "lowlevel/coolit.h"
 #include "lowlevel/rmi.h"
 #include "protocol/asetek.h"
 #include "protocol/asetekpro.h"
 #include "protocol/commanderpro.h"
-#include "protocol/hid.h"
+#include "protocol/coolit.h"
 #include "protocol/rmi.h"
 
-struct corsair_device_driver corsairlink_driver_hid = {
-    .init = corsairlink_hid_init,
-    .deinit = corsairlink_hid_deinit,
-    .name = corsairlink_hid_name,
-    .vendor = corsairlink_hid_vendor,
-    .product = corsairlink_hid_product,
-    .device_id = corsairlink_hid_device_id,
-    .fw_version = corsairlink_hid_firmware_id,
-    .read = corsairlink_hid_read,
-    .write = corsairlink_hid_write,
-    .temperature = corsairlink_hid_temperature,
-    .tempsensorscount = corsairlink_hid_tempsensorscount,
+struct corsair_device_driver corsairlink_driver_coolit = {
+    .init = corsairlink_coolit_init,
+    .deinit = corsairlink_coolit_deinit,
+    .name = corsairlink_coolit_name,
+    .vendor = corsairlink_coolit_vendor,
+    .product = corsairlink_coolit_product,
+    .device_id = corsairlink_coolit_device_id,
+    .fw_version = corsairlink_coolit_firmware_id,
+    .read = corsairlink_coolit_read,
+    .write = corsairlink_coolit_write,
+    .temperature = corsairlink_coolit_temperature,
+    .tempsensorscount = corsairlink_coolit_tempsensorscount,
     .led = {
-        .static_color = corsairlink_hid_change_led,
+        .static_color = corsairlink_coolit_change_led,
         .blink = NULL,
         .color_pulse = NULL,
         .color_shift = NULL,
@@ -50,15 +50,48 @@ struct corsair_device_driver corsairlink_driver_hid = {
         .temperature = NULL,
     },
     .fan = {
-        .count = corsairlink_hid_fan_count,
-        .custom = corsairlink_hid_fan_curve,
-        .profile = corsairlink_hid_fan_mode,
-        .speed = corsairlink_hid_fan_speed,
-        .print_mode = corsairlink_hid_fan_print_mode,
+        .count = corsairlink_coolit_fan_count,
+        .custom = corsairlink_coolit_fan_curve,
+        .profile = corsairlink_coolit_fan_mode,
+        .speed = corsairlink_coolit_fan_speed,
+        .print_mode = corsairlink_coolit_fan_print_mode,
     },
     .pump = {
-        .profile = corsairlink_hid_pump_mode,
-        .speed = corsairlink_hid_pump_speed,
+        .profile = corsairlink_coolit_pump_mode,
+        .speed = corsairlink_coolit_pump_speed,
+    }
+};
+
+struct corsair_device_driver corsairlink_driver_coolit_old = {
+    .init = corsairlink_coolit_init,
+    .deinit = corsairlink_coolit_deinit,
+    .name = corsairlink_coolit_name,
+    .vendor = corsairlink_coolit_vendor,
+    .product = corsairlink_coolit_product,
+    .device_id = corsairlink_coolit_device_id,
+    .fw_version = corsairlink_coolit_firmware_id,
+    .read = corsairlink_coolit_read,
+    .write = corsairlink_coolit_write,
+    .temperature = corsairlink_coolit_temperature,
+    .tempsensorscount = corsairlink_coolit_tempsensorscount,
+    .led = {
+        .static_color = corsairlink_coolit_change_led,
+        .blink = NULL,
+        .color_pulse = NULL,
+        .color_shift = NULL,
+        .rainbow = NULL,
+        .temperature = NULL,
+    },
+    .fan = {
+        .count = corsairlink_coolit_fan_count,
+        .custom = corsairlink_coolit_fan_curve,
+        .profile = corsairlink_coolit_fan_mode,
+        .speed = corsairlink_coolit_fan_speed,
+        .print_mode = corsairlink_coolit_fan_print_mode,
+    },
+    .pump = {
+        .profile = corsairlink_coolit_pump_mode,
+        .speed = corsairlink_coolit_pump_speed,
     }
 };
 

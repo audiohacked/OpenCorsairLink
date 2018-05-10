@@ -19,6 +19,8 @@
 #ifndef _OPTIONS_H
 #define _OPTIONS_H
 
+#define _XOPEN_SOURCE 500
+
 #include <getopt.h>
 #include <stdint.h>
 

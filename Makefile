@@ -40,13 +40,13 @@ OBJS = \
 	logic/settings/commanderpro.o \
 	logic/settings/hydro_asetek.o \
 	logic/settings/hydro_asetekpro.o \
-	logic/settings/hydro_hid.o \
+	logic/settings/hydro_coolit.o \
 	logic/settings/psu.o
 
 OBJS_LL = \
 	lowlevel/asetek.o \
 	lowlevel/commanderpro.o \
-	lowlevel/hid.o \
+	lowlevel/coolit.o \
 	lowlevel/rmi.o
 
 OBJS_PROTO = \
@@ -68,11 +68,11 @@ OBJS_PROTO = \
 	protocol/rmi/power.o \
 	protocol/rmi/temperature.o \
 	protocol/rmi/time.o \
-	protocol/hid/core.o \
-	protocol/hid/fan.o \
-	protocol/hid/led.o \
-	protocol/hid/pump.o \
-	protocol/hid/temperature.o
+	protocol/coolit/core.o \
+	protocol/coolit/fan.o \
+	protocol/coolit/led.o \
+	protocol/coolit/pump.o \
+	protocol/coolit/temperature.o
 
 default: all
 
