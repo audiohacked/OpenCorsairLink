@@ -17,7 +17,9 @@
  */
 
 #include "device.h"
+
 #include "driver.h"
+
 #include <libusb.h>
 
 struct corsair_device_info corsairlink_devices[] = {
@@ -51,8 +53,8 @@ struct corsair_device_info corsairlink_devices[] = {
         .device_id = 0x37,
         .name = "H80",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
-        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS |
-                          LIBUSB_RECIPIENT_INTERFACE | LIBUSB_ENDPOINT_OUT,
+        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE
+                          | LIBUSB_ENDPOINT_OUT,
         .driver = &corsairlink_driver_coolit,
         .led_control_count = 1,
         .fan_control_count = 4,
@@ -65,8 +67,8 @@ struct corsair_device_info corsairlink_devices[] = {
         .device_id = 0x38,
         .name = "Cooling Node",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
-        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS |
-                          LIBUSB_RECIPIENT_INTERFACE | LIBUSB_ENDPOINT_OUT,
+        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE
+                          | LIBUSB_ENDPOINT_OUT,
         .driver = &corsairlink_driver_coolit,
         .led_control_count = 1,
         .fan_control_count = 4,
@@ -79,8 +81,8 @@ struct corsair_device_info corsairlink_devices[] = {
         .device_id = 0x39,
         .name = "Lighting Node",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
-        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS |
-                          LIBUSB_RECIPIENT_INTERFACE | LIBUSB_ENDPOINT_OUT,
+        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE
+                          | LIBUSB_ENDPOINT_OUT,
         .driver = &corsairlink_driver_coolit,
         .led_control_count = 1,
         .fan_control_count = 4,
@@ -92,8 +94,8 @@ struct corsair_device_info corsairlink_devices[] = {
         .device_id = 0x3a,
         .name = "H100",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
-        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS |
-                          LIBUSB_RECIPIENT_INTERFACE | LIBUSB_ENDPOINT_OUT,
+        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE
+                          | LIBUSB_ENDPOINT_OUT,
         .driver = &corsairlink_driver_coolit,
         .led_control_count = 1,
         .fan_control_count = 4,
@@ -106,8 +108,8 @@ struct corsair_device_info corsairlink_devices[] = {
         .device_id = 0x3b,
         .name = "H80i",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
-        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS |
-                          LIBUSB_RECIPIENT_INTERFACE | LIBUSB_ENDPOINT_OUT,
+        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE
+                          | LIBUSB_ENDPOINT_OUT,
         .driver = &corsairlink_driver_coolit,
         .led_control_count = 1,
         .fan_control_count = 4,
@@ -119,8 +121,8 @@ struct corsair_device_info corsairlink_devices[] = {
         .device_id = 0x3c,
         .name = "H100i",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
-        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS |
-                          LIBUSB_RECIPIENT_INTERFACE | LIBUSB_ENDPOINT_OUT,
+        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE
+                          | LIBUSB_ENDPOINT_OUT,
         .driver = &corsairlink_driver_coolit,
         .led_control_count = 1,
         .fan_control_count = 4,
@@ -132,8 +134,8 @@ struct corsair_device_info corsairlink_devices[] = {
         .device_id = 0x3d,
         .name = "Whiptail",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
-        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS |
-                          LIBUSB_RECIPIENT_INTERFACE | LIBUSB_ENDPOINT_OUT,
+        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE
+                          | LIBUSB_ENDPOINT_OUT,
         .driver = &corsairlink_driver_coolit,
         .led_control_count = 1,
         .fan_control_count = 4,
@@ -145,8 +147,8 @@ struct corsair_device_info corsairlink_devices[] = {
         .device_id = 0x40,
         .name = "H100i GT", /** H100i */
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
-        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS |
-                          LIBUSB_RECIPIENT_INTERFACE | LIBUSB_ENDPOINT_OUT,
+        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE
+                          | LIBUSB_ENDPOINT_OUT,
         .driver = &corsairlink_driver_coolit,
         .led_control_count = 1,
         .fan_control_count = 4,
@@ -158,8 +160,8 @@ struct corsair_device_info corsairlink_devices[] = {
         .device_id = 0x41,
         .name = "H110i GT", /** H110i GT*/
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
-        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS |
-                          LIBUSB_RECIPIENT_INTERFACE | LIBUSB_ENDPOINT_OUT,
+        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE
+                          | LIBUSB_ENDPOINT_OUT,
         .driver = &corsairlink_driver_coolit,
         .led_control_count = 1,
         .fan_control_count = 2,
@@ -171,8 +173,8 @@ struct corsair_device_info corsairlink_devices[] = {
         .device_id = 0x42,
         .name = "H110i", /** H110i */
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
-        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS |
-                          LIBUSB_RECIPIENT_INTERFACE | LIBUSB_ENDPOINT_OUT,
+        .write_endpoint = LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE
+                          | LIBUSB_ENDPOINT_OUT,
         .driver = &corsairlink_driver_coolit,
         .led_control_count = 1,
         .fan_control_count = 2,
@@ -517,4 +519,4 @@ struct corsair_device_info corsairlink_devices[] = {
 };
 
 uint8_t corsairlink_device_count =
-    sizeof(corsairlink_devices) / sizeof(corsairlink_devices[0]);
+    sizeof( corsairlink_devices ) / sizeof( corsairlink_devices[0] );
