@@ -65,7 +65,7 @@ struct fan_table
     int8_t s6;
 };
 
-enum pump_modes
+enum motor_modes
 {
     PWM = 0,
     RPM = 1,

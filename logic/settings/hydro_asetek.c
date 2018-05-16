@@ -131,11 +131,25 @@ int hydro_asetek_settings( struct corsair_device_scan scanned_device,
 
     if ( flags.set_fan == 1 )
     {
-        if ( settings.fan1.s6 != 0 )
+        switch ( settings.fan_mode )
         {
-            dev->driver->fan.custom( dev, handle, 0, &settings.fan1 );
+        case QUIET:
+        case PERFORMANCE:
+            dev->driver->fan.profile(
+                dev, handle, 0, &settings.fan_mode, &settings.fan_data );
+            break;
+        case CUSTOM:
+            if ( settings.fan1.s6 != 0 )
+            {
+                dev->driver->fan.custom( dev, handle, 0, &settings.fan1 );
+            }
+            break;
+        default:
+            msg_info( "Unsupported Fan Mode\n" );
+            break;
         }
     }
+
     if ( flags.set_pump == 1 )
     {
         if ( settings.pump_mode != DEFAULT )
