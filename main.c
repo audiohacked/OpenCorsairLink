@@ -66,7 +66,7 @@ int main( int argc, char* argv[] )
         msg_info( "Init Error %d\n", rr );
         return 1;
     }
-    rr = libusb_set_option( context, LIBUSB_OPTION_LOG_LEVEL, 2 );
+    //rr = libusb_set_option( context, LIBUSB_OPTION_LOG_LEVEL, 2 );
 
     corsairlink_device_scanner( context, &scanlist_count );
     msg_debug( "DEBUG: scan done, start routines\n" );
