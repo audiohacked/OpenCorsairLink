@@ -144,14 +144,15 @@ void options_print( void )
     msg_info( "\t\t\t 4 - Balanced\n" );
     msg_info( "\t\t\t 5 - Performance\n" );
     msg_info( "\t\t\t 6 - Custom Curve\n" );
-    msg_info( "\t\tPWM <fan PWM> :The desired PWM speed for the selected fan. "
-              "NOTE: it only works when fan mode is set to Fixed PWM\n" );
-    msg_info( "\t\tRPM <fan RPM> :The desired RPM for the selected fan. NOTE: "
-              "it works only when fan mode is set to Fixed RPM\n" );
-    msg_info( "\t\ttemps <CSV of Temperatures>\t:Define Comma Separated Values "
-              "of Temperatures for Fan.\n" );
-    msg_info( "\t\tspeeds <CSV of Speed Percentage>\t:Define Comma Separated "
-              "Values of RPM Percentage for Fan.\n" );
+    msg_info(
+        "\t\tPWM <fan PWM> \t:The desired PWM speed for the selected fan. "
+        "NOTE: it only works when fan mode is set to Fixed PWM\n" );
+    msg_info(
+        "\t\tRPM <fan RPM> \t:The desired RPM for the selected fan. NOTE: "
+        "it works only when fan mode is set to Fixed RPM\n" );
+    msg_info( "\t\tTemps <Celsius>\t:Define Celsius Temperatures for Fan.\n" );
+    msg_info( "\t\tSpeeds <Speed Percentage>\t:Define Values of RPM Percentage "
+              "for Fan.\n" );
 
     msg_info( "\n\tPump:\n" );
     msg_info( "\t--pump " );
