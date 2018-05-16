@@ -16,57 +16,59 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <libusb.h>
-#include "lowlevel/asetek.h"
 #include "device.h"
 #include "driver.h"
+#include "lowlevel/asetek.h"
 #include "print.h"
 #include "protocol/asetek.h"
 
-int corsairlink_asetek_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t *pump_mode)
+#include <errno.h>
+#include <libusb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+int corsairlink_asetek_pump_mode( struct corsair_device_info* dev,
+                                  struct libusb_device_handle* handle,
+                                  uint8_t* pump_mode )
 {
     int rr;
     uint8_t response[64];
     uint8_t commands[64];
-    memset(response, 0, sizeof(response));
-    memset(commands, 0, sizeof(commands));
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
 
     commands[0] = PumpMode;
 
-    if (*(pump_mode) == PERFORMANCE)
+    if ( *( pump_mode ) == PERFORMANCE )
         commands[1] = Asetek_Performance;
-    else if (*(pump_mode) == QUIET)
+    else if ( *( pump_mode ) == QUIET )
         commands[1] = Asetek_Quiet;
 
-    rr = dev->driver->write(handle, dev->write_endpoint, commands, 2);
-    rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
 
     return rr;
 }
 
-int corsairlink_asetek_pump_speed(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
-            uint16_t *speed, uint16_t *maxspeed)
+int corsairlink_asetek_pump_speed( struct corsair_device_info* dev,
+                                   struct libusb_device_handle* handle,
+                                   uint16_t* speed, uint16_t* maxspeed )
 {
     int rr;
     uint8_t response[64];
     uint8_t commands[64];
-    memset(response, 0, sizeof(response));
-    memset(commands, 0, sizeof(commands));
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
 
     commands[0] = 0x20;
 
-    rr = dev->driver->write(handle, dev->write_endpoint, commands, 32);
-    rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 32 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
 
-    msg_debug2("%02X %02X\n", response[8], response[9]);
-    *(speed) = (response[8]<<8) + response[9];
+    msg_debug2( "%02X %02X\n", response[8], response[9] );
+    *( speed ) = ( response[8] << 8 ) + response[9];
 
     return rr;
 }

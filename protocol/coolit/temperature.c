@@ -16,26 +16,27 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <libusb.h>
-
-#include "lowlevel/coolit.h"
 #include "device.h"
 #include "driver.h"
+#include "lowlevel/coolit.h"
 #include "protocol/coolit.h"
 
-int corsairlink_coolit_tempsensorscount(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t *temperature_sensors_count)
+#include <errno.h>
+#include <libusb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+int corsairlink_coolit_tempsensorscount( struct corsair_device_info* dev,
+                                         struct libusb_device_handle* handle,
+                                         uint8_t* temperature_sensors_count )
 {
     int rr;
     uint8_t response[64];
     uint8_t commands[64];
-    memset(response, 0, sizeof(response));
-    memset(commands, 0, sizeof(commands));
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
 
     uint8_t ii = 0;
 
@@ -45,22 +46,23 @@ int corsairlink_coolit_tempsensorscount(struct corsair_device_info *dev, struct 
 
     commands[0] = ii; // Length
 
-    rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
-    rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-    *(temperature_sensors_count) = response[2];
+    *( temperature_sensors_count ) = response[2];
 
     return rr;
 }
 
-int corsairlink_coolit_temperature(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t selector, double *temperature)
+int corsairlink_coolit_temperature( struct corsair_device_info* dev,
+                                    struct libusb_device_handle* handle,
+                                    uint8_t selector, double* temperature )
 {
     int rr;
     uint8_t response[64];
     uint8_t commands[64];
-    memset(response, 0, sizeof(response));
-    memset(commands, 0, sizeof(commands));
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
 
     uint8_t ii = 0;
 
@@ -75,12 +77,13 @@ int corsairlink_coolit_temperature(struct corsair_device_info *dev, struct libus
 
     commands[0] = ii; // Length
 
-    rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
-    rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     // *(temperature) = (response[5]<<8) + response[4];
-    *(temperature) = (double)response[5] + ((double)response[4]/256);
-    // snprintf(temperature, temperature_str_len, "%d.%d C", response[5], response[4]);
+    *( temperature ) = (double)response[5] + ( (double)response[4] / 256 );
+    // snprintf(temperature, temperature_str_len, "%d.%d C", response[5],
+    // response[4]);
 
     return rr;
 }

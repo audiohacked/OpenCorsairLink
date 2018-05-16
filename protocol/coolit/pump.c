@@ -16,33 +16,35 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <libusb.h>
-#include "lowlevel/coolit.h"
 #include "device.h"
 #include "driver.h"
+#include "lowlevel/coolit.h"
 #include "print.h"
 #include "protocol/coolit.h"
 
-int corsairlink_coolit_pump_mode(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint8_t *pump_mode)
+#include <errno.h>
+#include <libusb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+int corsairlink_coolit_pump_mode( struct corsair_device_info* dev,
+                                  struct libusb_device_handle* handle,
+                                  uint8_t* pump_mode )
 {
     int rr;
     uint8_t response[64];
     uint8_t commands[64];
 
-    memset(response, 0, sizeof(response));
-    memset(commands, 0, sizeof(commands));
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
 
-    uint8_t new_pump_mode = *(pump_mode);
+    uint8_t new_pump_mode = *( pump_mode );
 
     uint8_t ii = 0;
 
-    if (new_pump_mode == 0)
+    if ( new_pump_mode == 0 )
     {
         commands[++ii] = CommandId++;
         commands[++ii] = WriteOneByte;
@@ -55,11 +57,12 @@ int corsairlink_coolit_pump_mode(struct corsair_device_info *dev, struct libusb_
 
         commands[0] = ii;
 
-        rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
-        rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
+        rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+        rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-        *(pump_mode) = response[4];
-    } else
+        *( pump_mode ) = response[4];
+    }
+    else
     {
         commands[++ii] = CommandId++;
         commands[++ii] = WriteOneByte;
@@ -69,8 +72,9 @@ int corsairlink_coolit_pump_mode(struct corsair_device_info *dev, struct libusb_
         commands[++ii] = CommandId++;
         commands[++ii] = WriteOneByte;
         commands[++ii] = FAN_Mode;
-        
-        if(dev->device_id == CoolitH110i || dev->device_id == CoolitH110iGT) //both only accept fixed RPMs
+
+        if ( dev->device_id == CoolitH110i
+             || dev->device_id == CoolitH110iGT ) // both only accept fixed RPMs
         {
             commands[++ii] = COOLIT_FixedRPM;
             commands[++ii] = CommandId++;
@@ -78,36 +82,38 @@ int corsairlink_coolit_pump_mode(struct corsair_device_info *dev, struct libusb_
             commands[++ii] = FAN_FixedRPM;
             commands[++ii] = new_pump_mode == PERFORMANCE ? 0x86 : 0x2E;
             commands[++ii] = new_pump_mode == PERFORMANCE ? 0x0B : 0x09;
-        } else 
+        }
+        else
         {
-            if (new_pump_mode == PERFORMANCE)
+            if ( new_pump_mode == PERFORMANCE )
                 commands[++ii] = COOLIT_Performance;
-            else if (new_pump_mode == BALANCED)
+            else if ( new_pump_mode == BALANCED )
                 commands[++ii] = COOLIT_Balanced;
-            else if (new_pump_mode == QUIET)
+            else if ( new_pump_mode == QUIET )
                 commands[++ii] = COOLIT_Quiet;
-            else if (new_pump_mode == DEFAULT)
+            else if ( new_pump_mode == DEFAULT )
                 commands[++ii] = COOLIT_Default;
-            else commands[++ii] = COOLIT_Default;
-
+            else
+                commands[++ii] = COOLIT_Default;
         }
         commands[0] = ii;
 
-        rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
-        rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
+        rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+        rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
     }
 
     return rr;
 }
 
-int corsairlink_coolit_pump_speed(struct corsair_device_info *dev, struct libusb_device_handle *handle,
-            uint16_t *speed, uint16_t *maxspeed)
+int corsairlink_coolit_pump_speed( struct corsair_device_info* dev,
+                                   struct libusb_device_handle* handle,
+                                   uint16_t* speed, uint16_t* maxspeed )
 {
     int rr;
     uint8_t response[64];
     uint8_t commands[64];
-    memset(response, 0, sizeof(response));
-    memset(commands, 0, sizeof(commands));
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
 
     uint8_t ii = 0;
 
@@ -125,13 +131,13 @@ int corsairlink_coolit_pump_speed(struct corsair_device_info *dev, struct libusb
     commands[++ii] = FAN_MaxRecordedRPM;
 
     commands[0] = ii;
-    rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
-    rr = dev->driver->read(handle, dev->read_endpoint, response, 64);
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-    msg_debug2("Speed: %02X %02X\n", response[5], response[4]);
-    msg_debug2("Max Speed: %02X %02X\n", response[9], response[8]);
-    *(speed) = (response[5]<<8) + response[4];
-    *(maxspeed) = (response[9]<<8) + response[8];
+    msg_debug2( "Speed: %02X %02X\n", response[5], response[4] );
+    msg_debug2( "Max Speed: %02X %02X\n", response[9], response[8] );
+    *( speed ) = ( response[5] << 8 ) + response[4];
+    *( maxspeed ) = ( response[9] << 8 ) + response[8];
 
     return rr;
 }

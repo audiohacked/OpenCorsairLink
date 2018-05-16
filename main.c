@@ -16,30 +16,36 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <libusb.h>
 #include "device.h"
 #include "driver.h"
 #include "logic/options.h"
-#include "print.h"
 #include "logic/scan.h"
+#include "print.h"
 
-int commanderpro_settings(struct corsair_device_scan scanned_device,
-        struct option_flags flags, struct option_parse_return settings);
-int hydro_asetek_settings(struct corsair_device_scan scanned_device,
-        struct option_flags flags, struct option_parse_return settings);
-int hydro_asetekpro_settings(struct corsair_device_scan scanned_device,
-        struct option_flags flags, struct option_parse_return settings);
-int hydro_coolit_settings(struct corsair_device_scan scanned_device,
-        struct option_flags flags, struct option_parse_return settings);
-int psu_settings(struct corsair_device_scan scanned_device,
-        struct option_flags flags, struct option_parse_return settings);
+#include <errno.h>
+#include <libusb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
-int main(int argc, char *argv[])
+int commanderpro_settings( struct corsair_device_scan scanned_device,
+                           struct option_flags flags,
+                           struct option_parse_return settings );
+int hydro_asetek_settings( struct corsair_device_scan scanned_device,
+                           struct option_flags flags,
+                           struct option_parse_return settings );
+int hydro_asetekpro_settings( struct corsair_device_scan scanned_device,
+                              struct option_flags flags,
+                              struct option_parse_return settings );
+int hydro_coolit_settings( struct corsair_device_scan scanned_device,
+                           struct option_flags flags,
+                           struct option_parse_return settings );
+int psu_settings( struct corsair_device_scan scanned_device,
+                  struct option_flags flags,
+                  struct option_parse_return settings );
+
+int main( int argc, char* argv[] )
 {
     int rr; // result from libusb functions
 
@@ -50,56 +56,66 @@ int main(int argc, char *argv[])
     struct option_flags flags;
     struct option_parse_return settings;
 
-    options_parse(argc, argv, &flags, &device_number,
-        &settings);
+    options_parse( argc, argv, &flags, &device_number, &settings );
 
-    libusb_context *context = NULL;
+    libusb_context* context = NULL;
 
-    rr = libusb_init(&context);
-    if (rr < 0)
+    rr = libusb_init( &context );
+    if ( rr < 0 )
     {
-        msg_info("Init Error %d\n", rr);
+        msg_info( "Init Error %d\n", rr );
         return 1;
     }
-    // libusb_set_debug(context, 3); // LIBUSB_DEPRECATED_FOR(libusb_set_option)
+    rr = libusb_set_option( context, LIBUSB_OPTION_LOG_LEVEL, 2 );
 
-    corsairlink_device_scanner(context, &scanlist_count);
-    msg_debug("DEBUG: scan done, start routines\n");
-    msg_debug("DEBUG: device_number = %d\n", device_number);
+    corsairlink_device_scanner( context, &scanlist_count );
+    msg_debug( "DEBUG: scan done, start routines\n" );
+    msg_debug( "DEBUG: device_number = %d\n", device_number );
 
-    if (device_number >= 0)
+    if ( device_number >= 0 )
     {
-        if(device_number >= scanlist_count)
+        if ( device_number >= scanlist_count )
         {
-            msg_info("Detected %d device(s), submitted device %d is out of range\n",
-                        scanlist_count, device_number);
+            msg_info(
+                "Detected %d device(s), submitted device %d is out of range\n",
+                scanlist_count,
+                device_number );
         }
         else
         {
-            if (scanlist[device_number].device->driver == &corsairlink_driver_rmi)
+            if ( scanlist[device_number].device->driver
+                 == &corsairlink_driver_rmi )
             {
-                psu_settings(scanlist[device_number], flags, settings);
+                psu_settings( scanlist[device_number], flags, settings );
             }
-            else if (scanlist[device_number].device->driver == &corsairlink_driver_commanderpro)
+            else if ( scanlist[device_number].device->driver
+                      == &corsairlink_driver_commanderpro )
             {
-                commanderpro_settings(scanlist[device_number], flags, settings);
+                commanderpro_settings(
+                    scanlist[device_number], flags, settings );
             }
-            else if (scanlist[device_number].device->driver == &corsairlink_driver_asetek)
+            else if ( scanlist[device_number].device->driver
+                      == &corsairlink_driver_asetek )
             {
-                hydro_asetek_settings(scanlist[device_number], flags, settings);
+                hydro_asetek_settings(
+                    scanlist[device_number], flags, settings );
             }
-            else  if (scanlist[device_number].device->driver == &corsairlink_driver_asetekpro)
+            else if ( scanlist[device_number].device->driver
+                      == &corsairlink_driver_asetekpro )
             {
-                hydro_asetekpro_settings(scanlist[device_number], flags, settings);
+                hydro_asetekpro_settings(
+                    scanlist[device_number], flags, settings );
             }
-            else  if (scanlist[device_number].device->driver == &corsairlink_driver_coolit)
+            else if ( scanlist[device_number].device->driver
+                      == &corsairlink_driver_coolit )
             {
-                hydro_coolit_settings(scanlist[device_number], flags, settings);
+                hydro_coolit_settings(
+                    scanlist[device_number], flags, settings );
             }
         }
     }
 
 exit:
-    corsairlink_close(context);
+    corsairlink_close( context );
     return 0;
 }

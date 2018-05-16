@@ -21,41 +21,39 @@
 
 #include <errno.h>
 #include <getopt.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-void fan_control_init(struct fan_control *settings)
+void fan_control_init( struct fan_control* settings )
 {
     settings->selector = 0;
     settings->mode = 0;
 }
 
-void fan_suboptions_parse(char *subopts, struct option_parse_return *settings)
+void fan_suboptions_parse( char* subopts, struct option_parse_return* settings )
 {
     int opt, returnCode = 0, option_index = 0;
     char *value, *token;
     uint8_t ii = 0;
 
-    while (*subopts != '\0')
-    switch ( getsubopt(&subopts, fan_options, &value) )
-    {
-    case SUBOPTION_FAN_CHANNEL:
-        sscanf(value, "%hhu", &settings->fan);
-        msg_debug("FAN Channel = %s\n", value);
-        break;
+    while ( *subopts != '\0' )
+        switch ( getsubopt( &subopts, fan_options, &value ) )
+        {
+        case SUBOPTION_FAN_CHANNEL:
+            sscanf( value, "%hhu", &settings->fan );
+            msg_debug( "FAN Channel = %s\n", value );
+            break;
 
-    case SUBOPTION_FAN_MODE:
-        sscanf(value, "%hhu", &settings->fan_mode);
-        msg_debug("FAN Mode = %s\n", value);
-        break;
+        case SUBOPTION_FAN_MODE:
+            sscanf( value, "%hhu", &settings->fan_mode );
+            msg_debug( "FAN Mode = %s\n", value );
+            break;
 
-    default:
-        /* Unknown suboption. */
-        msg_info("Unknown suboption `%s'\n", value);
-        break;
-    }
+        default:
+            /* Unknown suboption. */
+            msg_info( "Unknown suboption `%s'\n", value );
+            break;
+        }
 }
-

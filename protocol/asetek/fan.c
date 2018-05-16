@@ -16,64 +16,67 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <libusb.h>
-#include "lowlevel/asetek.h"
 #include "device.h"
 #include "driver.h"
+#include "lowlevel/asetek.h"
 #include "print.h"
 #include "protocol/asetek.h"
 
-int corsairlink_asetek_fan_count(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
-            uint8_t *fan_count)
+#include <errno.h>
+#include <libusb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+int corsairlink_asetek_fan_count( struct corsair_device_info* dev,
+                                  struct libusb_device_handle* handle,
+                                  uint8_t* fan_count )
 {
     int rr = 0;
     // undefined, return device value from device.c
-    *(fan_count) = dev->fan_control_count;
+    *( fan_count ) = dev->fan_control_count;
     return rr;
 }
 
-int corsairlink_asetek_fan_print_mode(uint8_t mode, uint16_t data,
-            char *modestr, uint8_t modestr_size)
+int corsairlink_asetek_fan_print_mode( uint8_t mode, uint16_t data,
+                                       char* modestr, uint8_t modestr_size )
 {
-
     int rr = 0;
     // undefined, return hex value of mode
-    snprintf(modestr,modestr_size, "Mode 0x%02X",mode);
+    snprintf( modestr, modestr_size, "Mode 0x%02X", mode );
     return rr;
 }
 
-int corsairlink_asetek_fan_mode(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
-            uint8_t selector, uint8_t *fan_mode, uint16_t *fan_data)
+int corsairlink_asetek_fan_mode( struct corsair_device_info* dev,
+                                 struct libusb_device_handle* handle,
+                                 uint8_t selector, uint8_t* fan_mode,
+                                 uint16_t* fan_data )
 {
     int rr;
     struct fan_table curve;
-    if ( *(fan_mode) == PERFORMANCE) {
-        ASETEK_FAN_TABLE_EXTREME(curve);
+    if ( *( fan_mode ) == PERFORMANCE )
+    {
+        ASETEK_FAN_TABLE_EXTREME( curve );
     }
-    else if ( *(fan_mode) == QUIET) {
-        ASETEK_FAN_TABLE_QUIET(curve);
+    else if ( *( fan_mode ) == QUIET )
+    {
+        ASETEK_FAN_TABLE_QUIET( curve );
     }
-    rr = dev->driver->fan.custom(dev, handle, selector, &curve);
+    rr = dev->driver->fan.custom( dev, handle, selector, &curve );
 
     return rr;
 }
 
-int corsairlink_asetek_fan_curve(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
-            uint8_t selector, struct fan_table *fan)
+int corsairlink_asetek_fan_curve( struct corsair_device_info* dev,
+                                  struct libusb_device_handle* handle,
+                                  uint8_t selector, struct fan_table* fan )
 {
     int rr;
     uint8_t response[64];
     uint8_t commands[64];
-    memset(response, 0, sizeof(response));
-    memset(commands, 0, sizeof(commands));
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
 
     commands[0] = FanCurve;
     commands[1] = UnknownFanCurve;
@@ -92,29 +95,30 @@ int corsairlink_asetek_fan_curve(struct corsair_device_info *dev,
     commands[12] = fan->s5;
     commands[13] = fan->s6;
 
-    rr = dev->driver->write(handle, dev->write_endpoint, commands, 14);
-    rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 14 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
 
     return rr;
 }
 
-int corsairlink_asetek_fan_speed(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
-            uint8_t selector, uint16_t *speed, uint16_t *maxspeed)
+int corsairlink_asetek_fan_speed( struct corsair_device_info* dev,
+                                  struct libusb_device_handle* handle,
+                                  uint8_t selector, uint16_t* speed,
+                                  uint16_t* maxspeed )
 {
     int rr;
     uint8_t response[64];
     uint8_t commands[64];
-    memset(response, 0, sizeof(response));
-    memset(commands, 0, sizeof(commands));
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
 
     commands[0] = 0x20;
 
-    rr = dev->driver->write(handle, dev->write_endpoint, commands, 32);
-    rr = dev->driver->read(handle, dev->read_endpoint, response, 32);
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 32 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
 
-    msg_debug2("%02X %02X\n", response[0], response[1]);
-    *(speed) = (response[0]<<8) + response[1];
+    msg_debug2( "%02X %02X\n", response[0], response[1] );
+    *( speed ) = ( response[0] << 8 ) + response[1];
 
     return rr;
 }

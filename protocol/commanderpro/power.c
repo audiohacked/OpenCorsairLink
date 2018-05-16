@@ -19,43 +19,41 @@
 /*! \file protocol/commanderpro/power.c
  *  \brief Power Routines for Commander Pro
  */
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <libusb.h>
-
-#include "lowlevel/commanderpro.h"
 #include "device.h"
 #include "driver.h"
+#include "lowlevel/commanderpro.h"
 #include "print.h"
 #include "protocol/commanderpro.h"
 
-int corsairlink_commanderpro_voltage(struct corsair_device_info *dev,
-            struct libusb_device_handle *handle,
-            uint8_t sensor_index,
-            double *voltage)
+#include <errno.h>
+#include <libusb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+int corsairlink_commanderpro_voltage( struct corsair_device_info* dev,
+                                      struct libusb_device_handle* handle,
+                                      uint8_t sensor_index, double* voltage )
 {
     int rr;
     uint8_t response[16];
-    uint8_t commands[64] ;
-    memset(response, 0, sizeof(response));
-    memset(commands, 0, sizeof(commands));
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
 
     commands[0] = 0x12;
     commands[1] = sensor_index;
 
-    rr = dev->driver->write(handle, dev->write_endpoint, commands, 64);
-    rr = dev->driver->read(handle, dev->read_endpoint, response, 16);
-    
-    msg_debug2("%02X %02X %02X\n", response[0], response[1], response[2]);
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
-    uint16_t data = (response[1]<<8) + response[2];
-    *(voltage) = (double)data/1000;
+    msg_debug2( "%02X %02X %02X\n", response[0], response[1], response[2] );
+
+    uint16_t data = ( response[1] << 8 ) + response[2];
+    *( voltage ) = (double)data / 1000;
 
     // snprintf(voltage, voltage_str_len, "%2.3f V", volts);
 
     return 0;
 }
-

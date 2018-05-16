@@ -17,10 +17,13 @@
 #
 
 CC ?= gcc
-CFLAGS ?= -std=c99
-# CFLAGS += -std=c99
+
+# CFLAGS ?=
+CFLAGS += -std=c99
 # CFLAGS += -pedantic-errors
 CFLAGS += -Iinclude
+# CFLAGS += -D_XOPEN_SOURCE=500
+
 LDFLAGS ?= -lm
 
 # pkg-config for libusb-1.0

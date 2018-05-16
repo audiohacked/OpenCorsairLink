@@ -19,7 +19,10 @@
 #ifndef _DEVICE_H
 #define _DEVICE_H
 
-struct corsair_device_info {
+#include <stdint.h>
+
+struct corsair_device_info
+{
     /** device info */
     char name[64];
     uint16_t vendor_id;
@@ -31,7 +34,7 @@ struct corsair_device_info {
     uint8_t write_endpoint;
 
     /** device control info */
-    struct corsair_device_driver *driver;
+    struct corsair_device_driver* driver;
     uint8_t led_control_count; // used mostly with COOLIT driver
     uint8_t fan_control_count; // used with COOLIT driver
     uint8_t temperature_control_count;
@@ -42,4 +45,3 @@ extern struct corsair_device_info corsairlink_devices[];
 extern uint8_t corsairlink_device_count;
 
 #endif
-

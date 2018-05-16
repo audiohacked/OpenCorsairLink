@@ -16,105 +16,112 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <libusb.h>
 #include "device.h"
 #include "driver.h"
-#include "print.h"
-#include "logic/scan.h"
 #include "logic/options.h"
+#include "logic/scan.h"
+#include "print.h"
 
-int commanderpro_settings(struct corsair_device_scan scanned_device,
-            struct option_flags flags,
-            struct option_parse_return settings)
+#include <errno.h>
+#include <libusb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+int commanderpro_settings( struct corsair_device_scan scanned_device,
+                           struct option_flags flags,
+                           struct option_parse_return settings )
 {
     int rr;
     int ii;
     char name[32];
-    name[sizeof(name) - 1] = 0;
+    name[sizeof( name ) - 1] = 0;
     double output_volts;
     uint32_t time = 0;
-    struct corsair_device_info *dev;
-    struct libusb_device_handle *handle;
+    struct corsair_device_info* dev;
+    struct libusb_device_handle* handle;
 
     dev = scanned_device.device;
     handle = scanned_device.handle;
-    msg_debug("DEBUG: shortcuts set\n");
+    msg_debug( "DEBUG: shortcuts set\n" );
 
-    rr = dev->driver->init(handle, dev->write_endpoint);
-    msg_debug("DEBUG: init done\n");
+    rr = dev->driver->init( handle, dev->write_endpoint );
+    msg_debug( "DEBUG: init done\n" );
 
     /* fetch device name, vendor name, product name */
-    rr = dev->driver->name(dev, handle, name, sizeof(name));
-    rr = dev->driver->vendor(dev, handle, name, sizeof(name));
-    msg_info("Vendor: %s\n", name);
-    rr = dev->driver->product(dev, handle, name, sizeof(name));
-    msg_info("Product: %s\n", name);
-    rr = dev->driver->fw_version(dev, handle, name, sizeof(name));
-    msg_info("Firmware: %s\n", name);
-    msg_debug("DEBUG: string done\n");
+    rr = dev->driver->name( dev, handle, name, sizeof( name ) );
+    rr = dev->driver->vendor( dev, handle, name, sizeof( name ) );
+    msg_info( "Vendor: %s\n", name );
+    rr = dev->driver->product( dev, handle, name, sizeof( name ) );
+    msg_info( "Product: %s\n", name );
+    rr = dev->driver->fw_version( dev, handle, name, sizeof( name ) );
+    msg_info( "Firmware: %s\n", name );
+    msg_debug( "DEBUG: string done\n" );
 
     /* fetch temperatures */
-    for (ii=0; ii<4; ii++) {
+    for ( ii = 0; ii < 4; ii++ )
+    {
         // char temperature[16];
         double temperature;
-        rr = dev->driver->temperature(dev, handle, ii, &temperature);
-        msg_info("Temperature %d: %5.2f C\n", ii, temperature);
+        rr = dev->driver->temperature( dev, handle, ii, &temperature );
+        msg_info( "Temperature %d: %5.2f C\n", ii, temperature );
     }
 
     /* fetch SATA voltages */
-    for (ii=0; ii<3; ii++) {
-        if (ii==0)
-            msg_info("Output 12v: ");
-        if (ii==1)
-            msg_info("Output 5v: ");
-        if (ii==2)
-            msg_info("Output 3.3v: ");
+    for ( ii = 0; ii < 3; ii++ )
+    {
+        if ( ii == 0 )
+            msg_info( "Output 12v: " );
+        if ( ii == 1 )
+            msg_info( "Output 5v: " );
+        if ( ii == 2 )
+            msg_info( "Output 3.3v: " );
 
-        rr = dev->driver->power.voltage(dev, handle, ii, &output_volts);
-        msg_info("%5.2f V\n", output_volts);
+        rr = dev->driver->power.voltage( dev, handle, ii, &output_volts );
+        msg_info( "%5.2f V\n", output_volts );
     }
 
-    msg_debug("Setting LED\n");
-    if (flags.set_led == 2)
+    msg_debug( "Setting LED\n" );
+    if ( flags.set_led == 2 )
     {
-        msg_debug("Setting LED FLag found\n");
-        switch(settings.led_ctrl.mode)
+        msg_debug( "Setting LED FLag found\n" );
+        switch ( settings.led_ctrl.mode )
         {
         case BLINK:
-            msg_debug("Setting LED to BLINK\n");
-            rr = dev->driver->led.blink(dev, handle, &settings.led_ctrl);
+            msg_debug( "Setting LED to BLINK\n" );
+            rr = dev->driver->led.blink( dev, handle, &settings.led_ctrl );
             break;
         case PULSE:
-            msg_debug("Setting LED to PULSE\n");
-            rr = dev->driver->led.color_pulse(dev, handle, &settings.led_ctrl);
+            msg_debug( "Setting LED to PULSE\n" );
+            rr =
+                dev->driver->led.color_pulse( dev, handle, &settings.led_ctrl );
             break;
         case SHIFT:
-            msg_debug("Setting LED to SHIFT\n");
-            rr = dev->driver->led.color_shift(dev, handle, &settings.led_ctrl);
+            msg_debug( "Setting LED to SHIFT\n" );
+            rr =
+                dev->driver->led.color_shift( dev, handle, &settings.led_ctrl );
             break;
         case RAINBOW:
-            msg_debug("Setting LED to RAINBOW\n");
-            rr = dev->driver->led.rainbow(dev, handle, &settings.led_ctrl);
+            msg_debug( "Setting LED to RAINBOW\n" );
+            rr = dev->driver->led.rainbow( dev, handle, &settings.led_ctrl );
             break;
         case TEMPERATURE:
-            msg_debug("Setting LED to TEMPERATURE\n");
-            rr = dev->driver->led.temperature(dev, handle, &settings.led_ctrl);
+            msg_debug( "Setting LED to TEMPERATURE\n" );
+            rr =
+                dev->driver->led.temperature( dev, handle, &settings.led_ctrl );
             break;
         case STATIC:
-            msg_debug("Setting LED STATIC\n");
+            msg_debug( "Setting LED STATIC\n" );
         default:
-            msg_debug("Setting LED DEFAULT\n");
-            rr = dev->driver->led.static_color(dev, handle, &settings.led_ctrl);
+            msg_debug( "Setting LED DEFAULT\n" );
+            rr = dev->driver->led.static_color(
+                dev, handle, &settings.led_ctrl );
             break;
         }
     }
 
-    rr = dev->driver->deinit(handle, dev->write_endpoint);
+    rr = dev->driver->deinit( handle, dev->write_endpoint );
 
     return 0;
 }
