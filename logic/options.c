@@ -148,8 +148,9 @@ void options_print( void )
               "NOTE: it only works when fan mode is set to Fixed PWM\n" );
     msg_info( "\t\tRPM <fan RPM> \t:The desired RPM for the selected fan. "
               "NOTE: it works only when fan mode is set to Fixed RPM\n" );
-    msg_info( "\t\tTemps <Celsius>\t:Define Celsius Temperatures for Fan.\n" );
-    msg_info( "\t\tSpeeds <Speed Percentage>\t:Define Values of RPM Percentage "
+    msg_info( "\t\tFor Custom Curves:\n" );
+    msg_info( "\t\t\tTemps <C>\t:Define Celsius Temperatures for Fan.\n" );
+    msg_info( "\t\t\tSpeeds <Percentage>\t:Define Values of RPM Percentage "
               "for Fan.\n" );
 
     msg_info( "\n\tPump:\n" );
