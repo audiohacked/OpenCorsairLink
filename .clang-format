@@ -2,7 +2,7 @@
 Language:        Cpp
 # BasedOnStyle:  LLVM
 AccessModifierOffset: -4
-AlignAfterOpenBracket: Align
+AlignAfterOpenBracket: AlwaysBreak #Align
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
 AlignEscapedNewlines: Left
@@ -18,9 +18,9 @@ AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: true
-BinPackArguments: false
-BinPackParameters: true
-BraceWrapping:   
+BinPackArguments: true
+BinPackParameters: false
+BraceWrapping:
   AfterClass:      true
   AfterControlStatement: true
   AfterEnum:       true
@@ -42,24 +42,24 @@ BreakBeforeInheritanceComma: false
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: false
 BreakConstructorInitializers: AfterColon
-BreakAfterJavaFieldAnnotations: false
+BreakAfterJavaFieldAnnotations: true
 BreakStringLiterals: true
 ColumnLimit:     80
 CommentPragmas:  '^ IWYU pragma:'
 CompactNamespaces: false
-ConstructorInitializerAllOnOneLineOrOnePerLine: false
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
 Cpp11BracedListStyle: false
 DerivePointerAlignment: false
 DisableFormat:   false
 FixNamespaceComments: true
-ForEachMacros:   
+ForEachMacros:
   - foreach
   - Q_FOREACH
   - BOOST_FOREACH
 IncludeBlocks:   Regroup
-IncludeCategories: 
+IncludeCategories:
   - Regex:           '^"(llvm|llvm-c|clang|clang-c)/'
     Priority:        2
   - Regex:           '^(<|"(gtest|gmock|isl|json)/)'
@@ -89,7 +89,7 @@ PenaltyBreakString: 1000
 PenaltyExcessCharacter: 1000000
 PenaltyReturnTypeOnItsOwnLine: 60
 PointerAlignment: Left
-RawStringFormats: 
+RawStringFormats:
   - Delimiter:       pb
     Language:        TextProto
     BasedOnStyle:    google
@@ -111,4 +111,3 @@ Standard:        Cpp11
 TabWidth:        4
 UseTab:          Never
 ...
-
