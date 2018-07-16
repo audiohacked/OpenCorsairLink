@@ -32,9 +32,10 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_rmi_sensor_select( struct corsair_device_info* dev,
-                                   struct libusb_device_handle* handle,
-                                   uint8_t sensor_select )
+int corsairlink_rmi_sensor_select(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t sensor_select )
 {
     int rr;
     uint8_t response[64];
@@ -54,9 +55,11 @@ int corsairlink_rmi_sensor_select( struct corsair_device_info* dev,
     return 0;
 }
 
-int corsairlink_rmi_output_volts( struct corsair_device_info* dev,
-                                  struct libusb_device_handle* handle,
-                                  uint8_t sensor_select, double* volts )
+int corsairlink_rmi_output_volts(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t sensor_select,
+    double* volts )
 {
     int rr;
     uint8_t response[64];
@@ -72,13 +75,9 @@ int corsairlink_rmi_output_volts( struct corsair_device_info* dev,
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-    msg_debug2( "%02X %02X %02X %02X %02X %02X\n",
-                response[0],
-                response[1],
-                response[2],
-                response[3],
-                response[4],
-                response[5] );
+    msg_debug2(
+        "%02X %02X %02X %02X %02X %02X\n", response[0], response[1],
+        response[2], response[3], response[4], response[5] );
 
     uint16_t data;
     memcpy( &data, response + 2, 2 );
@@ -88,9 +87,11 @@ int corsairlink_rmi_output_volts( struct corsair_device_info* dev,
     return 0;
 }
 
-int corsairlink_rmi_output_amps( struct corsair_device_info* dev,
-                                 struct libusb_device_handle* handle,
-                                 uint8_t sensor_select, double* amps )
+int corsairlink_rmi_output_amps(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t sensor_select,
+    double* amps )
 {
     int rr;
     uint8_t response[64];
@@ -108,13 +109,9 @@ int corsairlink_rmi_output_amps( struct corsair_device_info* dev,
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-    msg_debug2( "%02X %02X %02X %02X %02X %02X\n",
-                response[0],
-                response[1],
-                response[2],
-                response[3],
-                response[4],
-                response[5] );
+    msg_debug2(
+        "%02X %02X %02X %02X %02X %02X\n", response[0], response[1],
+        response[2], response[3], response[4], response[5] );
 
     uint16_t data;
     memcpy( &data, response + 2, 2 );
@@ -124,9 +121,11 @@ int corsairlink_rmi_output_amps( struct corsair_device_info* dev,
     return 0;
 }
 
-int corsairlink_rmi_output_watts( struct corsair_device_info* dev,
-                                  struct libusb_device_handle* handle,
-                                  uint8_t sensor_select, double* watts )
+int corsairlink_rmi_output_watts(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t sensor_select,
+    double* watts )
 {
     int rr;
     uint8_t response[64];
@@ -144,13 +143,9 @@ int corsairlink_rmi_output_watts( struct corsair_device_info* dev,
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-    msg_debug2( "%02X %02X %02X %02X %02X %02X\n",
-                response[0],
-                response[1],
-                response[2],
-                response[3],
-                response[4],
-                response[5] );
+    msg_debug2(
+        "%02X %02X %02X %02X %02X %02X\n", response[0], response[1],
+        response[2], response[3], response[4], response[5] );
 
     uint16_t data;
     memcpy( &data, response + 2, 2 );
@@ -160,9 +155,10 @@ int corsairlink_rmi_output_watts( struct corsair_device_info* dev,
     return 0;
 }
 
-int corsairlink_rmi_power_supply_voltage( struct corsair_device_info* dev,
-                                          struct libusb_device_handle* handle,
-                                          double* volts )
+int corsairlink_rmi_power_supply_voltage(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    double* volts )
 {
     int rr;
     uint8_t response[64];
@@ -180,13 +176,9 @@ int corsairlink_rmi_power_supply_voltage( struct corsair_device_info* dev,
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 4 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-    msg_debug2( "%02X %02X %02X %02X %02X %02X\n",
-                response[0],
-                response[1],
-                response[2],
-                response[3],
-                response[4],
-                response[5] );
+    msg_debug2(
+        "%02X %02X %02X %02X %02X %02X\n", response[0], response[1],
+        response[2], response[3], response[4], response[5] );
 
     uint16_t data = 0;
     memcpy( &data, response + 2, 2 );
@@ -196,9 +188,10 @@ int corsairlink_rmi_power_supply_voltage( struct corsair_device_info* dev,
     return 0;
 }
 
-int corsairlink_rmi_power_total_wattage( struct corsair_device_info* dev,
-                                         struct libusb_device_handle* handle,
-                                         double* watts )
+int corsairlink_rmi_power_total_wattage(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    double* watts )
 {
     int rr;
     uint8_t response[64];
@@ -216,13 +209,9 @@ int corsairlink_rmi_power_total_wattage( struct corsair_device_info* dev,
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-    msg_debug2( "%02X %02X %02X %02X %02X %02X\n",
-                response[0],
-                response[1],
-                response[2],
-                response[3],
-                response[4],
-                response[5] );
+    msg_debug2(
+        "%02X %02X %02X %02X %02X %02X\n", response[0], response[1],
+        response[2], response[3], response[4], response[5] );
 
     uint16_t data;
     memcpy( &data, response + 2, 2 );

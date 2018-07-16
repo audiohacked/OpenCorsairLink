@@ -84,22 +84,19 @@ void led_suboptions_parse( char* subopts, struct led_control* settings )
                 if ( ii == 7 )
                     break;
                 msg_debug( "Found Color %d: %s\n", ii, token );
-                sscanf( token,
-                        "%02hhX%02hhX%02hhX,",
-                        &settings->led_colors[ii].red,
-                        &settings->led_colors[ii].green,
-                        &settings->led_colors[ii].blue );
+                sscanf(
+                    token, "%02hhX%02hhX%02hhX,", &settings->led_colors[ii].red,
+                    &settings->led_colors[ii].green,
+                    &settings->led_colors[ii].blue );
                 ++ii;
                 token = strtok( NULL, ":" );
             }
             break;
 
         case SUBOPTION_LED_WARN: /* led warning color */
-            sscanf( value,
-                    "%02hhX%02hhX%02hhX",
-                    &settings->led_colors[2].red,
-                    &settings->led_colors[2].green,
-                    &settings->led_colors[2].blue );
+            sscanf(
+                value, "%02hhX%02hhX%02hhX", &settings->led_colors[2].red,
+                &settings->led_colors[2].green, &settings->led_colors[2].blue );
             break;
 
         case SUBOPTION_LED_TEMPERATURE: /* led warning temperatures */

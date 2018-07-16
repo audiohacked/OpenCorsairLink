@@ -28,9 +28,10 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_coolit_tempsensorscount( struct corsair_device_info* dev,
-                                         struct libusb_device_handle* handle,
-                                         uint8_t* temperature_sensors_count )
+int corsairlink_coolit_tempsensorscount(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t* temperature_sensors_count )
 {
     int rr;
     uint8_t response[64];
@@ -54,9 +55,11 @@ int corsairlink_coolit_tempsensorscount( struct corsair_device_info* dev,
     return rr;
 }
 
-int corsairlink_coolit_temperature( struct corsair_device_info* dev,
-                                    struct libusb_device_handle* handle,
-                                    uint8_t selector, double* temperature )
+int corsairlink_coolit_temperature(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    double* temperature )
 {
     int rr;
     uint8_t response[64];

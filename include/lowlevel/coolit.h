@@ -24,16 +24,22 @@
 
 #include <libusb.h>
 
-int corsairlink_coolit_init( struct libusb_device_handle* dev_handle,
-                             uint8_t endpoint );
+int corsairlink_coolit_init(
+    struct libusb_device_handle* dev_handle, uint8_t endpoint );
 
-int corsairlink_coolit_deinit( struct libusb_device_handle* dev_handle,
-                               uint8_t endpoint );
+int corsairlink_coolit_deinit(
+    struct libusb_device_handle* dev_handle, uint8_t endpoint );
 
-int corsairlink_coolit_write( struct libusb_device_handle* dev_handle,
-                              uint8_t endpoint, uint8_t* data, int length );
+int corsairlink_coolit_write(
+    struct libusb_device_handle* dev_handle,
+    uint8_t endpoint,
+    uint8_t* data,
+    int length );
 
-int corsairlink_coolit_read( struct libusb_device_handle* dev_handle,
-                             uint8_t endpoint, uint8_t* data, int length );
+int corsairlink_coolit_read(
+    struct libusb_device_handle* dev_handle,
+    uint8_t endpoint,
+    uint8_t* data,
+    int length );
 
 #endif

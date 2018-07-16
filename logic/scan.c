@@ -82,10 +82,9 @@ int corsairlink_device_scanner( libusb_context* context, int* _scanlist_count )
 
         struct libusb_device_descriptor desc;
         rr = libusb_get_device_descriptor( devices[ii], &desc );
-        msg_debug( "Checking USB device %d (%04x:%04x)...\n",
-                   ii,
-                   desc.idVendor,
-                   desc.idProduct );
+        msg_debug(
+            "Checking USB device %d (%04x:%04x)...\n", ii, desc.idVendor,
+            desc.idProduct );
 
         for ( jj = 0; jj < corsairlink_device_count; jj++ )
         {
@@ -97,8 +96,8 @@ int corsairlink_device_scanner( libusb_context* context, int* _scanlist_count )
                 msg_debug(
                     "Corsair product detected. Checking if device is %s... ",
                     device->name );
-                rr = libusb_open( devices[ii],
-                                  &scanlist[scanlist_count].handle );
+                rr = libusb_open(
+                    devices[ii], &scanlist[scanlist_count].handle );
                 if ( scanlist[scanlist_count].handle != NULL )
                 { // Maybe try 'if (rr == 0)'
                     rr = libusb_detach_kernel_driver(
@@ -116,9 +115,9 @@ int corsairlink_device_scanner( libusb_context* context, int* _scanlist_count )
                          * of the device connections
                          */
                         scanlist[scanlist_count].device = device;
-                        msg_info( "Dev=%d, CorsairLink Device Found: %s!\n",
-                                  scanlist_count,
-                                  device->name );
+                        msg_info(
+                            "Dev=%d, CorsairLink Device Found: %s!\n",
+                            scanlist_count, device->name );
                         scanlist_count++;
                         break;
                     }
@@ -133,9 +132,9 @@ int corsairlink_device_scanner( libusb_context* context, int* _scanlist_count )
                 }
                 else
                 {
-                    msg_debug( "Could not open device %d:%d.",
-                               desc.idVendor,
-                               desc.idProduct );
+                    msg_debug(
+                        "Could not open device %d:%d.", desc.idVendor,
+                        desc.idProduct );
                 }
             }
         }

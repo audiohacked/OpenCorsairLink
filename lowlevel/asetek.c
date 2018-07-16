@@ -30,8 +30,8 @@
  *  Asetek init routine uses two control transfers.
  *
  */
-int corsairlink_asetek_init( struct libusb_device_handle* dev_handle,
-                             uint8_t endpoint )
+int corsairlink_asetek_init(
+    struct libusb_device_handle* dev_handle, uint8_t endpoint )
 {
     int rr;
 
@@ -47,8 +47,8 @@ int corsairlink_asetek_init( struct libusb_device_handle* dev_handle,
  *  Asetek de-init routine uses a control transfer.
  *
  */
-int corsairlink_asetek_deinit( struct libusb_device_handle* dev_handle,
-                               uint8_t endpoint )
+int corsairlink_asetek_deinit(
+    struct libusb_device_handle* dev_handle, uint8_t endpoint )
 {
     int rr;
 
@@ -62,18 +62,18 @@ int corsairlink_asetek_deinit( struct libusb_device_handle* dev_handle,
  *  Lowlevel Asetek Write rotine uses bulk transfer to send commands.
  *
  */
-int corsairlink_asetek_write( struct libusb_device_handle* dev_handle,
-                              uint8_t endpoint, uint8_t* data, int length )
+int corsairlink_asetek_write(
+    struct libusb_device_handle* dev_handle,
+    uint8_t endpoint,
+    uint8_t* data,
+    int length )
 {
     int bytes_transferred;
     int rr;
 
-    rr = libusb_bulk_transfer( dev_handle,
-                               endpoint,
-                               data,
-                               length,
-                               &bytes_transferred,
-                               TIMEOUT_DEFAULT );
+    rr = libusb_bulk_transfer(
+        dev_handle, endpoint, data, length, &bytes_transferred,
+        TIMEOUT_DEFAULT );
 
     return rr;
 }
@@ -82,18 +82,18 @@ int corsairlink_asetek_write( struct libusb_device_handle* dev_handle,
  *  Lowlevel Asetek Read routine uses bulk transfer to receive responses.
  *
  */
-int corsairlink_asetek_read( struct libusb_device_handle* dev_handle,
-                             uint8_t endpoint, uint8_t* data, int length )
+int corsairlink_asetek_read(
+    struct libusb_device_handle* dev_handle,
+    uint8_t endpoint,
+    uint8_t* data,
+    int length )
 {
     int bytes_transferred;
     int rr;
 
-    rr = libusb_bulk_transfer( dev_handle,
-                               endpoint,
-                               data,
-                               length,
-                               &bytes_transferred,
-                               TIMEOUT_DEFAULT );
+    rr = libusb_bulk_transfer(
+        dev_handle, endpoint, data, length, &bytes_transferred,
+        TIMEOUT_DEFAULT );
 
     return rr;
 }

@@ -28,9 +28,10 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_coolit_change_led( struct corsair_device_info* dev,
-                                   struct libusb_device_handle* handle,
-                                   struct led_control* ctrl )
+int corsairlink_coolit_change_led(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct led_control* ctrl )
 {
     int rr;
     uint8_t response[64];

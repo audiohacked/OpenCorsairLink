@@ -28,9 +28,10 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_asetek_tempsensorscount( struct corsair_device_info* dev,
-                                         struct libusb_device_handle* handle,
-                                         uint8_t* temperature_sensors_count )
+int corsairlink_asetek_tempsensorscount(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t* temperature_sensors_count )
 {
     int rr = 0;
     // not defined - set default value of 3
@@ -38,9 +39,11 @@ int corsairlink_asetek_tempsensorscount( struct corsair_device_info* dev,
     return rr;
 }
 
-int corsairlink_asetek_temperature( struct corsair_device_info* dev,
-                                    struct libusb_device_handle* handle,
-                                    uint8_t selector, double* temperature )
+int corsairlink_asetek_temperature(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    double* temperature )
 {
     int rr;
     uint8_t response[64];

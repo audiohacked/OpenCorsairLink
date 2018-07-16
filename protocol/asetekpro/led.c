@@ -29,9 +29,10 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_asetekpro_led_static_color( struct corsair_device_info* dev,
-                                            struct libusb_device_handle* handle,
-                                            struct led_control* ctrl )
+int corsairlink_asetekpro_led_static_color(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct led_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -41,11 +42,9 @@ int corsairlink_asetekpro_led_static_color( struct corsair_device_info* dev,
 
     for ( int ii = 0; ii < 7; ++ii )
     {
-        msg_debug2( "DEBUG: Color%d %02x%02x%02x\n",
-                    ii,
-                    ctrl->led_colors[ii].red,
-                    ctrl->led_colors[ii].green,
-                    ctrl->led_colors[ii].blue );
+        msg_debug2(
+            "DEBUG: Color%d %02x%02x%02x\n", ii, ctrl->led_colors[ii].red,
+            ctrl->led_colors[ii].green, ctrl->led_colors[ii].blue );
     }
 
     commands[0] = 0x56;
@@ -85,9 +84,10 @@ int corsairlink_asetekpro_led_static_color( struct corsair_device_info* dev,
     return rr;
 }
 
-int corsairlink_asetekpro_led_blink( struct corsair_device_info* dev,
-                                     struct libusb_device_handle* handle,
-                                     struct led_control* ctrl )
+int corsairlink_asetekpro_led_blink(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct led_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -176,9 +176,10 @@ int corsairlink_asetekpro_led_blink( struct corsair_device_info* dev,
     return rr;
 }
 
-int corsairlink_asetekpro_led_color_pulse( struct corsair_device_info* dev,
-                                           struct libusb_device_handle* handle,
-                                           struct led_control* ctrl )
+int corsairlink_asetekpro_led_color_pulse(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct led_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -270,9 +271,10 @@ int corsairlink_asetekpro_led_color_pulse( struct corsair_device_info* dev,
     return rr;
 }
 
-int corsairlink_asetekpro_led_color_shift( struct corsair_device_info* dev,
-                                           struct libusb_device_handle* handle,
-                                           struct led_control* ctrl )
+int corsairlink_asetekpro_led_color_shift(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct led_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -361,9 +363,10 @@ int corsairlink_asetekpro_led_color_shift( struct corsair_device_info* dev,
     return rr;
 }
 
-int corsairlink_asetekpro_led_rainbow( struct corsair_device_info* dev,
-                                       struct libusb_device_handle* handle,
-                                       struct led_control* ctrl )
+int corsairlink_asetekpro_led_rainbow(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct led_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -388,10 +391,9 @@ int corsairlink_asetekpro_led_rainbow( struct corsair_device_info* dev,
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 3 );
 
-    msg_debug2( "DEBUG: Rainbow mode response %02X %02X %02X\n",
-                response[0],
-                response[1],
-                response[2] );
+    msg_debug2(
+        "DEBUG: Rainbow mode response %02X %02X %02X\n", response[0],
+        response[1], response[2] );
 
     if ( response[0] != 0x53 || response[1] != 0x12 || response[2] != 0x34 )
     {
@@ -404,10 +406,9 @@ int corsairlink_asetekpro_led_rainbow( struct corsair_device_info* dev,
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 3 );
 
-    msg_debug2( "DEBUG: Rainbow commit response %02X %02X %02X\n",
-                response[0],
-                response[1],
-                response[2] );
+    msg_debug2(
+        "DEBUG: Rainbow commit response %02X %02X %02X\n", response[0],
+        response[1], response[2] );
 
     if ( response[0] != 0x55 || response[1] != 0x12 || response[2] != 0x34 )
     {
@@ -417,9 +418,10 @@ int corsairlink_asetekpro_led_rainbow( struct corsair_device_info* dev,
     return rr;
 }
 
-int corsairlink_asetekpro_led_temperature( struct corsair_device_info* dev,
-                                           struct libusb_device_handle* handle,
-                                           struct led_control* ctrl )
+int corsairlink_asetekpro_led_temperature(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct led_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -447,13 +449,9 @@ int corsairlink_asetekpro_led_temperature( struct corsair_device_info* dev,
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 16 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 6 );
 
-    msg_debug2( "%02X %02X %02X %02X %02X %02X\n",
-                response[0],
-                response[1],
-                response[2],
-                response[3],
-                response[4],
-                response[5] );
+    msg_debug2(
+        "%02X %02X %02X %02X %02X %02X\n", response[0], response[1],
+        response[2], response[3], response[4], response[5] );
 
     if ( response[0] != 0x5f || response[1] != 0x12 || response[2] != 0x34 )
     {

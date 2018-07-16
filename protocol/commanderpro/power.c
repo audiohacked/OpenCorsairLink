@@ -32,9 +32,11 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_commanderpro_voltage( struct corsair_device_info* dev,
-                                      struct libusb_device_handle* handle,
-                                      uint8_t sensor_index, double* voltage )
+int corsairlink_commanderpro_voltage(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t sensor_index,
+    double* voltage )
 {
     int rr;
     uint8_t response[16];

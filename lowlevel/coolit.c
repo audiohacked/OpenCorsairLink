@@ -46,8 +46,8 @@ static const int CONTROL_REQUEST_TYPE_OUT = LIBUSB_ENDPOINT_OUT
  *  @param[in] device endpoint for the data
  *  @return 0
  */
-int corsairlink_coolit_init( struct libusb_device_handle* dev_handle,
-                             uint8_t endpoint )
+int corsairlink_coolit_init(
+    struct libusb_device_handle* dev_handle, uint8_t endpoint )
 {
     return 0;
 }
@@ -58,8 +58,8 @@ int corsairlink_coolit_init( struct libusb_device_handle* dev_handle,
  *  @param[in] device endpoint for the data
  *  @return 0
  */
-int corsairlink_coolit_deinit( struct libusb_device_handle* dev_handle,
-                               uint8_t endpoint )
+int corsairlink_coolit_deinit(
+    struct libusb_device_handle* dev_handle, uint8_t endpoint )
 {
     return 0;
 }
@@ -72,20 +72,20 @@ int corsairlink_coolit_deinit( struct libusb_device_handle* dev_handle,
  *  @param[in] length of data to send, in bytes
  *  @return 0
  */
-int corsairlink_coolit_write( struct libusb_device_handle* dev_handle,
-                              uint8_t endpoint, uint8_t* data, int length )
+int corsairlink_coolit_write(
+    struct libusb_device_handle* dev_handle,
+    uint8_t endpoint,
+    uint8_t* data,
+    int length )
 {
     int bytes_transferred;
     int rr;
 
-    rr = libusb_control_transfer( dev_handle,
-                                  CONTROL_REQUEST_TYPE_OUT,
-                                  HID_SET_REPORT, /** HID Set_Report */
-                                  ( HID_REPORT_TYPE_OUTPUT << 8 ) | 0x00,
-                                  INTERFACE_NUMBER,
-                                  data,
-                                  length,
-                                  TIMEOUT_DEFAULT );
+    rr = libusb_control_transfer(
+        dev_handle, CONTROL_REQUEST_TYPE_OUT,
+        HID_SET_REPORT, /** HID Set_Report */
+        ( HID_REPORT_TYPE_OUTPUT << 8 ) | 0x00, INTERFACE_NUMBER, data, length,
+        TIMEOUT_DEFAULT );
 
     return rr;
 }
@@ -98,18 +98,18 @@ int corsairlink_coolit_write( struct libusb_device_handle* dev_handle,
  *  @param[in] length of data to received, in bytes
  *  @return 0
  */
-int corsairlink_coolit_read( struct libusb_device_handle* dev_handle,
-                             uint8_t endpoint, uint8_t* data, int length )
+int corsairlink_coolit_read(
+    struct libusb_device_handle* dev_handle,
+    uint8_t endpoint,
+    uint8_t* data,
+    int length )
 {
     int bytes_transferred;
     int rr;
 
-    rr = libusb_interrupt_transfer( dev_handle,
-                                    endpoint,
-                                    data,
-                                    length,
-                                    &bytes_transferred,
-                                    TIMEOUT_DEFAULT );
+    rr = libusb_interrupt_transfer(
+        dev_handle, endpoint, data, length, &bytes_transferred,
+        TIMEOUT_DEFAULT );
 
     return rr;
 }

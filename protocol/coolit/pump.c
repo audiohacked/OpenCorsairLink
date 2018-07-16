@@ -29,9 +29,10 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_coolit_pump_mode( struct corsair_device_info* dev,
-                                  struct libusb_device_handle* handle,
-                                  uint8_t* pump_mode )
+int corsairlink_coolit_pump_mode(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t* pump_mode )
 {
     int rr;
     uint8_t response[64];
@@ -105,9 +106,11 @@ int corsairlink_coolit_pump_mode( struct corsair_device_info* dev,
     return rr;
 }
 
-int corsairlink_coolit_pump_speed( struct corsair_device_info* dev,
-                                   struct libusb_device_handle* handle,
-                                   uint16_t* speed, uint16_t* maxspeed )
+int corsairlink_coolit_pump_speed(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint16_t* speed,
+    uint16_t* maxspeed )
 {
     int rr;
     uint8_t response[64];

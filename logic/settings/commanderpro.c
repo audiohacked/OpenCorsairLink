@@ -29,9 +29,10 @@
 #include <string.h>
 #include <unistd.h>
 
-int commanderpro_settings( struct corsair_device_scan scanned_device,
-                           struct option_flags flags,
-                           struct option_parse_return settings )
+int commanderpro_settings(
+    struct corsair_device_scan scanned_device,
+    struct option_flags flags,
+    struct option_parse_return settings )
 {
     int rr;
     int ii;

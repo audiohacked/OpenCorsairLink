@@ -23,47 +23,46 @@
 
 #define TIMEOUT_DEFAULT 1000 /*!< TIMEOUT_DEFAULT */
 
-int corsairlink_commanderpro_init( struct libusb_device_handle* dev_handle,
-                                   uint8_t endpoint )
+int corsairlink_commanderpro_init(
+    struct libusb_device_handle* dev_handle, uint8_t endpoint )
 {
     return 0;
 }
 
-int corsairlink_commanderpro_deinit( struct libusb_device_handle* dev_handle,
-                                     uint8_t endpoint )
+int corsairlink_commanderpro_deinit(
+    struct libusb_device_handle* dev_handle, uint8_t endpoint )
 {
     return 0;
 }
 
-int corsairlink_commanderpro_write( struct libusb_device_handle* dev_handle,
-                                    uint8_t endpoint, uint8_t* data,
-                                    int length )
+int corsairlink_commanderpro_write(
+    struct libusb_device_handle* dev_handle,
+    uint8_t endpoint,
+    uint8_t* data,
+    int length )
 {
     int bytes_transferred;
     int rr;
 
-    rr = libusb_interrupt_transfer( dev_handle,
-                                    endpoint,
-                                    data,
-                                    length,
-                                    &bytes_transferred,
-                                    TIMEOUT_DEFAULT );
+    rr = libusb_interrupt_transfer(
+        dev_handle, endpoint, data, length, &bytes_transferred,
+        TIMEOUT_DEFAULT );
 
     return rr;
 }
 
-int corsairlink_commanderpro_read( struct libusb_device_handle* dev_handle,
-                                   uint8_t endpoint, uint8_t* data, int length )
+int corsairlink_commanderpro_read(
+    struct libusb_device_handle* dev_handle,
+    uint8_t endpoint,
+    uint8_t* data,
+    int length )
 {
     int bytes_transferred;
     int rr;
 
-    rr = libusb_interrupt_transfer( dev_handle,
-                                    endpoint,
-                                    data,
-                                    length,
-                                    &bytes_transferred,
-                                    TIMEOUT_DEFAULT );
+    rr = libusb_interrupt_transfer(
+        dev_handle, endpoint, data, length, &bytes_transferred,
+        TIMEOUT_DEFAULT );
 
     return rr;
 }
