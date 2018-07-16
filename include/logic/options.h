@@ -48,23 +48,13 @@ enum led_modes
     TEMPERATURE = 5,
 };
 
-struct fan_table
+struct temp_speed_pair
 {
-    /** temperatures */
-    int8_t t1;
-    int8_t t2;
-    int8_t t3;
-    int8_t t4;
-    int8_t t5;
-    int8_t t6;
+    /** temperature */
+    int8_t temperature;
 
-    /** fan speeds */
-    int8_t s1;
-    int8_t s2;
-    int8_t s3;
-    int8_t s4;
-    int8_t s5;
-    int8_t s6;
+    /** fan speed PWM */
+    int8_t speed;
 };
 
 enum motor_modes
@@ -97,23 +87,16 @@ struct led_control
     uint8_t count;
     struct color led_colors[7];
     uint16_t temperatures[3];
-
-    // struct led_temperatures led_temperatures;
-    // struct led_temperatures led_temps;
-    // struct color warning_led;
-    // int8_t warning_led_temp;
 };
 
 struct fan_control
 {
-    uint8_t fan_count;
-
-    uint8_t selector;
+    uint8_t channel;
     uint8_t mode;
-    struct fan_table fan_set;
-    struct fan_table curve;
-
+    struct temp_speed_pair table[6];
     uint16_t data;
+
+    // data returns
     uint16_t speed;
     uint8_t speed_pwm;
     uint16_t speed_rpm;
@@ -124,7 +107,7 @@ struct fan_control
 struct pump_control
 {
     uint8_t mode;
-    struct fan_table pump;
+    struct temp_speed_pair table[6];
 
     // data returns
     uint16_t speed;
@@ -133,14 +116,6 @@ struct pump_control
 
 struct option_parse_return
 {
-    uint8_t fan;
-    uint8_t fan_mode;
-    uint16_t fan_data;
-    struct fan_table fan1;
-    struct fan_table pump;
-
-    uint8_t pump_mode;
-
     struct led_control led_ctrl;
     struct fan_control fan_ctrl;
     struct pump_control pump_ctrl;
@@ -211,7 +186,7 @@ enum
     SUBOPTION_FAN_MODE,
     SUBOPTION_FAN_PWM,
     SUBOPTION_FAN_RPM,
-    SUBOPTION_FAN_TEMPS,
+    SUBOPTION_FAN_TEMPERATURES,
     SUBOPTION_FAN_SPEEDS,
     SUBOPTION_FAN_LIST_END,
 };
@@ -233,12 +208,13 @@ enum
     SUBOPTION_PUMP_LIST_END,
 };
 
-static char* fan_options[] = {
-    [SUBOPTION_FAN_CHANNEL] = "channel", [SUBOPTION_FAN_MODE] = "mode",
-    [SUBOPTION_FAN_PWM] = "pwm",         [SUBOPTION_FAN_RPM] = "rpm",
-    [SUBOPTION_FAN_TEMPS] = "temps",     [SUBOPTION_FAN_SPEEDS] = "speeds",
-    [SUBOPTION_FAN_LIST_END] = 0
-};
+static char* fan_options[] = { [SUBOPTION_FAN_CHANNEL] = "channel",
+                               [SUBOPTION_FAN_MODE] = "mode",
+                               [SUBOPTION_FAN_PWM] = "pwm",
+                               [SUBOPTION_FAN_RPM] = "rpm",
+                               [SUBOPTION_FAN_TEMPERATURES] = "temps",
+                               [SUBOPTION_FAN_SPEEDS] = "speeds",
+                               [SUBOPTION_FAN_LIST_END] = 0 };
 
 static char* led_options[] = { [SUBOPTION_LED_CHANNEL] = "channel",
                                [SUBOPTION_LED_MODE] = "mode",
@@ -251,11 +227,9 @@ static char* led_options[] = { [SUBOPTION_LED_CHANNEL] = "channel",
 static char* pump_options[] = { [SUBOPTION_PUMP_MODE] = "mode",
                                 [SUBOPTION_PUMP_LIST_END] = 0 };
 
-void fan_suboptions_parse( char* subopts,
-                           struct option_parse_return* settings );
+void fan_suboptions_parse( char* subopts, struct fan_control* settings );
 void led_suboptions_parse( char* subopts, struct led_control* settings );
-void pump_suboptions_parse( char* subopts,
-                            struct option_parse_return* settings );
+void pump_suboptions_parse( char* subopts, struct pump_control* settings );
 
 void fan_control_init( struct fan_control* settings );
 void led_control_init( struct led_control* settings );
@@ -263,8 +237,11 @@ void pump_control_init( struct pump_control* settings );
 
 void options_print( void );
 
-int options_parse( int argc, char** argv, struct option_flags* flags,
-                   int8_t* device_number,
-                   struct option_parse_return* settings );
+int options_parse(
+    int argc,
+    char** argv,
+    struct option_flags* flags,
+    int8_t* device_number,
+    struct option_parse_return* settings );
 
 #endif

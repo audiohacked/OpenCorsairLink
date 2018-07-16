@@ -29,9 +29,10 @@
 #include <string.h>
 #include <unistd.h>
 
-int hydro_asetek_settings( struct corsair_device_scan scanned_device,
-                           struct option_flags flags,
-                           struct option_parse_return settings )
+int hydro_asetek_settings(
+    struct corsair_device_scan scanned_device,
+    struct option_flags flags,
+    struct option_parse_return settings )
 {
     int rr;
     int ii;
@@ -131,17 +132,19 @@ int hydro_asetek_settings( struct corsair_device_scan scanned_device,
 
     if ( flags.set_fan == 1 )
     {
-        switch ( settings.fan_mode )
+        switch ( settings.fan_ctrl.mode )
         {
         case QUIET:
         case PERFORMANCE:
             dev->driver->fan.profile(
-                dev, handle, 0, &settings.fan_mode, &settings.fan_data );
+                dev, handle, 0, &settings.fan_ctrl.mode,
+                &settings.fan_ctrl.data );
             break;
         case CUSTOM:
-            if ( settings.fan1.s6 != 0 )
+            if ( settings.fan_ctrl.table[6].speed != 0 )
             {
-                dev->driver->fan.custom( dev, handle, 0, &settings.fan1 );
+                dev->driver->fan.custom(
+                    dev, handle, 0, &( settings.fan_ctrl.table[0] ) );
             }
             break;
         default:
@@ -152,9 +155,9 @@ int hydro_asetek_settings( struct corsair_device_scan scanned_device,
 
     if ( flags.set_pump == 1 )
     {
-        if ( settings.pump_mode != DEFAULT )
+        if ( settings.pump_ctrl.mode != DEFAULT )
         {
-            dev->driver->pump.profile( dev, handle, &settings.pump_mode );
+            dev->driver->pump.profile( dev, handle, &settings.pump_ctrl.mode );
         }
     }
 

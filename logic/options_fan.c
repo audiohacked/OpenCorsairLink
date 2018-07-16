@@ -28,11 +28,11 @@
 
 void fan_control_init( struct fan_control* settings )
 {
-    settings->selector = 0;
+    settings->channel = 0;
     settings->mode = 0;
 }
 
-void fan_suboptions_parse( char* subopts, struct option_parse_return* settings )
+void fan_suboptions_parse( char* subopts, struct fan_control* settings )
 {
     int opt, returnCode = 0, option_index = 0;
     char *value, *token;
@@ -42,13 +42,51 @@ void fan_suboptions_parse( char* subopts, struct option_parse_return* settings )
         switch ( getsubopt( &subopts, fan_options, &value ) )
         {
         case SUBOPTION_FAN_CHANNEL:
-            sscanf( value, "%hhu", &settings->fan );
+            sscanf( value, "%hhu", &settings->channel );
             msg_debug( "FAN Channel = %s\n", value );
             break;
 
         case SUBOPTION_FAN_MODE:
-            sscanf( value, "%hhu", &settings->fan_mode );
+            sscanf( value, "%hhu", &settings->mode );
             msg_debug( "FAN Mode = %s\n", value );
+            break;
+
+        case SUBOPTION_FAN_PWM:
+            sscanf( value, "%hhu", &settings->speed_pwm );
+            msg_debug( "FAN PWM = %s\n", value );
+            break;
+
+        case SUBOPTION_FAN_RPM:
+            sscanf( value, "%hu", &settings->speed_rpm );
+            msg_debug( "FAN RPM = %s\n", value );
+            break;
+
+        case SUBOPTION_FAN_TEMPERATURES:
+            ii = 0;
+            token = strtok( value, ":" );
+            while ( token != NULL )
+            {
+                if ( ii == 6 )
+                    break;
+                msg_debug( "FAN Temperature %d: %s\n", ii, token );
+                sscanf( token, "%hhu", &settings->table[ii].temperature );
+                ++ii;
+                token = strtok( NULL, ":" );
+            }
+            break;
+
+        case SUBOPTION_FAN_SPEEDS:
+            ii = 0;
+            token = strtok( value, ":" );
+            while ( token != NULL )
+            {
+                if ( ii == 6 )
+                    break;
+                msg_debug( "FAN Speed %d: %s\n", ii, token );
+                sscanf( token, "%hhu", &settings->table[ii].speed );
+                ++ii;
+                token = strtok( NULL, ":" );
+            }
             break;
 
         default:

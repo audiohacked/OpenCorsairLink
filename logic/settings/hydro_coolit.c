@@ -29,9 +29,10 @@
 #include <string.h>
 #include <unistd.h>
 
-int hydro_coolit_settings( struct corsair_device_scan scanned_device,
-                           struct option_flags flags,
-                           struct option_parse_return settings )
+int hydro_coolit_settings(
+    struct corsair_device_scan scanned_device,
+    struct option_flags flags,
+    struct option_parse_return settings )
 {
     int rr;
     int ii;
@@ -120,10 +121,10 @@ int hydro_coolit_settings( struct corsair_device_scan scanned_device,
         }
     }
 
-    if ( flags.set_pump && settings.pump_mode != DEFAULT )
+    if ( flags.set_pump && settings.pump_ctrl.mode != DEFAULT )
     {
-        msg_info( "Setting pump to mode: %i\n", settings.pump_mode );
-        rr = dev->driver->pump.profile( dev, handle, &settings.pump_mode );
+        msg_info( "Setting pump to mode: %i\n", settings.pump_ctrl.mode );
+        rr = dev->driver->pump.profile( dev, handle, &settings.pump_ctrl.mode );
         pump_mode = 0;
         pump_speed = 0;
         pump_max_speed = 0;
@@ -136,12 +137,13 @@ int hydro_coolit_settings( struct corsair_device_scan scanned_device,
         msg_info(
             "\tCurrent/Max Speed %i/%i RPM\n", pump_speed, pump_max_speed );
     }
-    if ( settings.fan > 0 && settings.fan < fan_count + 1 )
+    if ( settings.fan_ctrl.channel > 0
+         && settings.fan_ctrl.channel < fan_count + 1 )
     {
-        fan_mode = settings.fan_mode;
-        fan_data = settings.fan_data;
+        fan_mode = settings.fan_ctrl.mode;
+        fan_data = settings.fan_ctrl.data;
         rr = dev->driver->fan.profile(
-            dev, handle, settings.fan - 1, &fan_mode, &fan_data );
+            dev, handle, settings.fan_ctrl.channel - 1, &fan_mode, &fan_data );
     }
 
     rr = dev->driver->deinit( handle, dev->write_endpoint );

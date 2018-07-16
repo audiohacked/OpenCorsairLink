@@ -29,9 +29,10 @@
 #include <string.h>
 #include <unistd.h>
 
-int hydro_asetekpro_settings( struct corsair_device_scan scanned_device,
-                              struct option_flags flags,
-                              struct option_parse_return settings )
+int hydro_asetekpro_settings(
+    struct corsair_device_scan scanned_device,
+    struct option_flags flags,
+    struct option_parse_return settings )
 {
     int rr;
     int ii;
@@ -143,13 +144,14 @@ int hydro_asetekpro_settings( struct corsair_device_scan scanned_device,
         }
     }
 
-    if ( settings.fan1.s6 != 0 )
+    if ( settings.fan_ctrl.table[6].speed != 0 )
     {
-        dev->driver->fan.custom( dev, handle, 0, &settings.fan1 );
+        dev->driver->fan.custom(
+            dev, handle, 0, &( settings.fan_ctrl.table[0] ) );
     }
-    if ( settings.pump_mode != DEFAULT )
+    if ( settings.pump_ctrl.mode != DEFAULT )
     {
-        dev->driver->pump.profile( dev, handle, &settings.pump_mode );
+        dev->driver->pump.profile( dev, handle, &settings.pump_ctrl.mode );
     }
 
     rr = dev->driver->deinit( handle, dev->write_endpoint );

@@ -29,9 +29,10 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_asetek_fan_count( struct corsair_device_info* dev,
-                                  struct libusb_device_handle* handle,
-                                  uint8_t* fan_count )
+int corsairlink_asetek_fan_count(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t* fan_count )
 {
     int rr = 0;
     // undefined, return device value from device.c
@@ -39,8 +40,8 @@ int corsairlink_asetek_fan_count( struct corsair_device_info* dev,
     return rr;
 }
 
-int corsairlink_asetek_fan_print_mode( uint8_t mode, uint16_t data,
-                                       char* modestr, uint8_t modestr_size )
+int corsairlink_asetek_fan_print_mode(
+    uint8_t mode, uint16_t data, char* modestr, uint8_t modestr_size )
 {
     int rr = 0;
     // undefined, return hex value of mode
@@ -48,13 +49,15 @@ int corsairlink_asetek_fan_print_mode( uint8_t mode, uint16_t data,
     return rr;
 }
 
-int corsairlink_asetek_fan_mode( struct corsair_device_info* dev,
-                                 struct libusb_device_handle* handle,
-                                 uint8_t selector, uint8_t* fan_mode,
-                                 uint16_t* fan_data )
+int corsairlink_asetek_fan_mode(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data )
 {
     int rr;
-    struct fan_table curve;
+    struct temp_speed_pair curve[6];
     if ( *( fan_mode ) == PERFORMANCE )
     {
         ASETEK_FAN_TABLE_EXTREME( curve );
@@ -63,14 +66,16 @@ int corsairlink_asetek_fan_mode( struct corsair_device_info* dev,
     {
         ASETEK_FAN_TABLE_QUIET( curve );
     }
-    rr = dev->driver->fan.custom( dev, handle, selector, &curve );
+    rr = dev->driver->fan.custom( dev, handle, selector, curve );
 
     return rr;
 }
 
-int corsairlink_asetek_fan_curve( struct corsair_device_info* dev,
-                                  struct libusb_device_handle* handle,
-                                  uint8_t selector, struct fan_table* fan )
+int corsairlink_asetek_fan_curve(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    struct temp_speed_pair* fan )
 {
     int rr;
     uint8_t response[64];
@@ -81,19 +86,19 @@ int corsairlink_asetek_fan_curve( struct corsair_device_info* dev,
     commands[0] = FanCurve;
     commands[1] = UnknownFanCurve;
 
-    commands[2] = fan->t1;
-    commands[3] = fan->t2;
-    commands[4] = fan->t3;
-    commands[5] = fan->t4;
-    commands[6] = fan->t5;
-    commands[7] = fan->t6;
+    commands[2] = fan[0].temperature;
+    commands[3] = fan[1].temperature;
+    commands[4] = fan[2].temperature;
+    commands[5] = fan[3].temperature;
+    commands[6] = fan[4].temperature;
+    commands[7] = fan[5].temperature;
 
-    commands[8] = fan->s1;
-    commands[9] = fan->s2;
-    commands[10] = fan->s3;
-    commands[11] = fan->s4;
-    commands[12] = fan->s5;
-    commands[13] = fan->s6;
+    commands[8] = fan[0].speed;
+    commands[9] = fan[1].speed;
+    commands[10] = fan[2].speed;
+    commands[11] = fan[3].speed;
+    commands[12] = fan[4].speed;
+    commands[13] = fan[5].speed;
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 14 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
@@ -101,10 +106,12 @@ int corsairlink_asetek_fan_curve( struct corsair_device_info* dev,
     return rr;
 }
 
-int corsairlink_asetek_fan_speed( struct corsair_device_info* dev,
-                                  struct libusb_device_handle* handle,
-                                  uint8_t selector, uint16_t* speed,
-                                  uint16_t* maxspeed )
+int corsairlink_asetek_fan_speed(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint16_t* speed,
+    uint16_t* maxspeed )
 {
     int rr;
     uint8_t response[64];

@@ -27,8 +27,12 @@
 #include <string.h>
 #include <unistd.h>
 
-int options_parse( int argc, char** argv, struct option_flags* flags,
-                   int8_t* device_number, struct option_parse_return* settings )
+int options_parse(
+    int argc,
+    char** argv,
+    struct option_flags* flags,
+    int8_t* device_number,
+    struct option_parse_return* settings )
 {
     int opt, returnCode = 0, option_index = 0;
     char *subopts, *value;
@@ -65,7 +69,7 @@ int options_parse( int argc, char** argv, struct option_flags* flags,
 
         case OPTION_FAN:
             flags->set_fan = 1;
-            fan_suboptions_parse( optarg, settings );
+            fan_suboptions_parse( optarg, &settings->fan_ctrl );
             break;
 
         case OPTION_LED:
@@ -75,7 +79,7 @@ int options_parse( int argc, char** argv, struct option_flags* flags,
 
         case OPTION_PUMP:
             flags->set_pump = 1;
-            pump_suboptions_parse( optarg, settings );
+            pump_suboptions_parse( optarg, &settings->pump_ctrl );
             break;
 
         case OPTION_HELP:
