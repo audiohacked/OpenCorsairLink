@@ -74,6 +74,7 @@ int corsairlink_commanderpro_get_fan_speed_rpm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t sensor_index,
+    uint8_t* fan_mode,
     uint16_t* rpm,
     uint16_t* maxrpm )
 {
@@ -98,6 +99,7 @@ int corsairlink_commanderpro_get_fan_speed_pwm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t sensor_index,
+    uint8_t* fan_mode,
     uint8_t* pwm )
 {
     int rr;

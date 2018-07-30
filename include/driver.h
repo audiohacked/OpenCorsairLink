@@ -102,17 +102,97 @@ struct corsair_device_driver
             struct corsair_device_info* dev,
             struct libusb_device_handle* handle,
             uint8_t* fan_count );
-        int ( *profile )(
-            struct corsair_device_info* dev,
-            struct libusb_device_handle* handle,
-            uint8_t selector,
-            uint8_t* profile,
-            uint16_t* data );
-        int ( *custom )(
-            struct corsair_device_info* dev,
-            struct libusb_device_handle* handle,
-            uint8_t selector,
-            struct temp_speed_pair* custom_profile );
+        struct fan_profile_functions
+        {
+            int ( *read )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                uint8_t selector,
+                uint8_t* profile,
+                uint16_t* data );
+
+            int ( *read_rpm )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                uint8_t selector,
+                uint8_t* profile,
+                uint16_t* rpm,
+                uint16_t* maxrpm );
+
+            int ( *read_pwm )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                uint8_t selector,
+                uint8_t* profile,
+                uint8_t* pwm );
+
+            int ( *profile_default )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                uint8_t selector,
+                uint8_t* profile,
+                uint16_t* data );
+
+            int ( *performance )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                uint8_t selector,
+                uint8_t* profile,
+                uint16_t* data );
+
+            int ( *balanced )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                uint8_t selector,
+                uint8_t* profile,
+                uint16_t* data );
+
+            int ( *quiet )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                uint8_t selector,
+                uint8_t* profile,
+                uint16_t* data );
+
+            int ( *rpm )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                uint8_t selector,
+                uint8_t* profile,
+                uint16_t* data );
+
+            int ( *pwm )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                uint8_t selector,
+                uint8_t* profile,
+                uint16_t* data );
+
+            int ( *profile_custom )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                uint8_t selector,
+                uint8_t* profile,
+                uint16_t* data );
+
+            int ( *custom )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                uint8_t selector,
+                struct temp_speed_pair* custom_profile );
+
+        } profile;
+        // int ( *profile )(
+        //     struct corsair_device_info* dev,
+        //     struct libusb_device_handle* handle,
+        //     uint8_t selector,
+        //     uint8_t* profile,
+        //     uint16_t* data );
+        // int ( *custom )(
+        //     struct corsair_device_info* dev,
+        //     struct libusb_device_handle* handle,
+        //     uint8_t selector,
+        //     struct temp_speed_pair* custom_profile );
         int ( *speed )(
             struct corsair_device_info* dev,
             struct libusb_device_handle* handle,

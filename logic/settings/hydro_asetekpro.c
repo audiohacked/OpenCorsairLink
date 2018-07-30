@@ -91,7 +91,8 @@ int hydro_asetekpro_settings(
         fan_speed = 0;
         fan_max_speed = 0;
         fan_data = 0;
-        rr = dev->driver->fan.profile( dev, handle, ii, &fan_mode, &fan_data );
+        rr = dev->driver->fan.profile.read(
+            dev, handle, ii, &fan_mode, &fan_data );
         rr = dev->driver->fan.print_mode(
             fan_mode, fan_data, fan_mode_string, sizeof( fan_mode_string ) );
         rr = dev->driver->fan.speed(
@@ -146,7 +147,7 @@ int hydro_asetekpro_settings(
 
     if ( settings.fan_ctrl.table[6].speed != 0 )
     {
-        dev->driver->fan.custom(
+        dev->driver->fan.profile.custom(
             dev, handle, 0, &( settings.fan_ctrl.table[0] ) );
     }
     if ( settings.pump_ctrl.mode != DEFAULT )

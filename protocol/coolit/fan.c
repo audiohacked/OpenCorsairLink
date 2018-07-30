@@ -98,7 +98,7 @@ int corsairlink_coolit_fan_print_mode(
     return rr;
 }
 
-int corsairlink_coolit_fan_mode(
+int corsairlink_coolit_fan_mode_read(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t selector,
@@ -119,86 +119,370 @@ int corsairlink_coolit_fan_mode(
     commands[++ii] = FAN_Select;
     commands[++ii] = selector;
 
-    if ( new_fan_mode == UNDEFINED )
-    {
-        commands[++ii] = CommandId++;
-        commands[++ii] = ReadOneByte;
-        commands[++ii] = FAN_Mode;
-    }
-    else
-    {
-        commands[++ii] = CommandId++;
-        commands[++ii] = WriteOneByte;
-        commands[++ii] = FAN_Mode;
-
-        if ( new_fan_mode == PERFORMANCE )
-            commands[++ii] = COOLIT_Performance;
-        else if ( new_fan_mode == BALANCED )
-            commands[++ii] = COOLIT_Balanced;
-        else if ( new_fan_mode == QUIET )
-            commands[++ii] = COOLIT_Quiet;
-        else if ( new_fan_mode == DEFAULT )
-            commands[++ii] = COOLIT_Default;
-        else if ( new_fan_mode == RPM )
-        {
-            commands[++ii] = COOLIT_FixedRPM;
-            commands[++ii] = CommandId++;
-            commands[++ii] = WriteTwoBytes;
-            commands[++ii] = FAN_FixedRPM;
-            commands[++ii] = *(fan_data)&0xFF;
-            commands[++ii] = ( *( fan_data ) >> 8 ) & 0xFF;
-        }
-        else if ( new_fan_mode == PWM )
-        {
-            commands[++ii] = COOLIT_FixedPWM;
-            commands[++ii] = CommandId++;
-            commands[++ii] = WriteOneByte;
-            commands[++ii] = FAN_FixedPWM;
-            commands[++ii] = *(fan_data)&0xFF;
-        }
-        else if ( new_fan_mode == CUSTOM )
-            commands[++ii] = COOLIT_Custom;
-        else
-            commands[++ii] = COOLIT_Default;
-    }
+    commands[++ii] = CommandId++;
+    commands[++ii] = ReadOneByte;
+    commands[++ii] = FAN_Mode;
 
     commands[0] = ii;
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-    if ( new_fan_mode == UNDEFINED )
-    {
-        *( fan_mode ) = response[4];
-        ii = 0;
-        memset( response, 0, sizeof( response ) );
-        memset( commands, 0, sizeof( commands ) );
+    *( fan_mode ) = response[4];
+    ii = 0;
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
 
-        if ( ( *(fan_mode)&0x0E ) == COOLIT_FixedRPM )
-        {
-            commands[++ii] = CommandId++;
-            commands[++ii] = ReadTwoBytes;
-            commands[++ii] = FAN_FixedRPM;
-            commands[0] = ii;
-            rr =
-                dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-            rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
-            *( fan_data ) = ( response[3] << 8 ) + response[2];
-        }
-        else if ( ( *(fan_mode)&0x0E ) == COOLIT_FixedPWM )
-        {
-            commands[++ii] = CommandId++;
-            commands[++ii] = ReadOneByte;
-            commands[++ii] = FAN_FixedPWM;
-            commands[0] = ii;
-            rr =
-                dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-            rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
-            *( fan_data ) = response[2];
-        }
-        else
-            *( fan_data ) = 0;
-    }
+    *( fan_data ) = 0;
+
+    return rr;
+}
+
+int corsairlink_coolit_fan_mode_read_rpm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* rpm,
+    uint16_t* maxrpm )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    uint8_t new_fan_mode = *( fan_mode );
+
+    uint8_t ii = 0;
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Select;
+    commands[++ii] = selector;
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = ReadOneByte;
+    commands[++ii] = FAN_Mode;
+
+    commands[0] = ii;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
+    *( fan_mode ) = response[4];
+
+    ii = 0;
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = ReadTwoBytes;
+    commands[++ii] = FAN_FixedRPM;
+    commands[0] = ii;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    *( rpm ) = ( response[3] << 8 ) + response[2];
+
+    return rr;
+}
+
+int corsairlink_coolit_fan_mode_read_pwm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint8_t* pwm )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    uint8_t new_fan_mode = *( fan_mode );
+
+    uint8_t ii = 0;
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Select;
+    commands[++ii] = selector;
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = ReadOneByte;
+    commands[++ii] = FAN_Mode;
+
+    commands[0] = ii;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
+    *( fan_mode ) = response[4];
+
+    ii = 0;
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = ReadOneByte;
+    commands[++ii] = FAN_FixedPWM;
+    commands[0] = ii;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    *( pwm ) = response[2];
+
+    return rr;
+}
+
+int corsairlink_coolit_fan_mode_performance(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    uint8_t new_fan_mode = *( fan_mode );
+
+    uint8_t ii = 0;
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Select;
+    commands[++ii] = selector;
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Mode;
+
+    commands[++ii] = COOLIT_Performance;
+
+    commands[0] = ii;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
+    return rr;
+}
+
+int corsairlink_coolit_fan_mode_balanced(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    uint8_t new_fan_mode = *( fan_mode );
+
+    uint8_t ii = 0;
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Select;
+    commands[++ii] = selector;
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Mode;
+
+    commands[++ii] = COOLIT_Balanced;
+
+    commands[0] = ii;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
+    return rr;
+}
+
+int corsairlink_coolit_fan_mode_quiet(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    uint8_t new_fan_mode = *( fan_mode );
+
+    uint8_t ii = 0;
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Select;
+    commands[++ii] = selector;
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Mode;
+
+    commands[++ii] = COOLIT_Quiet;
+
+    commands[0] = ii;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
+    return rr;
+}
+
+int corsairlink_coolit_fan_mode_default(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    uint8_t new_fan_mode = *( fan_mode );
+
+    uint8_t ii = 0;
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Select;
+    commands[++ii] = selector;
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Mode;
+
+    commands[++ii] = COOLIT_Default;
+
+    commands[0] = ii;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
+    return rr;
+}
+
+int corsairlink_coolit_fan_mode_rpm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    uint8_t new_fan_mode = *( fan_mode );
+
+    uint8_t ii = 0;
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Select;
+    commands[++ii] = selector;
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Mode;
+
+    commands[++ii] = COOLIT_FixedRPM;
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteTwoBytes;
+    commands[++ii] = FAN_FixedRPM;
+    commands[++ii] = *(fan_data)&0xFF;
+    commands[++ii] = ( *( fan_data ) >> 8 ) & 0xFF;
+
+    commands[0] = ii;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
+    return rr;
+}
+
+int corsairlink_coolit_fan_mode_pwm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    uint8_t new_fan_mode = *( fan_mode );
+
+    uint8_t ii = 0;
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Select;
+    commands[++ii] = selector;
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Mode;
+
+    commands[++ii] = COOLIT_FixedPWM;
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_FixedPWM;
+    commands[++ii] = *(fan_data)&0xFF;
+
+    commands[0] = ii;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
+    return rr;
+}
+
+int corsairlink_coolit_fan_mode_custom(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    uint8_t new_fan_mode = *( fan_mode );
+
+    uint8_t ii = 0;
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Select;
+    commands[++ii] = selector;
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Mode;
+
+    commands[++ii] = COOLIT_Custom;
+
+    commands[0] = ii;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     return rr;
 }

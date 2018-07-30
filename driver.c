@@ -55,8 +55,20 @@ struct corsair_device_driver corsairlink_driver_coolit =
       .fan =
           {
               .count = corsairlink_coolit_fan_count,
-              .custom = corsairlink_coolit_fan_curve,
-              .profile = corsairlink_coolit_fan_mode,
+              .profile =
+                  {
+                      .read = corsairlink_coolit_fan_mode_read,
+                      .read_rpm = corsairlink_coolit_fan_mode_read_rpm,
+                      .read_pwm = corsairlink_coolit_fan_mode_read_pwm,
+                      .profile_default = corsairlink_coolit_fan_mode_default,
+                      .performance = corsairlink_coolit_fan_mode_performance,
+                      .balanced = corsairlink_coolit_fan_mode_balanced,
+                      .quiet = corsairlink_coolit_fan_mode_quiet,
+                      .rpm = corsairlink_coolit_fan_mode_rpm,
+                      .pwm = corsairlink_coolit_fan_mode_pwm,
+                      .profile_custom = corsairlink_coolit_fan_mode_custom,
+                      .custom = corsairlink_coolit_fan_curve,
+                  },
               .speed = corsairlink_coolit_fan_speed,
               .print_mode = corsairlink_coolit_fan_print_mode,
           },
@@ -89,8 +101,22 @@ struct corsair_device_driver corsairlink_driver_coolit_old =
       .fan =
           {
               .count = corsairlink_coolit_fan_count,
-              .custom = corsairlink_coolit_fan_curve,
-              .profile = corsairlink_coolit_fan_mode,
+              // .custom = corsairlink_coolit_fan_curve,
+              // .profile = corsairlink_coolit_fan_mode,
+              .profile =
+                  {
+                      .read = corsairlink_coolit_fan_mode_read,
+                      .read_rpm = corsairlink_coolit_fan_mode_read_rpm,
+                      .read_pwm = corsairlink_coolit_fan_mode_read_pwm,
+                      .profile_default = corsairlink_coolit_fan_mode_default,
+                      .performance = corsairlink_coolit_fan_mode_performance,
+                      .balanced = corsairlink_coolit_fan_mode_balanced,
+                      .quiet = corsairlink_coolit_fan_mode_quiet,
+                      .rpm = corsairlink_coolit_fan_mode_rpm,
+                      .pwm = corsairlink_coolit_fan_mode_pwm,
+                      .profile_custom = corsairlink_coolit_fan_mode_custom,
+                      .custom = corsairlink_coolit_fan_curve,
+                  },
               .speed = corsairlink_coolit_fan_speed,
               .print_mode = corsairlink_coolit_fan_print_mode,
           },
@@ -123,8 +149,22 @@ struct corsair_device_driver corsairlink_driver_asetek =
       .fan =
           {
               .count = corsairlink_asetek_fan_count,
-              .custom = corsairlink_asetek_fan_curve,
-              .profile = corsairlink_asetek_fan_mode,
+              // .custom = corsairlink_asetek_fan_curve,
+              // .profile = corsairlink_asetek_fan_mode,
+              .profile =
+                  {
+                      .read = NULL,
+                      .read_rpm = NULL,
+                      .read_pwm = NULL,
+                      .profile_default = corsairlink_asetek_fan_mode,
+                      .performance = NULL,
+                      .balanced = NULL,
+                      .quiet = NULL,
+                      .rpm = NULL,
+                      .pwm = NULL,
+                      .profile_custom = NULL,
+                      .custom = corsairlink_asetek_fan_curve,
+                  },
               .speed = corsairlink_asetek_fan_speed,
               .print_mode = corsairlink_asetek_fan_print_mode,
           },
@@ -158,8 +198,22 @@ struct corsair_device_driver corsairlink_driver_asetekpro =
       .fan =
           {
               .count = corsairlink_asetek_fan_count,
-              .custom = corsairlink_asetek_fan_curve,
-              .profile = corsairlink_asetek_fan_mode,
+              // .custom = corsairlink_asetek_fan_curve,
+              // .profile = corsairlink_asetek_fan_mode,
+              .profile =
+                  {
+                      .read = NULL,
+                      .read_rpm = NULL,
+                      .read_pwm = NULL,
+                      .profile_default = corsairlink_asetek_fan_mode,
+                      .performance = NULL,
+                      .balanced = NULL,
+                      .quiet = NULL,
+                      .rpm = NULL,
+                      .pwm = NULL,
+                      .profile_custom = NULL,
+                      .custom = corsairlink_asetek_fan_curve,
+                  },
               .speed = corsairlink_asetekpro_fan_speed,
               .print_mode = corsairlink_asetek_fan_print_mode,
           },
@@ -194,8 +248,22 @@ struct corsair_device_driver corsairlink_driver_commanderpro =
               // .count = corsairlink_commanderpro_get_fan_setup_mask,
               // .custom = corsairlink_commanderpro_fan_curve,
               // .profile = corsairlink_commanderpro_fan_mode,
-              .speed = corsairlink_commanderpro_get_fan_speed_rpm,
+              // .speed = corsairlink_commanderpro_get_fan_speed_rpm,
               // .print_mode = corsairlink_commanderpro_fan_print_mode,
+              .profile =
+                  {
+                      .read = NULL,
+                      .read_rpm = corsairlink_commanderpro_get_fan_speed_rpm,
+                      .read_pwm = corsairlink_commanderpro_get_fan_speed_pwm,
+                      .profile_default = NULL,
+                      .performance = NULL,
+                      .balanced = NULL,
+                      .quiet = NULL,
+                      .rpm = NULL,
+                      .pwm = NULL,
+                      .profile_custom = NULL,
+                      .custom = NULL,
+                  },
           },
       .power = {
           .voltage = corsairlink_commanderpro_voltage,

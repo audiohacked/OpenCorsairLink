@@ -66,7 +66,7 @@ int corsairlink_asetek_fan_mode(
     {
         ASETEK_FAN_TABLE_QUIET( curve );
     }
-    rr = dev->driver->fan.custom( dev, handle, selector, curve );
+    rr = dev->driver->fan.profile.custom( dev, handle, selector, curve );
 
     return rr;
 }

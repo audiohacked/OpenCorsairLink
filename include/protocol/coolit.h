@@ -170,7 +170,71 @@ int corsairlink_coolit_fan_count(
     struct libusb_device_handle* handle,
     uint8_t* fan_count );
 
-int corsairlink_coolit_fan_mode(
+int corsairlink_coolit_fan_mode_read(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data );
+
+int corsairlink_coolit_fan_mode_read_rpm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* rpm,
+    uint16_t* maxrpm );
+
+int corsairlink_coolit_fan_mode_read_pwm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint8_t* pwm );
+
+int corsairlink_coolit_fan_mode_default(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data );
+
+int corsairlink_coolit_fan_mode_performance(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data );
+
+int corsairlink_coolit_fan_mode_balanced(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data );
+
+int corsairlink_coolit_fan_mode_quiet(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data );
+
+int corsairlink_coolit_fan_mode_rpm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data );
+
+int corsairlink_coolit_fan_mode_pwm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t selector,
+    uint8_t* fan_mode,
+    uint16_t* fan_data );
+
+int corsairlink_coolit_fan_mode_custom(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t selector,

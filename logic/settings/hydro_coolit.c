@@ -87,11 +87,12 @@ int hydro_coolit_settings(
 
     for ( ii = 0; ii < fan_count; ii++ )
     {
-        fan_mode = UNDEFINED;
-        fan_speed = 0;
-        fan_max_speed = 0;
-        fan_data = 0;
-        rr = dev->driver->fan.profile( dev, handle, ii, &fan_mode, &fan_data );
+        // fan_mode = UNDEFINED;
+        // fan_speed = 0;
+        // fan_max_speed = 0;
+        // fan_data = 0;
+        rr = dev->driver->fan.profile.read(
+            dev, handle, ii, &fan_mode, &fan_data );
         rr = dev->driver->fan.print_mode(
             fan_mode, fan_data, fan_mode_string, sizeof( fan_mode_string ) );
         rr = dev->driver->fan.speed(
@@ -142,7 +143,7 @@ int hydro_coolit_settings(
     {
         fan_mode = settings.fan_ctrl.mode;
         fan_data = settings.fan_ctrl.data;
-        rr = dev->driver->fan.profile(
+        rr = dev->driver->fan.profile.balanced(
             dev, handle, settings.fan_ctrl.channel - 1, &fan_mode, &fan_data );
     }
 
