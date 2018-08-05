@@ -39,10 +39,11 @@ options_parse(
     char *subopts, *value;
 
     memset( settings, 0, sizeof( struct option_parse_return ) );
+    memset( flags, 0, sizeof( struct option_flags ) );
 
-    // fan_control_init(&settings->fan_control_pkt);
-    led_control_init( &settings->led_ctrl );
-    // pump_control_init(&settings->pump_control_pkt);
+    // fan_control_init( &settings->fan_ctrl );
+    // led_control_init( &settings->led_ctrl );
+    // pump_control_init( &settings->pump_ctrl );
 
     while ( ( opt = getopt_long( argc, argv, "", long_options, &option_index ) ) != EOF )
     {
