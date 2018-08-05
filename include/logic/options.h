@@ -106,6 +106,8 @@ struct pump_control {
 
   // data returns
   uint16_t speed;
+  uint8_t speed_pwm;
+  uint16_t speed_rpm;
   uint16_t max_speed;
 };
 
@@ -194,6 +196,10 @@ enum {
 
 enum {
   SUBOPTION_PUMP_MODE = 0,
+  SUBOPTION_PUMP_PWM,
+  SUBOPTION_PUMP_RPM,
+  SUBOPTION_PUMP_TEMPERATURES,
+  SUBOPTION_PUMP_SPEEDS,
   SUBOPTION_PUMP_LIST_END,
 };
 
@@ -214,6 +220,10 @@ static char *led_options[] = {[SUBOPTION_LED_CHANNEL] = "channel",
                               [SUBOPTION_LED_LIST_END] = 0};
 
 static char *pump_options[] = {[SUBOPTION_PUMP_MODE] = "mode",
+                               [SUBOPTION_PUMP_PWM] = "pwm",
+                               [SUBOPTION_PUMP_RPM] = "rpm",
+                               [SUBOPTION_PUMP_TEMPERATURES] = "temps",
+                               [SUBOPTION_PUMP_SPEEDS] = "speeds",
                                [SUBOPTION_PUMP_LIST_END] = 0};
 
 void fan_suboptions_parse(char *subopts, struct fan_control *settings);
