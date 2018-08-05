@@ -1,6 +1,6 @@
 OpenCorsairLink
 ===============
-#### Disclaimer
+## Disclaimer
 > __DISCLAIMER__: OpenCorsairLink is not an official Corsair product. It is licensed under the GNU General Public License (version 2) in the hope that it will be useful, but with NO WARRANTY of any kind. Corsair and Corsair Link are trademarks or registered trademarks of Corsair Components, Inc. The trademark holders are not affiliated with the maker of this product and do not endorse this product.
 
 ### Branches
