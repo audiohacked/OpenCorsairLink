@@ -1,5 +1,8 @@
 OpenCorsairLink
 ===============
+#### Disclaimer
+> __DISCLAIMER__: OpenCorsairLink is not an official Corsair product. It is licensed under the GNU General Public License (version 2) in the hope that it will be useful, but with NO WARRANTY of any kind. Corsair and Corsair Link are trademarks or registered trademarks of Corsair Components, Inc. The trademark holders are not affiliated with the maker of this product and do not endorse this product.
+
 ### Branches
  - master: Use this branch as stable/release version  
  - testing: Use this branch as testing/release canidate  
@@ -12,7 +15,7 @@ Since the program needs direct hardware access you should run this with 'sudo' o
 libusb-1.0  
 pkg-config  
 
-### Support
+### Known Working Hardware
 Supported Water Coolers (but not fully tested):
  - H80i (HID)  
  - H80i v2 (Asetek)  
@@ -34,8 +37,9 @@ Supported Power Supplies:
 Supported Additional CorsairLink Devices:
  - Commander Pro  
 
-#### Warning: Some/Most things might not work for you!
-All the following code is preliminary support. Many features found in Corsair Link won't exactly work in OpenCorsairLink.  
+### Contact
 
-#### Previous version of OpenCorsairLink has been moved to the legacy branch!
+Maintainers reserve the rights to modify and remove issues, pull requests and comments therein, that are denunciating, off-topic, harmful, hateful and overall inappropriate.
+Please be appreciative, humble and kind to each other.
 
+* [GitHub Issues](https://github.com/audiohacked/OpenCorsairLink/issues)
