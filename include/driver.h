@@ -184,17 +184,37 @@ struct corsair_device_driver
     {
         struct pump_profile_functions
         {
-            int ( *read )(
+            int ( *read_profile )(
                 struct corsair_device_info* dev,
                 struct libusb_device_handle* handle,
                 struct pump_control* ctrl );
 
-            int ( *profile )(
+            int ( *write_profile_default )(
                 struct corsair_device_info* dev,
                 struct libusb_device_handle* handle,
                 struct pump_control* ctrl );
 
-            int ( *custom )(
+            int ( *write_profile_performance )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                struct pump_control* ctrl );
+
+            int ( *write_profile_balanced )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                struct pump_control* ctrl );
+
+            int ( *write_profile_quiet )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                struct pump_control* ctrl );
+
+            int ( *write_profile_custom )(
+                struct corsair_device_info* dev,
+                struct libusb_device_handle* handle,
+                struct pump_control* ctrl );
+
+            int ( *write_custom_curve )(
                 struct corsair_device_info* dev,
                 struct libusb_device_handle* handle,
                 struct pump_control* ctrl );

@@ -45,22 +45,22 @@ fan_suboptions_parse( char* subopts, struct fan_control* settings )
         {
         case SUBOPTION_FAN_CHANNEL:
             sscanf( value, "%hhu", &settings->channel );
-            msg_debug( "FAN Channel = %s\n", value );
+            msg_debug( "FAN Channel = %u\n", settings->channel );
             break;
 
         case SUBOPTION_FAN_MODE:
             sscanf( value, "%u", &settings->mode );
-            msg_debug( "FAN Mode = %s\n", value );
+            msg_debug( "FAN Mode = %u\n", settings->mode );
             break;
 
         case SUBOPTION_FAN_PWM:
             sscanf( value, "%hhu", &settings->speed_pwm );
-            msg_debug( "FAN PWM = %s\n", value );
+            msg_debug( "FAN PWM = %u\n", settings->speed_pwm );
             break;
 
         case SUBOPTION_FAN_RPM:
             sscanf( value, "%hu", &settings->speed_rpm );
-            msg_debug( "FAN RPM = %s\n", value );
+            msg_debug( "FAN RPM = %u\n", settings->speed_rpm );
             break;
 
         case SUBOPTION_FAN_TEMPERATURES:
@@ -70,8 +70,8 @@ fan_suboptions_parse( char* subopts, struct fan_control* settings )
             {
                 if ( ii == 6 )
                     break;
-                msg_debug( "FAN Temperature %d: %s\n", ii, token );
                 sscanf( token, "%hhu", &settings->table[ii].temperature );
+                msg_debug( "FAN Temperature %u: %u\n", ii, settings->table[ii].temperature );
                 ++ii;
                 token = strtok( NULL, ":" );
             }
@@ -84,8 +84,8 @@ fan_suboptions_parse( char* subopts, struct fan_control* settings )
             {
                 if ( ii == 6 )
                     break;
-                msg_debug( "FAN Speed %d: %s\n", ii, token );
                 sscanf( token, "%hhu", &settings->table[ii].speed );
+                msg_debug( "FAN Speed %d: %u\n", ii, settings->table[ii].speed );
                 ++ii;
                 token = strtok( NULL, ":" );
             }

@@ -100,6 +100,17 @@ corsairlink_asetek_fan_mode_performance(
 }
 
 int
+corsairlink_asetek_fan_mode_balanced(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
+{
+    int rr;
+    ASETEK_FAN_TABLE_BALANCED( ctrl->table );
+    rr = dev->driver->fan.profile.write_custom_curve( dev, handle, ctrl );
+
+    return rr;
+}
+
+int
 corsairlink_asetek_fan_mode_quiet(
     struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {

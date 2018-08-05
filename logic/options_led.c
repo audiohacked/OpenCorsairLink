@@ -54,13 +54,13 @@ led_suboptions_parse( char* subopts, struct led_control* settings )
         switch ( getsubopt( &subopts, led_options, &value ) )
         {
         case SUBOPTION_LED_CHANNEL:
-            sscanf( value, "%hhd", &settings->channel );
-            msg_debug( "LED Channel = %s\n", value );
+            sscanf( value, "%hhu", &settings->channel );
+            msg_debug( "LED Channel = %u\n", settings->channel );
             break;
 
         case SUBOPTION_LED_MODE:
             sscanf( value, "%u", &settings->mode );
-            msg_debug( "LED Mode = %s\n", value );
+            msg_debug( "LED Mode = %u\n", settings->mode );
             switch ( settings->mode )
             {
             case BLINK:
@@ -74,8 +74,8 @@ led_suboptions_parse( char* subopts, struct led_control* settings )
             break;
 
         case SUBOPTION_LED_SPEED:
-            sscanf( value, "%hhd", &settings->speed );
-            msg_debug( "LED Settings = %s\n", value );
+            sscanf( value, "%hhu", &settings->speed );
+            msg_debug( "LED Settings = %u\n", settings->speed );
             break;
 
         case SUBOPTION_LED_COLORS: /* led color */

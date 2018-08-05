@@ -241,6 +241,94 @@ corsairlink_coolit_pump_mode_default(
 }
 
 int
+corsairlink_coolit_pump_mode_custom(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct pump_control* ctrl )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    uint8_t ii = 0;
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Select;
+    commands[++ii] = ctrl->channel;
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteOneByte;
+    commands[++ii] = FAN_Mode;
+
+    commands[++ii] = COOLIT_Custom;
+
+    commands[0] = ii;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
+    return rr;
+}
+
+int
+corsairlink_coolit_pump_curve(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct pump_control* ctrl )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    // commands[0] = FanCurve;
+    // commands[1] = UnknownFanCurve;
+
+    uint8_t ii = 0;
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteThreeBytes;
+    commands[++ii] = FAN_TempTable;
+    commands[++ii] = 0x0A;
+
+    commands[++ii] = ctrl->table[0].temperature;
+    commands[++ii] = 0x00;
+    commands[++ii] = ctrl->table[1].temperature;
+    commands[++ii] = 0x00;
+    commands[++ii] = ctrl->table[2].temperature;
+    commands[++ii] = 0x00;
+    commands[++ii] = ctrl->table[3].temperature;
+    commands[++ii] = 0x00;
+    commands[++ii] = ctrl->table[4].temperature;
+    commands[++ii] = 0x00;
+
+    commands[++ii] = CommandId++;
+    commands[++ii] = WriteThreeBytes;
+    commands[++ii] = FAN_RPMTable;
+    commands[++ii] = 0x0A;
+
+    commands[++ii] = ctrl->table[0].speed;
+    commands[++ii] = 0x00;
+    commands[++ii] = ctrl->table[1].speed;
+    commands[++ii] = 0x00;
+    commands[++ii] = ctrl->table[2].speed;
+    commands[++ii] = 0x00;
+    commands[++ii] = ctrl->table[3].speed;
+    commands[++ii] = 0x00;
+    commands[++ii] = ctrl->table[4].speed;
+    commands[++ii] = 0x00;
+
+    commands[0] = ii;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
+    return rr;
+}
+
+int
 corsairlink_coolit_pump_speed(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,

@@ -23,7 +23,7 @@
 #define STR( x ) STR_HELPER( x )
 
 #define MAJOR 0 // Full Rewrite
-#define MINOR 8 // Major API Change
+#define MINOR 9 // Major API Change
 #define PATCH_MAJOR 0 // Backward-compatible API Change
 #define PATCH_MINOR 0 // Patch/Fix Change
 

@@ -263,6 +263,48 @@ corsairlink_coolit_pump_mode(
     struct pump_control* ctrl );
 
 int
+corsairlink_coolit_pump_mode_read(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct pump_control* ctrl );
+
+int
+corsairlink_coolit_pump_mode_default(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct pump_control* ctrl );
+
+int
+corsairlink_coolit_pump_mode_quiet(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct pump_control* ctrl );
+
+int
+corsairlink_coolit_pump_mode_balanced(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct pump_control* ctrl );
+
+int
+corsairlink_coolit_pump_mode_performance(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct pump_control* ctrl );
+
+int
+corsairlink_coolit_pump_mode_custom(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct pump_control* ctrl );
+
+int
+corsairlink_coolit_pump_curve(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct pump_control* ctrl );
+
+int
 corsairlink_coolit_pump_speed(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,

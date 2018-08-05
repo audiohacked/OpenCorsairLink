@@ -34,7 +34,7 @@ int
 corsairlink_unsupported_led(
     struct corsair_device_info* dev, struct libusb_device_handle* handle, struct led_control* ctrl )
 {
-    msg_info( "Unsupported LED Function\n" );
+    msg_info( "Unsupported Generic LED Function\n" );
     return 0;
 }
 
@@ -42,7 +42,7 @@ int
 corsairlink_unspported_fan(
     struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
-    msg_info( "Unsupported Fan Function\n" );
+    msg_info( "Unsupported Generic Fan Function\n" );
     return 0;
 }
 
@@ -52,7 +52,7 @@ corsairlink_unspported_pump(
     struct libusb_device_handle* handle,
     struct pump_control* ctrl )
 {
-    msg_info( "Unsupported Pump Function\n" );
+    msg_info( "Unsupported Generic Pump Function\n" );
     return 0;
 }
 
@@ -102,7 +102,17 @@ struct corsair_device_driver corsairlink_driver_coolit = {
         },
     .pump =
         {
-            .profile = corsairlink_coolit_pump_mode,
+            .profile =
+                {
+                    .read_profile = corsairlink_coolit_pump_mode_read,
+                    .write_profile_default = corsairlink_coolit_pump_mode_default,
+                    .write_profile_performance = corsairlink_coolit_pump_mode_performance,
+                    .write_profile_balanced = corsairlink_coolit_pump_mode_balanced,
+                    .write_profile_quiet = corsairlink_coolit_pump_mode_quiet,
+                    .write_profile_custom = corsairlink_coolit_pump_mode_custom,
+                    .write_custom_curve = corsairlink_coolit_pump_curve,
+                },
+            // .profile = corsairlink_coolit_pump_mode,
             .speed = corsairlink_coolit_pump_speed,
         },
 };
@@ -153,7 +163,17 @@ struct corsair_device_driver corsairlink_driver_coolit_old = {
         },
     .pump =
         {
-            .profile = corsairlink_coolit_pump_mode,
+            .profile =
+                {
+                    .read_profile = corsairlink_coolit_pump_mode_read,
+                    .write_profile_default = corsairlink_coolit_pump_mode_default,
+                    .write_profile_performance = corsairlink_coolit_pump_mode_performance,
+                    .write_profile_balanced = corsairlink_coolit_pump_mode_balanced,
+                    .write_profile_quiet = corsairlink_coolit_pump_mode_quiet,
+                    .write_profile_custom = corsairlink_coolit_pump_mode_custom,
+                    .write_custom_curve = corsairlink_coolit_pump_curve,
+                },
+            // .profile = corsairlink_coolit_pump_mode,
             .speed = corsairlink_coolit_pump_speed,
         },
 };
@@ -193,7 +213,7 @@ struct corsair_device_driver corsairlink_driver_asetek = {
                     .write_profile_custom = corsairlink_unspported_fan,
                     .write_profile_default = corsairlink_unspported_fan,
                     .write_profile_performance = corsairlink_asetek_fan_mode_performance,
-                    .write_profile_balanced = corsairlink_unspported_fan,
+                    .write_profile_balanced = corsairlink_asetek_fan_mode_balanced,
                     .write_profile_quiet = corsairlink_asetek_fan_mode_quiet,
                     .write_rpm = corsairlink_unspported_fan,
                     .write_pwm = corsairlink_unspported_fan,
@@ -204,7 +224,17 @@ struct corsair_device_driver corsairlink_driver_asetek = {
         },
     .pump =
         {
-            .profile = corsairlink_asetek_pump_mode,
+            .profile =
+                {
+                    .read_profile = corsairlink_unspported_pump,
+                    .write_profile_default = corsairlink_unspported_pump,
+                    .write_profile_performance = corsairlink_unspported_pump,
+                    .write_profile_balanced = corsairlink_unspported_pump,
+                    .write_profile_quiet = corsairlink_unspported_pump,
+                    .write_profile_custom = corsairlink_unspported_pump,
+                    .write_custom_curve = corsairlink_unspported_pump,
+                },
+            // .profile = corsairlink_asetek_pump_mode,
             .speed = corsairlink_asetek_pump_speed,
         },
 };
@@ -245,9 +275,9 @@ struct corsair_device_driver corsairlink_driver_asetekpro = {
                     .read_pwm = corsairlink_unspported_fan,
                     .write_profile_custom = corsairlink_unspported_fan,
                     .write_profile_default = corsairlink_unspported_fan,
-                    .write_profile_performance = corsairlink_unspported_fan,
-                    .write_profile_balanced = corsairlink_unspported_fan,
-                    .write_profile_quiet = corsairlink_unspported_fan,
+                    .write_profile_performance = corsairlink_asetek_fan_mode_performance,
+                    .write_profile_balanced = corsairlink_asetek_fan_mode_balanced,
+                    .write_profile_quiet = corsairlink_asetek_fan_mode_quiet,
                     .write_rpm = corsairlink_unspported_fan,
                     .write_pwm = corsairlink_unspported_fan,
                     .write_custom_curve = corsairlink_asetek_fan_curve,
@@ -255,7 +285,17 @@ struct corsair_device_driver corsairlink_driver_asetekpro = {
         },
     .pump =
         {
-            .profile = corsairlink_asetek_pump_mode,
+            .profile =
+                {
+                    .read_profile = corsairlink_unspported_pump,
+                    .write_profile_default = corsairlink_unspported_pump,
+                    .write_profile_performance = corsairlink_unspported_pump,
+                    .write_profile_balanced = corsairlink_unspported_pump,
+                    .write_profile_quiet = corsairlink_unspported_pump,
+                    .write_profile_custom = corsairlink_unspported_pump,
+                    .write_custom_curve = corsairlink_unspported_pump,
+                },
+            // .profile = corsairlink_asetek_pump_mode,
             .speed = corsairlink_asetekpro_pump_speed,
         },
 };
