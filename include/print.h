@@ -34,9 +34,10 @@ enum msglevel
 
 extern uint8_t verbose;
 
-int print( enum msglevel level, const char* fmt, ... )
-    __attribute__( ( format( printf, 2, 3 ) ) );
-int dump_packet( uint8_t* packet, int size );
+int
+print( enum msglevel level, const char* fmt, ... ) __attribute__( ( format( printf, 2, 3 ) ) );
+int
+dump_packet( uint8_t* packet, int size );
 
 #define msg_err( ... ) print( MSG_ERROR, __VA_ARGS__ )
 #define msg_warn( ... ) print( MSG_WARN, __VA_ARGS__ )

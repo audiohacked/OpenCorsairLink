@@ -29,28 +29,38 @@
 #include <string.h>
 #include <unistd.h>
 
-int commanderpro_settings(
-    struct corsair_device_scan scanned_device,
-    struct option_flags flags,
-    struct option_parse_return settings );
-int hydro_asetek_settings(
-    struct corsair_device_scan scanned_device,
-    struct option_flags flags,
-    struct option_parse_return settings );
-int hydro_asetekpro_settings(
-    struct corsair_device_scan scanned_device,
-    struct option_flags flags,
-    struct option_parse_return settings );
-int hydro_coolit_settings(
-    struct corsair_device_scan scanned_device,
-    struct option_flags flags,
-    struct option_parse_return settings );
-int psu_settings(
+int
+commanderpro_settings(
     struct corsair_device_scan scanned_device,
     struct option_flags flags,
     struct option_parse_return settings );
 
-int main( int argc, char* argv[] )
+int
+hydro_asetek_settings(
+    struct corsair_device_scan scanned_device,
+    struct option_flags flags,
+    struct option_parse_return settings );
+
+int
+hydro_asetekpro_settings(
+    struct corsair_device_scan scanned_device,
+    struct option_flags flags,
+    struct option_parse_return settings );
+
+int
+hydro_coolit_settings(
+    struct corsair_device_scan scanned_device,
+    struct option_flags flags,
+    struct option_parse_return settings );
+
+int
+psu_settings(
+    struct corsair_device_scan scanned_device,
+    struct option_flags flags,
+    struct option_parse_return settings );
+
+int
+main( int argc, char* argv[] )
 {
     int rr; // result from libusb functions
 
@@ -82,43 +92,30 @@ int main( int argc, char* argv[] )
         if ( device_number >= scanlist_count )
         {
             msg_info(
-                "Detected %d device(s), submitted device %d is out of range\n",
-                scanlist_count, device_number );
+                "Detected %d device(s), submitted device %d is out of range\n", scanlist_count,
+                device_number );
         }
         else
         {
-            if ( scanlist[device_number].device->driver
-                 == &corsairlink_driver_rmi )
+            if ( scanlist[device_number].device->driver == &corsairlink_driver_rmi )
             {
                 psu_settings( scanlist[device_number], flags, settings );
             }
-            else if (
-                scanlist[device_number].device->driver
-                == &corsairlink_driver_commanderpro )
+            else if ( scanlist[device_number].device->driver == &corsairlink_driver_commanderpro )
             {
-                commanderpro_settings(
-                    scanlist[device_number], flags, settings );
+                commanderpro_settings( scanlist[device_number], flags, settings );
             }
-            else if (
-                scanlist[device_number].device->driver
-                == &corsairlink_driver_asetek )
+            else if ( scanlist[device_number].device->driver == &corsairlink_driver_asetek )
             {
-                hydro_asetek_settings(
-                    scanlist[device_number], flags, settings );
+                hydro_asetek_settings( scanlist[device_number], flags, settings );
             }
-            else if (
-                scanlist[device_number].device->driver
-                == &corsairlink_driver_asetekpro )
+            else if ( scanlist[device_number].device->driver == &corsairlink_driver_asetekpro )
             {
-                hydro_asetekpro_settings(
-                    scanlist[device_number], flags, settings );
+                hydro_asetekpro_settings( scanlist[device_number], flags, settings );
             }
-            else if (
-                scanlist[device_number].device->driver
-                == &corsairlink_driver_coolit )
+            else if ( scanlist[device_number].device->driver == &corsairlink_driver_coolit )
             {
-                hydro_coolit_settings(
-                    scanlist[device_number], flags, settings );
+                hydro_coolit_settings( scanlist[device_number], flags, settings );
             }
         }
     }

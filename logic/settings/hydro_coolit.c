@@ -29,7 +29,8 @@
 #include <string.h>
 #include <unistd.h>
 
-int hydro_coolit_settings(
+int
+hydro_coolit_settings(
     struct corsair_device_scan scanned_device,
     struct option_flags flags,
     struct option_parse_return settings )
@@ -71,80 +72,139 @@ int hydro_coolit_settings(
     msg_info( "Firmware: %s\n", name );
 
     /* get number of temperature sensors */
-    rr = dev->driver->tempsensorscount(
-        dev, handle, &temperature_sensors_count );
+    rr = dev->driver->temperature.count( dev, handle, &temperature_sensors_count );
 
     for ( ii = 0; ii < temperature_sensors_count; ii++ )
     {
         // char temperature[10];
         double temperature;
-        rr = dev->driver->temperature( dev, handle, ii, &temperature );
+        rr = dev->driver->temperature.read( dev, handle, ii, &temperature );
         msg_info( "Temperature %d: %5.2f C\n", ii, temperature );
     }
 
     /* get number of fans */
-    rr = dev->driver->fan.count( dev, handle, &fan_count );
+    rr = dev->driver->fan.count( dev, handle, &settings.fan_ctrl );
 
-    for ( ii = 0; ii < fan_count; ii++ )
+    for ( ii = 0; ii < settings.fan_ctrl.fan_count; ii++ )
     {
-        // fan_mode = UNDEFINED;
-        // fan_speed = 0;
-        // fan_max_speed = 0;
-        // fan_data = 0;
-        rr = dev->driver->fan.profile.read(
-            dev, handle, ii, &fan_mode, &fan_data );
+        settings.fan_ctrl.channel = ii;
+        rr = dev->driver->fan.profile.read_profile( dev, handle, &settings.fan_ctrl );
         rr = dev->driver->fan.print_mode(
-            fan_mode, fan_data, fan_mode_string, sizeof( fan_mode_string ) );
-        rr = dev->driver->fan.speed(
-            dev, handle, ii, &fan_speed, &fan_max_speed );
-        msg_info( "Fan %d:\t%s\n", ii, fan_mode_string );
-        msg_info( "\tCurrent/Max Speed %i/%i RPM\n", fan_speed, fan_max_speed );
+            settings.fan_ctrl.mode, settings.fan_ctrl.data, settings.fan_ctrl.mode_string,
+            sizeof( settings.fan_ctrl.mode_string ) );
+        rr = dev->driver->fan.speed( dev, handle, &settings.fan_ctrl );
+        msg_info( "Fan %d:\t%s\n", ii, settings.fan_ctrl.mode_string );
+        msg_info(
+            "\tCurrent/Max Speed %i/%i RPM\n", settings.fan_ctrl.speed_rpm,
+            settings.fan_ctrl.max_speed );
     }
 
-    rr = dev->driver->pump.profile( dev, handle, &pump_mode );
-    rr = dev->driver->pump.speed( dev, handle, &pump_speed, &pump_max_speed );
-
-    msg_info( "Pump:\tMode 0x%02X\n", pump_mode );
-    msg_info( "\tCurrent/Max Speed %i/%i RPM\n", pump_speed, pump_max_speed );
+    rr = dev->driver->pump.profile.read( dev, handle, &settings.pump_ctrl );
+    rr = dev->driver->pump.speed( dev, handle, &settings.pump_ctrl );
+    msg_info( "Pump:\tMode 0x%02X\n", settings.pump_ctrl.mode );
+    msg_info(
+        "\tCurrent/Max Speed %i/%i RPM\n", settings.pump_ctrl.speed, settings.pump_ctrl.max_speed );
 
     if ( flags.set_led == 1 )
     {
         msg_debug( "Setting LED Flag found\n" );
         switch ( settings.led_ctrl.mode )
         {
+        case BLINK:
+            msg_debug( "Setting LED to BLINK\n" );
+            if ( dev->driver->led.blink != NULL )
+            {
+                rr = dev->driver->led.blink( dev, handle, &settings.led_ctrl );
+            }
+            break;
+        case PULSE:
+            msg_debug( "Setting LED to PULSE\n" );
+            if ( dev->driver->led.color_pulse != NULL )
+            {
+                rr = dev->driver->led.color_pulse( dev, handle, &settings.led_ctrl );
+            }
+            break;
+        case SHIFT:
+            msg_debug( "Setting LED to SHIFT\n" );
+            if ( dev->driver->led.color_shift != NULL )
+            {
+                rr = dev->driver->led.color_shift( dev, handle, &settings.led_ctrl );
+            }
+            break;
+        case RAINBOW:
+            msg_debug( "Setting LED to RAINBOW\n" );
+            if ( dev->driver->led.rainbow != NULL )
+            {
+                rr = dev->driver->led.rainbow( dev, handle, &settings.led_ctrl );
+            }
+            break;
+        case TEMPERATURE:
+            msg_debug( "Setting LED to TEMPERATURE\n" );
+            if ( dev->driver->led.temperature != NULL )
+            {
+                rr = dev->driver->led.temperature( dev, handle, &settings.led_ctrl );
+            }
+            break;
         case STATIC:
-            msg_debug( "Setting LED STATIC\n" );
         default:
-            msg_debug( "Setting LED DEFAULT\n" );
-            rr = dev->driver->led.static_color(
-                dev, handle, &settings.led_ctrl );
+            msg_debug( "Setting LED STATIC\n" );
+            if ( dev->driver->led.static_color != NULL )
+            {
+                rr = dev->driver->led.static_color( dev, handle, &settings.led_ctrl );
+            }
             break;
         }
     }
 
-    if ( flags.set_pump && settings.pump_ctrl.mode != DEFAULT )
+    if ( flags.set_fan == 1 )
+    {
+        switch ( settings.fan_ctrl.mode )
+        {
+        case QUIET:
+            if ( dev->driver->fan.profile.write_profile_quiet != NULL )
+            {
+                dev->driver->fan.profile.write_profile_quiet( dev, handle, &settings.fan_ctrl );
+            }
+            break;
+        case BALANCED:
+            if ( dev->driver->fan.profile.write_profile_balanced != NULL )
+            {
+                dev->driver->fan.profile.write_profile_balanced( dev, handle, &settings.fan_ctrl );
+            }
+            break;
+        case PERFORMANCE:
+            if ( dev->driver->fan.profile.write_profile_performance != NULL )
+            {
+                dev->driver->fan.profile.write_profile_performance(
+                    dev, handle, &settings.fan_ctrl );
+            }
+            break;
+        case CUSTOM:
+            if ( dev->driver->fan.profile.write_custom_curve != NULL )
+            {
+                dev->driver->fan.profile.write_custom_curve( dev, handle, &settings.fan_ctrl );
+            }
+            break;
+        default:
+            msg_info( "Unsupported Fan Mode\n" );
+            break;
+        }
+    }
+
+    if ( flags.set_pump == 1 )
     {
         msg_info( "Setting pump to mode: %i\n", settings.pump_ctrl.mode );
-        rr = dev->driver->pump.profile( dev, handle, &settings.pump_ctrl.mode );
-        pump_mode = 0;
-        pump_speed = 0;
-        pump_max_speed = 0;
-        rr = dev->driver->pump.profile( dev, handle, &pump_mode );
-        // sleep 3 seconds for pump to reach new value
-        sleep( 3 );
-        rr = dev->driver->pump.speed(
-            dev, handle, &pump_speed, &pump_max_speed );
-        msg_info( "Pump:\tMode 0x%02X\n", pump_mode );
-        msg_info(
-            "\tCurrent/Max Speed %i/%i RPM\n", pump_speed, pump_max_speed );
-    }
-    if ( settings.fan_ctrl.channel > 0
-         && settings.fan_ctrl.channel < fan_count + 1 )
-    {
-        fan_mode = settings.fan_ctrl.mode;
-        fan_data = settings.fan_ctrl.data;
-        rr = dev->driver->fan.profile.balanced(
-            dev, handle, settings.fan_ctrl.channel - 1, &fan_mode, &fan_data );
+        settings.pump_ctrl.channel = dev->pump_index;
+        switch ( settings.pump_ctrl.mode )
+        {
+        case QUIET:
+        case BALANCED:
+        case PERFORMANCE:
+        case CUSTOM:
+        default:
+            dev->driver->pump.profile.custom( dev, handle, &settings.pump_ctrl );
+            break;
+        }
     }
 
     rr = dev->driver->deinit( handle, dev->write_endpoint );

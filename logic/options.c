@@ -27,7 +27,8 @@
 #include <string.h>
 #include <unistd.h>
 
-int options_parse(
+int
+options_parse(
     int argc,
     char** argv,
     struct option_flags* flags,
@@ -43,8 +44,7 @@ int options_parse(
     led_control_init( &settings->led_ctrl );
     // pump_control_init(&settings->pump_control_pkt);
 
-    while ( ( opt = getopt_long( argc, argv, "", long_options, &option_index ) )
-            != EOF )
+    while ( ( opt = getopt_long( argc, argv, "", long_options, &option_index ) ) != EOF )
     {
         switch ( opt )
         {
@@ -92,7 +92,8 @@ int options_parse(
     return returnCode;
 }
 
-void options_print( void )
+void
+options_print( void )
 {
     msg_info( "OpenCorsairLink [options]\n" );
 
@@ -100,10 +101,8 @@ void options_print( void )
     msg_info( "\t--help\t\t\t\t:Prints this Message\n" );
     msg_info( "\t--version\t\t\t:Displays version.\n" );
     msg_info( "\t--debug\t\t\t\t:Displays enhanced Debug Messages.\n" );
-    msg_info( "\t--dump\t\t\t\t:Implies --debug. Dump the raw data recieved "
-              "from the device.\n" );
-    msg_info(
-        "\t--machine\t\t\t:Prints statuses in Machine Readable Format.\n" );
+    msg_info( "\t--dump\t\t\t\t:Implies --debug. Dump the raw data recieved from the device.\n" );
+    msg_info( "\t--machine\t\t\t:Prints statuses in Machine Readable Format.\n" );
     msg_info( "\t--device <Device Number>\t:Select device.\n" );
 
     msg_info( "\n\tLED:\n" );
@@ -121,13 +120,10 @@ void options_print( void )
     msg_info( "\t\t\t 2 - Color Pulse (Only Commander Pro and Asetek Pro)\n" );
     msg_info( "\t\t\t 3 - Color Shift (Only Commander Pro and Asetek Pro)\n" );
     msg_info( "\t\t\t 4 - Rainbow (Only Commander Pro and Asetek Pro)\n" );
-    msg_info( "\t\t\t 5 - Temperature (Only Commander Pro, Asetek, and Asetek "
-              "Pro)\n" );
+    msg_info( "\t\t\t 5 - Temperature (Only Commander Pro, Asetek, and Asetek Pro)\n" );
     msg_info( "\t\tColors: <HTML Color Code>\t\t\t:Define Color for LED.\n" );
-    msg_info(
-        "\t\tWarn: <HTML Color Code>\t\t:Define Color for Warning Temp.\n" );
-    msg_info(
-        "\t\tTemp: <Temperature in Celsius>\t:Define Warning Temperature.\n" );
+    msg_info( "\t\tWarn: <HTML Color Code>\t\t:Define Color for Warning Temp.\n" );
+    msg_info( "\t\tTemp: <Temperature in Celsius>\t:Define Warning Temperature.\n" );
 
     msg_info( "\n\tFan:\n" );
     msg_info( "\t--fan " );
@@ -154,8 +150,7 @@ void options_print( void )
               "NOTE: it works only when fan mode is set to Fixed RPM\n" );
     msg_info( "\t\tFor Custom Curves:\n" );
     msg_info( "\t\t\tTemps <C>\t:Define Celsius Temperatures for Fan.\n" );
-    msg_info( "\t\t\tSpeeds <Percentage>\t:Define Values of RPM Percentage "
-              "for Fan.\n" );
+    msg_info( "\t\t\tSpeeds <Percentage>\t:Define Values of RPM Percentage for Fan.\n" );
 
     msg_info( "\n\tPump:\n" );
     msg_info( "\t--pump " );

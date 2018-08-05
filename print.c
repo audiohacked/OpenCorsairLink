@@ -25,7 +25,8 @@
 
 uint8_t verbose = MSG_INFO;
 
-int print( enum msglevel level, const char* fmt, ... )
+int
+print( enum msglevel level, const char* fmt, ... )
 {
     va_list ap;
     int ret = 0;
@@ -56,7 +57,8 @@ int print( enum msglevel level, const char* fmt, ... )
     return 0;
 }
 
-int dump_packet( uint8_t* packet, int size )
+int
+dump_packet( uint8_t* packet, int size )
 {
     msg_debug2( "\n---- Packet dump: -----------------------------" );
     for ( int8_t j = 0; j < size; j++ )

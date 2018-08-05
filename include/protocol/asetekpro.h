@@ -28,65 +28,73 @@ enum AsetekProSpeed
     AsetekProSpeedFast,
 };
 
-int corsairlink_asetekpro_firmware_id(
+int
+corsairlink_asetekpro_firmware_id(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* firmware,
     uint8_t firmware_size );
 
 /* fan */
-int corsairlink_asetekpro_fan_speed(
+int
+corsairlink_asetekpro_fan_speed(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint16_t* speed,
-    uint16_t* maxspeed );
+    struct fan_control* ctrl );
 
 /* led */
-int corsairlink_asetekpro_led_static_color(
+int
+corsairlink_asetekpro_led_static_color(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
 
-int corsairlink_asetekpro_led_blink(
+int
+corsairlink_asetekpro_led_blink(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
 
-int corsairlink_asetekpro_led_color_pulse(
+int
+corsairlink_asetekpro_led_color_pulse(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
 
-int corsairlink_asetekpro_led_color_shift(
+int
+corsairlink_asetekpro_led_color_shift(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
 
-int corsairlink_asetekpro_led_rainbow(
+int
+corsairlink_asetekpro_led_rainbow(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
 
-int corsairlink_asetekpro_led_temperature(
+int
+corsairlink_asetekpro_led_temperature(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
 
 /* pump */
-int corsairlink_asetekpro_pump_speed(
+int
+corsairlink_asetekpro_pump_speed(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint16_t* speed,
-    uint16_t* maxspeed );
+    struct pump_control* ctrl );
 
 /* temperature */
-int corsairlink_asetekpro_tempsensorscount(
+int
+corsairlink_asetekpro_tempsensorscount(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t* temperature_sensors_count );
 
-int corsairlink_asetekpro_temperature(
+int
+corsairlink_asetekpro_temperature(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t selector,

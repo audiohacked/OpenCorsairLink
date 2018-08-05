@@ -22,6 +22,7 @@
 #include "device.h"
 #include "driver.h"
 #include "lowlevel/asetek.h"
+#include "print.h"
 
 #include <errno.h>
 #include <libusb.h>
@@ -36,10 +37,9 @@
  *  @param[out] device id
  *  @return 0
  */
-int corsairlink_asetek_device_id(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t* device_id )
+int
+corsairlink_asetek_device_id(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint8_t* device_id )
 {
     // memcpy(device_id, 0x00, 1);
     ( *device_id ) = 0xFF;
@@ -52,7 +52,8 @@ int corsairlink_asetek_device_id(
  *  @param[out] Device Name
  *  @return 0
  */
-int corsairlink_asetek_name(
+int
+corsairlink_asetek_name(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
@@ -68,7 +69,8 @@ int corsairlink_asetek_name(
  *  @param[out] Vendor Name
  *  @return 0
  */
-int corsairlink_asetek_vendor(
+int
+corsairlink_asetek_vendor(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
@@ -84,7 +86,8 @@ int corsairlink_asetek_vendor(
  *  @param[out] Product Name
  *  @return 0
  */
-int corsairlink_asetek_product(
+int
+corsairlink_asetek_product(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
@@ -100,7 +103,8 @@ int corsairlink_asetek_product(
  *  @param[out] string for firmware number
  *  @return 0
  */
-int corsairlink_asetek_firmware_id(
+int
+corsairlink_asetek_firmware_id(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* firmware,
@@ -118,8 +122,16 @@ int corsairlink_asetek_firmware_id(
     rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
 
     snprintf(
-        firmware, firmware_size, "%d.%d.%d.%d", response[0x17], response[0x18],
-        response[0x19], response[0x1A] );
+        firmware, firmware_size, "%d.%d.%d.%d", response[0x17], response[0x18], response[0x19],
+        response[0x1A] );
 
     return rr;
+}
+
+int
+corsairlink_asetek_undefined(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, ... )
+{
+    msg_info( "Undefined Asetek Function!\n" );
+    return 0;
 }

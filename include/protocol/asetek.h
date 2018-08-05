@@ -68,91 +68,126 @@ enum Asetek_PumpModes
     x[4].speed = 0x5d;                \
     x[5].speed = 0x64;
 
-int corsairlink_asetek_device_id(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t* device_id );
+int
+corsairlink_asetek_device_id(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint8_t* device_id );
 
-int corsairlink_asetek_name(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    char* name,
-    uint8_t name_size );
-
-int corsairlink_asetek_vendor(
+int
+corsairlink_asetek_name(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
     uint8_t name_size );
 
-int corsairlink_asetek_product(
+int
+corsairlink_asetek_vendor(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
     uint8_t name_size );
 
-int corsairlink_asetek_firmware_id(
+int
+corsairlink_asetek_product(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    char* name,
+    uint8_t name_size );
+
+int
+corsairlink_asetek_firmware_id(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* firmware,
     uint8_t firmware_size );
 
-int corsairlink_asetek_led_static_color(
+/* LED */
+int
+corsairlink_asetek_led_static_color(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
 
-int corsairlink_asetek_led_temperature(
+int
+corsairlink_asetek_led_temperature(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
 
-int corsairlink_asetek_pump_mode(
+/* Pump */
+int
+corsairlink_asetek_pump_mode(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t* pump_mode );
+    struct pump_control* ctrl );
 
-int corsairlink_asetek_pump_speed(
+int
+corsairlink_asetek_pump_speed(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint16_t* speed,
-    uint16_t* maxspeed );
+    struct pump_control* ctrl );
 
-int corsairlink_asetek_fan_count(
+/* Fan */
+int
+corsairlink_asetek_fan_count(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t* fan_count );
+    struct fan_control* ctrl );
 
-int corsairlink_asetek_fan_mode(
+int
+corsairlink_asetek_fan_mode_read(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data );
+    struct fan_control* ctrl );
 
-int corsairlink_asetek_fan_curve(
+// int corsairlink_asetek_fan_mode(
+//     struct corsair_device_info* dev,
+//     struct libusb_device_handle* handle,
+//     struct fan_control* ctrl );
+
+int
+corsairlink_asetek_fan_mode_performance(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    struct temp_speed_pair* fan );
+    struct fan_control* ctrl );
 
-int corsairlink_asetek_fan_speed(
+int
+corsairlink_asetek_fan_mode_balanced(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint16_t* speed,
-    uint16_t* maxspeed );
+    struct fan_control* ctrl );
 
-int corsairlink_asetek_fan_print_mode(
+int
+corsairlink_asetek_fan_mode_quiet(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+int
+corsairlink_asetek_fan_curve(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+int
+corsairlink_asetek_fan_speed(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+int
+corsairlink_asetek_fan_print_mode(
     uint8_t mode, uint16_t data, char* modestr, uint8_t modestr_size );
 
-int corsairlink_asetek_temperature(
+/* Temperature */
+int
+corsairlink_asetek_temperature(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t selector,
     double* temperature );
 
-int corsairlink_asetek_tempsensorscount(
+int
+corsairlink_asetek_tempsensorscount(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t* temperature_sensors_count );

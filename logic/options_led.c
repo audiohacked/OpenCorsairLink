@@ -26,7 +26,8 @@
 #include <string.h>
 #include <unistd.h>
 
-void led_control_init( struct led_control* settings )
+void
+led_control_init( struct led_control* settings )
 {
     settings->count = 7;
     settings->speed = 3;
@@ -40,7 +41,8 @@ void led_control_init( struct led_control* settings )
     settings->temperatures[2] = 55;
 }
 
-void led_suboptions_parse( char* subopts, struct led_control* settings )
+void
+led_suboptions_parse( char* subopts, struct led_control* settings )
 {
     int opt, returnCode = 0, option_index = 0;
     char *value, *token;
@@ -86,8 +88,7 @@ void led_suboptions_parse( char* subopts, struct led_control* settings )
                 msg_debug( "Found Color %d: %s\n", ii, token );
                 sscanf(
                     token, "%02hhX%02hhX%02hhX,", &settings->led_colors[ii].red,
-                    &settings->led_colors[ii].green,
-                    &settings->led_colors[ii].blue );
+                    &settings->led_colors[ii].green, &settings->led_colors[ii].blue );
                 ++ii;
                 token = strtok( NULL, ":" );
             }

@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _PROTOCOL_PRO_H
-#define _PROTOCOL_PRO_H
+#ifndef _PROTOCOL_COMMANDERPRO_H
+#define _PROTOCOL_COMMANDERPRO_H
 
 enum CorsairLightingNodePro_LED_Mode
 {
@@ -50,83 +50,94 @@ enum CorsairLightingNodePro_LED_Type
     LNP_Dominator = 0x1C,
 };
 
-int corsairlink_commanderpro_device_id(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t* device_id );
+int
+corsairlink_commanderpro_device_id(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint8_t* device_id );
 
-int corsairlink_commanderpro_name(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    char* name,
-    uint8_t name_str_len );
-
-int corsairlink_commanderpro_vendor(
+int
+corsairlink_commanderpro_name(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
     uint8_t name_str_len );
 
-int corsairlink_commanderpro_product(
+int
+corsairlink_commanderpro_vendor(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
     uint8_t name_str_len );
 
-int corsairlink_commanderpro_firmware_id(
+int
+corsairlink_commanderpro_product(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    char* name,
+    uint8_t name_str_len );
+
+int
+corsairlink_commanderpro_firmware_id(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* firmware,
     uint8_t firmware_str_len );
 
-int corsairlink_commanderpro_software_id(
+int
+corsairlink_commanderpro_software_id(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* firmware,
     uint8_t firmware_str_len );
 
-int corsairlink_commanderpro_bootloader_id(
+int
+corsairlink_commanderpro_bootloader_id(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* firmware,
     uint8_t firmware_str_len );
 
-int corsairlink_commanderpro_get_fan_speed_rpm(
+/* Fans */
+int
+corsairlink_commanderpro_fan_print_mode(
+    uint8_t mode, uint16_t data, char* modestr, uint8_t modestr_size );
+
+int
+corsairlink_commanderpro_get_fan_speed_rpm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t sensor_index,
-    uint8_t* fan_mode,
-    uint16_t* rpm,
-    uint16_t* maxrpm );
+    struct fan_control* ctrl );
 
-int corsairlink_commanderpro_get_fan_speed_pwm(
+int
+corsairlink_commanderpro_get_fan_speed_pwm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t sensor_index,
-    uint8_t* fan_mode,
-    uint8_t* pwm );
+    struct fan_control* ctrl );
 
-int corsairlink_commanderpro_get_fan_detect_type(
+int
+corsairlink_commanderpro_get_fan_detect_type(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t sensor_index,
-    uint8_t* device_id );
+    struct fan_control* ctrl );
 
-int corsairlink_commanderpro_voltage(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t sensor_index,
-    double* voltage );
-
-int corsairlink_commanderpro_tempsensorscount(
+/* Temperature */
+int
+corsairlink_commanderpro_tempsensorscount(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t* temperature_sensors_count );
 
-int corsairlink_commanderpro_temperature(
+int
+corsairlink_commanderpro_temperature(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t sensor_index,
     double* temperature );
 
-#endif // _PROTOCOL_PRO_H
+int
+corsairlink_commanderpro_voltage(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    uint8_t sensor_index,
+    double* voltage );
+
+#endif // _PROTOCOL_COMMANDERPRO_H

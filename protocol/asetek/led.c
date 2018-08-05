@@ -27,10 +27,9 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_asetek_led_static_color(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    struct led_control* ctrl )
+int
+corsairlink_asetek_led_static_color(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct led_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -64,10 +63,9 @@ int corsairlink_asetek_led_static_color(
     return rr;
 }
 
-int corsairlink_asetek_led_temperature(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    struct led_control* ctrl )
+int
+corsairlink_asetek_led_temperature(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct led_control* ctrl )
 {
     int rr;
     uint8_t response[64];

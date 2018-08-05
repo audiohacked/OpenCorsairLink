@@ -29,12 +29,9 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_asetekpro_fan_speed(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint16_t* speed,
-    uint16_t* maxspeed )
+int
+corsairlink_asetekpro_fan_speed(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -43,23 +40,23 @@ int corsairlink_asetekpro_fan_speed(
     memset( commands, 0, sizeof( commands ) );
 
     commands[0] = 0x41; // fan speed query
-    commands[1] = selector; // fan port
+    commands[1] = ctrl->channel; // fan port
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 6 );
 
     msg_debug2(
-        "%02X %02X %02X %02X %02X %02X\n", response[0], response[1],
-        response[2], response[3], response[4], response[5] );
+        "%02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
+        response[4], response[5] );
 
     if ( response[0] != 0x41 || response[1] != 0x12 || response[2] != 0x34
-         || response[3] != selector )
+         || response[3] != ctrl->channel )
     {
         msg_debug2( "Bad Response\n" );
     }
 
-    *( speed ) = ( response[4] << 8 ) + response[5];
-    *( maxspeed ) = 0;
+    ctrl->speed_rpm = ( response[4] << 8 ) + response[5];
+    ctrl->max_speed = 0;
 
     return rr;
 }

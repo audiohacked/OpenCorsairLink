@@ -20,9 +20,7 @@
  *  \brief Fan Routines for RMi Series of Power Supplies
  */
 int corsairlink_rmi_fan_rpm(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint16_t rpm )
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint16_t rpm )
 {
     int rr;
     uint8_t response[64];
@@ -41,8 +39,8 @@ int corsairlink_rmi_fan_rpm(
     memcpy( rpm, response + 2, 2 );
 
     msg_debug2(
-        "%02X %02X %02X %02X %02X %02X\n", response[0], response[1],
-        response[2], response[3], response[4], response[5] );
+        "%02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
+        response[4], response[5] );
 
     return 0;
 }

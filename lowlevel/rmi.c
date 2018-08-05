@@ -34,8 +34,8 @@
  *  @param[in] device endpoint for the data
  *  @return 0
  */
-int corsairlink_rmi_init(
-    struct libusb_device_handle* dev_handle, uint8_t endpoint )
+int
+corsairlink_rmi_init( struct libusb_device_handle* dev_handle, uint8_t endpoint )
 {
     return 0;
 }
@@ -46,8 +46,8 @@ int corsairlink_rmi_init(
  *  @param[in] device endpoint for the data
  *  @return 0
  */
-int corsairlink_rmi_deinit(
-    struct libusb_device_handle* dev_handle, uint8_t endpoint )
+int
+corsairlink_rmi_deinit( struct libusb_device_handle* dev_handle, uint8_t endpoint )
 {
     return 0;
 }
@@ -60,18 +60,15 @@ int corsairlink_rmi_deinit(
  *  @param[in] length of data to send, in bytes
  *  @return 0
  */
-int corsairlink_rmi_write(
-    struct libusb_device_handle* dev_handle,
-    uint8_t endpoint,
-    uint8_t* data,
-    int length )
+int
+corsairlink_rmi_write(
+    struct libusb_device_handle* dev_handle, uint8_t endpoint, uint8_t* data, int length )
 {
     int bytes_transferred;
     int rr;
 
     rr = libusb_interrupt_transfer(
-        dev_handle, endpoint, data, length, &bytes_transferred,
-        TIMEOUT_DEFAULT );
+        dev_handle, endpoint, data, length, &bytes_transferred, TIMEOUT_DEFAULT );
 
     return rr;
 }
@@ -84,18 +81,15 @@ int corsairlink_rmi_write(
  *  @param[in] length of data to send, in bytes
  *  @return 0
  */
-int corsairlink_rmi_read(
-    struct libusb_device_handle* dev_handle,
-    uint8_t endpoint,
-    uint8_t* data,
-    int length )
+int
+corsairlink_rmi_read(
+    struct libusb_device_handle* dev_handle, uint8_t endpoint, uint8_t* data, int length )
 {
     int bytes_transferred;
     int rr;
 
     rr = libusb_interrupt_transfer(
-        dev_handle, endpoint, data, length, &bytes_transferred,
-        TIMEOUT_DEFAULT );
+        dev_handle, endpoint, data, length, &bytes_transferred, TIMEOUT_DEFAULT );
 
     return rr;
 }

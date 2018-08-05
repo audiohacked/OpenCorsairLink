@@ -28,9 +28,7 @@
 #include <unistd.h>
 
 int corsairlink_commanderpro_get_led_setup_mask(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t led_channel )
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint8_t led_channel )
 {
     int rr;
     uint8_t response[16];

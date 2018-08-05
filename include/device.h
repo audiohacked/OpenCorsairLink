@@ -42,6 +42,6 @@ struct corsair_device_info
 };
 
 extern struct corsair_device_info corsairlink_devices[];
-extern uint8_t corsairlink_device_count;
+extern uint8_t corsairlink_device_list_count;
 
 #endif

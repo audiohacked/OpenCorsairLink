@@ -1,3 +1,4 @@
+####################################################################################################
 #
 # This file is part of OpenCorsairLink.
 # Copyright (C) 2017,2018  Sean Nelson <audiohacked@gmail.com>
@@ -15,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
 #
+####################################################################################################
 
 CC ?= gcc
 
@@ -30,62 +32,95 @@ LDFLAGS ?= -lm
 CFLAGS += $(shell pkg-config --cflags libusb-1.0)
 LDFLAGS += $(shell pkg-config --libs libusb-1.0)
 
-OBJS = \
-	main.o \
-	device.o \
-	driver.o \
-	print.o \
-	logic/options.o \
-	logic/options_fan.o \
-	logic/options_led.o \
-	logic/options_pump.o \
-	logic/scan.o \
-	logic/settings/commanderpro.o \
-	logic/settings/hydro_asetek.o \
-	logic/settings/hydro_asetekpro.o \
-	logic/settings/hydro_coolit.o \
-	logic/settings/psu.o
+####################################################################################################
 
-OBJS_LL = \
-	lowlevel/asetek.o \
-	lowlevel/commanderpro.o \
-	lowlevel/coolit.o \
-	lowlevel/rmi.o
+MAINLOGIC_SOURCE := \
+	main.c \
+	device.c \
+	driver.c \
+	print.c \
+	logic/options.c \
+	logic/options_fan.c \
+	logic/options_led.c \
+	logic/options_pump.c \
+	logic/scan.c \
+	logic/settings/commanderpro.c \
+	logic/settings/hydro_asetek.c \
+	logic/settings/hydro_asetekpro.c \
+	logic/settings/hydro_coolit.c \
+	logic/settings/psu.c
 
-OBJS_PROTO = \
-	protocol/asetek/core.o \
-	protocol/asetek/fan.o \
-	protocol/asetek/led.o \
-	protocol/asetek/pump.o \
-	protocol/asetek/temperature.o \
-	protocol/asetekpro/core.o \
-	protocol/asetekpro/fan.o \
-	protocol/asetekpro/led.o \
-	protocol/asetekpro/pump.o \
-	protocol/asetekpro/temperature.o \
-	protocol/commanderpro/core.o \
-	protocol/commanderpro/fan.o \
-	protocol/commanderpro/power.o \
-	protocol/commanderpro/temperature.o \
-	protocol/rmi/core.o \
-	protocol/rmi/power.o \
-	protocol/rmi/temperature.o \
-	protocol/rmi/time.o \
-	protocol/coolit/core.o \
-	protocol/coolit/fan.o \
-	protocol/coolit/led.o \
-	protocol/coolit/pump.o \
-	protocol/coolit/temperature.o
+LOWLEVEL_SOURCE := \
+	lowlevel/asetek.c \
+	lowlevel/commanderpro.c \
+	lowlevel/coolit.c \
+	lowlevel/rmi.c
 
+PROTOCOL_SOURCE := \
+	protocol/asetek/core.c \
+	protocol/asetek/fan.c \
+	protocol/asetek/led.c \
+	protocol/asetek/pump.c \
+	protocol/asetek/temperature.c \
+	protocol/asetekpro/core.c \
+	protocol/asetekpro/fan.c \
+	protocol/asetekpro/led.c \
+	protocol/asetekpro/pump.c \
+	protocol/asetekpro/temperature.c \
+	protocol/commanderpro/core.c \
+	protocol/commanderpro/fan.c \
+	protocol/commanderpro/power.c \
+	protocol/commanderpro/temperature.c \
+	protocol/rmi/core.c \
+	protocol/rmi/power.c \
+	protocol/rmi/temperature.c \
+	protocol/rmi/time.c \
+	protocol/coolit/core.c \
+	protocol/coolit/fan.c \
+	protocol/coolit/led.c \
+	protocol/coolit/pump.c \
+	protocol/coolit/temperature.c
+
+HEADER := $(shell find ./include -name '*.h')
+
+EXECUTABLE := OpenCorsairLink.elf
+
+####################################################################################################
+
+OBJS := \
+	${MAINLOGIC_SOURCE:.c=.o}
+
+OBJS_LL := \
+	${LOWLEVEL_SOURCE:.c=.o} 
+
+OBJS_PROTO := \
+	${PROTOCOL_SOURCE:.c=.o} 
+
+.PHONY: all
+all: $(EXECUTABLE)
+
+.PHONY: default
 default: all
 
-all: OpenCorsairLink.elf
+.PHONY: rebuild
+rebuild: clean all
 
-OpenCorsairLink.elf: $(OBJS) $(OBJS_PROTO) $(OBJS_LL)
-	$(CC) $^ $(CFLAGS) $(LDFLAGS) -o $@
+.PHONY: style
+style: $(MAINLOGIC_SOURCE) $(LOWLEVEL_SOURCE) $(PROTOCOL_SOURCE) $(HEADER)
+	clang-format -style=file -i $^
+
+.PHONY: tidy
+tidy: $(MAINLOGIC_SOURCE) $(LOWLEVEL_SOURCE) $(PROTOCOL_SOURCE)
+	clang-tidy $^ -checks=* -- -std=c++11
+
+.PHONY: clean
+clean:
+	$(RM) $(EXECUTABLE) $(OBJS) $(OBJS_LL) $(OBJS_PROTO)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -g -c -o $@ $<
 
-clean:
-	$(RM) OpenCorsairLink.elf $(OBJS) $(OBJS_LL) $(OBJS_PROTO)
+$(EXECUTABLE): $(OBJS) $(OBJS_PROTO) $(OBJS_LL)
+	$(CC) $^ $(CFLAGS) $(LDFLAGS) -o $@
+
+####################################################################################################

@@ -29,7 +29,8 @@
 #include <string.h>
 #include <unistd.h>
 
-int psu_settings(
+int
+psu_settings(
     struct corsair_device_scan scanned_device,
     struct option_flags flags,
     struct option_parse_return settings )
@@ -39,8 +40,7 @@ int psu_settings(
     char name[32];
     name[sizeof( name ) - 1] = 0;
     uint32_t time = 0;
-    double supply_volts, supply_watts, temperature, output_volts, output_amps,
-        output_watts;
+    double supply_volts, supply_watts, temperature, output_volts, output_amps, output_watts;
     struct corsair_device_info* dev;
     struct libusb_device_handle* handle;
 
@@ -64,19 +64,15 @@ int psu_settings(
     /* fetch temperatures */
     for ( ii = 0; ii < 2; ii++ )
     {
-        rr = dev->driver->temperature( dev, handle, ii, &temperature );
+        rr = dev->driver->temperature.read( dev, handle, ii, &temperature );
         msg_info( "Temperature %d: %5.2f C\n", ii, temperature );
     }
 
     /* fetch device powered time and device uptime */
     rr = dev->driver->psu_time.powered( dev, handle, &time );
-    msg_info(
-        "Powered: %u (%dd.  %dh)\n", time, time / ( 24 * 60 * 60 ),
-        time / ( 60 * 60 ) % 24 );
+    msg_info( "Powered: %u (%dd.  %dh)\n", time, time / ( 24 * 60 * 60 ), time / ( 60 * 60 ) % 24 );
     rr = dev->driver->psu_time.uptime( dev, handle, &time );
-    msg_info(
-        "Uptime: %u (%dd.  %dh)\n", time, time / ( 24 * 60 * 60 ),
-        time / ( 60 * 60 ) % 24 );
+    msg_info( "Uptime: %u (%dd.  %dh)\n", time, time / ( 24 * 60 * 60 ), time / ( 60 * 60 ) % 24 );
     msg_debug( "DEBUG: time done\n" );
 
     /* fetch Supply Voltage and Total Watts Consumming */

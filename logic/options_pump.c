@@ -26,12 +26,14 @@
 #include <string.h>
 #include <unistd.h>
 
-void pump_control_init( struct pump_control* settings )
+void
+pump_control_init( struct pump_control* settings )
 {
     settings->mode = DEFAULT;
 }
 
-void pump_suboptions_parse( char* subopts, struct pump_control* settings )
+void
+pump_suboptions_parse( char* subopts, struct pump_control* settings )
 {
     int opt, returnCode = 0, option_index = 0;
     char *value, *token;
@@ -42,7 +44,7 @@ void pump_suboptions_parse( char* subopts, struct pump_control* settings )
         switch ( getsubopt( &subopts, pump_options, &value ) )
         {
         case SUBOPTION_PUMP_MODE:
-            sscanf( value, "%hhd", &settings->mode );
+            sscanf( value, "%u", &settings->mode );
             msg_debug( "PUMP Mode = %s\n", value );
             break;
 

@@ -29,7 +29,8 @@
 #include <string.h>
 #include <unistd.h>
 
-int commanderpro_settings(
+int
+commanderpro_settings(
     struct corsair_device_scan scanned_device,
     struct option_flags flags,
     struct option_parse_return settings )
@@ -65,7 +66,7 @@ int commanderpro_settings(
     {
         // char temperature[16];
         double temperature;
-        rr = dev->driver->temperature( dev, handle, ii, &temperature );
+        rr = dev->driver->temperature.read( dev, handle, ii, &temperature );
         msg_info( "Temperature %d: %5.2f C\n", ii, temperature );
     }
 
@@ -84,40 +85,88 @@ int commanderpro_settings(
     }
 
     msg_debug( "Setting LED\n" );
-    if ( flags.set_led == 2 )
+    if ( flags.set_led == 1 )
     {
-        msg_debug( "Setting LED FLag found\n" );
+        msg_debug( "Setting LED Flag found\n" );
         switch ( settings.led_ctrl.mode )
         {
         case BLINK:
             msg_debug( "Setting LED to BLINK\n" );
-            rr = dev->driver->led.blink( dev, handle, &settings.led_ctrl );
+            if ( dev->driver->led.blink != NULL )
+            {
+                rr = dev->driver->led.blink( dev, handle, &settings.led_ctrl );
+            }
             break;
         case PULSE:
             msg_debug( "Setting LED to PULSE\n" );
-            rr =
-                dev->driver->led.color_pulse( dev, handle, &settings.led_ctrl );
+            if ( dev->driver->led.color_pulse != NULL )
+            {
+                rr = dev->driver->led.color_pulse( dev, handle, &settings.led_ctrl );
+            }
             break;
         case SHIFT:
             msg_debug( "Setting LED to SHIFT\n" );
-            rr =
-                dev->driver->led.color_shift( dev, handle, &settings.led_ctrl );
+            if ( dev->driver->led.color_shift != NULL )
+            {
+                rr = dev->driver->led.color_shift( dev, handle, &settings.led_ctrl );
+            }
             break;
         case RAINBOW:
             msg_debug( "Setting LED to RAINBOW\n" );
-            rr = dev->driver->led.rainbow( dev, handle, &settings.led_ctrl );
+            if ( dev->driver->led.rainbow != NULL )
+            {
+                rr = dev->driver->led.rainbow( dev, handle, &settings.led_ctrl );
+            }
             break;
         case TEMPERATURE:
             msg_debug( "Setting LED to TEMPERATURE\n" );
-            rr =
-                dev->driver->led.temperature( dev, handle, &settings.led_ctrl );
+            if ( dev->driver->led.temperature != NULL )
+            {
+                rr = dev->driver->led.temperature( dev, handle, &settings.led_ctrl );
+            }
             break;
         case STATIC:
-            msg_debug( "Setting LED STATIC\n" );
         default:
-            msg_debug( "Setting LED DEFAULT\n" );
-            rr = dev->driver->led.static_color(
-                dev, handle, &settings.led_ctrl );
+            msg_debug( "Setting LED STATIC\n" );
+            if ( dev->driver->led.static_color != NULL )
+            {
+                rr = dev->driver->led.static_color( dev, handle, &settings.led_ctrl );
+            }
+            break;
+        }
+    }
+
+    if ( flags.set_fan == 1 )
+    {
+        switch ( settings.fan_ctrl.mode )
+        {
+        case QUIET:
+            if ( dev->driver->fan.profile.write_profile_quiet != NULL )
+            {
+                dev->driver->fan.profile.write_profile_quiet( dev, handle, &settings.fan_ctrl );
+            }
+            break;
+        case BALANCED:
+            if ( dev->driver->fan.profile.write_profile_balanced != NULL )
+            {
+                dev->driver->fan.profile.write_profile_balanced( dev, handle, &settings.fan_ctrl );
+            }
+            break;
+        case PERFORMANCE:
+            if ( dev->driver->fan.profile.write_profile_performance != NULL )
+            {
+                dev->driver->fan.profile.write_profile_performance(
+                    dev, handle, &settings.fan_ctrl );
+            }
+            break;
+        case CUSTOM:
+            if ( dev->driver->fan.profile.write_custom_curve != NULL )
+            {
+                dev->driver->fan.profile.write_custom_curve( dev, handle, &settings.fan_ctrl );
+            }
+            break;
+        default:
+            msg_info( "Unsupported Fan Mode\n" );
             break;
         }
     }

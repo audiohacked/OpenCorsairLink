@@ -32,7 +32,8 @@
 #include <string.h>
 #include <unistd.h>
 
-double convert_bytes_double( uint16_t v16 )
+double
+convert_bytes_double( uint16_t v16 )
 {
     int exponent = v16 >> 11;
     int fraction = (int)( v16 & 2047 );
@@ -48,17 +49,17 @@ double convert_bytes_double( uint16_t v16 )
     return (double)fraction * pow( 2.0, (double)exponent );
 }
 
-int corsairlink_rmi_device_id(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t* device_id )
+int
+corsairlink_rmi_device_id(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint8_t* device_id )
 {
     // memset(device_id, 0x00, 1);
     ( *device_id ) = 0xFF;
     return 0;
 }
 
-int corsairlink_rmi_firmware_id(
+int
+corsairlink_rmi_firmware_id(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* firmware,
@@ -69,7 +70,8 @@ int corsairlink_rmi_firmware_id(
     return 0;
 }
 
-int corsairlink_rmi_name(
+int
+corsairlink_rmi_name(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
@@ -97,7 +99,8 @@ int corsairlink_rmi_name(
     return 0;
 }
 
-int corsairlink_rmi_vendor(
+int
+corsairlink_rmi_vendor(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
@@ -126,7 +129,8 @@ int corsairlink_rmi_vendor(
     return 0;
 }
 
-int corsairlink_rmi_product(
+int
+corsairlink_rmi_product(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,

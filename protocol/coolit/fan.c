@@ -29,10 +29,9 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_coolit_fan_count(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t* fan_count )
+int
+corsairlink_coolit_fan_count(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -51,13 +50,13 @@ int corsairlink_coolit_fan_count(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-    *( fan_count ) =
-        response[2] - 1; // we subtract 1 because count includes pump
+    ctrl->fan_count = response[2] - 1; // we subtract 1 because count includes pump
 
     return rr;
 }
 
-int corsairlink_coolit_fan_print_mode(
+int
+corsairlink_coolit_fan_print_mode(
     uint8_t mode, uint16_t data, char* modestr, uint8_t modestr_size )
 {
     int rr = 0;
@@ -68,42 +67,29 @@ int corsairlink_coolit_fan_print_mode(
     if ( !isConnected )
         snprintf( modestr, modestr_size, "Not connected or failed" );
     else if ( real_mode == COOLIT_Performance )
-        snprintf(
-            modestr, modestr_size, "Performance Mode (%s)",
-            is4pin ? "4PIN" : "3PIN" );
+        snprintf( modestr, modestr_size, "Performance Mode (%s)", is4pin ? "4PIN" : "3PIN" );
     else if ( real_mode == COOLIT_Balanced )
-        snprintf(
-            modestr, modestr_size, "Balanced Mode (%s)",
-            is4pin ? "4PIN" : "3PIN" );
+        snprintf( modestr, modestr_size, "Balanced Mode (%s)", is4pin ? "4PIN" : "3PIN" );
     else if ( real_mode == COOLIT_Quiet )
-        snprintf(
-            modestr, modestr_size, "Quiet Mode (%s)",
-            is4pin ? "4PIN" : "3PIN" );
+        snprintf( modestr, modestr_size, "Quiet Mode (%s)", is4pin ? "4PIN" : "3PIN" );
     else if ( real_mode == COOLIT_Default )
-        snprintf(
-            modestr, modestr_size, "Default Mode (%s)",
-            is4pin ? "4PIN" : "3PIN" );
+        snprintf( modestr, modestr_size, "Default Mode (%s)", is4pin ? "4PIN" : "3PIN" );
     else if ( real_mode == COOLIT_FixedPWM )
         snprintf(
-            modestr, modestr_size, "Fixed PWM Mode (%s) set to %d%%",
-            is4pin ? "4PIN" : "3PIN", ( data + 1 ) * 100 / 256 );
+            modestr, modestr_size, "Fixed PWM Mode (%s) set to %d%%", is4pin ? "4PIN" : "3PIN",
+            ( data + 1 ) * 100 / 256 );
     else if ( real_mode == COOLIT_FixedRPM )
         snprintf(
-            modestr, modestr_size, "Fixed RPM Mode (%s) set to %d",
-            is4pin ? "4PIN" : "3PIN", data );
+            modestr, modestr_size, "Fixed RPM Mode (%s) set to %d", is4pin ? "4PIN" : "3PIN",
+            data );
     else if ( real_mode == COOLIT_Custom )
-        snprintf(
-            modestr, modestr_size, "Custom Curve Mode (%s)",
-            is4pin ? "4PIN" : "3PIN" );
+        snprintf( modestr, modestr_size, "Custom Curve Mode (%s)", is4pin ? "4PIN" : "3PIN" );
     return rr;
 }
 
-int corsairlink_coolit_fan_mode_read(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data )
+int
+corsairlink_coolit_fan_mode_read(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -111,13 +97,11 @@ int corsairlink_coolit_fan_mode_read(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t new_fan_mode = *( fan_mode );
-
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_Select;
-    commands[++ii] = selector;
+    commands[++ii] = ctrl->channel;
 
     commands[++ii] = CommandId++;
     commands[++ii] = ReadOneByte;
@@ -128,23 +112,14 @@ int corsairlink_coolit_fan_mode_read(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-    *( fan_mode ) = response[4];
-    ii = 0;
-    memset( response, 0, sizeof( response ) );
-    memset( commands, 0, sizeof( commands ) );
-
-    *( fan_data ) = 0;
+    ctrl->mode = response[4];
 
     return rr;
 }
 
-int corsairlink_coolit_fan_mode_read_rpm(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* rpm,
-    uint16_t* maxrpm )
+int
+corsairlink_coolit_fan_mode_read_rpm(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -152,13 +127,11 @@ int corsairlink_coolit_fan_mode_read_rpm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t new_fan_mode = *( fan_mode );
-
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_Select;
-    commands[++ii] = selector;
+    commands[++ii] = ctrl->channel;
 
     commands[++ii] = CommandId++;
     commands[++ii] = ReadOneByte;
@@ -169,7 +142,7 @@ int corsairlink_coolit_fan_mode_read_rpm(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-    *( fan_mode ) = response[4];
+    ctrl->mode = response[4];
 
     ii = 0;
     memset( response, 0, sizeof( response ) );
@@ -181,17 +154,14 @@ int corsairlink_coolit_fan_mode_read_rpm(
     commands[0] = ii;
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
-    *( rpm ) = ( response[3] << 8 ) + response[2];
+    ctrl->speed_rpm = ( response[3] << 8 ) + response[2];
 
     return rr;
 }
 
-int corsairlink_coolit_fan_mode_read_pwm(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint8_t* pwm )
+int
+corsairlink_coolit_fan_mode_read_pwm(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -199,13 +169,11 @@ int corsairlink_coolit_fan_mode_read_pwm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t new_fan_mode = *( fan_mode );
-
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_Select;
-    commands[++ii] = selector;
+    commands[++ii] = ctrl->channel;
 
     commands[++ii] = CommandId++;
     commands[++ii] = ReadOneByte;
@@ -216,7 +184,7 @@ int corsairlink_coolit_fan_mode_read_pwm(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
-    *( fan_mode ) = response[4];
+    ctrl->mode = response[4];
 
     ii = 0;
     memset( response, 0, sizeof( response ) );
@@ -228,17 +196,14 @@ int corsairlink_coolit_fan_mode_read_pwm(
     commands[0] = ii;
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
-    *( pwm ) = response[2];
+    ctrl->speed_pwm = response[2];
 
     return rr;
 }
 
-int corsairlink_coolit_fan_mode_performance(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data )
+int
+corsairlink_coolit_fan_mode_performance(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -246,13 +211,11 @@ int corsairlink_coolit_fan_mode_performance(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t new_fan_mode = *( fan_mode );
-
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_Select;
-    commands[++ii] = selector;
+    commands[++ii] = ctrl->channel;
 
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
@@ -268,12 +231,9 @@ int corsairlink_coolit_fan_mode_performance(
     return rr;
 }
 
-int corsairlink_coolit_fan_mode_balanced(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data )
+int
+corsairlink_coolit_fan_mode_balanced(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -281,13 +241,11 @@ int corsairlink_coolit_fan_mode_balanced(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t new_fan_mode = *( fan_mode );
-
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_Select;
-    commands[++ii] = selector;
+    commands[++ii] = ctrl->channel;
 
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
@@ -303,12 +261,9 @@ int corsairlink_coolit_fan_mode_balanced(
     return rr;
 }
 
-int corsairlink_coolit_fan_mode_quiet(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data )
+int
+corsairlink_coolit_fan_mode_quiet(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -316,13 +271,11 @@ int corsairlink_coolit_fan_mode_quiet(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t new_fan_mode = *( fan_mode );
-
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_Select;
-    commands[++ii] = selector;
+    commands[++ii] = ctrl->channel;
 
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
@@ -338,12 +291,9 @@ int corsairlink_coolit_fan_mode_quiet(
     return rr;
 }
 
-int corsairlink_coolit_fan_mode_default(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data )
+int
+corsairlink_coolit_fan_mode_default(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -351,13 +301,11 @@ int corsairlink_coolit_fan_mode_default(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t new_fan_mode = *( fan_mode );
-
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_Select;
-    commands[++ii] = selector;
+    commands[++ii] = ctrl->channel;
 
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
@@ -373,12 +321,9 @@ int corsairlink_coolit_fan_mode_default(
     return rr;
 }
 
-int corsairlink_coolit_fan_mode_rpm(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data )
+int
+corsairlink_coolit_fan_mode_rpm(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -386,13 +331,11 @@ int corsairlink_coolit_fan_mode_rpm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t new_fan_mode = *( fan_mode );
-
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_Select;
-    commands[++ii] = selector;
+    commands[++ii] = ctrl->channel;
 
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
@@ -402,8 +345,8 @@ int corsairlink_coolit_fan_mode_rpm(
     commands[++ii] = CommandId++;
     commands[++ii] = WriteTwoBytes;
     commands[++ii] = FAN_FixedRPM;
-    commands[++ii] = *(fan_data)&0xFF;
-    commands[++ii] = ( *( fan_data ) >> 8 ) & 0xFF;
+    commands[++ii] = ctrl->speed_rpm & 0xFF;
+    commands[++ii] = ( ctrl->speed_rpm >> 8 ) & 0xFF;
 
     commands[0] = ii;
 
@@ -413,12 +356,9 @@ int corsairlink_coolit_fan_mode_rpm(
     return rr;
 }
 
-int corsairlink_coolit_fan_mode_pwm(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data )
+int
+corsairlink_coolit_fan_mode_pwm(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -426,13 +366,11 @@ int corsairlink_coolit_fan_mode_pwm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t new_fan_mode = *( fan_mode );
-
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_Select;
-    commands[++ii] = selector;
+    commands[++ii] = ctrl->channel;
 
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
@@ -442,7 +380,7 @@ int corsairlink_coolit_fan_mode_pwm(
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_FixedPWM;
-    commands[++ii] = *(fan_data)&0xFF;
+    commands[++ii] = ctrl->speed_pwm & 0xFF;
 
     commands[0] = ii;
 
@@ -452,12 +390,9 @@ int corsairlink_coolit_fan_mode_pwm(
     return rr;
 }
 
-int corsairlink_coolit_fan_mode_custom(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data )
+int
+corsairlink_coolit_fan_mode_custom(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -465,13 +400,11 @@ int corsairlink_coolit_fan_mode_custom(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t new_fan_mode = *( fan_mode );
-
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_Select;
-    commands[++ii] = selector;
+    commands[++ii] = ctrl->channel;
 
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
@@ -487,11 +420,9 @@ int corsairlink_coolit_fan_mode_custom(
     return rr;
 }
 
-int corsairlink_coolit_fan_curve(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    struct temp_speed_pair* fan )
+int
+corsairlink_coolit_fan_curve(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -509,15 +440,15 @@ int corsairlink_coolit_fan_curve(
     commands[++ii] = FAN_TempTable;
     commands[++ii] = 0x0A;
 
-    commands[++ii] = fan[0].temperature;
+    commands[++ii] = ctrl->table[0].temperature;
     commands[++ii] = 0x00;
-    commands[++ii] = fan[1].temperature;
+    commands[++ii] = ctrl->table[1].temperature;
     commands[++ii] = 0x00;
-    commands[++ii] = fan[2].temperature;
+    commands[++ii] = ctrl->table[2].temperature;
     commands[++ii] = 0x00;
-    commands[++ii] = fan[3].temperature;
+    commands[++ii] = ctrl->table[3].temperature;
     commands[++ii] = 0x00;
-    commands[++ii] = fan[4].temperature;
+    commands[++ii] = ctrl->table[4].temperature;
     commands[++ii] = 0x00;
 
     commands[++ii] = CommandId++;
@@ -525,15 +456,15 @@ int corsairlink_coolit_fan_curve(
     commands[++ii] = FAN_RPMTable;
     commands[++ii] = 0x0A;
 
-    commands[++ii] = fan[0].speed;
+    commands[++ii] = ctrl->table[0].speed;
     commands[++ii] = 0x00;
-    commands[++ii] = fan[1].speed;
+    commands[++ii] = ctrl->table[1].speed;
     commands[++ii] = 0x00;
-    commands[++ii] = fan[2].speed;
+    commands[++ii] = ctrl->table[2].speed;
     commands[++ii] = 0x00;
-    commands[++ii] = fan[3].speed;
+    commands[++ii] = ctrl->table[3].speed;
     commands[++ii] = 0x00;
-    commands[++ii] = fan[4].speed;
+    commands[++ii] = ctrl->table[4].speed;
     commands[++ii] = 0x00;
 
     commands[0] = ii;
@@ -543,12 +474,9 @@ int corsairlink_coolit_fan_curve(
     return rr;
 }
 
-int corsairlink_coolit_fan_speed(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint16_t* speed,
-    uint16_t* maxspeed )
+int
+corsairlink_coolit_fan_speed(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -561,7 +489,7 @@ int corsairlink_coolit_fan_speed(
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_Select;
-    commands[++ii] = selector;
+    commands[++ii] = ctrl->channel;
 
     commands[++ii] = CommandId++;
     commands[++ii] = ReadTwoBytes;
@@ -578,8 +506,8 @@ int corsairlink_coolit_fan_speed(
 
     msg_debug2( "Speed: %02X %02X\n", response[5], response[4] );
     msg_debug2( "Max Speed: %02X %02X\n", response[9], response[8] );
-    *( speed ) = ( response[5] << 8 ) + response[4];
-    *( maxspeed ) = ( response[9] << 8 ) + response[8];
+    ctrl->speed_rpm = ( response[5] << 8 ) + response[4];
+    ctrl->max_speed = ( response[9] << 8 ) + response[8];
 
     return rr;
 }

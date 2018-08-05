@@ -29,11 +29,11 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_asetekpro_pump_speed(
+int
+corsairlink_asetekpro_pump_speed(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint16_t* speed,
-    uint16_t* maxspeed )
+    struct pump_control* ctrl )
 {
     int rr;
     uint8_t response[64];
@@ -47,16 +47,16 @@ int corsairlink_asetekpro_pump_speed(
     rr = dev->driver->read( handle, dev->read_endpoint, response, 5 );
 
     msg_debug2(
-        "%02X %02X %02X %02X %02X\n", response[0], response[1], response[2],
-        response[3], response[4] );
+        "%02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
+        response[4] );
 
     if ( response[0] != 0x31 || response[1] != 0x12 || response[2] != 0x34 )
     {
         msg_debug2( "Bad Response\n" );
     }
 
-    *( speed ) = ( response[3] << 8 ) + response[4];
-    *( maxspeed ) = 0;
+    ctrl->speed = ( response[3] << 8 ) + response[4];
+    ctrl->max_speed = 0;
 
     return rr;
 }

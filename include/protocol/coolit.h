@@ -120,152 +120,152 @@ static uint8_t CommandId = 0x81;
     x[4].speed = 0x5d;                \
     x[5].speed = 0x64;
 
-int corsairlink_coolit_device_id(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t* device_id );
+int
+corsairlink_coolit_device_id(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint8_t* device_id );
 
-int corsairlink_coolit_name(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    char* name,
-    uint8_t name_size );
-
-int corsairlink_coolit_vendor(
+int
+corsairlink_coolit_name(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
     uint8_t name_size );
 
-int corsairlink_coolit_product(
+int
+corsairlink_coolit_vendor(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
     uint8_t name_size );
 
-int corsairlink_coolit_firmware_id(
+int
+corsairlink_coolit_product(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    char* name,
+    uint8_t name_size );
+
+int
+corsairlink_coolit_firmware_id(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* firmware,
     uint8_t firmware_size );
 
-int corsairlink_coolit_change_led(
+int
+corsairlink_coolit_change_led(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
 
-int corsairlink_coolit_temperature(
+/* Temperature */
+int
+corsairlink_coolit_temperature(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t selector,
     double* temperature );
 
-int corsairlink_coolit_tempsensorscount(
+int
+corsairlink_coolit_tempsensorscount(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t* temperature_sensors_count );
 
-int corsairlink_coolit_fan_count(
+/* Fan */
+int
+corsairlink_coolit_fan_count(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t* fan_count );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_mode_read(
+int
+corsairlink_coolit_fan_mode_read(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_mode_read_rpm(
+int
+corsairlink_coolit_fan_mode_read_rpm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* rpm,
-    uint16_t* maxrpm );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_mode_read_pwm(
+int
+corsairlink_coolit_fan_mode_read_pwm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint8_t* pwm );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_mode_default(
+int
+corsairlink_coolit_fan_mode_default(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_mode_performance(
+int
+corsairlink_coolit_fan_mode_performance(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_mode_balanced(
+int
+corsairlink_coolit_fan_mode_balanced(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_mode_quiet(
+int
+corsairlink_coolit_fan_mode_quiet(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_mode_rpm(
+int
+corsairlink_coolit_fan_mode_rpm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_mode_pwm(
+int
+corsairlink_coolit_fan_mode_pwm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_mode_custom(
+int
+corsairlink_coolit_fan_mode_custom(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint8_t* fan_mode,
-    uint16_t* fan_data );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_curve(
+int
+corsairlink_coolit_fan_curve(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    struct temp_speed_pair* fan );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_speed(
+int
+corsairlink_coolit_fan_speed(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t selector,
-    uint16_t* speed,
-    uint16_t* maxspeed );
+    struct fan_control* ctrl );
 
-int corsairlink_coolit_fan_print_mode(
+int
+corsairlink_coolit_fan_print_mode(
     uint8_t mode, uint16_t data, char* modestr, uint8_t modestr_size );
 
-int corsairlink_coolit_pump_mode(
+/* Pump */
+int
+corsairlink_coolit_pump_mode(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint8_t* pump_mode );
+    struct pump_control* ctrl );
 
-int corsairlink_coolit_pump_speed(
+int
+corsairlink_coolit_pump_speed(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    uint16_t* speed,
-    uint16_t* maxspeed );
+    struct pump_control* ctrl );
 
 #endif

@@ -29,10 +29,9 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_coolit_device_id(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    uint8_t* device_id )
+int
+corsairlink_coolit_device_id(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint8_t* device_id )
 {
     int rr;
     uint8_t response[64];
@@ -57,7 +56,8 @@ int corsairlink_coolit_device_id(
     return 0;
 }
 
-int corsairlink_coolit_name(
+int
+corsairlink_coolit_name(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
@@ -67,7 +67,8 @@ int corsairlink_coolit_name(
     return 0;
 }
 
-int corsairlink_coolit_vendor(
+int
+corsairlink_coolit_vendor(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
@@ -77,7 +78,8 @@ int corsairlink_coolit_vendor(
     return 0;
 }
 
-int corsairlink_coolit_product(
+int
+corsairlink_coolit_product(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
@@ -87,7 +89,8 @@ int corsairlink_coolit_product(
     return 0;
 }
 
-int corsairlink_coolit_firmware_id(
+int
+corsairlink_coolit_firmware_id(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* firmware,
@@ -110,8 +113,8 @@ int corsairlink_coolit_firmware_id(
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     snprintf(
-        firmware, firmware_size, "%d.%d.%d", ( response[3] & 240 ) >> 4,
-        ( response[3] & 15 ), response[2] );
+        firmware, firmware_size, "%d.%d.%d", ( response[3] & 240 ) >> 4, ( response[3] & 15 ),
+        response[2] );
 
     return 0;
 }
