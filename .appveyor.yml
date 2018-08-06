@@ -1,0 +1,38 @@
+version: 1.0.{build}-{branch}
+
+branches:
+    only:
+        - master
+        - testing
+    except:
+        - legacy
+
+image:
+    - Ubuntu
+
+platform:
+    - x86
+    - x64
+    - Any CPU
+
+configuration:
+    - Debug
+    - Release
+
+environment:
+    APPVEYOR_YML_DISABLE_PS_LINUX: true
+
+install:
+    - sh: sudo apt-get update
+    - sh: sudo apt-get install -y libusb-1.0-0-dev
+
+#before_build:
+#    - cmake -H. -BBuild -A%PLATFORM%
+
+build: off
+build_script:
+    - make rebuild
+
+test: off
+#test_script:
+#    - make test
