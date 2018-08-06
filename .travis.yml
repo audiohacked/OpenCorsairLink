@@ -1,16 +1,44 @@
 language: c
 
+os:
+    - linux
+    - osx
+
+compiler:
+    - clang
+    - gcc
+
 addons:
     apt:
+        update: true
         packages:
         - libusb-1.0-0-dev
 
 before_install:
-    - sudo apt-get update
-    - sudo apt-get install -y libusb-1.0-0-dev
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update         ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install libusb ; fi
 
 script:
     - make
 
-sudo: required
-dist: xenial
+# matrix:
+#     include:
+#         - os: linux
+#             dist: xenial
+#             sudo: required
+#         - os: osx
+#             osx_image: xcode6.4
+
+#before_deploy:
+#    # Set up git user name and tag this commit
+#    - git config --local user.name "audiohacked"
+#    - git config --local user.email "audiohacked@gmail.com"
+#    - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+#deploy:
+#    provider: releases
+#    api_key:
+#        secure: YOUR_API_KEY_ENCRYPTED
+#    file: "FILE TO UPLOAD"
+#    skip_cleanup: true
+#    on:
+#        tags: true
