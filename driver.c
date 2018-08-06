@@ -317,11 +317,11 @@ struct corsair_device_driver corsairlink_driver_commanderpro = {
         },
     .led =
         {
-            .static_color = corsairlink_unsupported_led,
+            .static_color = corsairlink_commanderpro_led_static_color,
             .blink = corsairlink_unsupported_led,
             .color_pulse = corsairlink_unsupported_led,
             .color_shift = corsairlink_unsupported_led,
-            .rainbow = corsairlink_unsupported_led,
+            .rainbow = corsairlink_commanderpro_led_rainbow,
             .temperature = corsairlink_unsupported_led,
         },
     .fan =
@@ -339,9 +339,9 @@ struct corsair_device_driver corsairlink_driver_commanderpro = {
                     .write_profile_performance = corsairlink_unspported_fan,
                     .write_profile_balanced = corsairlink_unspported_fan,
                     .write_profile_quiet = corsairlink_unspported_fan,
-                    .write_rpm = corsairlink_unspported_fan,
-                    .write_pwm = corsairlink_unspported_fan,
-                    .write_custom_curve = corsairlink_unspported_fan,
+                    .write_rpm = corsairlink_commanderpro_set_fan_speed_rpm,
+                    .write_pwm = corsairlink_commanderpro_set_fan_speed_pwm,
+                    .write_custom_curve = corsairlink_commanderpro_set_fan_curve,
                 },
         },
     .power =

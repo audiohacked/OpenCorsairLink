@@ -29,7 +29,7 @@
 void
 led_control_init( struct led_control* settings )
 {
-    settings->count = 7;
+    settings->strip_count = 10;
     settings->speed = 3;
     INIT_RAINBOW_LED( settings->led_colors );
 
@@ -73,9 +73,29 @@ led_suboptions_parse( char* subopts, struct led_control* settings )
             }
             break;
 
+        case SUBOPTION_LED_STRIP_COUNT:
+            sscanf( value, "%hhu", &settings->strip_count );
+            msg_debug( "LED Strip Count = %u\n", settings->strip_count );
+            break;
+
+        case SUBOPTION_LED_STRIP_TYPE:
+            sscanf( value, "%hhu", &settings->strip_type );
+            msg_debug( "LED Strip Type = %u\n", settings->strip_type );
+            break;
+
         case SUBOPTION_LED_SPEED:
             sscanf( value, "%hhu", &settings->speed );
-            msg_debug( "LED Settings = %u\n", settings->speed );
+            msg_debug( "LED Speed = %u\n", settings->speed );
+            break;
+
+        case SUBOPTION_LED_DIRECTION:
+            sscanf( value, "%hhu", &settings->direction );
+            msg_debug( "LED Direction = %u\n", settings->direction );
+            break;
+
+        case SUBOPTION_LED_CHANGE_STYLE:
+            sscanf( value, "%hhu", &settings->color_change_style );
+            msg_debug( "LED Change Style = %u\n", settings->color_change_style );
             break;
 
         case SUBOPTION_LED_COLORS: /* led color */

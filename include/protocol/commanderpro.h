@@ -18,6 +18,50 @@
 #ifndef _PROTOCOL_COMMANDERPRO_H
 #define _PROTOCOL_COMMANDERPRO_H
 
+/*
+
+Modes are listed in this order (shown with default values)
+
+"Default" (graph configuration request 0x25)
+20 degC, 600 rpm
+ 25 degC, 600 rpm ;
+ 29 degC, 750 rpm ;
+ 33 degC, 1000 rpm ;
+ 37 degC, 1250 rpm ;
+ 40 degC, 1500 rpm
+
+"Quiet" (graph configuration request 0x25) (same points as in "Default" mode above)
+"Balanced" (graph configuration request 0x25)
+ 20 degC, 750 rpm ;
+ 25 degC, 1000 rpm ;
+ 29 degC, 1250 rpm ;
+ 33 degC, 1500 rpm ;
+ 37 degC, 1750 rpm ;
+ 40 degC, 2000 rpm
+
+"Performance" (graph configuration request 0x25)
+ 20 degC, 1000 rpm ;
+ 25 degC, 1250 rpm ;
+ 29 degC, 1500 rpm ;
+ 33 degC, 1750 rpm ;
+ 37 degC, 2000 rpm ;
+ 40 degC, 2500 rpm
+
+"Custom" (graph configuration request 0x25)
+ 20 degC, 600 rpm ;
+ 30 degC, 600 rpm ;
+ 40 degC, 750 rpm ;
+ 50 degC, 1000 rpm ;
+ 60 degC, 1250 rpm ;
+ 70 degC, 1500 rpm
+
+"Fixed %" (percent configuration request 0x23) 40%
+
+"Fixed rpm" (rpm configuration request 0x24) 500
+
+"Max" (percent configuration request) (100%)
+
+*/
 enum CorsairLightingNodePro_LED_Mode
 {
     LNP_StaticColor = 0,
@@ -119,6 +163,24 @@ corsairlink_commanderpro_get_fan_detect_type(
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
+int
+corsairlink_commanderpro_set_fan_curve(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+int
+corsairlink_commanderpro_set_fan_speed_pwm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+int
+corsairlink_commanderpro_set_fan_speed_rpm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
 /* Temperature */
 int
 corsairlink_commanderpro_tempsensorscount(
@@ -139,5 +201,18 @@ corsairlink_commanderpro_voltage(
     struct libusb_device_handle* handle,
     uint8_t sensor_index,
     double* voltage );
+
+/* LEDs */
+int
+corsairlink_commanderpro_led_rainbow(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct led_control* ctrl );
+
+int
+corsairlink_commanderpro_led_static_color(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct led_control* ctrl );
 
 #endif // _PROTOCOL_COMMANDERPRO_H

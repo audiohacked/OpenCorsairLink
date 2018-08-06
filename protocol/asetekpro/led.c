@@ -94,7 +94,7 @@ corsairlink_asetekpro_led_blink(
     memset( commands, 0, sizeof( commands ) );
 
     commands[0] = 0x56;
-    commands[1] = ctrl->count;
+    commands[1] = ctrl->strip_count;
 
     commands[2] = ctrl->led_colors[0].red;
     commands[3] = ctrl->led_colors[0].green;
@@ -186,7 +186,7 @@ corsairlink_asetekpro_led_color_pulse(
 
     /* colors */
     commands[0] = 0x56;
-    commands[1] = ctrl->count;
+    commands[1] = ctrl->strip_count;
 
     commands[2] = ctrl->led_colors[0].red;
     commands[3] = ctrl->led_colors[0].green;
@@ -279,7 +279,7 @@ corsairlink_asetekpro_led_color_shift(
     memset( commands, 0, sizeof( commands ) );
 
     commands[0] = 0x56;
-    commands[1] = ctrl->count;
+    commands[1] = ctrl->strip_count;
 
     commands[2] = ctrl->led_colors[0].red;
     commands[3] = ctrl->led_colors[0].green;

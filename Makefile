@@ -69,6 +69,7 @@ PROTOCOL_SOURCE := \
 	protocol/asetekpro/temperature.c \
 	protocol/commanderpro/core.c \
 	protocol/commanderpro/fan.c \
+	protocol/commanderpro/led.c \
 	protocol/commanderpro/power.c \
 	protocol/commanderpro/temperature.c \
 	protocol/rmi/core.c \

@@ -76,6 +76,8 @@ corsairlink_commanderpro_get_fan_setup_mask(
         }
     }
 
+    ctrl->fan_type = response[ctrl->channel + 1];
+
     return rr;
 }
 
@@ -195,8 +197,43 @@ corsairlink_commanderpro_set_fan_curve(
     commands[1] = ctrl->channel;
     commands[2] = 0x00; // 0x00 = CP Temp Probe 1 .... 0x03 = CP Temp Probe 4,
                         // 0xff = External
+    commands[3] = ctrl->table[0].temperature >> 8;
+    commands[4] = ctrl->table[0].temperature & 0xFF;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 14 );
+    commands[5] = ctrl->table[1].temperature >> 8;
+    commands[6] = ctrl->table[1].temperature & 0xFF;
+
+    commands[7] = ctrl->table[2].temperature >> 8;
+    commands[8] = ctrl->table[2].temperature & 0xFF;
+
+    commands[9] = ctrl->table[3].temperature >> 8;
+    commands[10] = ctrl->table[3].temperature & 0xFF;
+
+    commands[11] = ctrl->table[4].temperature >> 8;
+    commands[12] = ctrl->table[4].temperature & 0xFF;
+
+    commands[13] = ctrl->table[5].temperature >> 8;
+    commands[14] = ctrl->table[5].temperature & 0xFF;
+
+    commands[15] = ctrl->table[0].speed >> 8;
+    commands[16] = ctrl->table[0].speed & 0xFF;
+
+    commands[17] = ctrl->table[1].speed >> 8;
+    commands[18] = ctrl->table[1].speed & 0xFF;
+
+    commands[19] = ctrl->table[2].speed >> 8;
+    commands[20] = ctrl->table[2].speed & 0xFF;
+
+    commands[21] = ctrl->table[3].speed >> 8;
+    commands[22] = ctrl->table[3].speed & 0xFF;
+
+    commands[23] = ctrl->table[4].speed >> 8;
+    commands[24] = ctrl->table[4].speed & 0xFF;
+
+    commands[25] = ctrl->table[5].speed >> 8;
+    commands[26] = ctrl->table[5].speed & 0xFF;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 32 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
 
     return rr;
