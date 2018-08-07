@@ -319,10 +319,12 @@ struct corsair_device_info corsairlink_devices[] = {
         .name = "USB Dongle",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
         .write_endpoint = 0x01 | LIBUSB_ENDPOINT_OUT,
-        .driver = &corsairlink_driver_dongle,
+        .driver = &corsairlink_driver_flextronics,
         .led_control_count = 1,
         .fan_control_count = 1,
         .pump_index = 0,
+        .pcie_count = 0,
+        .psu_power_pages = 5,
     },
     {
         .vendor_id = 0x1b1c,
@@ -331,10 +333,12 @@ struct corsair_device_info corsairlink_devices[] = {
         .name = "AX1500i",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
         .write_endpoint = 0x01 | LIBUSB_ENDPOINT_OUT,
-        .driver = &corsairlink_driver_dongle,
+        .driver = &corsairlink_driver_flextronics,
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .pcie_count = 10,
+        .psu_power_pages = 5,
     },
     {
         .vendor_id = 0x1b1c,
@@ -347,6 +351,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .psu_power_pages = 3,
     },
     {
         .vendor_id = 0x1b1c,
@@ -359,6 +364,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .psu_power_pages = 3,
     },
     {
         .vendor_id = 0x1b1c,
@@ -371,6 +377,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .psu_power_pages = 3,
     },
     {
         .vendor_id = 0x1b1c,
@@ -383,6 +390,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .psu_power_pages = 3,
     },
     {
         .vendor_id = 0x1b1c,
@@ -395,6 +403,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .psu_power_pages = 3,
     },
     {
         .vendor_id = 0x1b1c,
@@ -407,6 +416,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .psu_power_pages = 3,
     },
     {
         .vendor_id = 0x1b1c,
@@ -419,6 +429,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .psu_power_pages = 3,
     },
     {
         .vendor_id = 0x1b1c,
@@ -431,6 +442,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .psu_power_pages = 3,
     },
     {
         .vendor_id = 0x1b1c,
@@ -443,6 +455,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .psu_power_pages = 3,
     },
     {
         .vendor_id = 0x1b1c,
@@ -455,6 +468,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .psu_power_pages = 3,
     },
     {
         .vendor_id = 0x1b1c,
@@ -467,6 +481,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .psu_power_pages = 3,
     },
     {
         .vendor_id = 0x1b1c,
@@ -475,10 +490,12 @@ struct corsair_device_info corsairlink_devices[] = {
         .name = "AX850i",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
         .write_endpoint = 0x01 | LIBUSB_ENDPOINT_OUT,
-        .driver = &corsairlink_driver_dongle,
+        .driver = &corsairlink_driver_flextronics,
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .pcie_count = 10,
+        .psu_power_pages = 5,
     },
     {
         .vendor_id = 0x1b1c,
@@ -487,10 +504,12 @@ struct corsair_device_info corsairlink_devices[] = {
         .name = "AX1000i",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
         .write_endpoint = 0x01 | LIBUSB_ENDPOINT_OUT,
-        .driver = &corsairlink_driver_dongle,
+        .driver = &corsairlink_driver_flextronics,
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .pcie_count = 10,
+        .psu_power_pages = 5,
     },
     {
         .vendor_id = 0x1b1c,
@@ -499,10 +518,12 @@ struct corsair_device_info corsairlink_devices[] = {
         .name = "AX1200i",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
         .write_endpoint = 0x01 | LIBUSB_ENDPOINT_OUT,
-        .driver = &corsairlink_driver_dongle,
+        .driver = &corsairlink_driver_flextronics,
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .pcie_count = 10,
+        .psu_power_pages = 5,
     },
     {
         .vendor_id = 0x1b1c,
@@ -511,10 +532,12 @@ struct corsair_device_info corsairlink_devices[] = {
         .name = "AX1600i",
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
         .write_endpoint = 0x01 | LIBUSB_ENDPOINT_OUT,
-        .driver = &corsairlink_driver_dongle,
+        .driver = &corsairlink_driver_flextronics,
         .led_control_count = 0,
         .fan_control_count = 1,
         .pump_index = 0,
+        .pcie_count = 10,
+        .psu_power_pages = 5,
     },
 };
 

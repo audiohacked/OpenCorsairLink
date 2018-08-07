@@ -39,6 +39,10 @@ struct corsair_device_info
     uint8_t fan_control_count; // used with COOLIT driver
     uint8_t temperature_control_count;
     uint8_t pump_index; // used with COOLIT driver
+
+    /** power status info */
+    uint8_t pcie_count; // used with Flextronic driver
+    uint8_t psu_power_pages;
 };
 
 extern struct corsair_device_info corsairlink_devices[];

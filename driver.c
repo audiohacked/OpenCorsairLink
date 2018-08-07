@@ -22,12 +22,14 @@
 #include "lowlevel/asetek.h"
 #include "lowlevel/commanderpro.h"
 #include "lowlevel/coolit.h"
+#include "lowlevel/flextronics.h"
 #include "lowlevel/rmi.h"
 #include "print.h"
 #include "protocol/asetek.h"
 #include "protocol/asetekpro.h"
 #include "protocol/commanderpro.h"
 #include "protocol/coolit.h"
+#include "protocol/flextronics.h"
 #include "protocol/rmi.h"
 
 int
@@ -377,6 +379,36 @@ struct corsair_device_driver corsairlink_driver_rmi = {
         {
             .powered = corsairlink_rmi_time_powered,
             .uptime = corsairlink_rmi_time_uptime,
+        },
+};
+
+struct corsair_device_driver corsairlink_driver_flextronics = {
+    .init = corsairlink_flextronics_init,
+    .deinit = corsairlink_flextronics_deinit,
+    .name = corsairlink_flextronics_name,
+    .vendor = corsairlink_flextronics_vendor,
+    .product = corsairlink_flextronics_product,
+    .device_id = corsairlink_flextronics_device_id,
+    .fw_version = corsairlink_flextronics_firmware_id,
+    .read = corsairlink_flextronics_read,
+    .write = corsairlink_flextronics_write,
+    .temperature =
+        {
+            .read = corsairlink_flextronics_temperature,
+        },
+    .power =
+        {
+            .supply_voltage = corsairlink_flextronics_power_supply_voltage,
+            .total_wattage = corsairlink_flextronics_power_total_wattage,
+            .sensor_select = corsairlink_flextronics_sensor_select,
+            .voltage = corsairlink_flextronics_output_volts,
+            .amperage = corsairlink_flextronics_output_amps,
+            .wattage = corsairlink_flextronics_output_watts,
+        },
+    .psu_time =
+        {
+            .powered = corsairlink_flextronics_time_powered,
+            .uptime = corsairlink_flextronics_time_uptime,
         },
 };
 

@@ -54,6 +54,7 @@ LOWLEVEL_SOURCE := \
 	lowlevel/asetek.c \
 	lowlevel/commanderpro.c \
 	lowlevel/coolit.c \
+	lowlevel/flextronics.c \
 	lowlevel/rmi.c
 
 PROTOCOL_SOURCE := \
@@ -71,6 +72,10 @@ PROTOCOL_SOURCE := \
 	protocol/commanderpro/fan.c \
 	protocol/commanderpro/power.c \
 	protocol/commanderpro/temperature.c \
+	protocol/flextronics/core.c \
+	protocol/flextronics/power.c \
+	protocol/flextronics/temperature.c \
+	protocol/flextronics/time.c \
 	protocol/rmi/core.c \
 	protocol/rmi/power.c \
 	protocol/rmi/temperature.c \

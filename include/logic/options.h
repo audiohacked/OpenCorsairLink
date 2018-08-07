@@ -61,7 +61,7 @@ enum motor_modes {
   BALANCED = 4,
   PERFORMANCE = 5,
   CUSTOM = 6,
-  UNDEFINED = 7,
+  MAX = 7 UNDEFINED = 8,
 };
 
 struct option_flags {
@@ -219,12 +219,10 @@ static char *led_options[] = {[SUBOPTION_LED_CHANNEL] = "channel",
                               [SUBOPTION_LED_TEMPERATURE] = "temperature",
                               [SUBOPTION_LED_LIST_END] = 0};
 
-static char *pump_options[] = {[SUBOPTION_PUMP_MODE] = "mode",
-                               [SUBOPTION_PUMP_PWM] = "pwm",
-                               [SUBOPTION_PUMP_RPM] = "rpm",
-                               [SUBOPTION_PUMP_TEMPERATURES] = "temps",
-                               [SUBOPTION_PUMP_SPEEDS] = "speeds",
-                               [SUBOPTION_PUMP_LIST_END] = 0};
+static char *pump_options[] = {
+    [SUBOPTION_PUMP_MODE] = "mode",     [SUBOPTION_PUMP_PWM] = "pwm",
+    [SUBOPTION_PUMP_RPM] = "rpm",       [SUBOPTION_PUMP_TEMPERATURES] = "temps",
+    [SUBOPTION_PUMP_SPEEDS] = "speeds", [SUBOPTION_PUMP_LIST_END] = 0};
 
 void fan_suboptions_parse(char *subopts, struct fan_control *settings);
 void led_suboptions_parse(char *subopts, struct led_control *settings);

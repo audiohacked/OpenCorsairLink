@@ -83,14 +83,18 @@ psu_settings(
     msg_debug( "DEBUG: supply done\n" );
 
     /* fetch PSU output */
-    for ( ii = 0; ii < 3; ii++ )
+    for ( ii = 0; ii < dev->psu_power_pages; ii++ )
     {
-        if ( ii == 0 )
+        if ( ii == 0 ) // Plus12v
             msg_info( "Output 12v:\n" );
-        if ( ii == 1 )
+        if ( ii == 1 ) // Plus5
             msg_info( "Output 5v:\n" );
-        if ( ii == 2 )
+        if ( ii == 2 ) // Plus3dot3
             msg_info( "Output 3.3v:\n" );
+        if ( ii == 3 )
+            msg_info( "Output -12v:\n" );
+        if ( ii == 4 )
+            msg_info( "Output 5Vsb:\n" );
 
         rr = dev->driver->power.sensor_select( dev, handle, ii );
         rr = dev->driver->power.voltage( dev, handle, ii, &output_volts );
