@@ -61,7 +61,8 @@ enum motor_modes {
   BALANCED = 4,
   PERFORMANCE = 5,
   CUSTOM = 6,
-  MAX = 7 UNDEFINED = 8,
+  MAX = 7,
+  UNDEFINED = 8,
 };
 
 struct option_flags {
