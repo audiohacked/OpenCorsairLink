@@ -20,6 +20,7 @@
 #include "driver.h"
 #include "lowlevel/asetek.h"
 #include "print.h"
+#include "protocol/asetekpro.h"
 
 #include <errno.h>
 #include <libusb.h>
@@ -53,7 +54,7 @@ corsairlink_asetekpro_temperature(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    commands[0] = 0xa9;
+    commands[0] = AsetekProReadTemp;
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 6 );

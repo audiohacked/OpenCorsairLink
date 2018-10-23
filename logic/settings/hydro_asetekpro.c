@@ -22,6 +22,7 @@
 #include "logic/scan.h"
 #include "print.h"
 #include "protocol/asetek.h"
+#include "protocol/asetekpro.h"
 
 #include <errno.h>
 #include <libusb.h>
@@ -59,6 +60,7 @@ hydro_asetekpro_settings(
     msg_info( "Product: %s\n", name );
     rr = dev->driver->fw_version( dev, handle, name, sizeof( name ) );
     msg_info( "Firmware: %s\n", name );
+    rr = corsairlink_asetekpro_hardware_version( dev, handle);
 
     /* get number of temperature sensors */
     rr = dev->driver->temperature.count( dev, handle, &temperature_sensors_count );
@@ -90,7 +92,7 @@ hydro_asetekpro_settings(
 
     rr = dev->driver->pump.profile.read_profile( dev, handle, &readings.pump_ctrl );
     rr = dev->driver->pump.speed( dev, handle, &readings.pump_ctrl );
-    msg_info( "Pump:\tMode 0x%02X\n", readings.pump_ctrl.mode );
+    msg_info( "Pump:\tMode 0x%02X (%s)\n", readings.pump_ctrl.mode, AsetekProPumpModes_String[readings.pump_ctrl.mode] );
     msg_info(
         "\tCurrent/Max Speed %i/%i RPM\n", readings.pump_ctrl.speed, readings.pump_ctrl.max_speed );
 
@@ -165,15 +167,18 @@ hydro_asetekpro_settings(
         {
         case QUIET:
             ASETEK_FAN_TABLE_QUIET( settings.pump_ctrl.table );
-            dev->driver->pump.profile.write_custom_curve( dev, handle, &settings.pump_ctrl );
+            // dev->driver->pump.profile.write_custom_curve( dev, handle, &settings.pump_ctrl );
+            dev->driver->pump.profile.write_profile_quiet( dev, handle, &settings.pump_ctrl );
             break;
         case BALANCED:
             ASETEK_FAN_TABLE_BALANCED( settings.pump_ctrl.table );
-            dev->driver->pump.profile.write_custom_curve( dev, handle, &settings.pump_ctrl );
+            // dev->driver->pump.profile.write_custom_curve( dev, handle, &settings.pump_ctrl );
+            dev->driver->pump.profile.write_profile_balanced( dev, handle, &settings.pump_ctrl );
             break;
         case PERFORMANCE:
             ASETEK_FAN_TABLE_EXTREME( settings.pump_ctrl.table );
-            dev->driver->pump.profile.write_custom_curve( dev, handle, &settings.pump_ctrl );
+            // dev->driver->pump.profile.write_custom_curve( dev, handle, &settings.pump_ctrl );
+            dev->driver->pump.profile.write_profile_performance( dev, handle, &settings.pump_ctrl );
             break;
         case CUSTOM:
         default:

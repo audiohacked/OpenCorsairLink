@@ -23,6 +23,7 @@
 #include "driver.h"
 #include "lowlevel/asetek.h"
 #include "print.h"
+#include "protocol/asetekpro.h"
 
 #include <errno.h>
 #include <libusb.h>
@@ -44,7 +45,7 @@ corsairlink_asetekpro_firmware_id(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    commands[0] = 0xAA; // query firmware id
+    commands[0] = AsetekProReadFirmwareVersion; // query firmware id
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 7 );
@@ -62,6 +63,30 @@ corsairlink_asetekpro_firmware_id(
     snprintf(
         firmware, firmware_size, "%d.%d.%d.%d", response[3], response[4], response[5],
         response[6] );
+
+    return rr;
+}
+
+int
+corsairlink_asetekpro_hardware_version(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle)
+    
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    commands[0] = AsetekProReadHardwareVersion;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 7 );
+
+    msg_debug(
+        "hardware version returned: %02X %02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
+        response[4], response[5], response[6] );
 
     return rr;
 }

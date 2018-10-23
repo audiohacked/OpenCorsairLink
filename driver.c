@@ -287,11 +287,11 @@ struct corsair_device_driver corsairlink_driver_asetekpro = {
         {
             .profile =
                 {
-                    .read_profile = corsairlink_unspported_pump,
+                    .read_profile = corsairlink_asetekpro_pump_mode_read,
                     .write_profile_default = corsairlink_unspported_pump,
-                    .write_profile_performance = corsairlink_unspported_pump,
-                    .write_profile_balanced = corsairlink_unspported_pump,
-                    .write_profile_quiet = corsairlink_unspported_pump,
+                    .write_profile_performance = corsairlink_asetekpro_pump_mode_performance,
+                    .write_profile_balanced = corsairlink_asetekpro_pump_mode_balanced,
+                    .write_profile_quiet = corsairlink_asetekpro_pump_mode_quiet,
                     .write_profile_custom = corsairlink_unspported_pump,
                     .write_custom_curve = corsairlink_unspported_pump,
                 },

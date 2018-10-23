@@ -39,7 +39,7 @@ corsairlink_asetekpro_fan_speed(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    commands[0] = 0x41; // fan speed query
+    commands[0] = AsetekProFanRead; // fan speed query
     commands[1] = ctrl->channel; // fan port
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
