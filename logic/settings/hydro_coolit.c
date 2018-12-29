@@ -87,6 +87,7 @@ hydro_coolit_settings(
             readings.fan_ctrl.max_speed );
     }
 
+    readings.pump_ctrl.channel = dev->pump_index;
     rr = dev->driver->pump.profile.read_profile( dev, handle, &readings.pump_ctrl );
     rr = dev->driver->pump.speed( dev, handle, &readings.pump_ctrl );
     msg_info( "Pump:\tMode 0x%02X\n", readings.pump_ctrl.mode );

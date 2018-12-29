@@ -178,7 +178,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .driver = &corsairlink_driver_coolit,
         .led_control_count = 1,
         .fan_control_count = 2,
-        .pump_index = 3,
+        .pump_index = 2,
     },
     {
         .vendor_id = 0x1b1c,
