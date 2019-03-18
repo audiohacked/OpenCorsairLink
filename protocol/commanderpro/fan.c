@@ -71,19 +71,19 @@ corsairlink_commanderpro_fan_print_mode(
     switch ( mode )
     {
         case 0x00:
-            strncat(modestr, "Mode 'Auto/Disconnected'", modestr_size);
+            strncat(modestr, "Mode: Auto/Disconnected", modestr_size);
             break;
         case 0x01:
-            strncat(modestr, "Mode '3-Pin'", modestr_size);
+            strncat(modestr, "Mode: 3-Pin", modestr_size);
             break;
         case 0x02:
-            strncat(modestr, "Mode '4-Pin'", modestr_size);
+            strncat(modestr, "Mode: 4-Pin", modestr_size);
             break;
         case 0x03:
-            strncat(modestr, "Mode 'Unknown'", modestr_size);
+            strncat(modestr, "Mode: Unknown", modestr_size);
             break;
         default:
-            snprintf( modestr, modestr_size, "Mode 0x%02X", mode );
+            snprintf( modestr, modestr_size, "Mode: 0x%02X", mode );
             break;
     }
 
