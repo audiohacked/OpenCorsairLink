@@ -100,7 +100,7 @@ commanderpro_settings(
         msg_info( "Fan %d:\t%s\n", ii, readings.fan_ctrl.mode_string );
         msg_info(
                 "\tPWM %i%%/%i RPM\n", readings.fan_ctrl.speed_pwm,
-                settings.fan_ctrl.speed_rpm );
+				readings.fan_ctrl.speed_rpm );
     }
 
     msg_debug( "Setting LED\n" );
@@ -159,6 +159,18 @@ commanderpro_settings(
     {
         switch ( settings.fan_ctrl.mode )
         {
+        case PWM:
+			if ( dev->driver->fan.profile.write_pwm != NULL )
+			{
+				dev->driver->fan.profile.write_pwm( dev, handle, &settings.fan_ctrl );
+			}
+        	break;
+        case RPM:
+			if ( dev->driver->fan.profile.write_rpm != NULL )
+			{
+				dev->driver->fan.profile.write_rpm( dev, handle, &settings.fan_ctrl );
+			}
+        	break;
         case QUIET:
             if ( dev->driver->fan.profile.write_profile_quiet != NULL )
             {
