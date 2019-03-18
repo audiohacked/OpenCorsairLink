@@ -97,9 +97,9 @@ commanderpro_settings(
                 sizeof( readings.fan_ctrl.mode_string ) );
         rr = dev->driver->fan.profile.read_pwm( dev, handle, &readings.fan_ctrl );
         rr = dev->driver->fan.profile.read_rpm( dev, handle, &readings.fan_ctrl );
-        msg_info( "Fan %d:\n\t%s\n", ii, readings.fan_ctrl.mode_string );
+        msg_info( "Fan %d:\t%s\n", ii, readings.fan_ctrl.mode_string );
         msg_info(
-                "\tPWM: %i%% RPM: %i\n", readings.fan_ctrl.speed_pwm,
+                "\tPWM: %i%%\n\tRPM: %i\n", readings.fan_ctrl.speed_pwm,
 				readings.fan_ctrl.speed_rpm );
     }
 
