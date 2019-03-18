@@ -30,6 +30,39 @@
 #include <unistd.h>
 
 int
+corsairlink_commanderpro_fan_count(
+        struct corsair_device_info* dev,
+        struct libusb_device_handle* handle,
+        struct fan_control* ctrl )
+{
+    int rr = 0;
+    // undefined, return device value from device.c
+    ctrl->fan_count = dev->fan_control_count;
+    return rr;
+}
+
+int
+corsairlink_commanderpro_fan_mode_read(
+        struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    commands[0] = 0x20;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 32 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
+
+    msg_debug2( "%02X\n", response[ctrl->channel] );
+    ctrl->mode = response[ctrl->channel];
+
+    return rr;
+}
+
+int
 corsairlink_commanderpro_fan_print_mode(
     uint8_t mode, uint16_t data, char* modestr, uint8_t modestr_size )
 {
@@ -153,8 +186,8 @@ corsairlink_commanderpro_set_fan_speed_rpm(
 
     commands[0] = 0x24;
     commands[1] = ctrl->channel;
-    commands[2] = ctrl->speed_rpm >> 8;
-    commands[3] = ctrl->speed_rpm & 0xff;
+    commands[2] = (uint8_t) (ctrl->speed_rpm >> 8);
+    commands[3] = (uint8_t) (ctrl->speed_rpm & 0xff);
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 14 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );

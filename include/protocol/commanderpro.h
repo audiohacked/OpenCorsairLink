@@ -98,6 +98,18 @@ corsairlink_commanderpro_bootloader_id(
 
 /* Fans */
 int
+corsairlink_commanderpro_fan_count(
+	struct corsair_device_info* dev,
+	struct libusb_device_handle* handle,
+	struct fan_control* ctrl );
+
+int
+corsairlink_commanderpro_fan_mode_read(
+	struct corsair_device_info* dev,
+	struct libusb_device_handle* handle,
+	struct fan_control* ctrl );
+
+int
 corsairlink_commanderpro_fan_print_mode(
     uint8_t mode, uint16_t data, char* modestr, uint8_t modestr_size );
 
@@ -112,6 +124,18 @@ corsairlink_commanderpro_get_fan_speed_pwm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
+
+int
+corsairlink_commanderpro_set_fan_speed_pwm(
+	struct corsair_device_info* dev,
+	struct libusb_device_handle* handle,
+	struct fan_control* ctrl );
+
+int
+corsairlink_commanderpro_set_fan_speed_rpm(
+	struct corsair_device_info* dev,
+	struct libusb_device_handle* handle,
+	struct fan_control* ctrl );
 
 int
 corsairlink_commanderpro_get_fan_detect_type(

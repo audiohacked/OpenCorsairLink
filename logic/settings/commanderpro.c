@@ -43,6 +43,7 @@ commanderpro_settings(
     uint32_t time = 0;
     struct corsair_device_info* dev;
     struct libusb_device_handle* handle;
+    struct option_parse_return readings = settings;
 
     dev = scanned_device.device;
     handle = scanned_device.handle;
@@ -82,6 +83,24 @@ commanderpro_settings(
 
         rr = dev->driver->power.voltage( dev, handle, ii, &output_volts );
         msg_info( "%5.2f V\n", output_volts );
+    }
+
+    /* get number of fans */
+    rr = dev->driver->fan.count( dev, handle, &readings.fan_ctrl );
+
+    for ( ii = 0; ii < readings.fan_ctrl.fan_count; ii++ )
+    {
+        readings.fan_ctrl.channel = (uint8_t) ii;
+		rr = dev->driver->fan.profile.read_profile( dev, handle, &readings.fan_ctrl );
+        rr = dev->driver->fan.print_mode(
+                readings.fan_ctrl.mode, readings.fan_ctrl.data, readings.fan_ctrl.mode_string,
+                sizeof( readings.fan_ctrl.mode_string ) );
+        rr = dev->driver->fan.profile.read_pwm( dev, handle, &readings.fan_ctrl );
+        rr = dev->driver->fan.profile.read_rpm( dev, handle, &readings.fan_ctrl );
+        msg_info( "Fan %d:\t%s\n", ii, readings.fan_ctrl.mode_string );
+        msg_info(
+                "\tPWM %i%%/%i RPM\n", readings.fan_ctrl.speed_pwm,
+                settings.fan_ctrl.speed_rpm );
     }
 
     msg_debug( "Setting LED\n" );
