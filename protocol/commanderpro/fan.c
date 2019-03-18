@@ -67,8 +67,26 @@ corsairlink_commanderpro_fan_print_mode(
     uint8_t mode, uint16_t data, char* modestr, uint8_t modestr_size )
 {
     int rr = 0;
-    // undefined, return hex value of mode
-    snprintf( modestr, modestr_size, "Mode 0x%02X", mode );
+    *modestr = '\0';
+    switch ( mode )
+    {
+        case 0x00:
+            strncat(modestr, "Mode 'Auto/Disconnected'", modestr_size);
+            break;
+        case 0x01:
+            strncat(modestr, "Mode '3-Pin'", modestr_size);
+            break;
+        case 0x02:
+            strncat(modestr, "Mode '4-Pin'", modestr_size);
+            break;
+        case 0x03:
+            strncat(modestr, "Mode 'Unknown'", modestr_size);
+            break;
+        default:
+            snprintf( modestr, modestr_size, "Mode 0x%02X", mode );
+            break;
+    }
+
     return rr;
 }
 
