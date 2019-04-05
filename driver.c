@@ -265,22 +265,22 @@ struct corsair_device_driver corsairlink_driver_asetekpro = {
         },
     .fan =
         {
-            .count = corsairlink_asetek_fan_count,
+            .count = corsairlink_asetekpro_fan_count,
             .speed = corsairlink_asetekpro_fan_speed,
-            .print_mode = corsairlink_asetek_fan_print_mode,
+            .print_mode = corsairlink_asetekpro_fan_print_mode,
             .profile =
                 {
-                    .read_profile = corsairlink_asetek_fan_mode_read,
+                    .read_profile = corsairlink_asetekpro_fan_mode_read,
                     .read_rpm = corsairlink_unspported_fan,
                     .read_pwm = corsairlink_unspported_fan,
                     .write_profile_custom = corsairlink_unspported_fan,
                     .write_profile_default = corsairlink_unspported_fan,
-                    .write_profile_performance = corsairlink_asetek_fan_mode_performance,
-                    .write_profile_balanced = corsairlink_asetek_fan_mode_balanced,
-                    .write_profile_quiet = corsairlink_asetek_fan_mode_quiet,
+                    .write_profile_performance = corsairlink_asetekpro_fan_mode_performance,
+                    .write_profile_balanced = corsairlink_asetekpro_fan_mode_balanced,
+                    .write_profile_quiet = corsairlink_asetekpro_fan_mode_quiet,
                     .write_rpm = corsairlink_unspported_fan,
                     .write_pwm = corsairlink_unspported_fan,
-                    .write_custom_curve = corsairlink_asetek_fan_curve,
+                    .write_custom_curve = corsairlink_asetekpro_fan_curve,
                 },
         },
     .pump =

@@ -68,7 +68,7 @@ fan_suboptions_parse( char* subopts, struct fan_control* settings )
             token = strtok( value, ":" );
             while ( token != NULL )
             {
-                if ( ii == 6 )
+                if ( ii == 7 )
                     break;
                 sscanf( token, "%hhu", &settings->table[ii].temperature );
                 msg_debug( "FAN Temperature %u: %u\n", ii, settings->table[ii].temperature );
@@ -82,7 +82,7 @@ fan_suboptions_parse( char* subopts, struct fan_control* settings )
             token = strtok( value, ":" );
             while ( token != NULL )
             {
-                if ( ii == 6 )
+                if ( ii == 7 )
                     break;
                 sscanf( token, "%hhu", &settings->table[ii].speed );
                 msg_debug( "FAN Speed %d: %u\n", ii, settings->table[ii].speed );

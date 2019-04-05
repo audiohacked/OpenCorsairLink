@@ -130,31 +130,25 @@ corsairlink_asetek_fan_curve(
     uint8_t commands[64];
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
-    
-    commands[0] = 0x40;
-    commands[1] = ctrl->channel;
 
-    commands[2] = 0;
-    commands[3] = ctrl->table[0].temperature;
-    commands[4] = ctrl->table[1].temperature;
-    commands[5] = ctrl->table[2].temperature;
-    commands[6] = ctrl->table[3].temperature;
-    commands[7] = ctrl->table[4].temperature;
-    commands[8] = ctrl->table[5].temperature;
-    
-    commands[9] = 0;
-    commands[10] = ctrl->table[0].speed;
-    commands[11] = ctrl->table[1].speed;
-    commands[12] = ctrl->table[2].speed;
-    commands[13] = ctrl->table[3].speed;
-    commands[14] = ctrl->table[4].speed;
-    commands[15] = ctrl->table[5].speed;
+    commands[0] = FanCurve;
+    commands[1] = UnknownFanCurve;
 
-    
-    msg_debug2( "%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X \n", commands[0], commands[1], commands[2], commands[3], commands[4], commands[5], commands[6], commands[7], commands[8], commands[9], commands[10], commands[11], commands[12], commands[13], commands[14], commands[15]);
+    commands[2] = ctrl->table[0].temperature;
+    commands[3] = ctrl->table[1].temperature;
+    commands[4] = ctrl->table[2].temperature;
+    commands[5] = ctrl->table[3].temperature;
+    commands[6] = ctrl->table[4].temperature;
+    commands[7] = ctrl->table[5].temperature;
 
+    commands[8] = ctrl->table[0].speed;
+    commands[9] = ctrl->table[1].speed;
+    commands[10] = ctrl->table[2].speed;
+    commands[11] = ctrl->table[3].speed;
+    commands[12] = ctrl->table[4].speed;
+    commands[13] = ctrl->table[5].speed;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 16 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 14 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
 
     return rr;

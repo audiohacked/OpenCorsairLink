@@ -85,7 +85,7 @@ struct led_control {
 struct fan_control {
   uint8_t channel;
   enum motor_modes mode;
-  struct temp_speed_pair table[6];
+  struct temp_speed_pair table[7];
 
   // data returns
   uint8_t fan_count;
