@@ -70,6 +70,8 @@ enum AsetekProOperations
     AsetekProPumpModeRead = 0x33,
     AsetekProFanWrite = 0x40,
     AsetekProFanRead = 0x41,
+    AsetekProFanFixedPWMWrite = 0x42,
+    AsetekProFanFixedRPMWrite = 0x43,
     AsetekProReadTemp = 0xa9,
     AsetekProReadFirmwareVersion = 0xaa,
     AsetekProReadHardwareVersion = 0xab
@@ -225,6 +227,18 @@ corsairlink_asetekpro_led_temperature(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
+    
+int
+corsairlink_asetekpro_fan_mode_rpm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+int
+corsairlink_asetekpro_fan_mode_pwm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
 
 /* pump */
 int

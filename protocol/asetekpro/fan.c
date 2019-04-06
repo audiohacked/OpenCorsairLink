@@ -192,3 +192,49 @@ corsairlink_asetekpro_fan_speed(
 
     return rr;
 }
+
+
+int
+corsairlink_asetekpro_fan_mode_rpm(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    commands[0] = AsetekProFanFixedRPMWrite;
+    commands[1] = ctrl->channel;
+    commands[2] = ( ctrl->speed_rpm >> 8 );
+    commands[3] = ctrl->speed_rpm;
+    
+    msg_debug2("%02X %02X %02X %02X\n", commands[0], commands[1], commands[2], commands[3]);
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 4 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
+    return rr;
+}
+
+int
+corsairlink_asetekpro_fan_mode_pwm(
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
+{
+    int rr;
+    uint8_t response[64];
+    uint8_t commands[64];
+    memset( response, 0, sizeof( response ) );
+    memset( commands, 0, sizeof( commands ) );
+
+    commands[0] = AsetekProFanFixedPWMWrite;
+    commands[1] = ctrl->channel;
+    commands[2] = ctrl->speed_pwm;
+    
+    msg_debug2("%02X %02X %02X\n", commands[0], commands[1], commands[2]);
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
+
+    return rr;
+}
