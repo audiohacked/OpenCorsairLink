@@ -68,12 +68,63 @@ enum AsetekProOperations
     AsetekProPumpSpeedRead = 0x31,
     AsetekProPumpModeWrite = 0x32,
     AsetekProPumpModeRead = 0x33,
+    AsetekProFanWrite = 0x40,
     AsetekProFanRead = 0x41,
+    AsetekProFanFixedPWMWrite = 0x42,
+    AsetekProFanFixedRPMWrite = 0x43,
     AsetekProReadTemp = 0xa9,
     AsetekProReadFirmwareVersion = 0xaa,
     AsetekProReadHardwareVersion = 0xab
 };
 
+
+#define ASETEKPRO_FAN_TABLE_QUIET( x ) \
+    x[0].temperature = 0x10;        \
+    x[1].temperature = 0x14;        \
+    x[2].temperature = 0x20;        \
+    x[3].temperature = 0x28;        \
+    x[4].temperature = 0x32;        \
+    x[5].temperature = 0x37;        \
+    x[6].temperature = 0x3c;        \
+    x[0].speed = 0x19;              \
+    x[1].speed = 0x19;              \
+    x[2].speed = 0x27;              \
+    x[3].speed = 0x32;              \
+    x[4].speed = 0x4b;              \
+    x[5].speed = 0x5a;              \
+    x[6].speed = 0x64;
+
+#define ASETEKPRO_FAN_TABLE_BALANCED( x ) \
+    x[0].temperature = 0x10;           \
+    x[1].temperature = 0x14;           \
+    x[2].temperature = 0x20;           \
+    x[3].temperature = 0x28;           \
+    x[4].temperature = 0x32;           \
+    x[5].temperature = 0x37;           \
+    x[6].temperature = 0x3c;           \
+    x[0].speed = 0x19;                 \
+    x[1].speed = 0x19;                 \
+    x[2].speed = 0x27;                 \
+    x[3].speed = 0x32;                 \
+    x[4].speed = 0x4b;                 \
+    x[5].speed = 0x5a;                 \
+    x[6].speed = 0x64;
+
+#define ASETEKPRO_FAN_TABLE_EXTREME( x ) \
+    x[0].temperature = 0x10;          \
+    x[1].temperature = 0x14;          \
+    x[2].temperature = 0x19;          \
+    x[3].temperature = 0x1e;          \
+    x[4].temperature = 0x24;          \
+    x[5].temperature = 0x30;          \
+    x[6].temperature = 0x3c;          \
+    x[0].speed = 0x32;                \
+    x[1].speed = 0x32;                \
+    x[2].speed = 0x32;                \
+    x[3].speed = 0x4b;                \
+    x[4].speed = 0x55;                \
+    x[5].speed = 0x5d;                \
+    x[6].speed = 0x64;
 
 int
 corsairlink_asetekpro_firmware_id(
@@ -87,12 +138,58 @@ corsairlink_asetekpro_hardware_version(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle);
 
-/* fan */
+/* Fan */
+int
+corsairlink_asetekpro_fan_count(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+int
+corsairlink_asetekpro_fan_mode_read(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+// int corsairlink_asetekpro_fan_mode(
+//     struct corsair_device_info* dev,
+//     struct libusb_device_handle* handle,
+//     struct fan_control* ctrl );
+
+int
+corsairlink_asetekpro_fan_mode_performance(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+int
+corsairlink_asetekpro_fan_mode_balanced(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+int
+corsairlink_asetekpro_fan_mode_quiet(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+int
+corsairlink_asetekpro_fan_curve(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
 int
 corsairlink_asetekpro_fan_speed(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
+
+int
+corsairlink_asetekpro_fan_print_mode(
+    uint8_t mode, uint16_t data, char* modestr, uint8_t modestr_size );
+
 
 /* led */
 int
@@ -130,6 +227,18 @@ corsairlink_asetekpro_led_temperature(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
+    
+int
+corsairlink_asetekpro_fan_mode_rpm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+int
+corsairlink_asetekpro_fan_mode_pwm(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
 
 /* pump */
 int
