@@ -190,7 +190,7 @@ enum {
   SUBOPTION_LED_SPEED,
   SUBOPTION_LED_COLORS,
   SUBOPTION_LED_WARN,
-  SUBOPTION_LED_TEMPERATURE,
+  SUBOPTION_LED_TEMPERATURES,
   SUBOPTION_LED_LIST_END,
 };
 
@@ -216,7 +216,7 @@ static char *led_options[] = {[SUBOPTION_LED_CHANNEL] = "channel",
                               [SUBOPTION_LED_SPEED] = "speed",
                               [SUBOPTION_LED_COLORS] = "colors",
                               [SUBOPTION_LED_WARN] = "warning_color",
-                              [SUBOPTION_LED_TEMPERATURE] = "temperature",
+                              [SUBOPTION_LED_TEMPERATURES] = "temps",
                               [SUBOPTION_LED_LIST_END] = 0};
 
 static char *pump_options[] = {[SUBOPTION_PUMP_MODE] = "mode",
