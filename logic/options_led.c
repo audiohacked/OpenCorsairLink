@@ -100,7 +100,7 @@ led_suboptions_parse( char* subopts, struct led_control* settings )
                 &settings->led_colors[2].green, &settings->led_colors[2].blue );
             break;
 
-        case SUBOPTION_LED_TEMPERATURE: /* led warning temperatures */
+        case SUBOPTION_LED_TEMPERATURES: /* led warning temperatures */
             ii = 0;
             token = strtok( value, ":" );
             while ( token != NULL )
