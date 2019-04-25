@@ -111,7 +111,7 @@ options_print( void )
     msg_info( "channel=N," );
     msg_info( "mode=N," );
     msg_info( "colors=HHHHHH:HHHHHH:HHHHHH," );
-    msg_info( "temp=TEMP:TEMP:TEMP" );
+    msg_info( "temps=TEMP:TEMP:TEMP" );
     msg_info( "\n" );
     msg_info( "\t\tChannel: <led number> :Selects a led channel to setup. "
               "Accepted values are 1 or 2.\n" );
@@ -124,7 +124,7 @@ options_print( void )
     msg_info( "\t\t\t 5 - Temperature (Only Commander Pro, Asetek, and Asetek Pro)\n" );
     msg_info( "\t\tColors: <HTML Color Code>\t\t\t:Define Color for LED.\n" );
     msg_info( "\t\tWarn: <HTML Color Code>\t\t:Define Color for Warning Temp.\n" );
-    msg_info( "\t\tTemp: <Temperature in Celsius>\t:Define Warning Temperature.\n" );
+    msg_info( "\t\tTemps: <Temperature in Celsius>\t:Define Warning Temperatures.\n" );
 
     msg_info( "\n\tFan:\n" );
     msg_info( "\t--fan " );
