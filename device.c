@@ -132,7 +132,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .vendor_id = 0x1b1c,
         .product_id = 0x0c04,
         .device_id = 0x3d,
-        .name = "Whiptail",
+        .name = "Commander Mini", /** Whiptail */
         .read_endpoint = 0x01 | LIBUSB_ENDPOINT_IN,
         .write_endpoint =
             LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE | LIBUSB_ENDPOINT_OUT,
