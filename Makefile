@@ -32,6 +32,8 @@ LDFLAGS ?= -lm
 CFLAGS += $(shell pkg-config --cflags libusb-1.0)
 LDFLAGS += $(shell pkg-config --libs libusb-1.0)
 
+PREFIX = /usr/local
+
 ####################################################################################################
 
 MAINLOGIC_SOURCE := \
@@ -116,6 +118,15 @@ tidy: $(MAINLOGIC_SOURCE) $(LOWLEVEL_SOURCE) $(PROTOCOL_SOURCE)
 .PHONY: clean
 clean:
 	$(RM) $(EXECUTABLE) $(OBJS) $(OBJS_LL) $(OBJS_PROTO)
+
+.PHONY: install
+install: $(EXECUTABLE)
+    mkdir -p $(DESTDIR)$(PREFIX)/bin
+    cp $< $(DESTDIR)$(PREFIX)/bin/$(EXECUTABLE)
+
+.PHONY: uninstall
+uninstall:
+    rm -f $(DESTDIR)$(PREFIX)/bin/$(EXECUTABLE)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -g -c -o $@ $<
