@@ -121,12 +121,12 @@ clean:
 
 .PHONY: install
 install: $(EXECUTABLE)
-    mkdir -p $(DESTDIR)$(PREFIX)/bin
-    cp $< $(DESTDIR)$(PREFIX)/bin/$(EXECUTABLE)
+	mkdir -p $(DESTDIR)$(PREFIX)/bin
+	cp $< $(DESTDIR)$(PREFIX)/bin/$(EXECUTABLE)
 
 .PHONY: uninstall
 uninstall:
-    rm -f $(DESTDIR)$(PREFIX)/bin/$(EXECUTABLE)
+	rm -f $(DESTDIR)$(PREFIX)/bin/$(EXECUTABLE)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -g -c -o $@ $<
