@@ -54,6 +54,12 @@ hydro_coolit_settings(
     struct option_parse_return settings );
 
 int
+whiptail_settings(
+    struct corsair_device_scan scanned_device,
+    struct option_flags flags,
+    struct option_parse_return settings );
+
+int
 psu_settings(
     struct corsair_device_scan scanned_device,
     struct option_flags flags,
@@ -115,7 +121,22 @@ main( int argc, char* argv[] )
             }
             else if ( scanlist[device_number].device->driver == &corsairlink_driver_coolit )
             {
-                hydro_coolit_settings( scanlist[device_number], flags, settings );
+                if ( scanlist[device_number].device->device_id == 0x38 )
+                {
+                    msg_info("Cooling Node Not Supported\n");
+                }
+                else if ( scanlist[device_number].device->device_id == 0x39 )
+                {
+                    msg_info("Lighting Node Not Supported\n");
+                }
+                else if ( scanlist[device_number].device->device_id == 0x3d )
+                {
+                    whiptail_settings( scanlist[device_number], flags, settings );
+                }
+                else
+                {
+                    hydro_coolit_settings( scanlist[device_number], flags, settings );
+                }
             }
         }
     }

@@ -50,7 +50,8 @@ MAINLOGIC_SOURCE := \
 	logic/settings/hydro_asetek.c \
 	logic/settings/hydro_asetekpro.c \
 	logic/settings/hydro_coolit.c \
-	logic/settings/psu.c
+	logic/settings/psu.c \
+	logic/settings/whiptail.c
 
 LOWLEVEL_SOURCE := \
 	lowlevel/asetek.c \
