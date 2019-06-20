@@ -1,0 +1,15 @@
+0x34 = corsairlink_pro_set_begin
+0x37 = corsairlink_pro_set_led_group_reset
+0x38 = corsairlink_pro_set_port_state
+
+0x36 = corsairlink_pro_set_led_temperature
+
+0x34 = corsairlink_pro_set_begin
+0x37 = corsairlink_pro_set_led_group_reset
+0x38 = corsairlink_pro_set_port_state
+0x35 = corsairlink_pro_set_led_config
+0x35 = corsairlink_pro_set_led_config
+0x35 = corsairlink_pro_set_led_config
+0x35 = corsairlink_pro_set_led_config
+
+0x33 = corsairlink_pro_set_commit
