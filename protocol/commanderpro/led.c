@@ -42,6 +42,8 @@ int corsairlink_commanderpro_get_led_setup_mask(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
 
@@ -63,6 +65,8 @@ int corsairlink_commanderpro_set_led_rgb_colour(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
 
@@ -83,6 +87,8 @@ int corsairlink_commanderpro_set_led_rgb_values(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
 
@@ -104,6 +110,8 @@ int corsairlink_commanderpro_set_commit(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
 
@@ -125,6 +133,8 @@ int corsairlink_commanderpro_set_begin(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
 
@@ -181,6 +191,8 @@ int corsairlink_commanderpro_set_led_config(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
 
@@ -205,6 +217,8 @@ int corsairlink_commanderpro_set_led_temperature(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
 
@@ -226,6 +240,8 @@ int corsairlink_commanderpro_set_led_group_reset(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
 
@@ -248,6 +264,8 @@ int corsairlink_commanderpro_set_port_state(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
 
@@ -268,6 +286,8 @@ int corsairlink_commanderpro_set_port_brightness(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
 
@@ -288,6 +308,8 @@ int corsairlink_commanderpro_set_port_led_count(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
 
@@ -308,5 +330,7 @@ int corsairlink_commanderpro_set_port_protocol(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }

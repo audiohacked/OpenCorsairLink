@@ -46,7 +46,9 @@ corsairlink_commanderpro_tempsensorscount(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
-    msg_debug2( "%02X %02X %02X %02X\n", response[1], response[2], response[3], response[4] );
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+    // msg_debug2( "%02X %02X %02X %02X\n", response[1], response[2], response[3], response[4] );
 
     *( temperature_sensors_count ) = 4;
     // for (int ii = 1; ii <= 4; ++ii)
@@ -84,5 +86,7 @@ corsairlink_commanderpro_temperature(
     *( temperature ) = (double)data / 100;
     // snprintf(temperature, temperature_str_len, "%5.2f C", (double)data/100);
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
