@@ -68,7 +68,7 @@ corsairlink_asetekpro_temperature(
         msg_debug2( "Bad Response\n" );
     }
 
-    *( temperature ) = (double)response[3] + ( (double)response[4] / 100 );
+    *( temperature ) = (double)response[3] + ( (double)response[4] / 10 );
     // snprintf(temperature, temperature_str_len, "%d.%d C", response[3],
     // response[4]);
 
