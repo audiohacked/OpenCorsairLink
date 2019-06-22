@@ -39,7 +39,16 @@ corsairlink_handle_close( struct libusb_device_handle* handle )
     int rr;
 
     rr = libusb_release_interface( handle, 0 );
+    if ( rr < 0 )
+    {
+        msg_err("Unable to release USB interface\n");
+    }
+
     rr = libusb_attach_kernel_driver( handle, 0 );
+    if ( rr < 0 )
+    {
+        msg_debug("Unable to attach kernel driver to USB device\n");
+    }
     libusb_close( handle );
 
     return rr;
@@ -99,7 +108,18 @@ corsairlink_device_scanner( libusb_context* context, int* _scanlist_count )
                 if ( scanlist[scanlist_count].handle != NULL )
                 { // Maybe try 'if (rr == 0)'
                     rr = libusb_detach_kernel_driver( scanlist[scanlist_count].handle, 0 );
+                    if ( rr < 0 )
+                    {
+                        msg_debug("Unable to detach kernel driver from Corsair Device\n");
+                        // return rr;
+                    }
+
                     rr = libusb_claim_interface( scanlist[scanlist_count].handle, 0 );
+                    if ( rr < 0 )
+                    {
+                        msg_err("Unable to claim USB device interface\n");
+                        return rr;
+                    }
 
                     /* get device_id if we have a proper device handle */
                     device->driver->device_id(

@@ -36,6 +36,10 @@ corsairlink_asetek_init( struct libusb_device_handle* dev_handle, uint8_t endpoi
     int rr;
 
     rr = libusb_control_transfer( dev_handle, 0x40, 0x00, 0xffff, 0x0000, NULL, 0, 0 );
+    if (rr < 0)
+    {
+        return rr;
+    }
     rr = libusb_control_transfer( dev_handle, 0x40, 0x02, 0x0002, 0x0000, NULL, 0, 0 );
 
     return rr;
