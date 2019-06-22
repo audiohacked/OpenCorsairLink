@@ -83,7 +83,9 @@ corsairlink_asetekpro_fan_mode_read(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 32 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
 
-    msg_debug2( "%02X\n", response[0x16] );
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+    // msg_debug2( "%02X\n", response[0x16] );
     ctrl->mode = response[0x16];
 
     return rr;
@@ -152,12 +154,14 @@ corsairlink_asetekpro_fan_curve(
     commands[15] = ctrl->table[6].speed;
 
     
-    msg_debug2( "%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X \n", commands[0], commands[1], commands[2], commands[3], commands[4], commands[5], commands[6], commands[7], commands[8], commands[9], commands[10], commands[11], commands[12], commands[13], commands[14], commands[15]);
+    // msg_debug2( "%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X \n", commands[0], commands[1], commands[2], commands[3], commands[4], commands[5], commands[6], commands[7], commands[8], commands[9], commands[10], commands[11], commands[12], commands[13], commands[14], commands[15]);
 
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 16 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
     return rr;
 }
 
@@ -177,9 +181,11 @@ corsairlink_asetekpro_fan_speed(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 6 );
 
-    msg_debug2(
-        "%02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
-        response[4], response[5] );
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+    // msg_debug2(
+    //     "%02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
+    //     response[4], response[5] );
 
     if ( response[0] != 0x41 || response[1] != 0x12 || response[2] != 0x34
          || response[3] != ctrl->channel )
@@ -209,7 +215,9 @@ corsairlink_asetekpro_fan_mode_rpm(
     commands[2] = ( ctrl->speed_rpm >> 8 );
     commands[3] = ctrl->speed_rpm;
     
-    msg_debug2("%02X %02X %02X %02X\n", commands[0], commands[1], commands[2], commands[3]);
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+    // msg_debug2("%02X %02X %02X %02X\n", commands[0], commands[1], commands[2], commands[3]);
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 4 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
@@ -231,7 +239,9 @@ corsairlink_asetekpro_fan_mode_pwm(
     commands[1] = ctrl->channel;
     commands[2] = ctrl->speed_pwm;
     
-    msg_debug2("%02X %02X %02X\n", commands[0], commands[1], commands[2]);
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+    // msg_debug2("%02X %02X %02X\n", commands[0], commands[1], commands[2]);
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );

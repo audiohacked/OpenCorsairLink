@@ -50,9 +50,12 @@ corsairlink_asetekpro_firmware_id(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 7 );
 
-    msg_debug2(
-        "%02X %02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
-        response[4], response[5], response[6] );
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+
+    // msg_debug2(
+    //     "%02X %02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
+    //     response[4], response[5], response[6] );
 
     // if (response[0] != 0xAA || response[1] != 0x12
     //     || response[2] != 0x34 || response[3] != selector)
@@ -80,6 +83,9 @@ corsairlink_asetekpro_hardware_version(
     memset( commands, 0, sizeof( commands ) );
 
     commands[0] = AsetekProReadHardwareVersion;
+
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 7 );

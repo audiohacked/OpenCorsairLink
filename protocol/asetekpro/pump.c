@@ -50,9 +50,11 @@ corsairlink_asetekpro_pump_mode_read(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 4 );
   
-    msg_debug("pump mode response = %02X %02X %02X %02X\n", response[0], response[1], 
-		response[2], response[3]
-    );
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+        //     msg_debug("pump mode response = %02X %02X %02X %02X\n", response[0], response[1],
+        // response[2], response[3]
+        //     );
 
     if ( response[0] != AsetekProPumpModeRead || response[1] != 0x12 || response[2] != 0x34 )
     {
@@ -82,9 +84,11 @@ corsairlink_asetekpro_pump_mode_quiet(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 5 );
 
-    msg_debug(
-        "pump write quiet response = %02X %02X %02X %02X %02X\n", 
-	response[0], response[1], response[2], response[3], response[4] );
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+    //     msg_debug(
+    //         "pump write quiet response = %02X %02X %02X %02X %02X\n",
+    // response[0], response[1], response[2], response[3], response[4] );
 
     rr = corsairlink_asetekpro_pump_mode_read(dev, handle, ctrl);
     return rr;
@@ -108,9 +112,11 @@ corsairlink_asetekpro_pump_mode_balanced(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 5 );
 
-    msg_debug(
-        "pump write balanced response = %02X %02X %02X %02X %02X\n", 
-	response[0], response[1], response[2], response[3], response[4] );
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+    //     msg_debug(
+    //         "pump write balanced response = %02X %02X %02X %02X %02X\n",
+    // response[0], response[1], response[2], response[3], response[4] );
 
     rr = corsairlink_asetekpro_pump_mode_read(dev, handle, ctrl);
     return rr;
@@ -134,9 +140,11 @@ corsairlink_asetekpro_pump_mode_performance(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 5 );
 
-    msg_debug(
-        "pump write performance response = %02X %02X %02X %02X %02X\n", 
-	response[0], response[1], response[2], response[3], response[4] );
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+    //     msg_debug(
+    //         "pump write performance response = %02X %02X %02X %02X %02X\n",
+    // response[0], response[1], response[2], response[3], response[4] );
 
     rr = corsairlink_asetekpro_pump_mode_read(dev, handle, ctrl);
     return rr;
@@ -159,9 +167,11 @@ corsairlink_asetekpro_pump_speed(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 5 );
 
-    msg_debug(
-        "pump speed response = %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
-        response[4] );
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+    // msg_debug(
+    //     "pump speed response = %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
+    //     response[4] );
 
     if ( response[0] != AsetekProPumpSpeedRead || response[1] != 0x12 || response[2] != 0x34 )
     {

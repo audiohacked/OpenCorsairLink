@@ -59,9 +59,11 @@ corsairlink_asetekpro_temperature(
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 6 );
 
-    msg_debug2(
-        "%02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
-        response[4] );
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+    // msg_debug2(
+    //     "%02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
+    //     response[4] );
 
     if ( response[0] != 0xa9 || response[1] != 0x12 || response[2] != 0x34 )
     {
