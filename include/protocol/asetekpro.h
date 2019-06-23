@@ -136,7 +136,9 @@ corsairlink_asetekpro_firmware_id(
 int
 corsairlink_asetekpro_hardware_version(
     struct corsair_device_info* dev,
-    struct libusb_device_handle* handle);
+    struct libusb_device_handle* handle,
+    char* hardware,
+    uint8_t hardware_size );
 
 /* Fan */
 int

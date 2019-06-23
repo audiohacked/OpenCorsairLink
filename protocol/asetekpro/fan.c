@@ -134,7 +134,7 @@ corsairlink_asetekpro_fan_curve(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
     
-    commands[0] = AsetekProFanWrite;
+    commands[0] = 0x40;
     commands[1] = ctrl->channel;
 
     commands[2] = ctrl->table[0].temperature;
@@ -175,7 +175,7 @@ corsairlink_asetekpro_fan_speed(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    commands[0] = AsetekProFanRead; // fan speed query
+    commands[0] = 0x41; // fan speed query
     commands[1] = ctrl->channel; // fan port
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
@@ -210,7 +210,7 @@ corsairlink_asetekpro_fan_mode_rpm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    commands[0] = AsetekProFanFixedRPMWrite;
+    commands[0] = 0x43;
     commands[1] = ctrl->channel;
     commands[2] = ( ctrl->speed_rpm >> 8 );
     commands[3] = ctrl->speed_rpm;
@@ -235,7 +235,7 @@ corsairlink_asetekpro_fan_mode_pwm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    commands[0] = AsetekProFanFixedPWMWrite;
+    commands[0] = 0x42;
     commands[1] = ctrl->channel;
     commands[2] = ctrl->speed_pwm;
     

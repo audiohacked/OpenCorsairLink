@@ -54,7 +54,7 @@ corsairlink_asetekpro_temperature(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    commands[0] = AsetekProReadTemp;
+    commands[0] = 0xA9;
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 6 );

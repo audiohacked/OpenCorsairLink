@@ -40,22 +40,22 @@ corsairlink_asetekpro_firmware_id(
     uint8_t firmware_size )
 {
     int rr;
-    uint8_t response[64];
+    uint8_t response[16];
     uint8_t commands[64];
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    commands[0] = AsetekProReadFirmwareVersion; // query firmware id
+    commands[0] = 0xAA; // AsetekProReadFirmwareVersion; // query firmware id
+    // commands[1] = 0x12;
+    // commands[2] = 0x34;
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 7 );
-
-    dump_packet( commands, sizeof( commands ) );
-    dump_packet( response, sizeof( response ) );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, sizeof( response ) );
 
     // msg_debug2(
-    //     "%02X %02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
-    //     response[4], response[5], response[6] );
+    //     "%02X %02X %02X %02X %02X %02X %02X\n",
+    //     response[0], response[1], response[2],
+    //     response[3], response[4], response[5], response[6] );
 
     // if (response[0] != 0xAA || response[1] != 0x12
     //     || response[2] != 0x34 || response[3] != selector)
@@ -67,32 +67,41 @@ corsairlink_asetekpro_firmware_id(
         firmware, firmware_size, "%d.%d.%d.%d", response[3], response[4], response[5],
         response[6] );
 
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
+
     return rr;
 }
 
 int
 corsairlink_asetekpro_hardware_version(
     struct corsair_device_info* dev,
-    struct libusb_device_handle* handle)
-    
+    struct libusb_device_handle* handle,
+    char* hardware,
+    uint8_t hardware_size )
 {
     int rr;
-    uint8_t response[64];
+    uint8_t response[16];
     uint8_t commands[64];
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    commands[0] = AsetekProReadHardwareVersion;
-
-    dump_packet( commands, sizeof( commands ) );
-    dump_packet( response, sizeof( response ) );
+    commands[0] = 0xAB; // AsetekProReadHardwareVersion;
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 7 );
 
-    msg_debug(
-        "hardware version returned: %02X %02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
-        response[4], response[5], response[6] );
+    // msg_debug(
+    //     "hardware version returned: %02X %02X %02X %02X %02X %02X %02X\n",
+    //     response[0], response[1], response[2],
+    //     response[3], response[4], response[5], response[6] );
+
+    snprintf(
+        hardware, hardware_size, "%d.%d.%d.%d",
+        response[3], response[4], response[5], response[6] );
+
+    dump_packet( commands, sizeof( commands ) );
+    dump_packet( response, sizeof( response ) );
 
     return rr;
 }
