@@ -78,12 +78,13 @@ corsairlink_coolit_write(
     int bytes_transferred;
     int rr;
 
-    uint8_t* data_write = { length + 2, CommandId++ };
+    uint8_t data_write[64] = { length + 2, CommandId++ };
     memcpy( data_write + 2, data, length );
 
     rr = libusb_control_transfer(
         dev_handle, CONTROL_REQUEST_TYPE_OUT, HID_SET_REPORT, /** HID Set_Report */
-        ( HID_REPORT_TYPE_OUTPUT << 8 ) | 0x00, INTERFACE_NUMBER, data, length, TIMEOUT_DEFAULT );
+        ( HID_REPORT_TYPE_OUTPUT << 8 ) | 0x00, INTERFACE_NUMBER,
+        data_write, length+2, TIMEOUT_DEFAULT );
 
     return rr;
 }

@@ -23,6 +23,7 @@
 #define _LOWLEVEL_COOLIT_H
 
 #include <libusb.h>
+#include <string.h>
 
 static uint8_t CommandId = 0x81;
 
