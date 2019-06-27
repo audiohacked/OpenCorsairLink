@@ -24,6 +24,25 @@
 
 #include <libusb.h>
 
+int
+corsairlink_unsupported_led(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct led_control* ctrl );
+
+int
+corsairlink_unspported_fan(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
+
+int
+corsairlink_unspported_pump(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct pump_control* ctrl );
+
+
 struct corsair_device_driver
 {
     /** device communication helper functions */
