@@ -41,10 +41,10 @@ corsairlink_coolit_device_id(
 
     uint8_t ii = 0;
 
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = ReadOneByte; // Command Opcode
-    commands[++ii] = DeviceID; // Command data...
-    commands[0] = ii; // Length
+    // commands[0] = 4; // Length
+    // commands[1] = CommandId++; // Command ID
+    commands[0] = ReadOneByte; // Command Opcode
+    commands[1] = DeviceID; // Command data...
 
     rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
@@ -104,10 +104,10 @@ corsairlink_coolit_firmware_id(
 
     uint8_t ii = 0;
 
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = ReadTwoBytes; // Command Opcode
-    commands[++ii] = FirmwareID; // Command data...
-    commands[0] = ii; // Length
+    // commands[0] = 4; // Length
+    // commands[1] = CommandId++; // Command ID
+    commands[0] = ReadTwoBytes; // Command Opcode
+    commands[1] = FirmwareID; // Command data...
 
     rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );

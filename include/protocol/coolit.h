@@ -90,8 +90,6 @@ enum COOLIT_Fan_Modes
     COOLIT_Custom = 0x0E
 };
 
-static uint8_t CommandId = 0x81;
-
 #define COOLIT_FAN_TABLE_QUIET( x ) \
     x[0].temperature = 0x14;        \
     x[1].temperature = 0x20;        \

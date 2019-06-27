@@ -40,16 +40,11 @@ corsairlink_coolit_tempsensorscount(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
+    commands[0] = ReadOneByte; // Command Opcode
+    commands[1] = TEMP_CountSensors; // Command data...
 
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = ReadOneByte; // Command Opcode
-    commands[++ii] = TEMP_CountSensors; // Command data...
-
-    commands[0] = ii; // Length
-
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     *( temperature_sensors_count ) = response[2];
 
@@ -69,21 +64,17 @@ corsairlink_coolit_temperature(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
+    commands[0] = WriteOneByte; // Command Opcode
+    commands[1] = TEMP_SelectActiveSensor; // Command data...
+    commands[2] = selector;
 
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = WriteOneByte; // Command Opcode
-    commands[++ii] = TEMP_SelectActiveSensor; // Command data...
-    commands[++ii] = selector;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = ReadTwoBytes; // Command Opcode
-    commands[++ii] = TEMP_Read; // Command data...
+    commands[0] = ReadTwoBytes; // Command Opcode
+    commands[1] = TEMP_Read; // Command data...
 
-    commands[0] = ii; // Length
-
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     // *(temperature) = (response[5]<<8) + response[4];
     *( temperature ) = (double)response[5] + ( (double)response[4] / 256 );

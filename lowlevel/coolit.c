@@ -78,6 +78,9 @@ corsairlink_coolit_write(
     int bytes_transferred;
     int rr;
 
+    uint8_t* data_write = { length + 2, CommandId++ };
+    memcpy( data_write + 2, data, length );
+
     rr = libusb_control_transfer(
         dev_handle, CONTROL_REQUEST_TYPE_OUT, HID_SET_REPORT, /** HID Set_Report */
         ( HID_REPORT_TYPE_OUTPUT << 8 ) | 0x00, INTERFACE_NUMBER, data, length, TIMEOUT_DEFAULT );
@@ -99,6 +102,9 @@ corsairlink_coolit_read(
 {
     int bytes_transferred;
     int rr;
+
+    // uint8_t* data_read = { length + 2, CommandId++ };
+    // memcpy( data_read + 2, data, length );
 
     rr = libusb_interrupt_transfer(
         dev_handle, endpoint, data, length, &bytes_transferred, TIMEOUT_DEFAULT );

@@ -42,14 +42,15 @@ corsairlink_coolit_fan_count(
 
     uint8_t ii = 0;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = ReadOneByte;
-    commands[++ii] = FAN_Count;
+    commands[0] = ReadOneByte;
+    commands[1] = FAN_Count;
 
     commands[0] = ii;
 
     rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     ctrl->fan_count = response[2] - 1; // we subtract 1 because count includes pump
 
@@ -98,20 +99,19 @@ corsairlink_coolit_fan_mode_read(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Select;
-    commands[++ii] = ctrl->channel;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Select;
+    commands[2] = ctrl->channel;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = ReadOneByte;
-    commands[++ii] = FAN_Mode;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[0] = ii;
+    commands[0] = ReadOneByte;
+    commands[1] = FAN_Mode;
 
     rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     ctrl->mode = response[4];
 
@@ -128,24 +128,22 @@ corsairlink_coolit_fan_mode_read_rpm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Select;
-    commands[++ii] = ctrl->channel;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Select;
+    commands[2] = ctrl->channel;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = ReadOneByte;
-    commands[++ii] = FAN_Mode;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[0] = ii;
+    commands[0] = ReadOneByte;
+    commands[1] = FAN_Mode;
 
     rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     ctrl->mode = response[4];
 
-    ii = 0;
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
@@ -155,6 +153,11 @@ corsairlink_coolit_fan_mode_read_rpm(
     commands[0] = ii;
     rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    commands[0] = ReadTwoBytes;
+    commands[1] = FAN_FixedRPM;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
     ctrl->speed_rpm = ( response[3] << 8 ) + response[2];
 
     return rr;
@@ -170,33 +173,29 @@ corsairlink_coolit_fan_mode_read_pwm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Select;
-    commands[++ii] = ctrl->channel;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Select;
+    commands[2] = ctrl->channel;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = ReadOneByte;
-    commands[++ii] = FAN_Mode;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[0] = ii;
+    commands[0] = ReadOneByte;
+    commands[1] = FAN_Mode;
 
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     ctrl->mode = response[4];
 
-    ii = 0;
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = ReadOneByte;
-    commands[++ii] = FAN_FixedPWM;
-    commands[0] = ii;
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    commands[0] = ReadOneByte;
+    commands[1] = FAN_FixedPWM;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
     ctrl->speed_pwm = response[2];
 
     return rr;
@@ -212,22 +211,18 @@ corsairlink_coolit_fan_mode_performance(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Select;
-    commands[++ii] = ctrl->channel;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Select;
+    commands[2] = ctrl->channel;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Mode;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[++ii] = COOLIT_Performance;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Mode;
+    commands[2] = COOLIT_Performance;
 
-    commands[0] = ii;
-
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     return rr;
 }
@@ -242,22 +237,18 @@ corsairlink_coolit_fan_mode_balanced(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Select;
-    commands[++ii] = ctrl->channel;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Select;
+    commands[2] = ctrl->channel;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Mode;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[++ii] = COOLIT_Balanced;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Mode;
+    commands[2] = COOLIT_Balanced;
 
-    commands[0] = ii;
-
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     return rr;
 }
@@ -272,22 +263,18 @@ corsairlink_coolit_fan_mode_quiet(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Select;
-    commands[++ii] = ctrl->channel;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Select;
+    commands[2] = ctrl->channel;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Mode;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[++ii] = COOLIT_Quiet;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Mode;
+    commands[2] = COOLIT_Quiet;
 
-    commands[0] = ii;
-
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     return rr;
 }
@@ -303,21 +290,18 @@ corsairlink_coolit_fan_mode_default(
     memset( commands, 0, sizeof( commands ) );
 
     uint8_t ii = 0;
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Select;
-    commands[++ii] = ctrl->channel;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Select;
+    commands[2] = ctrl->channel;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Mode;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[++ii] = COOLIT_Default;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Mode;
+    commands[2] = COOLIT_Default;
 
-    commands[0] = ii;
-
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     return rr;
 }
@@ -332,27 +316,25 @@ corsairlink_coolit_fan_mode_rpm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Select;
-    commands[++ii] = ctrl->channel;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Select;
+    commands[2] = ctrl->channel;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Mode;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[++ii] = COOLIT_FixedRPM;
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteTwoBytes;
-    commands[++ii] = FAN_FixedRPM;
-    commands[++ii] = ctrl->speed_rpm & 0xFF;
-    commands[++ii] = ( ctrl->speed_rpm >> 8 ) & 0xFF;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Mode;
+    commands[2] = COOLIT_FixedRPM;
 
-    commands[0] = ii;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    commands[0] = WriteTwoBytes;
+    commands[1] = FAN_FixedRPM;
+    commands[2] = ctrl->speed_rpm & 0xFF;
+    commands[3] = ( ctrl->speed_rpm >> 8 ) & 0xFF;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 4 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     return rr;
 }
@@ -367,26 +349,24 @@ corsairlink_coolit_fan_mode_pwm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Select;
-    commands[++ii] = ctrl->channel;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Select;
+    commands[2] = ctrl->channel;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Mode;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[++ii] = COOLIT_FixedPWM;
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_FixedPWM;
-    commands[++ii] = ctrl->speed_pwm & 0xFF;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Mode;
+    commands[2] = COOLIT_FixedPWM;
 
-    commands[0] = ii;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_FixedPWM;
+    commands[2] = ctrl->speed_pwm & 0xFF;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     return rr;
 }
@@ -401,22 +381,18 @@ corsairlink_coolit_fan_mode_custom(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Select;
-    commands[++ii] = ctrl->channel;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Select;
+    commands[2] = ctrl->channel;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Mode;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[++ii] = COOLIT_Custom;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Mode;
+    commands[2] = COOLIT_Custom;
 
-    commands[0] = ii;
-
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     return rr;
 }
@@ -431,46 +407,40 @@ corsairlink_coolit_fan_curve(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    // commands[0] = FanCurve;
-    // commands[1] = UnknownFanCurve;
+    commands[0] = WriteThreeBytes;
+    commands[1] = FAN_TempTable;
+    commands[2] = 0x0A;
 
-    uint8_t ii = 0;
+    commands[3] = ctrl->table[0].temperature;
+    commands[4] = 0x00;
+    commands[5] = ctrl->table[1].temperature;
+    commands[6] = 0x00;
+    commands[7] = ctrl->table[2].temperature;
+    commands[8] = 0x00;
+    commands[9] = ctrl->table[3].temperature;
+    commands[10] = 0x00;
+    commands[11] = ctrl->table[4].temperature;
+    commands[12] = 0x00;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteThreeBytes;
-    commands[++ii] = FAN_TempTable;
-    commands[++ii] = 0x0A;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 13 );
 
-    commands[++ii] = ctrl->table[0].temperature;
-    commands[++ii] = 0x00;
-    commands[++ii] = ctrl->table[1].temperature;
-    commands[++ii] = 0x00;
-    commands[++ii] = ctrl->table[2].temperature;
-    commands[++ii] = 0x00;
-    commands[++ii] = ctrl->table[3].temperature;
-    commands[++ii] = 0x00;
-    commands[++ii] = ctrl->table[4].temperature;
-    commands[++ii] = 0x00;
+    commands[0] = WriteThreeBytes;
+    commands[1] = FAN_RPMTable;
+    commands[2] = 0x0A;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteThreeBytes;
-    commands[++ii] = FAN_RPMTable;
-    commands[++ii] = 0x0A;
+    commands[3] = ctrl->table[0].speed;
+    commands[4] = 0x00;
+    commands[5] = ctrl->table[1].speed;
+    commands[6] = 0x00;
+    commands[7] = ctrl->table[2].speed;
+    commands[8] = 0x00;
+    commands[9] = ctrl->table[3].speed;
+    commands[10] = 0x00;
+    commands[11] = ctrl->table[4].speed;
+    commands[12] = 0x00;
 
-    commands[++ii] = ctrl->table[0].speed;
-    commands[++ii] = 0x00;
-    commands[++ii] = ctrl->table[1].speed;
-    commands[++ii] = 0x00;
-    commands[++ii] = ctrl->table[2].speed;
-    commands[++ii] = 0x00;
-    commands[++ii] = ctrl->table[3].speed;
-    commands[++ii] = 0x00;
-    commands[++ii] = ctrl->table[4].speed;
-    commands[++ii] = 0x00;
-
-    commands[0] = ii;
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 13 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     return rr;
 }
@@ -485,30 +455,29 @@ corsairlink_coolit_fan_speed(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
+    commands[0] = WriteOneByte;
+    commands[1] = FAN_Select;
+    commands[2] = ctrl->channel;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = WriteOneByte;
-    commands[++ii] = FAN_Select;
-    commands[++ii] = ctrl->channel;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = ReadTwoBytes;
-    commands[++ii] = FAN_ReadRPM;
+    commands[0] = ReadTwoBytes;
+    commands[1] = FAN_ReadRPM;
 
-    commands[++ii] = CommandId++;
-    commands[++ii] = ReadTwoBytes;
-    commands[++ii] = FAN_MaxRecordedRPM;
-
-    commands[0] = ii;
-
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     msg_debug2( "Speed: %02X %02X\n", response[5], response[4] );
-    msg_debug2( "Max Speed: %02X %02X\n", response[9], response[8] );
     ctrl->speed_rpm = ( response[5] << 8 ) + response[4];
-    ctrl->max_speed = ( response[9] << 8 ) + response[8];
+
+    commands[0] = ReadTwoBytes;
+    commands[1] = FAN_MaxRecordedRPM;
+
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+
+    msg_debug2( "Max Speed: %02X %02X\n", response[5], response[4] );
+    ctrl->max_speed = ( response[5] << 8 ) + response[4];
 
     return rr;
 }

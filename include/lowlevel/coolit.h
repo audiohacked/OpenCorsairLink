@@ -24,6 +24,8 @@
 
 #include <libusb.h>
 
+static uint8_t CommandId = 0x81;
+
 int
 corsairlink_coolit_init( struct libusb_device_handle* dev_handle, uint8_t endpoint );
 

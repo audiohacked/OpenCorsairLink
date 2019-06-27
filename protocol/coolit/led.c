@@ -39,43 +39,40 @@ corsairlink_coolit_change_led(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
+    commands[0] = WriteOneByte; // Command Opcode
+    commands[1] = LED_SelectCurrent; // Command data...
+    commands[2] = 0;
 
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = WriteOneByte; // Command Opcode
-    commands[++ii] = LED_SelectCurrent; // Command data...
-    commands[++ii] = 0;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = WriteOneByte; // Command Opcode
-    commands[++ii] = LED_Mode; // Command data...
-    commands[++ii] = 0x00;
+    commands[0] = WriteOneByte; // Command Opcode
+    commands[1] = LED_Mode; // Command data...
+    commands[2] = 0x00;
 
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = WriteThreeBytes; // Command Opcode
-    commands[++ii] = LED_CycleColors; // Command data...
-    commands[++ii] = 0x0C;
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
 
-    commands[++ii] = ctrl->led_colors[0].red;
-    commands[++ii] = ctrl->led_colors[0].green;
-    commands[++ii] = ctrl->led_colors[0].blue;
+    commands[0x0] = WriteThreeBytes; // Command Opcode
+    commands[0x1] = LED_CycleColors; // Command data...
+    commands[0x2] = 0x0C;
 
-    commands[++ii] = ctrl->led_colors[0].red;
-    commands[++ii] = ctrl->led_colors[0].green;
-    commands[++ii] = ctrl->led_colors[0].blue;
+    commands[0x3] = ctrl->led_colors[0].red;
+    commands[0x4] = ctrl->led_colors[0].green;
+    commands[0x5] = ctrl->led_colors[0].blue;
 
-    commands[++ii] = ctrl->led_colors[0].red;
-    commands[++ii] = ctrl->led_colors[0].green;
-    commands[++ii] = ctrl->led_colors[0].blue;
+    commands[0x6] = ctrl->led_colors[0].red;
+    commands[0x7] = ctrl->led_colors[0].green;
+    commands[0x8] = ctrl->led_colors[0].blue;
 
-    commands[++ii] = ctrl->led_colors[0].red;
-    commands[++ii] = ctrl->led_colors[0].green;
-    commands[++ii] = ctrl->led_colors[0].blue;
+    commands[0x9] = ctrl->led_colors[0].red;
+    commands[0xA] = ctrl->led_colors[0].green;
+    commands[0xB] = ctrl->led_colors[0].blue;
 
-    commands[0] = ii; // Length
+    commands[0xC] = ctrl->led_colors[0].red;
+    commands[0xD] = ctrl->led_colors[0].green;
+    commands[0xE] = ctrl->led_colors[0].blue;
 
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->driver->write( handle, dev->write_endpoint, commands, 15 );
+    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     // fan_rpm = (long int) response[0]*16*16 + response[1];
     // pump_rpm = (response[8]*16*16)+response[9];
