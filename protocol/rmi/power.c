@@ -48,8 +48,8 @@ corsairlink_rmi_sensor_select(
     commands[1] = 0x00; // Command Opcode: Output X Select
     commands[2] = sensor_select; // Command data...
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     return 0;
 }
@@ -72,8 +72,8 @@ corsairlink_rmi_output_volts(
     commands[2] = 0x00; // Command data...
     commands[3] = 0x00;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     msg_debug2(
         "%02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
@@ -107,8 +107,8 @@ corsairlink_rmi_output_amps(
     commands[2] = 0x00; // Command data...
     commands[3] = 0x00;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     msg_debug2(
         "%02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
@@ -142,8 +142,8 @@ corsairlink_rmi_output_watts(
     commands[2] = 0x00; // Command data...
     commands[3] = 0x00;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     msg_debug2(
         "%02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
@@ -174,8 +174,8 @@ corsairlink_rmi_power_supply_voltage(
     commands[2] = 0x00; // Command data...
     commands[3] = 0x00;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 4 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 4 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     msg_debug2(
         "%02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
@@ -206,8 +206,8 @@ corsairlink_rmi_power_total_wattage(
     commands[2] = 0x00; // Command data...
     commands[3] = 0x00;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     msg_debug2(
         "%02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],

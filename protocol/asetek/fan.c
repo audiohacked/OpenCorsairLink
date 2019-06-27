@@ -79,8 +79,8 @@ corsairlink_asetek_fan_mode_read(
 
     commands[0] = 0x20;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 32 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 32 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 32 );
 
     msg_debug2( "%02X\n", response[0x16] );
     ctrl->mode = response[0x16];
@@ -148,8 +148,8 @@ corsairlink_asetek_fan_curve(
     commands[12] = ctrl->table[4].speed;
     commands[13] = ctrl->table[5].speed;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 14 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 14 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 32 );
 
     return rr;
 }
@@ -166,8 +166,8 @@ corsairlink_asetek_fan_speed(
 
     commands[0] = 0x20;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 32 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 32 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 32 );
 
     msg_debug2( "%02X %02X\n", response[0], response[1] );
     ctrl->speed = ( response[0] << 8 ) + response[1];

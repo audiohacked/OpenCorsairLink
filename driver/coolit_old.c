@@ -23,16 +23,19 @@
 #include "print.h"
 #include "protocol/coolit.h"
 
-struct corsair_device_driver corsairlink_driver_coolit_old = {
+struct corsair_lowlevel_driver corsairlink_lowlevel_coolit_old = {
     .init = corsairlink_coolit_init,
     .deinit = corsairlink_coolit_deinit,
+    .read = corsairlink_coolit_read,
+    .write = corsairlink_coolit_write,
+};
+
+struct corsair_device_driver corsairlink_driver_coolit_old = {
     .name = corsairlink_coolit_name,
     .vendor = corsairlink_coolit_vendor,
     .product = corsairlink_coolit_product,
     .device_id = corsairlink_coolit_device_id,
     .fw_version = corsairlink_coolit_firmware_id,
-    .read = corsairlink_coolit_read,
-    .write = corsairlink_coolit_write,
     .temperature =
         {
             .read = corsairlink_coolit_temperature,

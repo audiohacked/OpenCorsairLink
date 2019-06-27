@@ -39,8 +39,8 @@ int corsairlink_commanderpro_get_led_setup_mask(
     commands[0] = 0x30;
     commands[1] = led_channel;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -62,8 +62,8 @@ int corsairlink_commanderpro_set_led_rgb_colour(
     commands[0] = 0x31;
     commands[1] = led_channel;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -84,8 +84,8 @@ int corsairlink_commanderpro_set_led_rgb_values(
 
     commands[0] = 0x32;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -107,8 +107,8 @@ int corsairlink_commanderpro_set_commit(
     commands[0] = 0x33;
     commands[1] = 0xFF;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -130,8 +130,8 @@ int corsairlink_commanderpro_set_begin(
     commands[0] = 0x34;
     commands[1] = led_channel;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -188,8 +188,8 @@ int corsairlink_commanderpro_set_led_config(
     commands[0x16] = ( led_temperature->temp3 >> 8 );
     commands[0x17] = ( led_temperature->temp3 && 0xFF );
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -214,8 +214,8 @@ int corsairlink_commanderpro_set_led_temperature(
     commands[3] = 0x0A;
     commands[4] = 0x28;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -237,8 +237,8 @@ int corsairlink_commanderpro_set_led_group_reset(
     commands[0] = 0x37;
     commands[1] = led_channel;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -261,8 +261,8 @@ int corsairlink_commanderpro_set_port_state(
     commands[1] = led_channel;
     commands[2] = 0x01;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -283,8 +283,8 @@ int corsairlink_commanderpro_set_port_brightness(
 
     commands[0] = 0x39;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -305,8 +305,8 @@ int corsairlink_commanderpro_set_port_led_count(
 
     commands[0] = 0x3A;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -327,8 +327,8 @@ int corsairlink_commanderpro_set_port_protocol(
 
     commands[0] = 0x3B;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );

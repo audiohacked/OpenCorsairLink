@@ -48,8 +48,8 @@ corsairlink_rmi_time_powered(
     commands[4] = 0x00;
     commands[5] = 0x00;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     memcpy( powered, response + 2, 4 );
 
@@ -73,8 +73,8 @@ corsairlink_rmi_time_uptime(
     commands[4] = 0x00;
     commands[5] = 0x00;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     memcpy( uptime, response + 2, 4 );
 

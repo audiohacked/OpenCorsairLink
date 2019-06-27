@@ -84,8 +84,8 @@ corsairlink_commanderpro_firmware_id(
 
     commands[0] = 0x02;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     snprintf( firmware, firmware_str_len, "V%d.%d.%d", response[1], response[2], response[3] );
 
@@ -107,8 +107,8 @@ corsairlink_commanderpro_software_id(
 
     commands[0] = 0x03;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     snprintf(
         firmware, firmware_str_len, "%d.%d.%d.%d", response[1], response[2], response[3],
@@ -132,8 +132,8 @@ corsairlink_commanderpro_bootloader_id(
 
     commands[0] = 0x06;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     snprintf( firmware, firmware_str_len, "V0.%d.%d", response[1], response[2] );
 

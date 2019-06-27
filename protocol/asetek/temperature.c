@@ -55,8 +55,8 @@ corsairlink_asetek_temperature(
 
     commands[0] = 0x20;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 32 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 32 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 32 );
 
     msg_debug2( "%02X %02X\n", response[10], response[14] );
 

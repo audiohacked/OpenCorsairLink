@@ -86,8 +86,8 @@ corsairlink_rmi_name(
     commands[0] = 0xfe;
     commands[1] = 0x03;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     uint32_t bytes_to_copy = 16;
     if ( name_size < bytes_to_copy )
@@ -116,8 +116,8 @@ corsairlink_rmi_vendor(
     commands[1] = 0x99;
     commands[2] = 0x00;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     uint32_t bytes_to_copy = 16;
     if ( name_size < bytes_to_copy )
@@ -146,8 +146,8 @@ corsairlink_rmi_product(
     commands[1] = 0x9a;
     commands[2] = 0x00;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     uint32_t bytes_to_copy = 16;
     if ( name_size < bytes_to_copy )

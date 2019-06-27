@@ -47,8 +47,8 @@ corsairlink_asetekpro_pump_mode_read(
 
     commands[0] = AsetekProPumpModeRead;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 4 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 1 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 4 );
   
     msg_debug("pump mode response = %02X %02X %02X %02X\n", response[0], response[1], 
 		response[2], response[3]
@@ -79,8 +79,8 @@ corsairlink_asetekpro_pump_mode_quiet(
     commands[0] = AsetekProPumpModeWrite;
     commands[1] = AsetekProPumpQuiet;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 5 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 5 );
 
     msg_debug(
         "pump write quiet response = %02X %02X %02X %02X %02X\n", 
@@ -105,8 +105,8 @@ corsairlink_asetekpro_pump_mode_balanced(
     commands[0] = AsetekProPumpModeWrite;
     commands[1] = AsetekProPumpBalanced;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 5 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 5 );
 
     msg_debug(
         "pump write balanced response = %02X %02X %02X %02X %02X\n", 
@@ -131,8 +131,8 @@ corsairlink_asetekpro_pump_mode_performance(
     commands[0] = AsetekProPumpModeWrite;
     commands[1] = AsetekProPumpPerformance;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 5 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 5 );
 
     msg_debug(
         "pump write performance response = %02X %02X %02X %02X %02X\n", 
@@ -156,8 +156,8 @@ corsairlink_asetekpro_pump_speed(
 
     commands[0] = AsetekProPumpSpeedRead;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 5 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 1 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 5 );
 
     msg_debug(
         "pump speed response = %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],

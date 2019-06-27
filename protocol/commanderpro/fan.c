@@ -55,8 +55,8 @@ corsairlink_commanderpro_fan_mode_read(
     commands[1] = 0x01;
     commands[2] = (uint8_t) ctrl->channel;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -114,8 +114,8 @@ corsairlink_commanderpro_get_fan_setup_mask(
     commands[0] = 0x20;
     // commands[1] = (uint8_t) ctrl->channel;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -156,8 +156,8 @@ corsairlink_commanderpro_get_fan_speed_rpm(
     commands[0] = 0x21;
     commands[1] = (uint8_t) ctrl->channel;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     ctrl->speed_rpm = ( response[1] << 8 ) + response[2];
 
@@ -179,8 +179,8 @@ corsairlink_commanderpro_get_fan_speed_pwm(
     commands[0] = 0x22;
     commands[1] = (uint8_t) ctrl->channel;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     ctrl->speed_pwm = response[1];
 
@@ -203,8 +203,8 @@ corsairlink_commanderpro_set_fan_speed_pwm(
     commands[1] = (uint8_t) ctrl->channel;
     commands[2] = ctrl->speed_pwm;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -226,8 +226,8 @@ corsairlink_commanderpro_set_fan_speed_rpm(
     commands[2] = (uint8_t) (ctrl->speed_rpm >> 8);
     commands[3] = (uint8_t) (ctrl->speed_rpm & 0xff);
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -248,8 +248,8 @@ corsairlink_commanderpro_get_fan_detect_type(
     commands[1] = 0x01;
     commands[2] = (uint8_t) ctrl->channel;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -271,8 +271,8 @@ corsairlink_commanderpro_set_fan_curve(
     commands[2] = 0x00; // 0x00 = CP Temp Probe 1 .... 0x03 = CP Temp Probe 4,
                         // 0xff = External
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -297,8 +297,8 @@ corsairlink_commanderpro_send_temperature_info(
     commands[2] = temperature >> 8;
     commands[3] = temperature & 0xff;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -337,8 +337,8 @@ corsairlink_commanderpro_set_fan_connection_mode(
     // }
     commands[3] = ctrl->fan_type;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );

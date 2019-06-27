@@ -80,8 +80,8 @@ corsairlink_asetekpro_fan_mode_read(
 
     commands[0] = 0x20;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 32 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 32 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 32 );
 
     msg_debug2( "%02X\n", response[0x16] );
     ctrl->mode = response[0x16];
@@ -155,8 +155,8 @@ corsairlink_asetekpro_fan_curve(
     msg_debug2( "%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X \n", commands[0], commands[1], commands[2], commands[3], commands[4], commands[5], commands[6], commands[7], commands[8], commands[9], commands[10], commands[11], commands[12], commands[13], commands[14], commands[15]);
 
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 16 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 16 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 32 );
 
     return rr;
 }
@@ -174,8 +174,8 @@ corsairlink_asetekpro_fan_speed(
     commands[0] = AsetekProFanRead; // fan speed query
     commands[1] = ctrl->channel; // fan port
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 2 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 6 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 2 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 6 );
 
     msg_debug2(
         "%02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
@@ -211,8 +211,8 @@ corsairlink_asetekpro_fan_mode_rpm(
     
     msg_debug2("%02X %02X %02X %02X\n", commands[0], commands[1], commands[2], commands[3]);
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 4 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 4 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     return rr;
 }
@@ -233,8 +233,8 @@ corsairlink_asetekpro_fan_mode_pwm(
     
     msg_debug2("%02X %02X %02X\n", commands[0], commands[1], commands[2]);
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 3 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 32 );
 
     return rr;
 }

@@ -24,16 +24,19 @@
 #include "protocol/asetek.h"
 #include "protocol/asetekpro.h"
 
-struct corsair_device_driver corsairlink_driver_asetekpro = {
+struct corsair_lowlevel_driver corsairlink_lowlevel_asetekpro = {
     .init = corsairlink_asetek_init,
     .deinit = corsairlink_asetek_deinit,
+    .read = corsairlink_asetek_read,
+    .write = corsairlink_asetek_write,
+};
+
+struct corsair_device_driver corsairlink_driver_asetekpro = {
     .name = corsairlink_asetek_name,
     .vendor = corsairlink_asetek_vendor,
     .product = corsairlink_asetek_product,
     .device_id = corsairlink_asetek_device_id,
     .fw_version = corsairlink_asetekpro_firmware_id,
-    .read = corsairlink_asetek_read,
-    .write = corsairlink_asetek_write,
     .temperature =
         {
             .read = corsairlink_asetekpro_temperature,

@@ -43,8 +43,8 @@ corsairlink_commanderpro_tempsensorscount(
 
     commands[0] = 0x10;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -78,8 +78,8 @@ corsairlink_commanderpro_temperature(
     commands[0] = 0x11;
     commands[1] = sensor_index;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     uint16_t data;
     data = ( response[1] << 8 ) + response[2];

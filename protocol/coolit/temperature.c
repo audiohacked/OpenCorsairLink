@@ -48,8 +48,8 @@ corsairlink_coolit_tempsensorscount(
 
     commands[0] = ii; // Length
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     *( temperature_sensors_count ) = response[2];
 
@@ -82,8 +82,8 @@ corsairlink_coolit_temperature(
 
     commands[0] = ii; // Length
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     // *(temperature) = (response[5]<<8) + response[4];
     *( temperature ) = (double)response[5] + ( (double)response[4] / 256 );

@@ -23,16 +23,19 @@
 #include "print.h"
 #include "protocol/commanderpro.h"
 
-struct corsair_device_driver corsairlink_driver_commanderpro = {
+struct corsair_lowlevel_driver corsairlink_lowlevel_commanderpro = {
     .init = corsairlink_commanderpro_init,
     .deinit = corsairlink_commanderpro_deinit,
+    .read = corsairlink_commanderpro_read,
+    .write = corsairlink_commanderpro_write,
+};
+
+struct corsair_device_driver corsairlink_driver_commanderpro = {
     .name = corsairlink_commanderpro_name,
     .vendor = corsairlink_commanderpro_vendor,
     .product = corsairlink_commanderpro_product,
     .device_id = corsairlink_commanderpro_device_id,
     .fw_version = corsairlink_commanderpro_firmware_id,
-    .read = corsairlink_commanderpro_read,
-    .write = corsairlink_commanderpro_write,
     .temperature =
         {
             .read = corsairlink_commanderpro_temperature,

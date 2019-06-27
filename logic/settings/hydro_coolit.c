@@ -48,7 +48,7 @@ hydro_coolit_settings(
     handle = scanned_device.handle;
     msg_debug( "DEBUG: shortcuts set\n" );
 
-    rr = dev->driver->init( handle, dev->write_endpoint );
+    rr = dev->lowlevel->init( handle, dev->write_endpoint );
     msg_debug( "DEBUG: init done\n" );
 
     /* fetch device name, vendor name, product name */
@@ -202,7 +202,7 @@ hydro_coolit_settings(
         }
     }
 
-    rr = dev->driver->deinit( handle, dev->write_endpoint );
+    rr = dev->lowlevel->deinit( handle, dev->write_endpoint );
     msg_debug( "DEBUG: deinit done\n" );
 
     return 0;

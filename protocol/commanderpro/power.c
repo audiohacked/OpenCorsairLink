@@ -48,8 +48,8 @@ corsairlink_commanderpro_voltage(
     commands[0] = 0x12;
     commands[1] = (uint8_t) sensor_index;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 16 );
 
     //msg_debug2( "%02X %02X %02X\n", response[0], response[1], response[2] );
 

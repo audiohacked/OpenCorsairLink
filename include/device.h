@@ -35,6 +35,8 @@ struct corsair_device_info
 
     /** device control info */
     struct corsair_device_driver* driver;
+    struct corsair_lowlevel_driver* lowlevel;
+    
     uint8_t led_control_count; // used mostly with COOLIT driver
     uint8_t fan_control_count; // used with COOLIT driver
     uint8_t temperature_control_count;

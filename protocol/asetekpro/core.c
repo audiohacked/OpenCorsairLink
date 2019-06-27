@@ -47,8 +47,8 @@ corsairlink_asetekpro_firmware_id(
 
     commands[0] = AsetekProReadFirmwareVersion; // query firmware id
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 7 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 1 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 7 );
 
     msg_debug2(
         "%02X %02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
@@ -81,8 +81,8 @@ corsairlink_asetekpro_hardware_version(
 
     commands[0] = AsetekProReadHardwareVersion;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 1 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 7 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 1 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 7 );
 
     msg_debug(
         "hardware version returned: %02X %02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],

@@ -118,8 +118,8 @@ corsairlink_asetek_firmware_id(
 
     commands[0] = 0x20;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 32 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 32 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 32 );
 
     snprintf(
         firmware, firmware_size, "%d.%d.%d.%d", response[0x17], response[0x18], response[0x19],

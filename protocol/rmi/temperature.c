@@ -50,8 +50,8 @@ corsairlink_rmi_temperature(
     commands[2] = 0x00;
     commands[3] = 0x00;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     msg_debug2(
         "%02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],

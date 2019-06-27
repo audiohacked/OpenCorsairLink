@@ -42,15 +42,24 @@ corsairlink_unspported_pump(
     struct libusb_device_handle* handle,
     struct pump_control* ctrl );
 
-
-struct corsair_device_driver
+struct corsair_lowlevel_driver
 {
     /** device communication helper functions */
     int ( *init )( struct libusb_device_handle*, uint8_t );
     int ( *deinit )( struct libusb_device_handle*, uint8_t );
     int ( *read )( struct libusb_device_handle*, uint8_t, uint8_t*, int );
     int ( *write )( struct libusb_device_handle*, uint8_t, uint8_t*, int );
+};
 
+extern struct corsair_lowlevel_driver corsairlink_lowlevel_asetek;
+extern struct corsair_lowlevel_driver corsairlink_lowlevel_asetekpro;
+extern struct corsair_lowlevel_driver corsairlink_lowlevel_commanderpro;
+extern struct corsair_lowlevel_driver corsairlink_lowlevel_dongle;
+extern struct corsair_lowlevel_driver corsairlink_lowlevel_coolit;
+extern struct corsair_lowlevel_driver corsairlink_lowlevel_rmi;
+
+struct corsair_device_driver
+{
     /** protocol functions */
     int ( *name )(
         struct corsair_device_info* dev,

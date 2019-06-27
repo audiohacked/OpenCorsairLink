@@ -33,8 +33,8 @@ int corsairlink_rmi_fan_rpm(
     commands[2] = 0x00;
     commands[3] = 0x00;
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     memcpy( rpm, response + 2, 2 );
 

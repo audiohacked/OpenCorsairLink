@@ -57,8 +57,8 @@ corsairlink_asetek_led_static_color(
     commands[17] = 0x00; // BootMode
     commands[18] = 0x01; // FanType
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 19 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 19 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 32 );
 
     return rr;
 }
@@ -93,8 +93,8 @@ corsairlink_asetek_led_temperature(
     commands[17] = 0x00; // BootMode
     commands[18] = 0x01; // FanType
 
-    rr = dev->driver->write( handle, dev->write_endpoint, commands, 19 );
-    rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
+    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 19 );
+    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 32 );
 
     return rr;
 }

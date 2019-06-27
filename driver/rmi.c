@@ -23,16 +23,19 @@
 #include "print.h"
 #include "protocol/rmi.h"
 
-struct corsair_device_driver corsairlink_driver_rmi = {
+struct corsair_lowlevel_driver corsairlink_lowlevel_rmi = {
     .init = corsairlink_rmi_init,
     .deinit = corsairlink_rmi_deinit,
+    .read = corsairlink_rmi_read,
+    .write = corsairlink_rmi_write,
+};
+
+struct corsair_device_driver corsairlink_driver_rmi = {
     .name = corsairlink_rmi_name,
     .vendor = corsairlink_rmi_vendor,
     .product = corsairlink_rmi_product,
     .device_id = corsairlink_rmi_device_id,
     .fw_version = corsairlink_rmi_firmware_id,
-    .read = corsairlink_rmi_read,
-    .write = corsairlink_rmi_write,
     .temperature =
         {
             .read = corsairlink_rmi_temperature,
