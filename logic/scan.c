@@ -168,7 +168,7 @@ corsairlink_device_setup(
         // libusb_get_device_address
         // libusb_get_string_descriptor_ascii
 
-        // return corsairlink_check_device_id( cl_device );
+        return corsairlink_check_device_id( cl_device );
     }
 
     return 0;
