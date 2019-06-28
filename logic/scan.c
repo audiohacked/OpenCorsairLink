@@ -42,13 +42,13 @@ corsairlink_handle_close( struct libusb_device_handle* handle )
     rr = libusb_release_interface( handle, 0 );
     if ( rr < 0 )
     {
-        msg_err( "Encountered LibUSB Error: %s\n", libusb_strerror( rr ) );
+        msg_err( "Encountered LibUSB Error: %s!\n", libusb_strerror( rr ) );
     }
 
     rr = libusb_attach_kernel_driver( handle, 0 );
     if ( rr < 0 )
     {
-        msg_err( "Encountered LibUSB Error: %s\n", libusb_strerror( rr ) );
+        msg_err( "Encountered LibUSB Error: %s!\n", libusb_strerror( rr ) );
     }
 
     libusb_close( handle );
@@ -116,7 +116,7 @@ corsairlink_device_setup(
         rr = libusb_open( device, &scanlist[scanlist_count].handle );
         if ( rr < 0 )
         {
-            msg_err( "Encountered LibUSB Error: %s\n", libusb_strerror( rr ) );
+            msg_err( "Encountered LibUSB Error: %s!\n", libusb_strerror( rr ) );
             return rr;
         }
 
@@ -147,6 +147,10 @@ corsairlink_device_setup(
             return rr;
         }
 
+        // libusb_reset_device()
+        // libusb_get_device()
+        // libusb_set_configuration()
+
         rr = libusb_claim_interface( scanlist[scanlist_count].handle, 0 );
         if ( rr < 0 )
         {
@@ -158,7 +162,13 @@ corsairlink_device_setup(
             msg_debug("Claimed Interface on Corsair Device\n");
         }
 
-        return corsairlink_check_device_id( cl_device );
+        // libusb_set_interface_alt_setting
+        // libusb_get_device_descriptor
+        // libusb_get_bus_number
+        // libusb_get_device_address
+        // libusb_get_string_descriptor_ascii
+
+        // return corsairlink_check_device_id( cl_device );
     }
 
     return 0;
@@ -174,15 +184,14 @@ corsairlink_device_enumerate( libusb_device* devices )
     if ( scanlist_count >= 10 )
     {
         msg_debug( "Limited to 10 CorsairLink devices\n" );
-        // break;
-        return -1;
+        return 1; // break;
     }
 
     struct libusb_device_descriptor desc;
     rr = libusb_get_device_descriptor( devices, &desc );
     if ( rr < 0 )
     {
-        msg_debug( "Device Descriptor Error\n" );
+        msg_err( "Encountered LibUSB Error: %s!\n", libusb_strerror( rr ) );
         return rr;
     }
 
@@ -222,7 +231,11 @@ corsairlink_device_scanner( libusb_context* context, int* _scanlist_count )
     cnt = libusb_get_device_list( context, &devices );
     for ( ii = 0; ii < cnt; ii++ )
     {
-        corsairlink_device_enumerate( devices[ii] );
+        rr = corsairlink_device_enumerate( devices[ii] );
+        if ( rr == 1 )
+        {
+            break;
+        }
     }
     msg_info( "\n" );
     *_scanlist_count = scanlist_count;
