@@ -153,9 +153,6 @@ corsairlink_device_setup(
 {
     int rr; // This could be safely ignored. It is just a success flag for
             // libusb functions.
-    // int ii; // Loops through USB devices.
-    // struct corsair_device_info* device;
-    // device = &corsairlink_devices[jj];
 
     if ( ( cl_device->vendor_id == desc.idVendor ) && ( cl_device->product_id == desc.idProduct ) )
     {
@@ -164,95 +161,103 @@ corsairlink_device_setup(
         if ( rr == LIBUSB_ERROR_NO_MEM )
         {
             msg_debug( "Memory Allocation Error\n" );
+            return rr;
         }
         else if ( rr == LIBUSB_ERROR_ACCESS )
         {
             msg_debug( "Device Access (User Permissions) Error\n" );
+            return rr;
         }
         else if ( rr == LIBUSB_ERROR_NO_DEVICE )
         {
             msg_debug( "Device Disconnected\n" );
+            return rr;
         }
         else if ( rr < 0 )
         {
             msg_debug( "Could not open device %d:%d.", desc.idVendor, desc.idProduct );
+            return rr;
         }
         else
         {
-            rr = libusb_kernel_driver_active( scanlist[scanlist_count].handle, 0 );
-            if ( rr == 0 )
-            {
-                msg_debug("Corsair Device has no kernel driver attached\n");
-            }
-            else if (rr == 1)
-            {
-                msg_debug("Corsair Device has kernel driver attached\n");
-                return -255;
-            }
-            else
-            {
-                msg_debug("Encountered LibUSB Error!\n");
-                return rr;
-            }
-
-            rr = libusb_detach_kernel_driver( scanlist[scanlist_count].handle, 0 );
-            if ( rr == LIBUSB_ERROR_NOT_FOUND )
-            {
-                msg_debug("no kernel driver active on Corsair Device\n");
-                // return rr;
-            }
-            else if ( rr == LIBUSB_ERROR_INVALID_PARAM )
-            {
-                msg_debug("No existing Interface for Corsair Device\n");
-            }
-            else if ( rr == LIBUSB_ERROR_NO_DEVICE )
-            {
-                msg_debug("Corsair Device has been Disconnected\n");
-            }
-            else if ( rr == LIBUSB_ERROR_NOT_SUPPORTED )
-            {
-                msg_debug("Unsupported Action on Platform\n");
-            }
-            else if ( rr < 0 )
-            {
-                msg_debug("Encountered LibUSB Error!\n");
-            }
-            else
-            {
-                msg_debug("Detached kernel driver from Corsair Device\n");
-            }
-
-            rr = libusb_claim_interface( scanlist[scanlist_count].handle, 0 );
-            if ( rr == LIBUSB_ERROR_NOT_FOUND )
-            {
-                msg_debug("no kernel driver active on Corsair Device\n");
-                // return rr;
-            }
-            else if ( rr == LIBUSB_ERROR_BUSY )
-            {
-                msg_debug("Interface Busy for Corsair Device\n");
-            }
-            else if ( rr == LIBUSB_ERROR_NO_DEVICE )
-            {
-                msg_debug("Corsair Device has been Disconnected\n");
-            }
-            else if ( rr < 0 )
-            {
-                msg_debug("Encountered LibUSB Error!\n");
-            }
-            else
-            {
-                msg_debug("Claimed Interface on Corsair Device\n");
-            }
-            // if ( rr < 0 )
-            // {
-            //     msg_err("Unable to claim USB device interface\n");
-            //     return rr;
-            // }
-
-            return corsairlink_check_device_id( cl_device );
+            msg_debug( "Device Opened\n" );
         }
+
+        rr = libusb_kernel_driver_active( scanlist[scanlist_count].handle, 0 );
+        if (rr == 1)
+        {
+            msg_debug("Corsair Device has kernel driver attached\n");
+            return -255;
+        }
+        else if ( rr == 0 )
+        {
+            msg_debug("Corsair Device has no kernel driver attached\n");
+        }
+        else
+        {
+            msg_debug("Encountered LibUSB Error!\n");
+            return rr;
+        }
+
+        rr = libusb_detach_kernel_driver( scanlist[scanlist_count].handle, 0 );
+        if ( rr == LIBUSB_ERROR_NOT_FOUND )
+        {
+            msg_debug("no kernel driver active on Corsair Device\n");
+        }
+        else if ( rr == LIBUSB_ERROR_INVALID_PARAM )
+        {
+            msg_debug("No existing Interface for Corsair Device\n");
+            return rr;
+        }
+        else if ( rr == LIBUSB_ERROR_NO_DEVICE )
+        {
+            msg_debug("Corsair Device has been Disconnected\n");
+            return rr;
+        }
+        else if ( rr == LIBUSB_ERROR_NOT_SUPPORTED )
+        {
+            msg_debug("Unsupported Action on Platform\n");
+            return rr;
+        }
+        else if ( rr < 0 )
+        {
+            msg_debug("Encountered LibUSB Error!\n");
+            return rr;
+        }
+        else
+        {
+            msg_debug("Detached kernel driver from Corsair Device\n");
+        }
+
+        rr = libusb_claim_interface( scanlist[scanlist_count].handle, 0 );
+        if ( rr == LIBUSB_ERROR_NOT_FOUND )
+        {
+            msg_debug("the requested interface does not exist on Corsair Device\n");
+            return rr;
+        }
+        else if ( rr == LIBUSB_ERROR_BUSY )
+        {
+            msg_debug("another program or driver has claimed the interface on Corsair Device\n");
+            return rr;
+        }
+        else if ( rr == LIBUSB_ERROR_NO_DEVICE )
+        {
+            msg_debug("Corsair Device has been Disconnected\n");
+            return rr;
+        }
+        else if ( rr < 0 )
+        {
+            msg_debug("Encountered LibUSB Error!\n");
+            return rr;
+        }
+        else
+        {
+            msg_debug("Claimed Interface on Corsair Device\n");
+        }
+
+        return corsairlink_check_device_id( cl_device );
     }
+
     return 0;
 }
 
@@ -261,8 +266,6 @@ corsairlink_device_enumerate( libusb_device* devices )
 {
     int rr; // This could be safely ignored. It is just a success flag for
             // libusb functions.
-
-    // int ii; // Loops through USB devices.
     int jj; // Loops through known CorsairLink Devices.
 
     if ( scanlist_count >= 10 )
@@ -277,6 +280,7 @@ corsairlink_device_enumerate( libusb_device* devices )
     rr = libusb_get_device_descriptor( devices, &desc );
     if ( rr < 0 )
     {
+        msg_debug( "Device Descriptor Error\n" );
         return rr;
     }
 
@@ -298,6 +302,7 @@ corsairlink_device_enumerate( libusb_device* devices )
         }
         // return rr;
     }
+
     return 0;
 }
 
