@@ -1,6 +1,6 @@
 /*
  * This file is part of OpenCorsairLink.
- * Copyright (C) 2017-2020  Sean Nelson <audiohacked@gmail.com>
+ * Copyright (C) 2017-2019  Sean Nelson <audiohacked@gmail.com>
 
  * OpenCorsairLink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,55 +16,48 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _OPTIONS_H
-#define _OPTIONS_H
+#ifndef _SUPPORT_H
+#define _SUPPORT_H
 
-#define _XOPEN_SOURCE 500
-
-#include <getopt.h>
-#include <stdint.h>
-
-#include "logic/support.h"
-#include "logic/suboptions.h"
-
-struct option_flags {
-  // flags
-  // unsigned int debug_messages:1;
-  unsigned int set_led : 1;
-  unsigned int set_temperature : 1;
-  unsigned int set_fan : 1;
-  unsigned int set_pump : 1;
+struct color {
+  uint8_t red;
+  uint8_t green;
+  uint8_t blue;
 };
 
-struct option_parse_return {
-  struct led_control led_ctrl;
-  struct fan_control fan_ctrl;
-  struct pump_control pump_ctrl;
+struct led_temperatures {
+  uint8_t temp1;
+  uint8_t temp2;
+  uint8_t temp3;
 };
 
-enum {
-  OPTION_HELP = 0,
-  OPTION_VERSION,
-  OPTION_DEBUG,
-  OPTION_DUMP,
-  OPTION_MACHINE,
-  OPTION_DEVICE,
-  OPTION_FAN,
-  OPTION_LED,
-  OPTION_PUMP,
+enum led_modes {
+  STATIC = 0,
+  BLINK = 1,
+  PULSE = 2,
+  SHIFT = 3,
+  RAINBOW = 4,
+  TEMPERATURE = 5,
 };
 
-static struct option long_options[] = {
-    {"help", no_argument, 0, OPTION_HELP},
-    {"version", no_argument, 0, OPTION_VERSION},
-    {"debug", no_argument, 0, OPTION_DEBUG},
-    {"dump", no_argument, 0, OPTION_DUMP},
-    {"machine", no_argument, 0, OPTION_MACHINE},
-    {"device", required_argument, 0, OPTION_DEVICE},
-    {"led", required_argument, 0, OPTION_LED},
-    {"fan", required_argument, 0, OPTION_FAN},
-    {"pump", required_argument, 0, OPTION_PUMP},
-    {0, 0, 0, 0}};
+struct temp_speed_pair {
+  /** temperature */
+  int8_t temperature;
+
+  /** fan speed PWM */
+  int8_t speed;
+};
+
+enum motor_modes {
+  PWM = 0,
+  RPM = 1,
+  DEFAULT = 2,
+  QUIET = 3,
+  BALANCED = 4,
+  PERFORMANCE = 5,
+  CUSTOM = 6,
+  UNDEFINED = 7,
+};
 
 #define INIT_WARNING_LED(xx)                                                   \
   xx.red = 0xFF;                                                               \
@@ -98,10 +91,5 @@ static struct option long_options[] = {
   xx[6].red = 0x7f;                                                            \
   xx[6].green = 0x00;                                                          \
   xx[6].blue = 0xff;
-
-void options_print(void);
-
-int options_parse(int argc, char **argv, struct option_flags *flags,
-                  int8_t *device_number, struct option_parse_return *settings);
 
 #endif
