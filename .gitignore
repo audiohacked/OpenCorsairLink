@@ -1,3 +1,7 @@
 *.o
 *.elf
 .vscode
+.idea
+out
+gen
+build
