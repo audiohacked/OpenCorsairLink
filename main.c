@@ -85,7 +85,7 @@ main( int argc, char* argv[] )
 
     corsairlink_device_scanner( context, &scanlist_count );
     msg_debug( "DEBUG: scan done, start routines\n" );
-    msg_debug( "DEBUG: device_number = %d\n", device_number );
+    msg_debug( "DEBUG: selected device_number = %d\n", device_number );
 
     if ( device_number >= 0 )
     {
