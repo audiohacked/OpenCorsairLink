@@ -50,7 +50,7 @@ options_parse(
         switch ( opt )
         {
         case OPTION_VERSION: /* program version */
-            msg_info( "OpenCorsairLink Version: %s", VERSION );
+            msg_info( "OpenCorsairLink Version: %s\n", VERSION );
             break;
 
         case OPTION_DEBUG:
