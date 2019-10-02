@@ -13,10 +13,10 @@ addons:
         update: true
         packages:
         - libusb-1.0-0-dev
-
-before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update         ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install libusb ; fi
+    homebrew:
+        packages:
+        - libusb
+        update: true
 
 script:
     - make
