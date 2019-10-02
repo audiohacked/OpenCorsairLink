@@ -83,10 +83,10 @@ hydro_asetek_settings(
         rr = dev->driver->fan.speed( dev, handle, &readings.fan_ctrl );
         msg_info( "Fan %d:\t%s\n", ii, readings.fan_ctrl.mode_string );
         msg_info(
-            "\tCurrent/Max Speed %i/%i RPM\n", readings.fan_ctrl.speed_rpm,
+            "\tCurrent/Max Speed %i/%i RPM\n", readings.fan_ctrl.speed,
             readings.fan_ctrl.max_speed );
         msg_machine(
-            "fan:%d:%d:%i:%i\n", ii, readings.fan_ctrl.mode, readings.fan_ctrl.speed_rpm,
+            "fan:%d:%d:%i:%i\n", ii, readings.fan_ctrl.mode, readings.fan_ctrl.speed,
             readings.fan_ctrl.max_speed );
     }
 
