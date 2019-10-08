@@ -69,9 +69,8 @@ corsairlink_asetekpro_firmware_id(
 
 int
 corsairlink_asetekpro_hardware_version(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle)
-    
+    struct corsair_device_info* dev, struct libusb_device_handle* handle )
+
 {
     int rr;
     uint8_t response[64];
@@ -85,8 +84,8 @@ corsairlink_asetekpro_hardware_version(
     rr = dev->driver->read( handle, dev->read_endpoint, response, 7 );
 
     msg_debug(
-        "hardware version returned: %02X %02X %02X %02X %02X %02X %02X\n", response[0], response[1], response[2], response[3],
-        response[4], response[5], response[6] );
+        "hardware version returned: %02X %02X %02X %02X %02X %02X %02X\n", response[0], response[1],
+        response[2], response[3], response[4], response[5], response[6] );
 
     return rr;
 }

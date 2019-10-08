@@ -95,7 +95,7 @@ struct fan_control {
   uint16_t speed;
   uint8_t speed_pwm;
   uint16_t speed_rpm;
-  uint16_t max_speed;
+  uint16_t speed_max;
   char mode_string[64];
 };
 
@@ -108,7 +108,7 @@ struct pump_control {
   uint16_t speed;
   uint8_t speed_pwm;
   uint16_t speed_rpm;
-  uint16_t max_speed;
+  uint16_t speed_max;
 };
 
 struct option_parse_return {

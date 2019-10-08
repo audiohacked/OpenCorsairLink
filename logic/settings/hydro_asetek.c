@@ -84,10 +84,10 @@ hydro_asetek_settings(
         msg_info( "Fan %d:\t%s\n", ii, readings.fan_ctrl.mode_string );
         msg_info(
             "\tCurrent/Max Speed %i/%i RPM\n", readings.fan_ctrl.speed,
-            readings.fan_ctrl.max_speed );
+            readings.fan_ctrl.speed_max );
         msg_machine(
             "fan:%d:%d:%i:%i\n", ii, readings.fan_ctrl.mode, readings.fan_ctrl.speed,
-            readings.fan_ctrl.max_speed );
+            readings.fan_ctrl.speed_max );
     }
 
     /* read pump info */
@@ -95,10 +95,10 @@ hydro_asetek_settings(
     rr = dev->driver->pump.speed( dev, handle, &readings.pump_ctrl );
     msg_info( "Pump:\tMode 0x%02X\n", readings.pump_ctrl.mode );
     msg_info(
-        "\tCurrent/Max Speed %i/%i RPM\n", readings.pump_ctrl.speed, readings.pump_ctrl.max_speed );
+        "\tCurrent/Max Speed %i/%i RPM\n", readings.pump_ctrl.speed, readings.pump_ctrl.speed_max );
     msg_machine(
         "pump:%d:%i:%i\n", readings.pump_ctrl.mode, readings.pump_ctrl.speed,
-        readings.pump_ctrl.max_speed );
+        readings.pump_ctrl.speed_max );
 
     if ( flags.set_led == 1 )
     {

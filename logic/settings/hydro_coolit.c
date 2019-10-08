@@ -84,7 +84,7 @@ hydro_coolit_settings(
         msg_info( "Fan %d:\t%s\n", ii, readings.fan_ctrl.mode_string );
         msg_info(
             "\tCurrent/Max Speed %i/%i RPM\n", readings.fan_ctrl.speed_rpm,
-            readings.fan_ctrl.max_speed );
+            readings.fan_ctrl.speed_max );
     }
 
     readings.pump_ctrl.channel = dev->pump_index;
@@ -92,7 +92,7 @@ hydro_coolit_settings(
     rr = dev->driver->pump.speed( dev, handle, &readings.pump_ctrl );
     msg_info( "Pump:\tMode 0x%02X\n", readings.pump_ctrl.mode );
     msg_info(
-        "\tCurrent/Max Speed %i/%i RPM\n", readings.pump_ctrl.speed, readings.pump_ctrl.max_speed );
+        "\tCurrent/Max Speed %i/%i RPM\n", readings.pump_ctrl.speed, readings.pump_ctrl.speed_max );
 
     if ( flags.set_led == 1 )
     {

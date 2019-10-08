@@ -60,7 +60,7 @@ hydro_asetekpro_settings(
     msg_info( "Product: %s\n", name );
     rr = dev->driver->fw_version( dev, handle, name, sizeof( name ) );
     msg_info( "Firmware: %s\n", name );
-    rr = corsairlink_asetekpro_hardware_version( dev, handle);
+    rr = corsairlink_asetekpro_hardware_version( dev, handle );
 
     /* get number of temperature sensors */
     rr = dev->driver->temperature.count( dev, handle, &temperature_sensors_count );
@@ -87,14 +87,16 @@ hydro_asetekpro_settings(
         msg_info( "Fan %d:\t%s\n", ii, readings.fan_ctrl.mode_string );
         msg_info(
             "\tCurrent/Max Speed %i/%i RPM\n", readings.fan_ctrl.speed_rpm,
-            settings.fan_ctrl.max_speed );
+            settings.fan_ctrl.speed_max );
     }
 
     rr = dev->driver->pump.profile.read_profile( dev, handle, &readings.pump_ctrl );
     rr = dev->driver->pump.speed( dev, handle, &readings.pump_ctrl );
-    msg_info( "Pump:\tMode 0x%02X (%s)\n", readings.pump_ctrl.mode, AsetekProPumpModes_String[readings.pump_ctrl.mode] );
     msg_info(
-        "\tCurrent/Max Speed %i/%i RPM\n", readings.pump_ctrl.speed, readings.pump_ctrl.max_speed );
+        "Pump:\tMode 0x%02X (%s)\n", readings.pump_ctrl.mode,
+        AsetekProPumpModes_String[readings.pump_ctrl.mode] );
+    msg_info(
+        "\tCurrent/Max Speed %i/%i RPM\n", readings.pump_ctrl.speed, readings.pump_ctrl.speed_max );
 
     if ( flags.set_led == 1 )
     {

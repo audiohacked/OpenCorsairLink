@@ -24,42 +24,38 @@
 /*
  * These two defines are used to translage options into different item:
  *   - an enum for values
- *   - a list of string values 
+ *   - a list of string values
  *
  */
-#define GENERATE_ENUM(ENUM) ENUM,
-#define GENERATE_STRING(STRING) #STRING,
+#define GENERATE_ENUM( ENUM ) ENUM,
+#define GENERATE_STRING( STRING ) #STRING,
 
 // This will be used to build AsetekProSpeed and AsetekProSpeed_String
-#define FOREACH_ASETEKPROSPEED(speed) \
-    speed(AsetekProSpeedSlow) \
-    speed(AsetekProSpeedMedium) \
-    speed(AsetekProSpeedFast)
+#define FOREACH_ASETEKPROSPEED( speed ) \
+    speed( AsetekProSpeedSlow )         \
+    speed( AsetekProSpeedMedium )       \
+    speed( AsetekProSpeedFast )
 
 enum AsetekProSpeed
 {
-    FOREACH_ASETEKPROSPEED(GENERATE_ENUM)
+    FOREACH_ASETEKPROSPEED( GENERATE_ENUM )
 };
 
-static const char *AsetekProSpeed_String[] =
-{
-    FOREACH_ASETEKPROSPEED(GENERATE_STRING)
-};
+static const char* AsetekProSpeed_String[] = {FOREACH_ASETEKPROSPEED( GENERATE_STRING )};
 
 // This will be used to build AsetekProPumpNodes and AsetekProPumpModes_String
-#define FOREACH_ASETEKPROPUMPMODES(mode) \
-	mode(AsetekProPumpQuiet) \
-	mode(AsetekProPumpBalanced) \
-	mode(AsetekProPumpPerformance)
+#define FOREACH_ASETEKPROPUMPMODES( mode ) \
+    mode( AsetekProPumpQuiet )             \
+    mode( AsetekProPumpBalanced )          \
+    mode( AsetekProPumpPerformance )
 
 enum AsetekProPumpModes
 {
-    FOREACH_ASETEKPROPUMPMODES(GENERATE_ENUM)
+    FOREACH_ASETEKPROPUMPMODES( GENERATE_ENUM )
 };
 
-static const char *AsetekProPumpModes_String[] =
-{
-    FOREACH_ASETEKPROPUMPMODES(GENERATE_STRING)
+static const char* AsetekProPumpModes_String[] = {
+    FOREACH_ASETEKPROPUMPMODES( GENERATE_STRING )
 };
 
 enum AsetekProOperations
@@ -77,24 +73,7 @@ enum AsetekProOperations
     AsetekProReadHardwareVersion = 0xab
 };
 
-
 #define ASETEKPRO_FAN_TABLE_QUIET( x ) \
-    x[0].temperature = 0x10;        \
-    x[1].temperature = 0x14;        \
-    x[2].temperature = 0x20;        \
-    x[3].temperature = 0x28;        \
-    x[4].temperature = 0x32;        \
-    x[5].temperature = 0x37;        \
-    x[6].temperature = 0x3c;        \
-    x[0].speed = 0x19;              \
-    x[1].speed = 0x19;              \
-    x[2].speed = 0x27;              \
-    x[3].speed = 0x32;              \
-    x[4].speed = 0x4b;              \
-    x[5].speed = 0x5a;              \
-    x[6].speed = 0x64;
-
-#define ASETEKPRO_FAN_TABLE_BALANCED( x ) \
     x[0].temperature = 0x10;           \
     x[1].temperature = 0x14;           \
     x[2].temperature = 0x20;           \
@@ -110,20 +89,36 @@ enum AsetekProOperations
     x[5].speed = 0x5a;                 \
     x[6].speed = 0x64;
 
+#define ASETEKPRO_FAN_TABLE_BALANCED( x ) \
+    x[0].temperature = 0x10;              \
+    x[1].temperature = 0x14;              \
+    x[2].temperature = 0x20;              \
+    x[3].temperature = 0x28;              \
+    x[4].temperature = 0x32;              \
+    x[5].temperature = 0x37;              \
+    x[6].temperature = 0x3c;              \
+    x[0].speed = 0x19;                    \
+    x[1].speed = 0x19;                    \
+    x[2].speed = 0x27;                    \
+    x[3].speed = 0x32;                    \
+    x[4].speed = 0x4b;                    \
+    x[5].speed = 0x5a;                    \
+    x[6].speed = 0x64;
+
 #define ASETEKPRO_FAN_TABLE_EXTREME( x ) \
-    x[0].temperature = 0x10;          \
-    x[1].temperature = 0x14;          \
-    x[2].temperature = 0x19;          \
-    x[3].temperature = 0x1e;          \
-    x[4].temperature = 0x24;          \
-    x[5].temperature = 0x30;          \
-    x[6].temperature = 0x3c;          \
-    x[0].speed = 0x32;                \
-    x[1].speed = 0x32;                \
-    x[2].speed = 0x32;                \
-    x[3].speed = 0x4b;                \
-    x[4].speed = 0x55;                \
-    x[5].speed = 0x5d;                \
+    x[0].temperature = 0x10;             \
+    x[1].temperature = 0x14;             \
+    x[2].temperature = 0x19;             \
+    x[3].temperature = 0x1e;             \
+    x[4].temperature = 0x24;             \
+    x[5].temperature = 0x30;             \
+    x[6].temperature = 0x3c;             \
+    x[0].speed = 0x32;                   \
+    x[1].speed = 0x32;                   \
+    x[2].speed = 0x32;                   \
+    x[3].speed = 0x4b;                   \
+    x[4].speed = 0x55;                   \
+    x[5].speed = 0x5d;                   \
     x[6].speed = 0x64;
 
 int
@@ -136,7 +131,7 @@ corsairlink_asetekpro_firmware_id(
 int
 corsairlink_asetekpro_hardware_version(
     struct corsair_device_info* dev,
-    struct libusb_device_handle* handle);
+    struct libusb_device_handle* handle );
 
 /* Fan */
 int
@@ -188,8 +183,10 @@ corsairlink_asetekpro_fan_speed(
 
 int
 corsairlink_asetekpro_fan_print_mode(
-    uint8_t mode, uint16_t data, char* modestr, uint8_t modestr_size );
-
+    uint8_t mode,
+    uint16_t data,
+    char* modestr,
+    uint8_t modestr_size );
 
 /* led */
 int
@@ -227,7 +224,7 @@ corsairlink_asetekpro_led_temperature(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
-    
+
 int
 corsairlink_asetekpro_fan_mode_rpm(
     struct corsair_device_info* dev,

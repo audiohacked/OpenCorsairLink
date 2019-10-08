@@ -29,7 +29,6 @@
 #include <string.h>
 #include <unistd.h>
 
-
 int
 corsairlink_asetekpro_fan_count(
     struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
@@ -131,7 +130,7 @@ corsairlink_asetekpro_fan_curve(
     uint8_t commands[64];
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
-    
+
     commands[0] = AsetekProFanWrite;
     commands[1] = ctrl->channel;
 
@@ -142,7 +141,7 @@ corsairlink_asetekpro_fan_curve(
     commands[6] = ctrl->table[4].temperature;
     commands[7] = ctrl->table[5].temperature;
     commands[8] = ctrl->table[6].temperature;
-    
+
     commands[9] = ctrl->table[0].speed;
     commands[10] = ctrl->table[1].speed;
     commands[11] = ctrl->table[2].speed;
@@ -151,9 +150,11 @@ corsairlink_asetekpro_fan_curve(
     commands[14] = ctrl->table[5].speed;
     commands[15] = ctrl->table[6].speed;
 
-    
-    msg_debug2( "%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X \n", commands[0], commands[1], commands[2], commands[3], commands[4], commands[5], commands[6], commands[7], commands[8], commands[9], commands[10], commands[11], commands[12], commands[13], commands[14], commands[15]);
-
+    msg_debug2(
+        "%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X \n",
+        commands[0], commands[1], commands[2], commands[3], commands[4], commands[5], commands[6],
+        commands[7], commands[8], commands[9], commands[10], commands[11], commands[12],
+        commands[13], commands[14], commands[15] );
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 16 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );
@@ -187,12 +188,12 @@ corsairlink_asetekpro_fan_speed(
         msg_debug2( "Bad Response\n" );
     }
 
-    ctrl->speed_rpm = ( response[4] << 8 ) + response[5];
-    ctrl->max_speed = 0;
+    ctrl->speed = ( response[4] << 8 ) + response[5];
+    ctrl->mode = RPM;
+    ctrl->speed_max = 0;
 
     return rr;
 }
-
 
 int
 corsairlink_asetekpro_fan_mode_rpm(
@@ -204,12 +205,15 @@ corsairlink_asetekpro_fan_mode_rpm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
+    // if (ctrl->mode != RPM) rr = -255;
+    msg_debug2( "%04X\n", ctrl->speed );
+
     commands[0] = AsetekProFanFixedRPMWrite;
     commands[1] = ctrl->channel;
-    commands[2] = ( ctrl->speed_rpm >> 8 );
-    commands[3] = ctrl->speed_rpm;
-    
-    msg_debug2("%02X %02X %02X %02X\n", commands[0], commands[1], commands[2], commands[3]);
+    commands[2] = ( ctrl->speed >> 8 );
+    commands[3] = ( ctrl->speed & 0xFF );
+
+    msg_debug2( "%02X %02X %02X %02X\n", commands[0], commands[1], commands[2], commands[3] );
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 4 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
@@ -227,11 +231,14 @@ corsairlink_asetekpro_fan_mode_pwm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
+    // if (ctrl->mode != PWM) rr = -255;
+    msg_debug2( "%04X\n", ctrl->speed );
+
     commands[0] = AsetekProFanFixedPWMWrite;
     commands[1] = ctrl->channel;
-    commands[2] = ctrl->speed_pwm;
-    
-    msg_debug2("%02X %02X %02X\n", commands[0], commands[1], commands[2]);
+    commands[2] = ( ctrl->speed & 0xFF );
+
+    msg_debug2( "%02X %02X %02X\n", commands[0], commands[1], commands[2] );
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 3 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 32 );

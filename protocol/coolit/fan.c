@@ -127,6 +127,8 @@ corsairlink_coolit_fan_mode_read_rpm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
+    // if (ctrl->mode != RPM) return rr = -255;
+
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
@@ -143,6 +145,7 @@ corsairlink_coolit_fan_mode_read_rpm(
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     ctrl->mode = response[4];
+    // if (response[4] != RPM) return rr = -255;
 
     ii = 0;
     memset( response, 0, sizeof( response ) );
@@ -154,7 +157,8 @@ corsairlink_coolit_fan_mode_read_rpm(
     commands[0] = ii;
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
-    ctrl->speed_rpm = ( response[3] << 8 ) + response[2];
+    ctrl->speed = ( response[3] << 8 ) + response[2];
+    ctrl->mode = RPM;
 
     return rr;
 }
@@ -169,6 +173,8 @@ corsairlink_coolit_fan_mode_read_pwm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
+    // if (ctrl->mode != PWM) return rr = -255;
+
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
@@ -185,6 +191,7 @@ corsairlink_coolit_fan_mode_read_pwm(
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
 
     ctrl->mode = response[4];
+    // if (response[4] != PWM) return rr = -255;
 
     ii = 0;
     memset( response, 0, sizeof( response ) );
@@ -196,7 +203,7 @@ corsairlink_coolit_fan_mode_read_pwm(
     commands[0] = ii;
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 64 );
-    ctrl->speed_pwm = response[2];
+    ctrl->speed = response[2];
 
     return rr;
 }
@@ -331,6 +338,8 @@ corsairlink_coolit_fan_mode_rpm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
+    // if (ctrl->mode != RPM) return rr = -255;
+
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
@@ -345,8 +354,8 @@ corsairlink_coolit_fan_mode_rpm(
     commands[++ii] = CommandId++;
     commands[++ii] = WriteTwoBytes;
     commands[++ii] = FAN_FixedRPM;
-    commands[++ii] = ctrl->speed_rpm & 0xFF;
-    commands[++ii] = ( ctrl->speed_rpm >> 8 ) & 0xFF;
+    commands[++ii] = ctrl->speed & 0xFF;
+    commands[++ii] = ( ctrl->speed >> 8 ) & 0xFF;
 
     commands[0] = ii;
 
@@ -366,6 +375,8 @@ corsairlink_coolit_fan_mode_pwm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
+    // if (ctrl->mode != PWM) return rr = -255;
+
     uint8_t ii = 0;
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
@@ -380,7 +391,7 @@ corsairlink_coolit_fan_mode_pwm(
     commands[++ii] = CommandId++;
     commands[++ii] = WriteOneByte;
     commands[++ii] = FAN_FixedPWM;
-    commands[++ii] = ctrl->speed_pwm & 0xFF;
+    commands[++ii] = ctrl->speed & 0xFF;
 
     commands[0] = ii;
 
@@ -506,8 +517,9 @@ corsairlink_coolit_fan_speed(
 
     msg_debug2( "Speed: %02X %02X\n", response[5], response[4] );
     msg_debug2( "Max Speed: %02X %02X\n", response[9], response[8] );
-    ctrl->speed_rpm = ( response[5] << 8 ) + response[4];
-    ctrl->max_speed = ( response[9] << 8 ) + response[8];
+    ctrl->speed = ( response[5] << 8 ) + response[4];
+    ctrl->speed_max = ( response[9] << 8 ) + response[8];
+    ctrl->mode = RPM;
 
     return rr;
 }

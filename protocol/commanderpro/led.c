@@ -27,7 +27,8 @@
 #include <string.h>
 #include <unistd.h>
 
-int corsairlink_commanderpro_get_led_setup_mask(
+int
+corsairlink_commanderpro_get_led_setup_mask(
     struct corsair_device_info* dev, struct libusb_device_handle* handle, uint8_t led_channel )
 {
     int rr;
@@ -47,7 +48,8 @@ int corsairlink_commanderpro_get_led_setup_mask(
     return rr;
 }
 
-int corsairlink_commanderpro_set_led_rgb_colour(
+int
+corsairlink_commanderpro_set_led_rgb_colour(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t led_channel,
@@ -70,7 +72,8 @@ int corsairlink_commanderpro_set_led_rgb_colour(
     return rr;
 }
 
-int corsairlink_commanderpro_set_led_rgb_values(
+int
+corsairlink_commanderpro_set_led_rgb_values(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t led_channel,
@@ -92,7 +95,8 @@ int corsairlink_commanderpro_set_led_rgb_values(
     return rr;
 }
 
-int corsairlink_commanderpro_set_commit(
+int
+corsairlink_commanderpro_set_commit(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t led_channel,
@@ -115,7 +119,8 @@ int corsairlink_commanderpro_set_commit(
     return rr;
 }
 
-int corsairlink_commanderpro_set_begin(
+int
+corsairlink_commanderpro_set_begin(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t led_channel,
@@ -138,7 +143,8 @@ int corsairlink_commanderpro_set_begin(
     return rr;
 }
 
-int corsairlink_commanderpro_set_led_config(
+int
+corsairlink_commanderpro_set_led_config(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t led_channel,
@@ -196,7 +202,8 @@ int corsairlink_commanderpro_set_led_config(
     return rr;
 }
 
-int corsairlink_commanderpro_set_led_temperature(
+int
+corsairlink_commanderpro_set_led_temperature(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t led_channel,
@@ -222,7 +229,8 @@ int corsairlink_commanderpro_set_led_temperature(
     return rr;
 }
 
-int corsairlink_commanderpro_set_led_group_reset(
+int
+corsairlink_commanderpro_set_led_group_reset(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t led_channel,
@@ -245,7 +253,8 @@ int corsairlink_commanderpro_set_led_group_reset(
     return rr;
 }
 
-int corsairlink_commanderpro_set_port_state(
+int
+corsairlink_commanderpro_set_port_state(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t led_channel,
@@ -269,7 +278,8 @@ int corsairlink_commanderpro_set_port_state(
     return rr;
 }
 
-int corsairlink_commanderpro_set_port_brightness(
+int
+corsairlink_commanderpro_set_port_brightness(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t led_channel,
@@ -291,7 +301,8 @@ int corsairlink_commanderpro_set_port_brightness(
     return rr;
 }
 
-int corsairlink_commanderpro_set_port_led_count(
+int
+corsairlink_commanderpro_set_port_led_count(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t led_channel,
@@ -313,7 +324,8 @@ int corsairlink_commanderpro_set_port_led_count(
     return rr;
 }
 
-int corsairlink_commanderpro_set_port_protocol(
+int
+corsairlink_commanderpro_set_port_protocol(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t led_channel,

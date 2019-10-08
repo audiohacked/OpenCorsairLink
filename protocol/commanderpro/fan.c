@@ -31,9 +31,7 @@
 
 int
 corsairlink_commanderpro_fan_count(
-        struct corsair_device_info* dev,
-        struct libusb_device_handle* handle,
-        struct fan_control* ctrl )
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr = 0;
     // undefined, return device value from device.c
@@ -43,7 +41,7 @@ corsairlink_commanderpro_fan_count(
 
 int
 corsairlink_commanderpro_fan_mode_read(
-        struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
     int rr;
     uint8_t response[16];
@@ -53,14 +51,14 @@ corsairlink_commanderpro_fan_mode_read(
 
     commands[0] = 0x29;
     commands[1] = 0x01;
-    commands[2] = (uint8_t) ctrl->channel;
+    commands[2] = (uint8_t)ctrl->channel;
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
-    //msg_debug2( "%02X\n", response[ctrl->channel] );
+    // msg_debug2( "%02X\n", response[ctrl->channel] );
     if ( response[2] == ctrl->channel )
     {
         ctrl->mode = response[3];
@@ -81,21 +79,21 @@ corsairlink_commanderpro_fan_print_mode(
     *modestr = '\0';
     switch ( mode )
     {
-        case 0x00:
-            strncat(modestr, "Mode: Auto/Disconnected", modestr_size);
-            break;
-        case 0x01:
-            strncat(modestr, "Mode: 3-Pin", modestr_size);
-            break;
-        case 0x02:
-            strncat(modestr, "Mode: 4-Pin", modestr_size);
-            break;
-        case 0x03:
-            strncat(modestr, "Mode: Unknown", modestr_size);
-            break;
-        default:
-            snprintf( modestr, modestr_size, "Mode: 0x%02X", mode );
-            break;
+    case 0x00:
+        strncat( modestr, "Mode: Auto/Disconnected", modestr_size );
+        break;
+    case 0x01:
+        strncat( modestr, "Mode: 3-Pin", modestr_size );
+        break;
+    case 0x02:
+        strncat( modestr, "Mode: 4-Pin", modestr_size );
+        break;
+    case 0x03:
+        strncat( modestr, "Mode: Unknown", modestr_size );
+        break;
+    default:
+        snprintf( modestr, modestr_size, "Mode: 0x%02X", mode );
+        break;
     }
 
     return rr;
@@ -154,12 +152,13 @@ corsairlink_commanderpro_get_fan_speed_rpm(
     memset( commands, 0, sizeof( commands ) );
 
     commands[0] = 0x21;
-    commands[1] = (uint8_t) ctrl->channel;
+    commands[1] = (uint8_t)ctrl->channel;
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
-    ctrl->speed_rpm = ( response[1] << 8 ) + response[2];
+    ctrl->speed = ( response[1] << 8 ) + response[2];
+    ctrl->mode = RPM;
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -177,12 +176,13 @@ corsairlink_commanderpro_get_fan_speed_pwm(
     memset( commands, 0, sizeof( commands ) );
 
     commands[0] = 0x22;
-    commands[1] = (uint8_t) ctrl->channel;
+    commands[1] = (uint8_t)ctrl->channel;
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
 
-    ctrl->speed_pwm = response[1];
+    ctrl->speed = response[1];
+    ctrl->mode = PWM;
 
     dump_packet( commands, sizeof( commands ) );
     dump_packet( response, sizeof( response ) );
@@ -199,9 +199,11 @@ corsairlink_commanderpro_set_fan_speed_pwm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
+    // if (ctrl->mode != PWM) rr = -255;
+
     commands[0] = 0x23;
-    commands[1] = (uint8_t) ctrl->channel;
-    commands[2] = ctrl->speed_pwm;
+    commands[1] = (uint8_t)ctrl->channel;
+    commands[2] = ( ctrl->speed & 0xFF );
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
@@ -221,10 +223,12 @@ corsairlink_commanderpro_set_fan_speed_rpm(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
+    // if (ctrl->mode != RPM) rr = -255;
+
     commands[0] = 0x24;
-    commands[1] = (uint8_t) ctrl->channel;
-    commands[2] = (uint8_t) (ctrl->speed_rpm >> 8);
-    commands[3] = (uint8_t) (ctrl->speed_rpm & 0xff);
+    commands[1] = (uint8_t)ctrl->channel;
+    commands[2] = ( uint8_t )( ctrl->speed >> 8 );
+    commands[3] = ( uint8_t )( ctrl->speed & 0xff );
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
@@ -246,7 +250,7 @@ corsairlink_commanderpro_get_fan_detect_type(
 
     commands[0] = 0x29;
     commands[1] = 0x01;
-    commands[2] = (uint8_t) ctrl->channel;
+    commands[2] = (uint8_t)ctrl->channel;
 
     rr = dev->driver->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->driver->read( handle, dev->read_endpoint, response, 16 );
@@ -267,7 +271,7 @@ corsairlink_commanderpro_set_fan_curve(
     memset( commands, 0, sizeof( commands ) );
 
     commands[0] = 0x25;
-    commands[1] = (uint8_t) ctrl->channel;
+    commands[1] = (uint8_t)ctrl->channel;
     commands[2] = 0x00; // 0x00 = CP Temp Probe 1 .... 0x03 = CP Temp Probe 4,
                         // 0xff = External
 
@@ -317,7 +321,7 @@ corsairlink_commanderpro_set_fan_connection_mode(
 
     commands[0] = 0x28;
     commands[1] = 0x02;
-    commands[2] = (uint8_t) ctrl->channel;
+    commands[2] = (uint8_t)ctrl->channel;
     // switch(response[ii])
     // {
     // case 0x00:

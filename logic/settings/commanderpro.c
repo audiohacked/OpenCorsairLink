@@ -90,17 +90,16 @@ commanderpro_settings(
 
     for ( ii = 0; ii < readings.fan_ctrl.fan_count; ii++ )
     {
-        readings.fan_ctrl.channel = (uint8_t) ii;
+        readings.fan_ctrl.channel = (uint8_t)ii;
         rr = dev->driver->fan.profile.read_rpm( dev, handle, &readings.fan_ctrl );
         rr = dev->driver->fan.profile.read_pwm( dev, handle, &readings.fan_ctrl );
         rr = dev->driver->fan.profile.read_profile( dev, handle, &readings.fan_ctrl );
         rr = dev->driver->fan.print_mode(
-                readings.fan_ctrl.mode, readings.fan_ctrl.data, readings.fan_ctrl.mode_string,
-                sizeof( readings.fan_ctrl.mode_string ) );
+            readings.fan_ctrl.mode, readings.fan_ctrl.data, readings.fan_ctrl.mode_string,
+            sizeof( readings.fan_ctrl.mode_string ) );
         msg_info( "Fan %d:\t%s\n", ii, readings.fan_ctrl.mode_string );
         msg_info(
-                "\tPWM: %i%%\n\tRPM: %i\n", readings.fan_ctrl.speed_pwm,
-				readings.fan_ctrl.speed_rpm );
+            "\tPWM: %i%%\n\tRPM: %i\n", readings.fan_ctrl.speed_pwm, readings.fan_ctrl.speed_rpm );
     }
 
     msg_debug( "Setting LED\n" );
@@ -160,17 +159,17 @@ commanderpro_settings(
         switch ( settings.fan_ctrl.mode )
         {
         case PWM:
-			if ( dev->driver->fan.profile.write_pwm != NULL )
-			{
-				dev->driver->fan.profile.write_pwm( dev, handle, &settings.fan_ctrl );
-			}
-        	break;
+            if ( dev->driver->fan.profile.write_pwm != NULL )
+            {
+                dev->driver->fan.profile.write_pwm( dev, handle, &settings.fan_ctrl );
+            }
+            break;
         case RPM:
-			if ( dev->driver->fan.profile.write_rpm != NULL )
-			{
-				dev->driver->fan.profile.write_rpm( dev, handle, &settings.fan_ctrl );
-			}
-        	break;
+            if ( dev->driver->fan.profile.write_rpm != NULL )
+            {
+                dev->driver->fan.profile.write_rpm( dev, handle, &settings.fan_ctrl );
+            }
+            break;
         case QUIET:
             if ( dev->driver->fan.profile.write_profile_quiet != NULL )
             {

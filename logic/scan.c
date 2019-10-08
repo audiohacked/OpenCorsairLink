@@ -41,7 +41,7 @@ corsairlink_handle_close( struct libusb_device_handle* handle )
     rr = libusb_release_interface( handle, 0 );
     if ( rr < 0 )
     {
-        msg_err("Unable to release USB interface\n");
+        msg_err( "Unable to release USB interface\n" );
     }
 
     libusb_close( handle );
@@ -105,13 +105,13 @@ corsairlink_device_scanner( libusb_context* context, int* _scanlist_count )
                     rr = libusb_set_auto_detach_kernel_driver( scanlist[scanlist_count].handle, 1 );
                     if ( rr != LIBUSB_SUCCESS )
                     {
-                        msg_err("Platform does not support kernel detachment\n");
+                        msg_err( "Platform does not support kernel detachment\n" );
                     }
 
                     rr = libusb_claim_interface( scanlist[scanlist_count].handle, 0 );
                     if ( rr < 0 )
                     {
-                        msg_err("Unable to claim USB device interface\n");
+                        msg_err( "Unable to claim USB device interface\n" );
                         return rr;
                     }
 

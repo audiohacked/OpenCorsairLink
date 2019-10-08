@@ -362,7 +362,7 @@ corsairlink_coolit_pump_speed(
     msg_debug2( "Speed: %02X %02X\n", response[5], response[4] );
     msg_debug2( "Max Speed: %02X %02X\n", response[9], response[8] );
     ctrl->speed = ( response[5] << 8 ) + response[4];
-    ctrl->max_speed = ( response[9] << 8 ) + response[8];
+    ctrl->speed_max = ( response[9] << 8 ) + response[8];
 
     return rr;
 }
