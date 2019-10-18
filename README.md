@@ -22,7 +22,7 @@ Since the program needs direct hardware access you should run this with 'sudo' o
 $ sudo ./OpenCorsairLink.elf
 $ sudo ./OpenCorsairLink.elf --help
 $ sudo ./OpenCorsairLink.elf --device 0
-$ sudo ./OpenCorsairLink.elf --device 0 --led channel=0,mode=0,color=00FF00
+$ sudo ./OpenCorsairLink.elf --device 0 --led channel=0,mode=0,colors=00FF00
 $ sudo ./OpenCorsairLink.elf --device 0 --fan channel=0,mode=5
 $ sudo ./OpenCorsairLink.elf --device 0 --pump mode=5
 ```
