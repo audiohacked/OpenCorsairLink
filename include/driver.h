@@ -31,13 +31,13 @@ corsairlink_unsupported_led(
     struct led_control* ctrl );
 
 int
-corsairlink_unspported_fan(
+corsairlink_unsupported_fan(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_unspported_pump(
+corsairlink_unsupported_pump(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct pump_control* ctrl );

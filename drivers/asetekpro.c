@@ -59,10 +59,10 @@ struct corsair_device_driver corsairlink_driver_asetekpro = {
             .profile =
                 {
                     .read_profile = corsairlink_asetekpro_fan_mode_read,
-                    .read_rpm = corsairlink_unspported_fan,
-                    .read_pwm = corsairlink_unspported_fan,
-                    .write_profile_custom = corsairlink_unspported_fan,
-                    .write_profile_default = corsairlink_unspported_fan,
+                    .read_rpm = corsairlink_unsupported_fan,
+                    .read_pwm = corsairlink_unsupported_fan,
+                    .write_profile_custom = corsairlink_unsupported_fan,
+                    .write_profile_default = corsairlink_unsupported_fan,
                     .write_profile_performance = corsairlink_asetekpro_fan_mode_performance,
                     .write_profile_balanced = corsairlink_asetekpro_fan_mode_balanced,
                     .write_profile_quiet = corsairlink_asetekpro_fan_mode_quiet,
@@ -76,12 +76,12 @@ struct corsair_device_driver corsairlink_driver_asetekpro = {
             .profile =
                 {
                     .read_profile = corsairlink_asetekpro_pump_mode_read,
-                    .write_profile_default = corsairlink_unspported_pump,
+                    .write_profile_default = corsairlink_unsupported_pump,
                     .write_profile_performance = corsairlink_asetekpro_pump_mode_performance,
                     .write_profile_balanced = corsairlink_asetekpro_pump_mode_balanced,
                     .write_profile_quiet = corsairlink_asetekpro_pump_mode_quiet,
-                    .write_profile_custom = corsairlink_unspported_pump,
-                    .write_custom_curve = corsairlink_unspported_pump,
+                    .write_profile_custom = corsairlink_unsupported_pump,
+                    .write_custom_curve = corsairlink_unsupported_pump,
                 },
             // .profile = corsairlink_asetek_pump_mode,
             .speed = corsairlink_asetekpro_pump_speed,

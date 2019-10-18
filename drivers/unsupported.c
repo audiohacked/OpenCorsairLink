@@ -24,24 +24,24 @@ int
 corsairlink_unsupported_led(
     struct corsair_device_info* dev, struct libusb_device_handle* handle, struct led_control* ctrl )
 {
-    msg_info( "Unsupported Generic LED Function\n" );
+    msg_info( "Unsupported LED Function\n" );
     return 0;
 }
 
 int
-corsairlink_unspported_fan(
+corsairlink_unsupported_fan(
     struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
 {
-    msg_info( "Unsupported Generic Fan Function\n" );
+    msg_info( "Unsupported Fan Function\n" );
     return 0;
 }
 
 int
-corsairlink_unspported_pump(
+corsairlink_unsupported_pump(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct pump_control* ctrl )
 {
-    msg_info( "Unsupported Generic Pump Function\n" );
+    msg_info( "Unsupported Pump Function\n" );
     return 0;
 }

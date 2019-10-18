@@ -55,14 +55,14 @@ MAINLOGIC_SOURCE := \
 	logic/settings/psu.c
 
 DRIVER_SOURCE := \
-	driver/asetek.c \
-	driver/asetekpro.c \
-	driver/commanderpro.c \
-	driver/coolit_old.c \
-	driver/coolit.c \
-	driver/dongle.c \
-	driver/rmi.c \
-	driver/unsupported.c
+	drivers/asetek.c \
+	drivers/asetekpro.c \
+	drivers/commanderpro.c \
+	drivers/coolit_old.c \
+	drivers/coolit.c \
+	drivers/dongle.c \
+	drivers/rmi.c \
+	drivers/unsupported.c
 
 LOWLEVEL_SOURCE := \
 	lowlevel/asetek.c \
