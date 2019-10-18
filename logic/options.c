@@ -159,6 +159,7 @@ options_print( void )
     msg_info( "\n" );
     msg_info( "\t\tModes:\n" );
     msg_info( "\t\t\t 3 - Quiet\n" );
+    msg_info( "\t\t\t 4 - Balanced\n" );
     msg_info( "\t\t\t 5 - Performance\n" );
 
     msg_info( "\n Without options, OpenCorsairLink will show the status of any "
