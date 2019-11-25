@@ -32,7 +32,7 @@ LDFLAGS += -lm
 CFLAGS += $(shell pkg-config --cflags libusb-1.0)
 LDFLAGS += $(shell pkg-config --libs libusb-1.0)
 
-PREFIX = /usr/local
+PREFIX ?= /usr/local
 
 GIT_VERSION := $(shell git describe --abbrev=4 --always --tags)
 CFLAGS += -DVERSION=\"v0.9.0.0-$(GIT_VERSION)\"
