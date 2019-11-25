@@ -17,7 +17,7 @@
  */
 
 #include "logic/options.h"
-#include "print.h"
+#include "logic/print.h"
 
 #include <errno.h>
 #include <getopt.h>

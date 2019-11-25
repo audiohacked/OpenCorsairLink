@@ -19,8 +19,9 @@
 #include "driver.h"
 
 #include "device.h"
+#include "logic/print.h"
+#include "unsupported.h"
 #include "lowlevel/commanderpro.h"
-#include "print.h"
 #include "protocol/commanderpro.h"
 
 struct corsair_lowlevel_driver corsairlink_lowlevel_commanderpro = {

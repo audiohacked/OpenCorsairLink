@@ -16,7 +16,7 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "print.h"
+#include "logic/print.h"
 
 #include <stdarg.h>
 #include <stdio.h>

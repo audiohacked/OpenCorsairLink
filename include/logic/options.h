@@ -80,6 +80,9 @@ struct led_control {
   uint16_t temperatures[3];
   uint8_t speed;
   uint8_t count;
+  uint8_t led_type; // commanderpro
+  uint8_t direction; // commanderpro
+  uint8_t change_style; // commanderpro
 };
 
 struct fan_control {

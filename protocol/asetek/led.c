@@ -18,6 +18,7 @@
 
 #include "device.h"
 #include "driver.h"
+#include "logic/options.h"
 #include "lowlevel/asetek.h"
 
 #include <errno.h>

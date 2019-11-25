@@ -19,7 +19,7 @@
 #include "device.h"
 #include "driver.h"
 #include "lowlevel/coolit.h"
-#include "print.h"
+#include "logic/print.h"
 #include "protocol/coolit.h"
 
 #include <errno.h>

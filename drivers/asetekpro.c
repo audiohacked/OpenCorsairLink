@@ -17,10 +17,10 @@
  */
 
 #include "driver.h"
-
 #include "device.h"
+#include "logic/print.h"
+#include "unsupported.h"
 #include "lowlevel/asetek.h"
-#include "print.h"
 #include "protocol/asetek.h"
 #include "protocol/asetekpro.h"
 

@@ -16,12 +16,12 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "driver.h"
-
 #include "device.h"
+#include "driver.h"
+#include "logic/print.h"
 #include "lowlevel/asetek.h"
-#include "print.h"
 #include "protocol/asetek.h"
+#include "unsupported.h"
 
 struct corsair_lowlevel_driver corsairlink_lowlevel_asetek = {
     .init = corsairlink_asetek_init,

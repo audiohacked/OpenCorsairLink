@@ -18,8 +18,9 @@
 
 #include "device.h"
 #include "driver.h"
+#include "logic/print.h"
+#include "logic/options.h"
 #include "lowlevel/commanderpro.h"
-#include "print.h"
 #include "protocol/commanderpro.h"
 
 #include <errno.h>

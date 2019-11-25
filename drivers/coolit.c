@@ -20,8 +20,9 @@
 
 #include "device.h"
 #include "lowlevel/coolit.h"
-#include "print.h"
+#include "logic/print.h"
 #include "protocol/coolit.h"
+#include "unsupported.h"
 
 struct corsair_lowlevel_driver corsairlink_lowlevel_coolit = {
     .init = corsairlink_coolit_init,

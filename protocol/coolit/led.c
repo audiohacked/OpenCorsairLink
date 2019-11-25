@@ -18,6 +18,7 @@
 
 #include "device.h"
 #include "driver.h"
+#include "logic/options.h"
 #include "lowlevel/coolit.h"
 #include "protocol/coolit.h"
 

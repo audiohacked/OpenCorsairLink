@@ -22,7 +22,7 @@
 #include "device.h"
 #include "driver.h"
 #include "lowlevel/asetek.h"
-#include "print.h"
+#include "logic/print.h"
 
 #include <errno.h>
 #include <libusb.h>

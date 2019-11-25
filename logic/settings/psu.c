@@ -20,7 +20,7 @@
 #include "driver.h"
 #include "logic/options.h"
 #include "logic/scan.h"
-#include "print.h"
+#include "logic/print.h"
 
 #include <errno.h>
 #include <libusb.h>

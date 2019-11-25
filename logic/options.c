@@ -19,7 +19,7 @@
 #include "logic/options.h"
 
 #include "common.h"
-#include "print.h"
+#include "logic/print.h"
 
 #include <errno.h>
 #include <stdio.h>

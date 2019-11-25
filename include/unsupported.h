@@ -16,31 +16,25 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "driver.h"
-#include "logic/print.h"
+#ifndef _UNSUPPORTED_H
+#define _UNSUPPORTED_H
 
 int
 corsairlink_unsupported_led(
-    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct led_control* ctrl )
-{
-    msg_info( "Unsupported LED Function\n" );
-    return 0;
-}
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct led_control* ctrl );
 
 int
 corsairlink_unsupported_fan(
-    struct corsair_device_info* dev, struct libusb_device_handle* handle, struct fan_control* ctrl )
-{
-    msg_info( "Unsupported Fan Function\n" );
-    return 0;
-}
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct fan_control* ctrl );
 
 int
 corsairlink_unsupported_pump(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
-    struct pump_control* ctrl )
-{
-    msg_info( "Unsupported Pump Function\n" );
-    return 0;
-}
+    struct pump_control* ctrl );
+
+#endif // _UNSUPPORTED_H

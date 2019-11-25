@@ -42,11 +42,11 @@ CFLAGS += -DVERSION=\"v0.9.0.0-$(GIT_VERSION)\"
 MAINLOGIC_SOURCE := \
 	main.c \
 	device.c \
-	print.c \
 	logic/options.c \
 	logic/options_fan.c \
 	logic/options_led.c \
 	logic/options_pump.c \
+	logic/print.c \
 	logic/scan.c \
 	logic/settings/commanderpro.c \
 	logic/settings/hydro_asetek.c \

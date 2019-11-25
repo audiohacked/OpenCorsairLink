@@ -18,9 +18,9 @@
 
 #include "driver.h"
 
-#include "device.h"
+// #include "device.h"
 #include "lowlevel/rmi.h"
-#include "print.h"
+#include "logic/print.h"
 #include "protocol/rmi.h"
 
 struct corsair_lowlevel_driver corsairlink_lowlevel_rmi = {

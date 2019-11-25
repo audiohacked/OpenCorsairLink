@@ -21,7 +21,7 @@
 #include "common.h"
 #include "device.h"
 #include "driver.h"
-#include "print.h"
+#include "logic/print.h"
 
 #include <errno.h>
 #include <getopt.h>

@@ -19,28 +19,7 @@
 #ifndef _DRIVER_H
 #define _DRIVER_H
 
-#include "device.h"
-#include "logic/options.h"
-
 #include <libusb.h>
-
-int
-corsairlink_unsupported_led(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    struct led_control* ctrl );
-
-int
-corsairlink_unsupported_fan(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    struct fan_control* ctrl );
-
-int
-corsairlink_unsupported_pump(
-    struct corsair_device_info* dev,
-    struct libusb_device_handle* handle,
-    struct pump_control* ctrl );
 
 struct corsair_lowlevel_driver
 {

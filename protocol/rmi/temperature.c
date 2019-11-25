@@ -22,7 +22,7 @@
 #include "device.h"
 #include "driver.h"
 #include "lowlevel/rmi.h"
-#include "print.h"
+#include "logic/print.h"
 #include "protocol/rmi.h"
 
 #include <errno.h>
