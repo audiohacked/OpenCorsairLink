@@ -26,7 +26,7 @@ CFLAGS += -std=c99
 CFLAGS += -Iinclude
 # CFLAGS += -D_XOPEN_SOURCE=500
 
-LDFLAGS ?= -lm
+LDFLAGS += -lm
 
 # pkg-config for libusb-1.0
 CFLAGS += $(shell pkg-config --cflags libusb-1.0)
