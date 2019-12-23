@@ -16,8 +16,8 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "device.h"
 #include "driver.h"
+#include "device.h"
 #include "logic/print.h"
 #include "logic/options.h"
 #include "lowlevel/asetek.h"

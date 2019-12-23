@@ -91,7 +91,7 @@ hydro_asetek_settings(
     }
 
     /* read pump info */
-    rr = dev->driver->pump.profile.read_profile( dev, handle, &readings.pump_ctrl );
+    // rr = dev->driver->pump.profile.read_profile( dev, handle, &readings.pump_ctrl );
     rr = dev->driver->pump.speed( dev, handle, &readings.pump_ctrl );
     msg_info( "Pump:\tMode 0x%02X\n", readings.pump_ctrl.mode );
     msg_info(
@@ -170,20 +170,10 @@ hydro_asetek_settings(
         switch ( settings.pump_ctrl.mode )
         {
         case QUIET:
-            ASETEK_FAN_TABLE_QUIET( settings.pump_ctrl.table );
-            dev->driver->pump.profile.write_custom_curve( dev, handle, &settings.pump_ctrl );
-            break;
-        case BALANCED:
-            ASETEK_FAN_TABLE_BALANCED( settings.pump_ctrl.table );
-            dev->driver->pump.profile.write_custom_curve( dev, handle, &settings.pump_ctrl );
+            dev->driver->pump.profile.write_profile_quiet( dev, handle, &settings.pump_ctrl );
             break;
         case PERFORMANCE:
-            ASETEK_FAN_TABLE_EXTREME( settings.pump_ctrl.table );
-            dev->driver->pump.profile.write_custom_curve( dev, handle, &settings.pump_ctrl );
-            break;
-        case CUSTOM:
-        default:
-            dev->driver->pump.profile.write_custom_curve( dev, handle, &settings.pump_ctrl );
+            dev->driver->pump.profile.write_profile_performance( dev, handle, &settings.pump_ctrl );
             break;
         }
     }

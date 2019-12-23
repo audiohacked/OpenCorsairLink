@@ -140,6 +140,18 @@ corsairlink_asetek_pump_speed(
     struct libusb_device_handle* handle,
     struct pump_control* ctrl );
 
+int
+corsairlink_asetek_pump_mode_quiet(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct pump_control* ctrl );
+
+int
+corsairlink_asetek_pump_mode_performance(
+    struct corsair_device_info* dev,
+    struct libusb_device_handle* handle,
+    struct pump_control* ctrl );
+
 /* Fan */
 int
 corsairlink_asetek_fan_count(
