@@ -66,20 +66,25 @@ psu_settings(
     {
         rr = dev->driver->temperature.read( dev, handle, ii, &temperature );
         msg_info( "Temperature %d: %5.2f C\n", ii, temperature );
+        msg_machine( "temperature:%d:%5.2f\n", ii, temperature );
     }
 
     /* fetch device powered time and device uptime */
     rr = dev->driver->psu_time.powered( dev, handle, &time );
     msg_info( "Powered: %u (%dd.  %dh)\n", time, time / ( 24 * 60 * 60 ), time / ( 60 * 60 ) % 24 );
+    msg_machine( "powered:%d\n", time );
     rr = dev->driver->psu_time.uptime( dev, handle, &time );
     msg_info( "Uptime: %u (%dd.  %dh)\n", time, time / ( 24 * 60 * 60 ), time / ( 60 * 60 ) % 24 );
+    msg_machine( "uptime:%d\n", time );
     msg_debug( "DEBUG: time done\n" );
 
     /* fetch Supply Voltage and Total Watts Consumming */
     rr = dev->driver->power.supply_voltage( dev, handle, &supply_volts );
     msg_info( "Supply Voltage: %5.2f V\n", supply_volts );
+    msg_machine( "supply-voltage:%5.2f\n", supply_volts );
     rr = dev->driver->power.total_wattage( dev, handle, &supply_watts );
     msg_info( "Total Watts: %5.2f W\n", supply_watts );
+    msg_machine( "total-watts:%5.2f\n", supply_watts );
     msg_debug( "DEBUG: supply done\n" );
 
     /* fetch PSU output */
@@ -95,12 +100,15 @@ psu_settings(
         rr = dev->driver->power.sensor_select( dev, handle, ii );
         rr = dev->driver->power.voltage( dev, handle, ii, &output_volts );
         msg_info( "\tVoltage %5.2f V\n", output_volts );
+        msg_machine( "rail-voltage:%d:%5.2f\n", ii, output_volts );
 
         rr = dev->driver->power.amperage( dev, handle, ii, &output_amps );
         msg_info( "\tAmps %5.2f A\n", output_amps );
+        msg_machine( "rail-amperage:%d:%5.2f\n", ii, output_amps );
 
         rr = dev->driver->power.wattage( dev, handle, ii, &output_watts );
         msg_info( "\tWatts %5.2f W\n", output_watts );
+        msg_machine( "rail-watts:%d:%5.2f\n", ii, output_watts );
     }
     rr = dev->driver->power.sensor_select( dev, handle, 0 );
 
