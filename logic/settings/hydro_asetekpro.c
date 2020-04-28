@@ -71,6 +71,7 @@ hydro_asetekpro_settings(
         double temperature;
         rr = dev->driver->temperature.read( dev, handle, ii, &temperature );
         msg_info( "Temperature %d: %5.2f C\n", ii, temperature );
+        msg_machine( "temperature:%d:%5.2f\n", ii, temperature );
     }
 
     /* get number of fans */
@@ -88,6 +89,9 @@ hydro_asetekpro_settings(
         msg_info(
             "\tCurrent/Max Speed %i/%i RPM\n", readings.fan_ctrl.speed_rpm,
             settings.fan_ctrl.max_speed );
+        msg_machine(
+            "fan:%d:%d:%i:%i\n", ii, readings.fan_ctrl.mode, readings.fan_ctrl.speed_rpm,
+            readings.fan_ctrl.max_speed );
     }
 
     rr = dev->driver->pump.profile.read_profile( dev, handle, &readings.pump_ctrl );
@@ -95,6 +99,9 @@ hydro_asetekpro_settings(
     msg_info( "Pump:\tMode 0x%02X (%s)\n", readings.pump_ctrl.mode, AsetekProPumpModes_String[readings.pump_ctrl.mode] );
     msg_info(
         "\tCurrent/Max Speed %i/%i RPM\n", readings.pump_ctrl.speed, readings.pump_ctrl.max_speed );
+    msg_machine(
+        "pump:%d:%i:%i\n", readings.pump_ctrl.mode, readings.pump_ctrl.speed,
+        readings.pump_ctrl.max_speed );
 
     if ( flags.set_led == 1 )
     {
