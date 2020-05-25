@@ -27,7 +27,9 @@ struct corsair_device_scan
 
     /** libusb device structures */
     struct libusb_device_handle* handle;
-} scanlist[10];
+};
+
+extern struct corsair_device_scan scanlist[10];
 
 int
 corsairlink_handle_close( struct libusb_device_handle* handle );

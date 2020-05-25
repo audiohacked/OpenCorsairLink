@@ -32,6 +32,7 @@
 #include <unistd.h>
 
 int scanlist_count = 0;
+struct corsair_device_scan scanlist[10];
 
 int
 corsairlink_handle_close( struct libusb_device_handle* handle )
