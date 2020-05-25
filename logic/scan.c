@@ -77,7 +77,7 @@ corsairlink_check_device_id( struct corsair_device_info* cl_device )
     int rr;
 
     /* get device_id if we have a proper device handle */
-    uint8_t device_id = 0x00;
+    uint16_t device_id = 0x00;
     cl_device->driver->device_id( cl_device, scanlist[scanlist_count].handle, &device_id );
 
     /* check to see if the device_id is the right one */
@@ -225,8 +225,6 @@ corsairlink_device_scanner( libusb_context* context, int* _scanlist_count )
     int ii; // Loops through USB devices.
     ssize_t cnt;
     libusb_device** devices;
-    // uint16_t device_id = 0x00;
-    // uint16_t firmware_id = 0x0000;
 
     cnt = libusb_get_device_list( context, &devices );
     for ( ii = 0; ii < cnt; ii++ )
