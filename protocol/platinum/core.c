@@ -1,6 +1,6 @@
 /*
  * This file is part of OpenCorsairLink.
- * Copyright (C) 2017-2020  Sean Nelson <audiohacked@gmail.com>
+ * Copyright (C) 2017-2019  Sean Nelson <audiohacked@gmail.com>
 
  * OpenCorsairLink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,10 @@
 
 #include "device.h"
 #include "driver.h"
-#include "lowlevel/coolit.h"
 #include "logic/print.h"
-#include "protocol/coolit.h"
+#include "lowlevel/platinum.h"
+#include "protocol/platinum.h"
+#include "protocol/crc.h"
 
 #include <errno.h>
 #include <libusb.h>
@@ -30,34 +31,15 @@
 #include <unistd.h>
 
 int
-corsairlink_coolit_device_id(
+corsairlink_platinum_device_id(
     struct corsair_device_info* dev, struct libusb_device_handle* handle, uint16_t* device_id )
 {
-    int rr;
-    uint8_t response[64];
-    uint8_t commands[64];
-    memset( response, 0, sizeof( response ) );
-    memset( commands, 0, sizeof( commands ) );
-
-    uint8_t ii = 0;
-
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = ReadOneByte; // Command Opcode
-    commands[++ii] = DeviceID; // Command data...
-    commands[0] = ii; // Length
-
-    rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
-    rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
-
-    memcpy( device_id, response + 2, 1 );
-
-    dump_packet( response, sizeof( response ) );
-
+    ( *device_id ) = 0xFF;
     return 0;
 }
 
 int
-corsairlink_coolit_name(
+corsairlink_platinum_name(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
@@ -68,7 +50,7 @@ corsairlink_coolit_name(
 }
 
 int
-corsairlink_coolit_vendor(
+corsairlink_platinum_vendor(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
@@ -79,7 +61,7 @@ corsairlink_coolit_vendor(
 }
 
 int
-corsairlink_coolit_product(
+corsairlink_platinum_product(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
@@ -90,31 +72,29 @@ corsairlink_coolit_product(
 }
 
 int
-corsairlink_coolit_firmware_id(
+corsairlink_platinum_firmware_id(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* firmware,
     uint8_t firmware_size )
 {
     int rr;
-    uint8_t response[64];
-    uint8_t commands[64];
+    uint8_t response[0x40];
+    uint8_t commands[0x40];
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
+    commands[0x00] = 0x3F;
+    commands[0x01] = 0x78; // Command ID
 
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = ReadTwoBytes; // Command Opcode
-    commands[++ii] = FirmwareID; // Command data...
-    commands[0] = ii; // Length
+    commands[0x3F] = crc8ccitt(commands+1, 62);
 
     rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     snprintf(
-        firmware, firmware_size, "%d.%d.%d", ( response[3] & 240 ) >> 4, ( response[3] & 15 ),
-        response[2] );
+        firmware, firmware_size, "%d.%d.%d",
+        ( response[2] ) >> 4, ( response[2] & 0xf ), response[3] );
 
     return 0;
 }

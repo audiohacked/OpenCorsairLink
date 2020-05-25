@@ -1,6 +1,6 @@
 /*
  * This file is part of OpenCorsairLink.
- * Copyright (C) 2017-2020  Sean Nelson <audiohacked@gmail.com>
+ * Copyright (C) 2017-2019  Sean Nelson <audiohacked@gmail.com>
 
  * OpenCorsairLink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,21 +16,21 @@
  * along with OpenCorsairLink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PROTOCOL_COOLIT_H
-#define _PROTOCOL_COOLIT_H
+#ifndef _PROTOCOL_PLATINUM_H
+#define _PROTOCOL_PLATINUM_H
 
-#define CoolitCoolingNode 0x38
-#define CoolitH100 0x3a
-#define CoolitH100i 0x3c
-#define CoolitH100iGT 0x40
-#define CoolitH110i 0x42
-#define CoolitH110iGT 0x41
-#define CoolitH80 0x37
-#define CoolitH80i 0x3b
-#define CoolitLightingNode 0x39
-#define CoolitWhiptail 0x3d
+#define PlatinumCoolingNode 0x38
+#define PlatinumH100 0x3a
+#define PlatinumH100i 0x3c
+#define PlatinumH100iGT 0x40
+#define PlatinumH110i 0x42
+#define PlatinumH110iGT 0x41
+#define PlatinumH80 0x37
+#define PlatinumH80i 0x3b
+#define PlatinumLightingNode 0x39
+#define PlatinumWhiptail 0x3d
 
-enum COOLIT_Commands
+enum PLATINUM_Commands
 {
     DeviceID = 0x00,
     FirmwareID = 0x01,
@@ -61,7 +61,7 @@ enum COOLIT_Commands
     FAN_TempTable = 0x1A
 };
 
-enum COOLIT_Op_Codes
+enum PLATINUM_Op_Codes
 {
     WriteOneByte = 0x06,
     ReadOneByte = 0x07,
@@ -71,7 +71,7 @@ enum COOLIT_Op_Codes
     ReadThreeBytes = 0x0B,
 };
 
-enum COOLIT_Led_Modes
+enum PLATINUM_Led_Modes
 {
     StaticColor = 0x00,
     TwoColorCycle = 0x40,
@@ -79,20 +79,20 @@ enum COOLIT_Led_Modes
     TemperatureColor = 0xC0
 };
 
-enum COOLIT_Fan_Modes
+enum PLATINUM_Fan_Modes
 {
-    COOLIT_FixedPWM = 0x02,
-    COOLIT_FixedRPM = 0x04,
-    COOLIT_Default = 0x06,
-    COOLIT_Quiet = 0x08,
-    COOLIT_Balanced = 0x0A,
-    COOLIT_Performance = 0x0C,
-    COOLIT_Custom = 0x0E
+    PLATINUM_FixedPWM = 0x02,
+    PLATINUM_FixedRPM = 0x04,
+    PLATINUM_Default = 0x06,
+    PLATINUM_Quiet = 0x08,
+    PLATINUM_Balanced = 0x0A,
+    PLATINUM_Performance = 0x0C,
+    PLATINUM_Custom = 0x0E
 };
 
-static uint8_t CommandId = 0x81;
+static uint8_t CommandId = 0x00;
 
-#define COOLIT_FAN_TABLE_QUIET( x ) \
+#define PLATINUM_FAN_TABLE_QUIET( x ) \
     x[0].temperature = 0x14;        \
     x[1].temperature = 0x20;        \
     x[2].temperature = 0x28;        \
@@ -106,7 +106,21 @@ static uint8_t CommandId = 0x81;
     x[4].speed = 0x5a;              \
     x[5].speed = 0x64;
 
-#define COOLIT_FAN_TABLE_EXTREME( x ) \
+#define PLATINUM_FAN_TABLE_BALANCED( x ) \
+    x[0].temperature = 0x14;        \
+    x[1].temperature = 0x20;        \
+    x[2].temperature = 0x28;        \
+    x[3].temperature = 0x32;        \
+    x[4].temperature = 0x37;        \
+    x[5].temperature = 0x3c;        \
+    x[0].speed = 0x19;              \
+    x[1].speed = 0x27;              \
+    x[2].speed = 0x32;              \
+    x[3].speed = 0x4b;              \
+    x[4].speed = 0x5a;              \
+    x[5].speed = 0x64;
+
+#define PLATINUM_FAN_TABLE_EXTREME( x ) \
     x[0].temperature = 0x14;          \
     x[1].temperature = 0x19;          \
     x[2].temperature = 0x1e;          \
@@ -121,191 +135,191 @@ static uint8_t CommandId = 0x81;
     x[5].speed = 0x64;
 
 int
-corsairlink_coolit_device_id(
+corsairlink_platinum_device_id(
     struct corsair_device_info* dev, struct libusb_device_handle* handle, uint16_t* device_id );
 
 int
-corsairlink_coolit_name(
+corsairlink_platinum_name(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
     uint8_t name_size );
 
 int
-corsairlink_coolit_vendor(
+corsairlink_platinum_vendor(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
     uint8_t name_size );
 
 int
-corsairlink_coolit_product(
+corsairlink_platinum_product(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* name,
     uint8_t name_size );
 
 int
-corsairlink_coolit_firmware_id(
+corsairlink_platinum_firmware_id(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     char* firmware,
     uint8_t firmware_size );
 
 int
-corsairlink_coolit_change_led(
+corsairlink_platinum_change_led(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct led_control* ctrl );
 
 /* Temperature */
 int
-corsairlink_coolit_temperature(
+corsairlink_platinum_temperature(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t selector,
     double* temperature );
 
 int
-corsairlink_coolit_tempsensorscount(
+corsairlink_platinum_tempsensorscount(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     uint8_t* temperature_sensors_count );
 
 /* Fan */
 int
-corsairlink_coolit_fan_count(
+corsairlink_platinum_fan_count(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_mode_read(
+corsairlink_platinum_fan_mode_read(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_mode_read_rpm(
+corsairlink_platinum_fan_mode_read_rpm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_mode_read_pwm(
+corsairlink_platinum_fan_mode_read_pwm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_mode_default(
+corsairlink_platinum_fan_mode_default(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_mode_performance(
+corsairlink_platinum_fan_mode_performance(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_mode_balanced(
+corsairlink_platinum_fan_mode_balanced(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_mode_quiet(
+corsairlink_platinum_fan_mode_quiet(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_mode_rpm(
+corsairlink_platinum_fan_mode_rpm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_mode_pwm(
+corsairlink_platinum_fan_mode_pwm(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_mode_custom(
+corsairlink_platinum_fan_mode_custom(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_curve(
+corsairlink_platinum_fan_curve(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_speed(
+corsairlink_platinum_fan_speed(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct fan_control* ctrl );
 
 int
-corsairlink_coolit_fan_print_mode(
+corsairlink_platinum_fan_print_mode(
     uint8_t mode, uint16_t data, char* modestr, uint8_t modestr_size );
 
 /* Pump */
 int
-corsairlink_coolit_pump_mode(
+corsairlink_platinum_pump_mode(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct pump_control* ctrl );
 
 int
-corsairlink_coolit_pump_mode_read(
+corsairlink_platinum_pump_mode_read(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct pump_control* ctrl );
 
 int
-corsairlink_coolit_pump_mode_default(
+corsairlink_platinum_pump_mode_default(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct pump_control* ctrl );
 
 int
-corsairlink_coolit_pump_mode_quiet(
+corsairlink_platinum_pump_mode_quiet(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct pump_control* ctrl );
 
 int
-corsairlink_coolit_pump_mode_balanced(
+corsairlink_platinum_pump_mode_balanced(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct pump_control* ctrl );
 
 int
-corsairlink_coolit_pump_mode_performance(
+corsairlink_platinum_pump_mode_performance(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct pump_control* ctrl );
 
 int
-corsairlink_coolit_pump_mode_custom(
+corsairlink_platinum_pump_mode_custom(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct pump_control* ctrl );
 
 int
-corsairlink_coolit_pump_curve(
+corsairlink_platinum_pump_curve(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct pump_control* ctrl );
 
 int
-corsairlink_coolit_pump_speed(
+corsairlink_platinum_pump_speed(
     struct corsair_device_info* dev,
     struct libusb_device_handle* handle,
     struct pump_control* ctrl );

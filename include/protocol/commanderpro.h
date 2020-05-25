@@ -52,7 +52,7 @@ enum CorsairLightingNodePro_LED_Type
 
 int
 corsairlink_commanderpro_device_id(
-    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint8_t* device_id );
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint16_t* device_id );
 
 int
 corsairlink_commanderpro_name(

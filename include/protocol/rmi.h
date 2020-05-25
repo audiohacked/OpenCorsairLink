@@ -27,7 +27,7 @@ convert_bytes_double( uint16_t v16 );
 
 int
 corsairlink_rmi_device_id(
-    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint8_t* device_id );
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint16_t* device_id );
 
 int
 corsairlink_rmi_firmware_id(

@@ -25,6 +25,7 @@ CFLAGS += -std=c99
 # CFLAGS += -pedantic-errors
 CFLAGS += -Iinclude
 # CFLAGS += -D_XOPEN_SOURCE=500
+CFLAGS += -g
 
 LDFLAGS += -lm
 
@@ -52,6 +53,7 @@ MAINLOGIC_SOURCE := \
 	logic/settings/hydro_asetek.c \
 	logic/settings/hydro_asetekpro.c \
 	logic/settings/hydro_coolit.c \
+	logic/settings/hydro_platinum.c \
 	logic/settings/psu.c
 
 DRIVER_SOURCE := \
@@ -61,6 +63,7 @@ DRIVER_SOURCE := \
 	drivers/coolit_old.c \
 	drivers/coolit.c \
 	drivers/dongle.c \
+	drivers/platinum.c \
 	drivers/rmi.c \
 	drivers/unsupported.c
 
@@ -68,6 +71,7 @@ LOWLEVEL_SOURCE := \
 	lowlevel/asetek.c \
 	lowlevel/commanderpro.c \
 	lowlevel/coolit.c \
+	lowlevel/platinum.c \
 	lowlevel/rmi.c
 
 PROTOCOL_SOURCE := \
@@ -85,15 +89,22 @@ PROTOCOL_SOURCE := \
 	protocol/commanderpro/fan.c \
 	protocol/commanderpro/power.c \
 	protocol/commanderpro/temperature.c \
-	protocol/rmi/core.c \
-	protocol/rmi/power.c \
-	protocol/rmi/temperature.c \
-	protocol/rmi/time.c \
 	protocol/coolit/core.c \
 	protocol/coolit/fan.c \
 	protocol/coolit/led.c \
 	protocol/coolit/pump.c \
-	protocol/coolit/temperature.c
+	protocol/coolit/temperature.c \
+	protocol/platinum/core.c \
+	protocol/platinum/crc.c \
+	protocol/platinum/fan.c \
+	protocol/platinum/fan_curve.c \
+	protocol/platinum/led.c \
+	protocol/platinum/pump.c \
+	protocol/platinum/temperature.c \
+	protocol/rmi/core.c \
+	protocol/rmi/power.c \
+	protocol/rmi/temperature.c \
+	protocol/rmi/time.c
 
 HEADER := $(shell find ./include -name '*.h')
 

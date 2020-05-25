@@ -76,7 +76,7 @@ corsairlink_device_scanner( libusb_context* context, int* _scanlist_count )
     ssize_t cnt;
     struct corsair_device_info* device;
     libusb_device** devices;
-    uint8_t device_id = 0x00;
+    uint16_t device_id = 0x00;
     // uint16_t firmware_id = 0x0000;
 
     cnt = libusb_get_device_list( context, &devices );

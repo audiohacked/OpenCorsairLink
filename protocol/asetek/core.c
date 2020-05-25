@@ -39,7 +39,7 @@
  */
 int
 corsairlink_asetek_device_id(
-    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint8_t* device_id )
+    struct corsair_device_info* dev, struct libusb_device_handle* handle, uint16_t* device_id )
 {
     // memcpy(device_id, 0x00, 1);
     ( *device_id ) = 0xFF;
