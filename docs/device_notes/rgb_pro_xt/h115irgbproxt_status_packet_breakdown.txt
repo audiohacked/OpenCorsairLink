@@ -1,0 +1,56 @@
+       00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f
+
+0000   ff 78 11 16 00 a8 f8 00 1f 00 00 88 e8 03 88 71   .x.............q
+0010   04 00 88 e8 03 88 77 04 01 bf 00 00 bf 0e 09 00   ......w.........
+0020   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0030   00 00 00 00 00 00 00 00 26 ff 00 00 00 00 00 5d   ........&......]
+
+ff -- pkt_header?
+78 -- pkt_count?
+11 -- firmware version (major.minor)
+16 -- firmware version (patch?)
+00 -- unknown
+a8 -- unknown
+f8 -- unknown
+00 -- LSB Temp
+1f -- MSB Temp
+00 -- unknown
+00 -- unknown
+88 -- unknown
+e8 -- unknown
+03 -- unknown
+88 -- unknown
+71 -- LSB Fan 1
+04 -- MSB Fan 2
+00 -- unknown
+88 -- unknown
+e8 -- unknown
+03 -- unknown
+88 -- unknown
+77 -- LSB Fan 2
+04 -- MSB Fan 2
+01 -- unknown
+bf -- unknown
+00 -- unknown
+00 -- unknown
+bf -- unknown
+0e -- LSB Pump
+09 -- MSB Pump
+00
+... 0x10 bytes of zeros
+00 
+00 
+00 
+00 
+00 
+00 
+00 
+00 
+26 
+ff 
+00 
+00 
+00 
+00 
+00 
+5d -- checksum ??

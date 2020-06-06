@@ -1,0 +1,89 @@
+## Sample Packet 1
+```
+       00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+       
+0000   3f c0 14 00 ff 05 ff ff ff ff ff 00 00 00 00 00   ?...............
+0010   00 00 00 00 00 00 00 01 ff ff 00 00 ff 07 14 59   ...............Y
+0020   1e 66 28 73 32 80 3c 8c 46 99 50 a6 14 59 1e 66   .f(s2.<.F.P..Y.f
+0030   28 73 32 80 3c 8c 46 99 50 a6 ff ff ff ff ff 4b   (s2.<.F.P......K
+```
+
+## Sample Packet 2
+```
+       00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+       
+0000   3f a8 14 00 ff 05 ff ff ff ff ff 01 00 00 00 38   ?..............8
+0010   00 01 00 00 00 38 00 01 ff ff 00 00 ff 07 14 00   .....8..........
+0020   1e 66 28 73 32 80 3c 8c 46 99 64 ff 14 00 1e 66   .f(s2.<.F.d....f
+0030   28 73 32 80 3c 8c 46 99 64 ff ff ff ff ff ff f1   (s2.<.F.d.......
+
+```
+
+## Addr - Data (Hex) - Usage
+0x00 - 3F - write
+0x01 - xx - pkt count
+0x02 - 14 - cmd ??
+0x03 - 00 - Unknown
+0x04 - FF - Unknown
+0x05 - 05 - Unknown
+0x06 - FF - Unknown
+0x07 - FF - Unknown
+0x08 - FF - Unknown
+0x09 - FF - Unknown
+0x0A - FF - Unknown
+0x0B - 00 - Fan 1 External ENable = 0x01
+0x0C - 00 - Fan 1 Unknown
+0x0D - 00 - Fan 1 Unknown
+0x0E - 00 - Fan 1 Unknown
+0x0F - 00 - Fan 1 External Temp Feed
+
+0x10 - 00 - Fan 1? Unknown
+0x11 - 00 - Fan 2 External Enable = 0x01
+0x12 - 00 - Fan 2 Unknown
+0x13 - 00 - Fan 2 Unknown
+0x14 - 00 - Fan 2 Unknown
+0x15 - 38 - Fan 2 External Temp Feed
+0x16 - 00 - Fan 2? Unknown
+0x17 - 01 - Unknown
+0x18 - FF - Unknown
+0x19 - FF - Unknown
+0x1A - 00 - Unknown
+0x1B - 00 - Unknown
+0x1C - FF - Unknown
+0x1D - 07 - Unknown - Fan Point Count?
+0x1E - 14 - Fan 1 Point 1 Temp - Direct translation Celsius
+0x1F - 59 - Fan 1 Point 1 Speed? - 255 * duty_cycle = 0x59
+
+0x20 - 1E - Fan 1 Point 2 Temp
+0x21 - 66 - Fan 1 Point 2 Speed
+0x22 - 28 - Fan 1 Point 3 Temp
+0x23 - 73 - Fan 1 Point 3 Speed
+0x24 - 32 - Fan 1 Point 4 Temp
+0x25 - 80 - Fan 1 Point 4 Speed
+0x26 - 3C - Fan 1 Point 5 Temp
+0x27 - 8C - Fan 1 Point 5 Speed
+0x28 - 46 - Fan 1 Point 6 Temp
+0x29 - 99 - Fan 1 Point 6 Speed
+0x2A - 50 - Fan 1 Point 7 Temp
+0x2B - A6 - Fan 1 Point 7 Speed
+0x2C - 14 - Fan 2 Point 1 Temp
+0x2D - 59 - Fan 2 Point 1 Speed
+0x2E - 1E - Fan 2 Point 2 Temp
+0x2F - 66 - Fan 2 Point 2 Speed
+
+0x30 - 28 - Fan 2 Point 3 Temp
+0x31 - 73 - Fan 2 Point 3 Speed
+0x32 - 32 - Fan 2 Point 4 Temp
+0x33 - 80 - Fan 2 Point 4 Speed
+0x34 - 3C - Fan 2 Point 5 Temp
+0x35 - 8C - Fan 2 Point 5 Speed
+0x36 - 46 - Fan 2 Point 6 Temp
+0x37 - 99 - Fan 2 Point 6 Speed
+0x38 - 50 - Fan 2 Point 7 Temp
+0x39 - A6 - Fan 2 Point 7 Speed - 255 * duty_cycle = 166(Dec) or 0xA6
+0x3A - FF - Marker ? Fan=FF, LED=00
+0x3B - FF - Marker ? Fan=FF, LED=00
+0x3C - FF - Marker ? Fan=FF, LED=00
+0x3D - FF - Marker ? Fan=FF, LED=00
+0x3E - FF - Marker ? Fan=FF, LED=00
+0x3F - 4B - CRC32
