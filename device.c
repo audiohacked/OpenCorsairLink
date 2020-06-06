@@ -272,7 +272,7 @@ struct corsair_device_info corsairlink_devices[] = {
         .led_control_count = 2,
         .fan_control_count = 6,
         .pump_index = 0,
-    }.
+    },
     {
         .vendor_id = 0x1b1c,
         .product_id = 0x1d00,

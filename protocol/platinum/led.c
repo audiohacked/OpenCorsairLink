@@ -39,77 +39,76 @@ corsairlink_platinum_change_led(
     memset( response, 0, sizeof( response ) );
     memset( commands, 0, sizeof( commands ) );
 
-    uint8_t ii = 0;
+    uint8_t ii = 1;
 
     commands[0x00] = 0x3f;
-    commands[0x01] = 0x30; // pkt count ??
+    commands[0x01] = CommandId++; // pkt count ??
 
-    commands[] = 0x00; // led 1 - top 1 - Blue
-    commands[] = 0x00; // Green
-    commands[] = 0x00; // Red
+    commands[++ii] = 0x00; // led 1 - top 1 - Blue
+    commands[++ii] = 0x00; // Green
+    commands[++ii] = 0x00; // Red
 
-    commands[] = 0x00; // led 2 - top 2
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 2 - top 2
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 3 - top 3
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 3 - top 3
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 4 - right 1
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 4 - right 1
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 5
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 5
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 6
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 6
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 7 - bottom 1
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 7 - bottom 1
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 8
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 8
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 9
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 9
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 10 - left 1
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 10 - left 1
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 11
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 11
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 12
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 12
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 13 - middle top
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 13 - middle top
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 14 - middle right
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 14 - middle right
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 15 - middle bottom
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 15 - middle bottom
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-    commands[] = 0x00; // led 16 - middle left
-    commands[] = 0x00;
-    commands[] = 0x00;
+    commands[++ii] = 0x00; // led 16 - middle left
+    commands[++ii] = 0x00;
+    commands[++ii] = 0x00;
 
-
-    commands[0] = ii; // Length
+    commands[0x3F] = crc8ccitt(commands+1, 62);
 
     rr = dev->lowlevel->write( handle, dev->write_endpoint, commands, 64 );
     rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
