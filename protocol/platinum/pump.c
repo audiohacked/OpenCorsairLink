@@ -78,7 +78,8 @@ corsairlink_platinum_pump_speed(
     memset( commands, 0, sizeof( commands ) );
 
     commands[0x00] = 0x3F;
-    commands[0x01] = 0x78;
+    commands[0x01] = CommandId++;
+    commands[0x02] = 0xFF;
 
     commands[0x3F] = crc8ccitt(commands+1, 62);
 
@@ -86,7 +87,7 @@ corsairlink_platinum_pump_speed(
     rr = dev->lowlevel->read( handle, dev->read_endpoint, response, 64 );
 
     msg_debug2( "Speed: %02X %02X\n", response[0x1D], response[0x1E] );
-    msg_debug2( "Max Speed: %02X %02X\n", response[9], response[8] );
+    msg_debug2( "Max Speed: %02X %02X\n", response[0x09], response[0x08] );
 
     ctrl->speed = ( response[0x1E] << 8 ) + response[0x1D];
     ctrl->max_speed = 0xFFFF;

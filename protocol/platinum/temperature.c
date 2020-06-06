@@ -70,7 +70,8 @@ corsairlink_platinum_temperature(
     memset( commands, 0, sizeof( commands ) );
 
     commands[0x00] = 0x3F;
-    commands[0x01] = 0x78;
+    commands[0x01] = CommandId++; // pkt count ??
+    commands[0x02] = 0xFF;
 
     commands[0x3F] = crc8ccitt(commands+1, 62);
 

@@ -41,36 +41,73 @@ corsairlink_platinum_change_led(
 
     uint8_t ii = 0;
 
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = WriteOneByte; // Command Opcode
-    commands[++ii] = LED_SelectCurrent; // Command data...
-    commands[++ii] = 0;
+    commands[0x00] = 0x3f;
+    commands[0x01] = 0x30; // pkt count ??
 
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = WriteOneByte; // Command Opcode
-    commands[++ii] = LED_Mode; // Command data...
-    commands[++ii] = 0x00;
+    commands[] = 0x00; // led 1 - top 1 - Blue
+    commands[] = 0x00; // Green
+    commands[] = 0x00; // Red
 
-    commands[++ii] = CommandId++; // Command ID
-    commands[++ii] = WriteThreeBytes; // Command Opcode
-    commands[++ii] = LED_CycleColors; // Command data...
-    commands[++ii] = 0x0C;
+    commands[] = 0x00; // led 2 - top 2
+    commands[] = 0x00;
+    commands[] = 0x00;
 
-    commands[++ii] = ctrl->led_colors[0].red;
-    commands[++ii] = ctrl->led_colors[0].green;
-    commands[++ii] = ctrl->led_colors[0].blue;
+    commands[] = 0x00; // led 3 - top 3
+    commands[] = 0x00;
+    commands[] = 0x00;
 
-    commands[++ii] = ctrl->led_colors[0].red;
-    commands[++ii] = ctrl->led_colors[0].green;
-    commands[++ii] = ctrl->led_colors[0].blue;
+    commands[] = 0x00; // led 4 - right 1
+    commands[] = 0x00;
+    commands[] = 0x00;
 
-    commands[++ii] = ctrl->led_colors[0].red;
-    commands[++ii] = ctrl->led_colors[0].green;
-    commands[++ii] = ctrl->led_colors[0].blue;
+    commands[] = 0x00; // led 5
+    commands[] = 0x00;
+    commands[] = 0x00;
 
-    commands[++ii] = ctrl->led_colors[0].red;
-    commands[++ii] = ctrl->led_colors[0].green;
-    commands[++ii] = ctrl->led_colors[0].blue;
+    commands[] = 0x00; // led 6
+    commands[] = 0x00;
+    commands[] = 0x00;
+
+    commands[] = 0x00; // led 7 - bottom 1
+    commands[] = 0x00;
+    commands[] = 0x00;
+
+    commands[] = 0x00; // led 8
+    commands[] = 0x00;
+    commands[] = 0x00;
+
+    commands[] = 0x00; // led 9
+    commands[] = 0x00;
+    commands[] = 0x00;
+
+    commands[] = 0x00; // led 10 - left 1
+    commands[] = 0x00;
+    commands[] = 0x00;
+
+    commands[] = 0x00; // led 11
+    commands[] = 0x00;
+    commands[] = 0x00;
+
+    commands[] = 0x00; // led 12
+    commands[] = 0x00;
+    commands[] = 0x00;
+
+    commands[] = 0x00; // led 13 - middle top
+    commands[] = 0x00;
+    commands[] = 0x00;
+
+    commands[] = 0x00; // led 14 - middle right
+    commands[] = 0x00;
+    commands[] = 0x00;
+
+    commands[] = 0x00; // led 15 - middle bottom
+    commands[] = 0x00;
+    commands[] = 0x00;
+
+    commands[] = 0x00; // led 16 - middle left
+    commands[] = 0x00;
+    commands[] = 0x00;
+
 
     commands[0] = ii; // Length
 
